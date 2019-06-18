@@ -1,7 +1,7 @@
 #	Ver. 3.7 is needed for FindVulkan.cmake
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
-project(prototype_200)
+project(prototype_201)
 
 #	Enable warnings
 add_definitions(-march=native

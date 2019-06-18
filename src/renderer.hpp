@@ -42,7 +42,7 @@ public:
 	template	<template <typename, typename...> class container, typename ... args>
 	void	render(container<std::unique_ptr<game_object>, args...>& game_objects)
 	{
-		if (SDL_SetRenderDrawColor(__sdl_renderer, 200, 100, 50, 255))
+		if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 255, 255))
 			throw std::runtime_error("Failed to set draw color");
 		if (SDL_RenderClear(__sdl_renderer))
 			throw std::runtime_error("Failed to clear renderer");
@@ -50,6 +50,7 @@ public:
 		{
 			game_object->draw(*this);
 		}
+		SDL_RenderPresent(__sdl_renderer);
 	}
 	
 	//	Preventing copying and moving
