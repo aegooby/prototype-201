@@ -121,10 +121,10 @@ public:
 	}
 	void	update()
 	{
-		for (auto& entity : entities)
-		{
-			entity->update();
-		}
+//		for (auto& entity : entities)
+//		{
+//			entity->update();
+//		}
 	}
 	void	add_object(std::unique_ptr<entity>&& entity)
 	{

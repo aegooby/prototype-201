@@ -48,6 +48,7 @@
 #include	<SDL_syswm.h>
 #include	<SDL_image.h>
 #include	<SDL_mixer.h>
+//#include	<SDL_gfx.h>
 
 #if	defined(main)
 #	undef	main

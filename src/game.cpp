@@ -1,6 +1,6 @@
 
 #include	"__common.hpp"
-#include	"newton.hpp"
+#include	"game.hpp"
 
 __begin_ns_td
 

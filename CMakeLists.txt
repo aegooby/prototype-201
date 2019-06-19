@@ -61,6 +61,7 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_image.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_ttf.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_mixer.cmake)
+include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
 # Define the include DIRs
 include_directories(
@@ -71,6 +72,7 @@ include_directories(
 	${SDL2_IMAGE_INCLUDE_DIRS}
 	${SDL2_TTF_INCLIDE_DIRS}
 	${SDL2_MIXER_INCLUDE_DIRS}
+	${SDL2_GFX_INCLIDE_DIRS}
 )
 
 # Define the link libraries
@@ -80,4 +82,5 @@ target_link_libraries(
 	${SDL2_IMAGE_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}
 	${SDL2_MIXER_LIBRARIES}
+	${SDL2_GFX_LIBRARIES}
 )

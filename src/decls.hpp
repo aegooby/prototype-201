@@ -30,5 +30,7 @@ class	mouse;
 class	keyboard;
 class	engine;
 class	entity;
+class	component;
+class	renderer;
 
 __end_ns_td

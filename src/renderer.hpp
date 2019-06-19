@@ -46,10 +46,10 @@ public:
 			throw std::runtime_error("Failed to set draw color");
 		if (SDL_RenderClear(__sdl_renderer))
 			throw std::runtime_error("Failed to clear renderer");
-		for (auto& entity : entities)
-		{
-			entity->render(*this);
-		}
+//		for (auto& entity : entities)
+//		{
+//			entity->render(*this);
+//		}
 		// Hey this is IMPORTANT!
 		SDL_RenderPresent(__sdl_renderer);
 	}
