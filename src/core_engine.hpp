@@ -4,7 +4,8 @@
 #include	"window.hpp"
 #include	"clock.hpp"
 #include	"renderer.hpp"
-#include	"game_object.hpp"
+#include	"entity.hpp"
+#include	"newton.hpp"
 #include	<thread>
 #include	<chrono>
 #include	<list>
@@ -19,7 +20,8 @@ protected:
 	td::keyboard&	keyboard;
 	td::mouse&		mouse;
 	td::clock		clock;
-	std::list<std::unique_ptr<game_object>>	game_objects;
+	td::newton		newton;
+	std::list<std::unique_ptr<entity>>	entities;
 	bool		__running = false;
 	const float	__time_per_frame = 1.0f / 60.0f;
 	
@@ -75,11 +77,16 @@ public:
 			// on input/logic before trying to render
 			// (Prefer visual lag over logic lag)
 			
+			// This all made sense to me at some point
+			
 			while (time_unprocessed >= __time_per_frame)
 			{
 				//	All non-graphical processing
 				if (window.closed())
-				__running = false;
+					__running = false;
+				
+				// This takes in all the input
+				window.update();
 				update();
 				
 				//	One frame has been rendered, so subtract
@@ -110,27 +117,26 @@ public:
 	}
 	void	render()
 	{
-		renderer.render(game_objects);
+		renderer.render(entities);
 	}
 	void	update()
 	{
-		window.update();
-		for (auto& game_object : game_objects)
+		for (auto& entity : entities)
 		{
-			game_object->update();
+			entity->update();
 		}
 	}
-	void	add_object(std::unique_ptr<game_object>&& game_object)
+	void	add_object(std::unique_ptr<entity>&& entity)
 	{
-		game_objects.emplace_back(std::forward<decltype(game_object)>(game_object));
+		entities.emplace_back(std::forward<decltype(entity)>(entity));
 	}
-	void	remove_object(std::unique_ptr<game_object>& game_object)
+	void	remove_object(std::unique_ptr<entity>& entity)
 	{
-		game_objects.erase(std::remove_if(game_objects.begin(), game_objects.end(),
-										  [&game_object](decltype(game_object) object)
-										  {
-											  return object == game_object;
-										  }));
+		entities.erase(std::remove_if(entities.begin(), entities.end(),
+									  [&entity](decltype(entity) __entity)
+									  {
+										  return __entity == entity;
+									  }));
 	}
 	
 	//	Preventing copying and moving

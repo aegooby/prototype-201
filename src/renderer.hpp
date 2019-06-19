@@ -40,16 +40,17 @@ public:
 		return __sdl_renderer;
 	}
 	template	<template <typename, typename...> class container, typename ... args>
-	void	render(container<std::unique_ptr<game_object>, args...>& game_objects)
+	void	render(container<std::unique_ptr<entity>, args...>& entities)
 	{
 		if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 255, 255))
 			throw std::runtime_error("Failed to set draw color");
 		if (SDL_RenderClear(__sdl_renderer))
 			throw std::runtime_error("Failed to clear renderer");
-		for (auto& game_object : game_objects)
+		for (auto& entity : entities)
 		{
-			game_object->draw(*this);
+			entity->render(*this);
 		}
+		// Hey this is IMPORTANT!
 		SDL_RenderPresent(__sdl_renderer);
 	}
 	

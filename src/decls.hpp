@@ -29,6 +29,6 @@ class	window;
 class	mouse;
 class	keyboard;
 class	engine;
-class	game_object;
+class	entity;
 
 __end_ns_td
