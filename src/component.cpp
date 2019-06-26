@@ -2,24 +2,22 @@
 #include	"__common.hpp"
 #include	"component.hpp"
 #include	"renderer.hpp"
+#include	"filesystem.hpp"
+#include	"sprite.hpp"
 
 __begin_ns_td
 
 component::~component() = default;
 
-sprite_component::~sprite_component()
+void	render_component::add_child(std::unique_ptr<sprite_base>&& child)
 {
-	if (__surface)
-		SDL_FreeSurface(__surface);
+	using ptr = std::unique_ptr<sprite_base>;
+	__children.emplace(child->name(), std::forward<ptr>(child));
 }
-void	sprite_component::load(td::renderer& renderer)
+
+void	render_component::remove_child(const std::string& name)
 {
-	if (__surface)
-		SDL_CreateTextureFromSurface(renderer.sdl_renderer(), __surface);
-}
-void	sprite_component::render(td::renderer& renderer)
-{
-	SDL_RenderCopy(renderer.sdl_renderer(), __texture, nullptr, &__rect);
+	__children.erase(name);
 }
 
 __end_ns_td

@@ -17,15 +17,13 @@ public:
 
 class	actor : public entity
 {
-	
+protected:
+public:
 };
 
-class	character : public entity
+class	character : public actor
 {
 protected:
-	using __base = entity;
-	float		__vx = 0.0f, __vy = 0.0f;
-	SDL_Rect	__rect;
 public:
 	character() = default;
 	virtual ~character() = default;

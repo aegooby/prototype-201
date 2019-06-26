@@ -23,7 +23,7 @@
 #	error	Not C++17
 #endif
 
-#if	defined(__clang__)
+#if		defined(__clang__)
 #	define	TD_COMPILER_CLANG
 #elif	defined(_MSC_VER)
 #	define	TD_COMPILER_MSVC
@@ -33,6 +33,23 @@
 #	define	TD_COMPILER_GCC
 #else
 #	define	TD_COMPILER_UNKNOWN
+#endif
+
+#if		defined(_WIN32) || defined(_WIN64)
+#	define	TD_OS_WINDOWS
+#elif	defined(__APPLE__) && defined(__MACH__)
+#	define	TD_OS_MACOS
+#elif	defined(__linux__)
+#	define	TD_OS_LINUX
+#else
+#	define	TD_OS_UNKNOWN
+#endif
+
+#if	defined(__unix__) || defined(TD_OS_MACOS)
+#	include	<unistd.h>
+#	if	defined(_POSIX_VERSION)
+#		define	TD_POSIX_COMPATIBLE
+#	endif
 #endif
 
 // GNU C++ extensions (__attribute__)

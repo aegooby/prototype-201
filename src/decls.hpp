@@ -32,5 +32,9 @@ class	engine;
 class	entity;
 class	component;
 class	renderer;
+class	sprite_base;
+class	sprite;
+class	sprite_flipbook;
+class	render_component;
 
 __end_ns_td

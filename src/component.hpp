@@ -1,6 +1,7 @@
 
 #pragma	once
 #include	"__common.hpp"
+#include	<unordered_map>
 #include	<vector>
 #include	<string>
 
@@ -13,8 +14,10 @@ public:
 	virtual ~component() = 0;
 };
 
-class	render_component : public component
+class	render_component
 {
+private:
+	std::unordered_map<std::string, std::unique_ptr<sprite_base>>	__children;
 protected:
 	struct	color
 	{
@@ -22,28 +25,37 @@ protected:
 	};
 	SDL_Rect	__rect;
 	color		__color;
-	bool		__ready = false;
 public:
 	render_component() = default;
 	virtual ~render_component() = default;
-	virtual void	render(td::renderer& renderer)
+	virtual void	render(td::renderer&);
+	inline __attribute__((always_inline))
+	const SDL_Rect&	rect() const
 	{
-		if (!__ready)
-			return;
+		return __rect;
 	}
-};
-
-class	sprite_component : public render_component
-{
-protected:
-	SDL_Surface*	__surface = nullptr;
-	SDL_Texture*	__texture = nullptr;
-	std::vector<std::string>	__sprites;
-public:
-	sprite_component() = default;
-	virtual ~sprite_component();
-	void	load(td::renderer& renderer);
-	virtual void	render(td::renderer& renderer) override;
+	inline __attribute__((always_inline))
+	void	rect(const SDL_Rect& rect)
+	{
+		__rect = rect;
+	}
+	inline __attribute__((always_inline))
+	SDL_Rect*	rect_addr()
+	{
+		return &__rect;
+	}
+	inline __attribute__((always_inline))
+	std::unordered_map<std::string, std::unique_ptr<sprite_base>>&	children()
+	{
+		return __children;
+	}
+	inline __attribute__((always_inline))
+	const std::unordered_map<std::string, std::unique_ptr<sprite_base>>&	children() const
+	{
+		return __children;
+	}
+	void	add_child(std::unique_ptr<sprite_base>&&);
+	void	remove_child(const std::string&);
 };
 
 
