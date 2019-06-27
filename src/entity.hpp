@@ -3,17 +3,25 @@
 #include	"__common.hpp"
 #include	"renderer.hpp"
 #include	"component.hpp"
+#include	<unordered_map>
 
 __begin_ns_td
 
 class	entity
 {
 protected:
-	std::vector<std::unique_ptr<component>>	__components;
+	std::unordered_map<std::string, std::unique_ptr<component>>	__components;
 public:
 	entity() = default;
-	virtual ~entity() = default;
+	virtual ~entity() = 0;
+	inline __attribute__((always_inline))
+	void	add_component(std::unique_ptr<component>&& component)
+	{
+		
+	}
 };
+
+entity::~entity() = default;
 
 class	actor : public entity
 {

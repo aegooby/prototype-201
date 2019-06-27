@@ -1,6 +1,7 @@
 
 #pragma	once
 #include	"__common.hpp"
+#include	"sprite.hpp"
 #include	<unordered_map>
 #include	<vector>
 #include	<string>
@@ -9,13 +10,17 @@ __begin_ns_td
 
 class	component
 {
+protected:
+	const std::string	__id;
 public:
-	component() = default;
+	component(const std::string& id) : __id(id) {  }
 	virtual ~component() = 0;
 };
 
-class	render_component
+class	render_component : public component
 {
+public:
+	using __base = component;
 private:
 	std::unordered_map<std::string, std::unique_ptr<sprite_base>>	__children;
 protected:
@@ -26,7 +31,7 @@ protected:
 	SDL_Rect	__rect;
 	color		__color;
 public:
-	render_component() = default;
+	render_component(const std::string& id) : __base(id) {  }
 	virtual ~render_component() = default;
 	virtual void	render(td::renderer&);
 	inline __attribute__((always_inline))
@@ -62,7 +67,9 @@ public:
 class	physics_component : public component
 {
 public:
-	physics_component() = default;
+	using __base = component;
+public:
+	physics_component(const std::string& id) : __base(id) {  }
 	virtual ~physics_component() = default;
 };
 
@@ -70,14 +77,18 @@ public:
 class	audio_component : public component
 {
 public:
-	audio_component() = default;
+	using __base = component;
+public:
+	audio_component(const std::string& id) : __base(id) {  }
 	virtual ~audio_component() = default;
 };
 
 class	input_component : public component
 {
 public:
-	input_component() = default;
+	using __base = component;
+public:
+	input_component(const std::string& id) : __base(id) {  }
 	virtual ~input_component() = default;
 };
 

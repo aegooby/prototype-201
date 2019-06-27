@@ -26,7 +26,7 @@ void	sprite_flipbook::create(td::renderer& renderer, const std::string& director
 	
 	for (uint32_t i = 0; i < __directory.entries().size(); ++i)
 	{
-		__paths.push_back(__directory.path() + std::to_string(i));
+		__paths.push_back(__directory.path() + std::to_string(i) + ".png");
 	}
 	for (auto& path : __paths)
 	{

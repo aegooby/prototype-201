@@ -9,6 +9,11 @@ __begin_ns_td
 
 component::~component() = default;
 
+void	render_component::render(td::renderer& renderer)
+{
+	
+}
+
 void	render_component::add_child(std::unique_ptr<sprite_base>&& child)
 {
 	using ptr = std::unique_ptr<sprite_base>;

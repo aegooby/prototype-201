@@ -1,4 +1,5 @@
 
+#pragma	once
 #include	"__common.hpp"
 #include	"renderer.hpp"
 #include	<vector>
