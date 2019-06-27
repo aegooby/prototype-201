@@ -30,7 +30,7 @@ void	sprite_flipbook::create(td::renderer& renderer, const std::string& director
 	}
 	for (auto& path : __paths)
 	{
-		__sprites.emplace_back(path);
+		__sprites.emplace_back(sprite(path));
 		__sprites.back().create(renderer, path);
 	}
 }

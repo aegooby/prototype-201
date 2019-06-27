@@ -36,17 +36,17 @@ private:
 		operator delete(ptr, align);
 	}
 public:
-	template	<class type>
+	template	<typename type>
 	friend type*	allocate(type*&, size_t, std::align_val_t);
-	template	<class type>
+	template	<typename type>
 	friend type*	allocate(type*&);
-	template	<class type>
+	template	<typename type>
 	friend type*	allocate(type*&, size_t);
-	template	<class type>
+	template	<typename type>
 	friend type*	allocate(type*&, std::align_val_t);
-	template	<class type>
+	template	<typename type>
 	friend void		deallocate(type*&, std::align_val_t);
-	template	<class type>
+	template	<typename type>
 	friend void		deallocate(type*&);
 	
 	__memory_private() = delete;
@@ -56,7 +56,7 @@ public:
 	__memory_private&	operator =(__memory_private&&) = delete;
 };
 
-template	<class type>
+template	<typename type>
 inline __attribute__((always_inline))
 type* 	allocate(type* ptr, size_t count, std::align_val_t align)
 {
@@ -64,28 +64,28 @@ type* 	allocate(type* ptr, size_t count, std::align_val_t align)
 	//	function, but it returns "ptr" for ease of use.
 	return static_cast<type*>(__memory_private::allocate(count * sizeof(type), align));
 }
-template	<class type>
+template	<typename type>
 inline __attribute__((always_inline))
 type* 	allocate(type*& ptr)
 {
 	ptr = static_cast<type*>(__memory_private::allocate(sizeof(type), td::memory::align_v));
 	return ptr;
 }
-template	<class type>
+template	<typename type>
 inline __attribute__((always_inline))
 type* 	allocate(type*& ptr, size_t count)
 {
 	ptr = static_cast<type*>(__memory_private::allocate(count * sizeof(type), td::memory::align_v));
 	return ptr;
 }
-template	<class type>
+template	<typename type>
 inline __attribute__((always_inline))
 type* 	allocate(type*& ptr, std::align_val_t align)
 {
 	ptr = static_cast<type*>(__memory_private::allocate(sizeof(type), align));
 	return ptr;
 }
-template	<class type, class ... types>
+template	<typename type, typename ... types>
 inline __attribute__((always_inline))
 type* 	construct(type* ptr, types&& ... args)
 {
@@ -102,7 +102,7 @@ type* 	construct(type* ptr, types&& ... args)
 	new(ptr) type(std::forward<types>(args)...);
 	return ptr;
 }
-template	<class type>
+template	<typename type>
 inline __attribute__((always_inline))
 void 	destruct(type* ptr)
 {
@@ -110,7 +110,7 @@ void 	destruct(type* ptr)
 	//	implemented in sequential order.
 	ptr->~type();
 }
-template	<class type>
+template	<typename type>
 inline __attribute__((always_inline))
 void 	deallocate(type*& ptr, std::align_val_t align)
 {
@@ -118,7 +118,7 @@ void 	deallocate(type*& ptr, std::align_val_t align)
 	__memory_private::deallocate((void*)const_cast<type*>(ptr), align);
 	ptr = nullptr;
 }
-template	<class type>
+template	<typename type>
 inline __attribute__((always_inline))
 void 	deallocate(type*& ptr)
 {
