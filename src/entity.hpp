@@ -45,4 +45,10 @@ public:
 	virtual ~character() = default;
 };
 
+class	player : public character
+{
+public:
+	std::unique_ptr<input_component>	render = std::make_unique<input_component>();
+};
+
 __end_ns_td

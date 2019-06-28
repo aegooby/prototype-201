@@ -2,6 +2,7 @@
 #pragma	once
 #include	"__common.hpp"
 #include	"sprite.hpp"
+#include	<map>
 #include	<unordered_map>
 #include	<vector>
 #include	<string>
@@ -13,7 +14,7 @@ class	component
 protected:
 	const std::string	__id;
 public:
-	component() : __id(std::to_string(long(this))) {  }
+	component() : __id(std::string("0x") + std::to_string(long(this))) {  }
 	component(const std::string& id) : __id(id) {  }
 	virtual ~component() = 0;
 	inline __attribute__((always_inline))
@@ -101,10 +102,41 @@ class	input_component : public component
 {
 public:
 	using __base = component;
+	enum class	source
+	{
+		mouse,
+		keyboard,
+		controller,
+		size,
+	};
+	enum class	action
+	{
+		up,
+		down,
+		left,
+		right,
+		up_right,
+		up_left,
+		down_right,
+		down_left,
+		dash,
+		attack_light,
+		attack_heavy,
+		shield,
+		spell_1,
+		spell_2,
+		spell_3,
+		size,
+	};
+protected:
+	std::map<action, std::pair<source, int16_t>>	__mappings;
 public:
 	input_component() = default;
 	input_component(const std::string& id) : __base(id) {  }
 	virtual ~input_component() = default;
+	void	map(keycode, action);
+	void	map(mousecode, action);
+	void	read(const td::keyboard&, const td::mouse&);
 };
 
 __end_ns_td

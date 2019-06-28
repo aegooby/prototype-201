@@ -277,7 +277,7 @@ enum class keycode : uint16_t \
 	AUDIOREWIND = 285, \
 	AUDIOFASTFORWARD = 286, \
 	\
-	SIZE = 512 \
+	size = 512 \
 };
 
 #define	MOUSE_ENUM(...) \
@@ -287,7 +287,7 @@ enum class mousecode : uint16_t \
 	LEFT = 1, \
 	MIDDLE = 2, \
 	RIGHT = 3, \
-	SIZE = 4, \
+	size = 4, \
 };
 
 #define	CONTROLLER_TYPES_ENUM(...) \
@@ -295,7 +295,7 @@ enum \
 { \
 	XBOX_ONE = 721, \
 	PLAYSTATION_4 = 1476, \
-	SIZE = 2, \
+	size = 2, \
 }; \
 
 #define	CONTROLLER_ENUM(...) \
@@ -326,7 +326,7 @@ enum \
 	LT = 2, \
 	RT = 5, \
 	\
-	SIZE = 21, \
+	size = 21, \
 }; \
 enum \
 { \
