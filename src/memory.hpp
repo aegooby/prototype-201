@@ -4,6 +4,7 @@
 #include	<new>
 #include	<memory>
 #include	<cstdlib>
+#include	<cstring>
 
 #define	__begin_ns_memory	namespace	memory {
 #define	__end_ns_memory		}

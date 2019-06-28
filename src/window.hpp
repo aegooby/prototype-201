@@ -3,16 +3,9 @@
 
 #include	"__common.hpp"
 #include	"input.hpp"
+#include	"exception.hpp"
 
 __begin_ns_td
-
-class	sdl_error : public std::runtime_error
-{
-public:
-	explicit sdl_error(const std::string& what) noexcept : std::runtime_error(what) {  }
-	explicit sdl_error(const char* what) noexcept : std::runtime_error(what) {  }
-	virtual ~sdl_error() = default;
-};
 
 class	window
 {
@@ -36,7 +29,7 @@ public:
 		if (SDL_Init(SDL_INIT_EVERYTHING))
 			throw sdl_error("Failed to initialize SDL");
 		if (!(__sdl_window = SDL_CreateWindow(__title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, __width, __height, SDL_WINDOW_ALLOW_HIGHDPI)))
-			throw std::runtime_error("Failed to create window");
+			throw sdl_error("Failed to create window");
 		
 		SDL_GetVersion(&__syswm_info.version);
 		SDL_GetWindowWMInfo(__sdl_window, &__syswm_info);
@@ -121,9 +114,9 @@ public:
 	
 	//	Preventing copying and moving
 	window(const window&) = delete;
-	window(const window&&) = delete;
+	window(window&&) = delete;
 	window&	operator =(const window&) = delete;
-	window&	operator =(const window&&) = delete;
+	window&	operator =(window&&) = delete;
 };
 
 __end_ns_td

@@ -22,18 +22,26 @@ protected:
 	td::clock		clock;
 	td::newton		newton;
 	std::list<std::unique_ptr<entity>>	entities;
-	bool		__running = false;
-	const float	__time_per_frame = 1.0f / 60.0f;
+	bool		__running = false, __fpsdebug = false;
+	const float	__time_per_frame = 1.0f / float(global::game_fps);
 	
 	bool	cmd_w() const
 	{
+#if	defined(TD_OS_MACOS)
 		return (keyboard.key_scan(keycode::W) && (keyboard.key_scan(keycode::LGUI) || keyboard.key_scan(keycode::RGUI)));
+#else
+		return false;
+#endif
 	}
 public:
-	core_engine(const std::string& title, int width, int height) : window(title, width, height), renderer(window), keyboard(window.keyboard), mouse(window.mouse)
+	core_engine(const std::string& title, int width, int height, bool fpsdebug) : window(title, width, height), renderer(window), keyboard(window.keyboard), mouse(window.mouse), __fpsdebug(fpsdebug)
 	{
 		window.start();
 		renderer.start();
+		add_object(std::make_unique<td::character>());
+		dynamic_cast<td::character*>(entities.back().get())->render->add_child(std::make_unique<sprite_flipbook>("stand", 10.0f));
+		dynamic_cast<td::character*>(entities.back().get())->render->rect(100, 100, 100, 74);
+		dynamic_cast<td::character*>(entities.back().get())->render->children().at("stand")->create(renderer, "/Users/admin/Desktop/atk");
 	}
 	~core_engine() = default;
 	void	start()
@@ -65,9 +73,12 @@ public:
 			// Check frame rate
 			if (__frame_time >= __frame_rate_check)
 			{
-				std::cout << "fps: ";
-				std::cout << float(__frame_count) / __frame_rate_check;
-				std::cout << std::endl;
+				if (__fpsdebug)
+				{
+					std::cout << "fps: ";
+					std::cout << float(__frame_count) / __frame_rate_check;
+					std::cout << std::endl;
+				}
 				__frame_time = 0;
 				__frame_count = 0;
 			}
@@ -141,9 +152,9 @@ public:
 	
 	//	Preventing copying and moving
 	core_engine(const core_engine&) = delete;
-	core_engine(const core_engine&&) = delete;
+	core_engine(core_engine&&) = delete;
 	core_engine&	operator =(const core_engine&) = delete;
-	core_engine&	operator =(const core_engine&&) = delete;
+	core_engine&	operator =(core_engine&&) = delete;
 };
 
 __end_ns_td

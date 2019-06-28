@@ -1,12 +1,15 @@
 
+#pragma	once
 #include	"__common.hpp"
 #include	<vector>
 #include	<fstream>
 #if		defined(TD_POSIX_COMPATIBLE)
 #	include	<dirent.h>
 #	include	<sys/stat.h>
+#	define	TD_DIRECTORY_SLASH '/'
 #elif	defined(TD_OS_WINDOWS)
 #	include	<windows.h>
+#	define	TD_DIRECTORY_SLASH '\'
 #endif
 
 __begin_ns_td

@@ -17,7 +17,7 @@ void	directory::open(const std::string& path)
 {
 	__path = path;
 	if (is_file(path))
-		throw std::runtime_error("Attempt to open a file as a directory");
+		throw std::runtime_error(std::string("Attempt to open a file as a directory: ") + path);
 	if (is_directory(path))
 	{
 #if		defined(TD_POSIX_COMPATIBLE)
@@ -30,7 +30,7 @@ void	directory::open(const std::string& path)
 		switch (__mode)
 		{
 			case mode::read_only:
-				throw std::runtime_error("Directory not found");
+				throw std::runtime_error(std::string("Directory not found: ") + path);
 				break;
 			case mode::read_write:
 				create(path);

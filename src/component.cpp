@@ -11,7 +11,11 @@ component::~component() = default;
 
 void	render_component::render(td::renderer& renderer)
 {
-	
+	// TODO: THIS IS TEMPORARY
+	for (auto& child : __children)
+	{
+		child.second->render(renderer, *this);
+	}
 }
 
 void	render_component::add_child(std::unique_ptr<sprite_base>&& child)

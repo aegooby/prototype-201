@@ -78,6 +78,9 @@
 #define	__begin_ns_td	namespace td {
 #define	__end_ns_td		}
 
+#define	__begin_ns_global	namespace global {
+#define	__end_ns_global		}
+
 #if	defined(TD_CPP_VER)
 #	if	TD_CPP_VER > 11
 #		if	defined(NULL)
@@ -94,6 +97,12 @@
 __begin_ns_td
 
 using size_t = std::size_t;
+
+__begin_ns_global
+
+static constexpr size_t	game_fps = 60;
+
+__end_ns_global
 
 __end_ns_td
 

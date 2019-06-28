@@ -51,9 +51,9 @@ public:
 	
 	//	Preventing copying and moving
 	clock(const clock&) = delete;
-	clock(const clock&&) = delete;
+	clock(clock&&) = delete;
 	clock&	operator =(const clock&) = delete;
-	clock&	operator =(const clock&&) = delete;
+	clock&	operator =(clock&&) = delete;
 };
 
 __end_ns_td

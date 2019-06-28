@@ -68,9 +68,9 @@ public:
 	
 	//	Preventing copying and moving
 	keyboard(const keyboard&) = delete;
-	keyboard(const keyboard&&) = delete;
+	keyboard(keyboard&&) = delete;
 	keyboard&	operator=(const keyboard&) = delete;
-	keyboard&	operator=(const keyboard&&) = delete;
+	keyboard&	operator=(keyboard&&) = delete;
 };
 
 class	mouse : public input
@@ -136,9 +136,9 @@ public:
 	
 	//	Preventing copying and moving
 	mouse(const mouse&) = delete;
-	mouse(const mouse&&) = delete;
+	mouse(mouse&&) = delete;
 	mouse&	operator=(const mouse&) = delete;
-	mouse&	operator=(const mouse&&) = delete;
+	mouse&	operator=(mouse&&) = delete;
 };
 
 __end_ns_td

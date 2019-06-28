@@ -13,8 +13,14 @@ class	component
 protected:
 	const std::string	__id;
 public:
+	component() : __id(std::to_string(long(this))) {  }
 	component(const std::string& id) : __id(id) {  }
 	virtual ~component() = 0;
+	inline __attribute__((always_inline))
+	const std::string&	id() const
+	{
+		return __id;
+	}
 };
 
 class	render_component : public component
@@ -31,6 +37,7 @@ protected:
 	SDL_Rect	__rect;
 	color		__color;
 public:
+	render_component() = default;
 	render_component(const std::string& id) : __base(id) {  }
 	virtual ~render_component() = default;
 	virtual void	render(td::renderer&);
@@ -43,6 +50,11 @@ public:
 	void	rect(const SDL_Rect& rect)
 	{
 		__rect = rect;
+	}
+	inline __attribute__((always_inline))
+	void	rect(int x, int y, int w, int h)
+	{
+		__rect = { x, y, w, h };
 	}
 	inline __attribute__((always_inline))
 	SDL_Rect*	rect_addr()
@@ -69,16 +81,18 @@ class	physics_component : public component
 public:
 	using __base = component;
 public:
+	physics_component() = default;
 	physics_component(const std::string& id) : __base(id) {  }
 	virtual ~physics_component() = default;
 };
 
-// Unfinished
+// TODO: finish
 class	audio_component : public component
 {
 public:
 	using __base = component;
 public:
+	audio_component() = default;
 	audio_component(const std::string& id) : __base(id) {  }
 	virtual ~audio_component() = default;
 };
@@ -88,6 +102,7 @@ class	input_component : public component
 public:
 	using __base = component;
 public:
+	input_component() = default;
 	input_component(const std::string& id) : __base(id) {  }
 	virtual ~input_component() = default;
 };
