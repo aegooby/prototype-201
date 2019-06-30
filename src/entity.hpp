@@ -13,7 +13,7 @@ protected:
 	std::unordered_map<std::string, std::unique_ptr<component>>	__components;
 public:
 	entity() = default;
-	virtual ~entity() = default;
+	virtual ~entity() = 0;
 	inline __attribute__((always_inline))
 	void	add_component(std::unique_ptr<component>&& component)
 	{

@@ -4,8 +4,8 @@
 
 __begin_ns_td
 
-#define	KEY_ENUM(...) \
-enum class keycode : uint16_t \
+#define	KEY_ENUM() \
+enum class	keycode : uint16_t \
 { \
 	UNKNOWN = 0, \
 	A = 4, \
@@ -280,8 +280,8 @@ enum class keycode : uint16_t \
 	size = 512 \
 };
 
-#define	MOUSE_ENUM(...) \
-enum class mousecode : uint16_t \
+#define	MOUSE_ENUM() \
+enum class	mousecode : uint16_t \
 { \
 	UNDEFINED = 0, \
 	LEFT = 1, \

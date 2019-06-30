@@ -102,40 +102,25 @@ class	input_component : public component
 {
 public:
 	using __base = component;
-	enum class	source
-	{
-		mouse,
-		keyboard,
-		controller,
-		size,
-	};
-	enum class	action
-	{
-		up,
-		down,
-		left,
-		right,
-		up_right,
-		up_left,
-		down_right,
-		down_left,
-		dash,
-		attack_light,
-		attack_heavy,
-		shield,
-		spell_1,
-		spell_2,
-		spell_3,
-		size,
-	};
 protected:
-	std::map<action, std::pair<source, int16_t>>	__mappings;
+	std::map<action, keycode>	__key_mappings;
+	std::map<action, mousecode>	__mouse_mappings;
 public:
 	input_component() = default;
 	input_component(const std::string& id) : __base(id) {  }
 	virtual ~input_component() = default;
-	void	map(keycode, action);
-	void	map(mousecode, action);
+	inline __attribute__((always_inline))
+	const std::map<action, keycode>&	key_mappings() const
+	{
+		return __key_mappings;
+	}
+	inline __attribute__((always_inline))
+	const std::map<action, mousecode>&	mouse_mappings() const
+	{
+		return __mouse_mappings;
+	}
+	void	map(action, keycode);
+	void	map(action, mousecode);
 	void	read(const td::keyboard&, const td::mouse&);
 };
 

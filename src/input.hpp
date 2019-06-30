@@ -1,16 +1,11 @@
 
 #pragma	once
 #include	"__common.hpp"
-#include	"input_enum.hpp"
 #include	"array.hpp"
 #include	"vector.hpp"
+#include	"key.hpp"
 
 __begin_ns_td
-
-class	window;
-
-KEY_ENUM();
-MOUSE_ENUM();
 
 class	input
 {

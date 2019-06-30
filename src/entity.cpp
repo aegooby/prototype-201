@@ -1,10 +1,10 @@
 
 #include	"__common.hpp"
-#include	"event.hpp"
+#include	"entity.hpp"
 
 __begin_ns_td
 
-event::~event() = default;
+entity::~entity() = default;
 
 __end_ns_td
 
