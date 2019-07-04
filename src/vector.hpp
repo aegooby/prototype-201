@@ -4,7 +4,6 @@
 #include	"vector/vector_base.hpp"
 #include	"vector/vector_2.hpp"
 #include	"vector/vector_3.hpp"
-#include	"vector/vector_4.hpp"
 
 __begin_ns_td
 

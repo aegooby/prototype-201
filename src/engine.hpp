@@ -13,7 +13,7 @@
 
 __begin_ns_td
 
-class	core_engine
+class	engine
 {
 protected:
 	td::window			window;
@@ -36,7 +36,7 @@ protected:
 #endif
 	}
 public:
-	core_engine(const std::string& title, int width, int height, bool fpsdebug) : window(title, width, height), renderer(window), keyboard(window.keyboard), mouse(window.mouse), __fpsdebug(fpsdebug)
+	engine(const std::string& title, int width, int height, bool fpsdebug) : window(title, width, height), renderer(window), keyboard(window.keyboard), mouse(window.mouse), __fpsdebug(fpsdebug)
 	{
 		window.start();
 		renderer.start();
@@ -45,7 +45,7 @@ public:
 		dynamic_cast<td::character*>(entities.back().get())->render->rect(100, 100, 100, 74);
 		dynamic_cast<td::character*>(entities.back().get())->render->children().at("stand")->create(renderer, "/Users/admin/Desktop/atk");
 	}
-	~core_engine() = default;
+	~engine() = default;
 	void	start()
 	{
 		if (__running) return;
@@ -152,10 +152,10 @@ public:
 	}
 	
 	//	Preventing copying and moving
-	core_engine(const core_engine&) = delete;
-	core_engine(core_engine&&) = delete;
-	core_engine&	operator =(const core_engine&) = delete;
-	core_engine&	operator =(core_engine&&) = delete;
+	engine(const engine&) = delete;
+	engine(engine&&) = delete;
+	engine&	operator =(const engine&) = delete;
+	engine&	operator =(engine&&) = delete;
 };
 
 __end_ns_td

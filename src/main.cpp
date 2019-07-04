@@ -1,14 +1,14 @@
 
 #include	"__common.hpp"
-#include	"core_engine.hpp"
+#include	"engine.hpp"
 #include	"filesystem.hpp"
 
 int	main(int argc, char** argv)
 {
 	try
 	{
-		td::core_engine	core_engine = td::core_engine("test", 480, 360, false);
-		core_engine.start();
+		td::engine	engine = td::engine("test", 480, 360, false);
+		engine.start();
 	}
 	catch (std::exception& exception)
 	{
