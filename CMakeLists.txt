@@ -61,7 +61,6 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_image.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_ttf.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_mixer.cmake)
-include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
 # Define the include DIRs
 include_directories(

@@ -280,6 +280,17 @@ enum class	keycode : uint16_t \
 	size = 512 \
 };
 
+#define	MODIFIER_ENUM() \
+enum class	modifier \
+{ \
+	NONE = 0, \
+	SHIFT = 1, \
+	CTRL = 2, \
+	ALT = 3, \
+	GUI = 4, \
+	size = 5, \
+};
+
 #define	MOUSE_ENUM() \
 enum class	mousecode : uint16_t \
 { \

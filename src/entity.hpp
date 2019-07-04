@@ -9,10 +9,12 @@ __begin_ns_td
 
 class	entity
 {
+public:
+	td::event_handler&	event_handler;
 protected:
 	std::unordered_map<std::string, std::unique_ptr<component>>	__components;
 public:
-	entity() = default;
+	entity(td::event_handler& event_handler) : event_handler(event_handler) {  }
 	virtual ~entity() = 0;
 	inline __attribute__((always_inline))
 	void	add_component(std::unique_ptr<component>&& component)
@@ -30,25 +32,31 @@ public:
 class	actor : public entity
 {
 public:
-	std::unique_ptr<render_component>	render = std::make_unique<render_component>();
+	using __base = entity;
+	std::unique_ptr<render_component>	render = std::make_unique<render_component>(*this);
 protected:
 public:
-	actor() = default;
+	actor(td::event_handler& event_handler) : __base(event_handler) {  }
 	virtual ~actor() = default;
 };
 
 class	character : public actor
 {
+public:
+	using __base = actor;
 protected:
 public:
-	character() = default;
+	character(td::event_handler& event_handler) : __base(event_handler) {  }
 	virtual ~character() = default;
 };
 
 class	player : public character
 {
 public:
-	std::unique_ptr<input_component>	render = std::make_unique<input_component>();
+	using __base = character;
+public:
+	player(td::event_handler& event_handler) : __base(event_handler) {  }
+	std::unique_ptr<input_component>	render = std::make_unique<input_component>(*this);
 };
 
 __end_ns_td

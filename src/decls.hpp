@@ -37,5 +37,7 @@ class	sprite_base;
 class	sprite;
 class	sprite_flipbook;
 class	render_component;
+class	event_handler;
+class	event;
 
 __end_ns_td

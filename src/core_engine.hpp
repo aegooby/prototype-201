@@ -6,6 +6,7 @@
 #include	"renderer.hpp"
 #include	"entity.hpp"
 #include	"newton.hpp"
+#include	"event.hpp"
 #include	<thread>
 #include	<chrono>
 #include	<list>
@@ -15,12 +16,13 @@ __begin_ns_td
 class	core_engine
 {
 protected:
-	td::window		window;
-	td::renderer	renderer;
-	td::keyboard&	keyboard;
-	td::mouse&		mouse;
-	td::clock		clock;
-	td::newton		newton;
+	td::window			window;
+	td::renderer		renderer;
+	td::keyboard&		keyboard;
+	td::mouse&			mouse;
+	td::clock			clock;
+	td::newton			newton;
+	td::event_handler	event_handler;
 	std::list<std::unique_ptr<entity>>	entities;
 	bool		__running = false, __fpsdebug = false;
 	const float	__time_per_frame = 1.0f / float(global::game_fps);
@@ -28,7 +30,7 @@ protected:
 	bool	cmd_w() const
 	{
 #if	defined(TD_OS_MACOS)
-		return (keyboard.key_scan(keycode::W) && (keyboard.key_scan(keycode::LGUI) || keyboard.key_scan(keycode::RGUI)));
+		return (keyboard.down(keycode::W) && keyboard.modifier(modifier::GUI));
 #else
 		return false;
 #endif
@@ -38,7 +40,7 @@ public:
 	{
 		window.start();
 		renderer.start();
-		add_object(std::make_unique<td::character>());
+		add_entity(std::make_unique<td::character>(event_handler));
 		dynamic_cast<td::character*>(entities.back().get())->render->add_child(std::make_unique<sprite_flipbook>("stand", 10.0f));
 		dynamic_cast<td::character*>(entities.back().get())->render->rect(100, 100, 100, 74);
 		dynamic_cast<td::character*>(entities.back().get())->render->children().at("stand")->create(renderer, "/Users/admin/Desktop/atk");
@@ -96,8 +98,6 @@ public:
 				if (window.closed())
 					__running = false;
 				
-				// This takes in all the input
-				window.update();
 				update();
 				
 				//	One frame has been rendered, so subtract
@@ -132,22 +132,23 @@ public:
 	}
 	void	update()
 	{
+		// Input
+		window.update();
 //		for (auto& entity : entities)
 //		{
 //			entity->update();
 //		}
 	}
-	void	add_object(std::unique_ptr<entity>&& entity)
+	void	add_entity(std::unique_ptr<entity>&& entity)
 	{
 		entities.emplace_back(std::forward<decltype(entity)>(entity));
 	}
-	void	remove_object(std::unique_ptr<entity>& entity)
+	void	remove_entity(const std::unique_ptr<entity>& entity)
 	{
-		entities.erase(std::remove_if(entities.begin(), entities.end(),
-									  [&entity](decltype(entity) __entity)
-									  {
-										  return __entity == entity;
-									  }));
+		entities.remove_if([&entity](const std::unique_ptr<td::entity>& __entity)
+						   {
+							   return &__entity == &entity;
+						   });
 	}
 	
 	//	Preventing copying and moving

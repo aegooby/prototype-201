@@ -6,6 +6,7 @@
 __begin_ns_td
 
 KEY_ENUM();
+MODIFIER_ENUM();
 MOUSE_ENUM();
 
 enum	keystate
@@ -16,14 +17,21 @@ enum	keystate
 	size,
 };
 
-class	key
+class	key_base
+{
+public:
+	key_base() = default;
+	virtual ~key_base() = default;
+};
+
+class	key : public key_base
 {
 protected:
 	const keycode	__code;
 	keystate		__state;
 public:
 	key(keycode code) : __code(code) {  }
-	~key() = default;
+	virtual ~key() = default;
 	inline __attribute__((always_inline))
 	void	state(const keystate& state)
 	{
@@ -41,13 +49,14 @@ public:
 	}
 };
 
-class	key_chord
+class	key_chord : public key_base
 {
 public:
 	std::vector<key>	keys;
 public:
 	template	<typename ... types>
 	key_chord(types ... keys) : keys({ keys ... }) {  }
+	virtual ~key_chord() = default;
 	inline __attribute__((always_inline))
 	size_t	count() const
 	{

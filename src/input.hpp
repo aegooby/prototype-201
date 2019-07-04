@@ -17,75 +17,95 @@ public:
 	
 	//	Preventing copying and moving
 	input(const input&) = delete;
-	input(const input&&) = delete;
+	input(input&&) = delete;
 	input&	operator=(const input&) = delete;
-	input&	operator=(const input&&) = delete;
+	input&	operator=(input&&) = delete;
 };
 
 class	keyboard : public input
 {
 protected:
-	array<bool, size_t(keycode::size)>	scan;
-	array<bool, size_t(keycode::size)>	down;
-	array<bool, size_t(keycode::size)>	up;
-	
+	array<bool, size_t(keycode::size)>	__scan;
+	array<bool, size_t(keycode::size)>	__down;
+	array<bool, size_t(keycode::size)>	__up;
+	array<bool, size_t(modifier::size)>	__modifier;
 public:
 	keyboard(window& window_context) : input(window_context)
 	{
-		scan.fill(false);
-		down.fill(false);
-		up.fill(false);
+		__scan.fill(false);
+		__down.fill(false);
+		__up.fill(false);
 	}
 	~keyboard()
 	{
-		scan.fill(false);
-		down.fill(false);
-		up.fill(false);
+		__scan.fill(false);
+		__down.fill(false);
+		__up.fill(false);
 	}
 	inline __attribute__((always_inline))
-	bool	key_scan(keycode code) const
+	bool	scan(keycode code) const
 	{
-		return scan.at(size_t(code));
+		return __scan.at(size_t(code));
 	}
 	inline __attribute__((always_inline))
-	bool	key_down(keycode code) const
+	bool	down(keycode code) const
 	{
-		return down.at(size_t(code));
+		return __down.at(size_t(code));
 	}
 	inline __attribute__((always_inline))
-	bool	key_up(keycode code) const
+	bool	up(keycode code) const
 	{
-		return up.at(size_t(code));
+		return __up.at(size_t(code));
 	}
 	inline __attribute__((always_inline))
-	void	key_scan(keycode code, bool value)
+	void	scan(keycode code, bool value)
 	{
-		scan.at(size_t(code)) = value;
+		__scan.at(size_t(code)) = value;
 	}
 	inline __attribute__((always_inline))
-	void	key_down(keycode code, bool value)
+	void	down(keycode code, bool value)
 	{
-		down.at(size_t(code)) = value;
+		__down.at(size_t(code)) = value;
 	}
 	inline __attribute__((always_inline))
-	void	key_up(keycode code, bool value)
+	void	up(keycode code, bool value)
 	{
-		up.at(size_t(code)) = value;
+		__up.at(size_t(code)) = value;
 	}
 	inline __attribute__((always_inline))
-	void	key_scan_clear()
+	void	scan_clear()
 	{
-		scan.fill(false);
+		__scan.fill(false);
 	}
 	inline __attribute__((always_inline))
-	void	key_down_clear()
+	void	down_clear()
 	{
-		down.fill(false);
+		__down.fill(false);
 	}
 	inline __attribute__((always_inline))
-	void	key_up_clear()
+	void	up_clear()
 	{
-		up.fill(false);
+		__up.fill(false);
+	}
+	inline __attribute__((always_inline))
+	bool	modifier(enum modifier code) const
+	{
+		return __modifier.at(size_t(code));
+	}
+	inline __attribute__((always_inline))
+	void	modifier(enum modifier code, bool value)
+	{
+		__modifier.at(size_t(code)) = value;
+	}
+	inline __attribute__((always_inline))
+	void	update()
+	{
+		auto	__mod = SDL_GetModState();
+		modifier(modifier::ALT, bool(__mod & KMOD_ALT));
+		modifier(modifier::CTRL, bool(__mod & KMOD_CTRL));
+		modifier(modifier::GUI, bool(__mod & KMOD_GUI));
+		modifier(modifier::SHIFT, bool(__mod & KMOD_SHIFT));
+		modifier(modifier::NONE, bool(__mod & KMOD_NONE));
 	}
 	
 	//	Preventing copying and moving
@@ -98,68 +118,68 @@ public:
 class	mouse : public input
 {
 protected:
-	array<bool, size_t(mousecode::size)>	scan;
-	array<bool, size_t(mousecode::size)>	down;
-	array<bool, size_t(mousecode::size)>	up;
-	vector_2						__position;
-	vector_2						__movement;
+	array<bool, size_t(mousecode::size)>	__scan;
+	array<bool, size_t(mousecode::size)>	__down;
+	array<bool, size_t(mousecode::size)>	__up;
+	vector_2	__position;
+	vector_2	__movement;
 public:
 	mouse(window& window_context) : input(window_context)
 	{
-		scan.fill(false);
-		down.fill(false);
-		up.fill(false);
+		__scan.fill(false);
+		__down.fill(false);
+		__up.fill(false);
 	}
 	~mouse()
 	{
-		scan.fill(false);
-		down.fill(false);
-		up.fill(false);
+		__scan.fill(false);
+		__down.fill(false);
+		__up.fill(false);
 	}
 	inline __attribute__((always_inline))
-	bool	button_scan(mousecode code) const
+	bool	scan(mousecode code) const
 	{
-		return scan.at(size_t(code));
+		return __scan.at(size_t(code));
 	}
 	inline __attribute__((always_inline))
-	bool	button_down(mousecode code) const
+	bool	down(mousecode code) const
 	{
-		return down.at(size_t(code));
+		return __down.at(size_t(code));
 	}
 	inline __attribute__((always_inline))
-	bool	button_up(mousecode code) const
+	bool	up(mousecode code) const
 	{
-		return up.at(size_t(code));
+		return __up.at(size_t(code));
 	}
 	inline __attribute__((always_inline))
-	void	button_scan(mousecode code, bool value)
+	void	scan(mousecode code, bool value)
 	{
-		scan.at(size_t(code)) = value;
+		__scan.at(size_t(code)) = value;
 	}
 	inline __attribute__((always_inline))
-	void	button_down(mousecode code, bool value)
+	void	down(mousecode code, bool value)
 	{
-		down.at(size_t(code)) = value;
+		__down.at(size_t(code)) = value;
 	}
 	inline __attribute__((always_inline))
-	void	button_up(mousecode code, bool value)
+	void	up(mousecode code, bool value)
 	{
-		up.at(size_t(code)) = value;
+		__up.at(size_t(code)) = value;
 	}
 	inline __attribute__((always_inline))
-	void	button_scan_clear()
+	void	scan_clear()
 	{
-		scan.fill(false);
+		__scan.fill(false);
 	}
 	inline __attribute__((always_inline))
-	void	button_down_clear()
+	void	down_clear()
 	{
-		down.fill(false);
+		__down.fill(false);
 	}
 	inline __attribute__((always_inline))
-	void	button_up_clear()
+	void	up_clear()
 	{
-		up.fill(false);
+		__up.fill(false);
 	}
 	inline __attribute__((always_inline))
 	void	visible(bool visible)

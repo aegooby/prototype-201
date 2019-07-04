@@ -32,6 +32,7 @@ protected:
 	dir*						__directory = nullptr;
 	dirent*						__entry = nullptr;
 #elif	defined(TD_OS_WINDOWS)
+	
 #endif
 	bool						__open = false;
 	std::vector<std::string>	__entries;
@@ -49,6 +50,7 @@ protected:
 		}
 		return false;
 #elif	defined(TD_OS_WINDOWS)
+		
 #endif
 	}
 	inline __attribute__((always_inline))

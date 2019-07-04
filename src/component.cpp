@@ -5,6 +5,8 @@
 #include	"filesystem.hpp"
 #include	"sprite.hpp"
 #include	"input.hpp"
+#include	"event.hpp"
+#include	"entity.hpp"
 
 __begin_ns_td
 
@@ -30,33 +32,11 @@ void	render_component::remove_child(const std::string& name)
 	__children.erase(name);
 }
 
-void	input_component::read(const td::keyboard& keyboard, const td::mouse& mouse)
+void	input_component::map(action action, keycode code, modifier modifier = modifier::NONE)
 {
 	for (auto& mapping : __key_mappings)
 	{
-		if (keyboard.key_down(mapping.second))
-			;
-		if (keyboard.key_scan(mapping.second))
-			;
-		if (keyboard.key_up(mapping.second))
-			;
-	}
-	for (auto& mapping : __mouse_mappings)
-	{
-		if (mouse.button_down(mapping.second))
-			;
-		if (mouse.button_scan(mapping.second))
-			;
-		if (mouse.button_up(mapping.second))
-			;
-	}
-}
-
-void	input_component::map(action action, keycode code)
-{
-	for (auto& mapping : __key_mappings)
-	{
-		if (mapping.second == code)
+		if (mapping.second.first == code && mapping.second.second == modifier)
 		{
 			__key_mappings.erase(mapping.first);
 			break;
@@ -66,13 +46,13 @@ void	input_component::map(action action, keycode code)
 		__mouse_mappings.erase(action);
 	if (__key_mappings.count(action))
 		__key_mappings.erase(action);
-	__key_mappings.emplace(action, code);
+	__key_mappings.emplace(action, std::make_pair(code, modifier));
 }
-void	input_component::map(action action, mousecode code)
+void	input_component::map(action action, mousecode code, modifier modifier = modifier::NONE)
 {
 	for (auto& mapping : __mouse_mappings)
 	{
-		if (mapping.second == code)
+		if (mapping.second.first == code && mapping.second.second == modifier)
 		{
 			__mouse_mappings.erase(mapping.first);
 			break;
@@ -82,7 +62,24 @@ void	input_component::map(action action, mousecode code)
 		__key_mappings.erase(action);
 	if (__mouse_mappings.count(action))
 		__mouse_mappings.erase(action);
-	__mouse_mappings.emplace(action, code);
+	__mouse_mappings.emplace(action, std::make_pair(code, modifier));
+}
+void	input_component::read(const td::keyboard& keyboard, const td::mouse& mouse)
+{
+	for (auto& mapping : __key_mappings)
+	{
+		if (keyboard.down(mapping.second.first) && keyboard.modifier(mapping.second.second))
+		{
+			entity.event_handler.add_event(std::make_unique<td::action_event>(mapping.first));
+		}
+	}
+	for (auto& mapping : __mouse_mappings)
+	{
+		if (mouse.down(mapping.second.first) && keyboard.modifier(mapping.second.second))
+		{
+			entity.event_handler.add_event(std::make_unique<td::action_event>(mapping.first));
+		}
+	}
 }
 
 __end_ns_td

@@ -7,7 +7,7 @@ int	main(int argc, char** argv)
 {
 	try
 	{
-		td::core_engine	core_engine = td::core_engine("test", 480, 360, true);
+		td::core_engine	core_engine = td::core_engine("test", 480, 360, false);
 		core_engine.start();
 	}
 	catch (std::exception& exception)
