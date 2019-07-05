@@ -56,7 +56,7 @@ public:
 	using __base = character;
 public:
 	player(td::event_handler& event_handler) : __base(event_handler) {  }
-	std::unique_ptr<input_component>	render = std::make_unique<input_component>(*this);
+	std::unique_ptr<input_component>	input = std::make_unique<input_component>(*this);
 };
 
 __end_ns_td

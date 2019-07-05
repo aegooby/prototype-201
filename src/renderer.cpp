@@ -16,7 +16,7 @@ void	renderer::render(std::list<std::unique_ptr<entity>>& entities)
 	for (auto& entity : entities)
 	{
 		auto	ptr = entity.get();
-		if (typeid(*ptr) == typeid(character))
+		if (typeid(*ptr) == typeid(character) || typeid(*ptr) == typeid(player))
 		{
 			dynamic_cast<actor*>(entity.get())->render->render(*this);
 		}

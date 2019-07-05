@@ -105,7 +105,7 @@ public:
 		modifier(modifier::CTRL, bool(__mod & KMOD_CTRL));
 		modifier(modifier::GUI, bool(__mod & KMOD_GUI));
 		modifier(modifier::SHIFT, bool(__mod & KMOD_SHIFT));
-		modifier(modifier::NONE, bool(__mod & KMOD_NONE));
+		modifier(modifier::NONE, bool(__mod == KMOD_NONE));
 	}
 	
 	//	Preventing copying and moving

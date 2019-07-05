@@ -40,10 +40,11 @@ public:
 	{
 		window.start();
 		renderer.start();
-		add_entity(std::make_unique<td::character>(event_handler));
-		dynamic_cast<td::character*>(entities.back().get())->render->add_child(std::make_unique<sprite_flipbook>("stand", 10.0f));
-		dynamic_cast<td::character*>(entities.back().get())->render->rect(100, 100, 100, 74);
-		dynamic_cast<td::character*>(entities.back().get())->render->children().at("stand")->create(renderer, "/Users/admin/Desktop/atk");
+		add_entity(std::make_unique<td::player>(event_handler));
+		dynamic_cast<td::player*>(entities.back().get())->render->add_child(std::make_unique<sprite_flipbook>("stand", 10.0f));
+		dynamic_cast<td::player*>(entities.back().get())->render->rect(100, 100, 100, 74);
+		dynamic_cast<td::player*>(entities.back().get())->render->children().at("stand")->create(renderer, "/Users/admin/Desktop/atk");
+		dynamic_cast<td::player*>(entities.back().get())->input->map(action::attack_heavy, keycode::A, modifier::NONE);
 	}
 	~engine() = default;
 	void	start()
@@ -134,6 +135,8 @@ public:
 	{
 		// Input
 		window.update();
+		dynamic_cast<td::player*>(entities.back().get())->input->read(keyboard, mouse);
+		
 //		for (auto& entity : entities)
 //		{
 //			entity->update();

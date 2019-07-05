@@ -23,6 +23,10 @@ public:
 							 return &__event == &event;
 						 });
 	}
+	void	update()
+	{
+		
+	}
 };
 
 class	event

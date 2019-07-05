@@ -39,5 +39,6 @@ class	sprite_flipbook;
 class	render_component;
 class	event_handler;
 class	event;
+class	action_event;
 
 __end_ns_td
