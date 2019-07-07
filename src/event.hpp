@@ -5,6 +5,8 @@
 
 __begin_ns_td
 
+
+
 class	event_handler
 {
 public:
@@ -12,9 +14,10 @@ public:
 public:
 	event_handler() = default;
 	~event_handler() = default;
-	void	add_event(std::unique_ptr<td::event>&& event)
+	template	<typename type, typename ... types>
+	void	add_event(types&& ... args)
 	{
-		events.emplace_back(std::forward<std::unique_ptr<td::event>>(event));
+		events.emplace_back(std::make_unique<type>(std::forward<types>(args)...));
 	}
 	void	remove_event(const std::unique_ptr<td::event>& event)
 	{

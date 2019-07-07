@@ -54,10 +54,10 @@ protected:
 public:
 	constexpr __vector_base() = default;
 	template	<typename ... types>
-	constexpr __vector_base(types ... args)
+	constexpr __vector_base(types&& ... args)
 	{
 		static_assert(sizeof...(args) == dim);
-		__data = { static_cast<value_type>(args)... };
+		__data = { static_cast<value_type>(std::forward<types>(args))... };
 	}
 	__vector_base(const std::initializer_list<value_type>& list)
 	{

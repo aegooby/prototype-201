@@ -12,6 +12,11 @@ class	renderer
 protected:
 	window&			window_context;
 	SDL_Renderer*	__sdl_renderer = nullptr;
+protected:
+	void	load_sprite(SDL_Texture*&, const std::string&);
+	void	load_flipbook(sprite_flipbook&, const std::string&);
+	void	render_sprite(SDL_Texture*, SDL_Rect*);
+	void	render_flipbook(sprite_flipbook&, SDL_Rect*);
 public:
 	renderer(window& window_context) : window_context(window_context)	{  }
 	~renderer()
@@ -42,6 +47,7 @@ public:
 		return __sdl_renderer;
 	}
 	void	render(std::list<std::unique_ptr<entity>>&);
+	void	load(std::list<std::unique_ptr<entity>>&, const std::string&);
 	
 	//	Preventing copying and moving
 	renderer(const renderer&) = delete;

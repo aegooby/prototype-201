@@ -12,20 +12,14 @@ class	entity
 public:
 	td::event_handler&	event_handler;
 protected:
-	std::unordered_map<std::string, std::unique_ptr<component>>	__components;
+	const std::string	__name;
 public:
-	entity(td::event_handler& event_handler) : event_handler(event_handler) {  }
+	entity(td::event_handler& event_handler, const std::string& name) : event_handler(event_handler), __name(name) {  }
 	virtual ~entity() = 0;
 	inline __attribute__((always_inline))
-	void	add_component(std::unique_ptr<component>&& component)
+	const std::string& name() const
 	{
-		using ptr = std::unique_ptr<td::component>;
-		__components.emplace(component->id(), std::forward<ptr>(component));
-	}
-	inline __attribute__((always_inline))
-	void	remove_component(const std::string& id)
-	{
-		__components.erase(id);
+		return __name;
 	}
 };
 
@@ -33,10 +27,10 @@ class	actor : public entity
 {
 public:
 	using __base = entity;
-	std::unique_ptr<render_component>	render = std::make_unique<render_component>(*this);
+	std::weak_ptr<render_component>	render;
 protected:
 public:
-	actor(td::event_handler& event_handler) : __base(event_handler) {  }
+	actor(td::event_handler& event_handler, const std::string& name) : __base(event_handler, name) {  }
 	virtual ~actor() = default;
 };
 
@@ -46,7 +40,7 @@ public:
 	using __base = actor;
 protected:
 public:
-	character(td::event_handler& event_handler) : __base(event_handler) {  }
+	character(td::event_handler& event_handler, const std::string& name) : __base(event_handler, name) {  }
 	virtual ~character() = default;
 };
 
@@ -55,8 +49,8 @@ class	player : public character
 public:
 	using __base = character;
 public:
-	player(td::event_handler& event_handler) : __base(event_handler) {  }
-	std::unique_ptr<input_component>	input = std::make_unique<input_component>(*this);
+	player(td::event_handler& event_handler, const std::string& name) : __base(event_handler, name) {  }
+//	std::unique_ptr<input_component>	input = std::make_unique<input_component>(*this);
 };
 
 __end_ns_td

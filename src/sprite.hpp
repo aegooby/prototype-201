@@ -6,73 +6,56 @@
 
 __begin_ns_td
 
-class	sprite_base
+class	sprite_flipbook
 {
+public:
+	std::vector<SDL_Texture*>	textures;
+	std::vector<std::string>	paths;
+	uint32_t	framec = 0;
+	uint32_t	index = 0;
 protected:
 	const std::string	__name;
+	float				__fps = 0;
 public:
-	sprite_base(const std::string& name) : __name(name) {  }
+	sprite_flipbook(const std::string& name, float fps = 10.0f) : __name(name), __fps(fps)
+	{
+		if (__fps <= 0 || __fps > float(global::game_fps))
+			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + __name);
+	}
+	sprite_flipbook(sprite_flipbook&& other) : paths(std::move(other.paths)), __name(other.__name), __fps(other.__fps)
+	{
+		for (auto& texture : other.textures)
+		{
+			textures.emplace_back(texture);
+			texture = nullptr;
+		}
+	}
+	sprite_flipbook&	operator =(sprite_flipbook&& other)
+	{
+		paths = std::move(other.paths);
+		__fps = other.__fps;
+		for (auto& texture : other.textures)
+		{
+			textures.emplace_back(texture);
+			texture = nullptr;
+		}
+		return *this;
+	}
+	virtual ~sprite_flipbook()
+	{
+		for (auto& texture : textures)
+		{
+			if (texture)
+			{
+				SDL_DestroyTexture(texture);
+			}
+		}
+	}
 	inline __attribute__((always_inline))
 	virtual const std::string&	name() const
 	{
 		return __name;
 	}
-	virtual ~sprite_base() = 0;
-	virtual void	create(td::renderer&, const std::string&) = 0;
-	virtual void	render(td::renderer&, render_component&) = 0;
-};
-
-class	sprite : public sprite_base
-{
-public:
-	using __base = sprite_base;
-protected:
-	SDL_Texture*		__texture = nullptr;
-public:
-	sprite(const std::string& name) : __base(name) {  }
-	sprite(sprite&& other) : __base(other.__name), __texture(other.__texture)
-	{
-		other.__texture = nullptr;
-	}
-	sprite&	operator =(sprite&& other)
-	{
-		__texture = other.__texture;
-		other.__texture = nullptr;
-		return *this;
-	}
-	virtual ~sprite()
-	{
-		if (__texture)
-		{
-			SDL_DestroyTexture(__texture);
-			__texture = nullptr;
-		}
-	}
-	virtual void	create(td::renderer&, const std::string&) override;
-	virtual void	render(td::renderer&, render_component&) override;
-	
-	// Preventing copying
-	sprite(const sprite& other) = delete;
-	sprite&	operator =(const sprite&) = delete;
-};
-
-class	sprite_flipbook : public sprite_base
-{
-public:
-	using __base = sprite_base;
-protected:
-	std::vector<sprite>			__sprites;
-	std::vector<std::string>	__paths;
-	float		__fps = 0;
-	uint32_t	__framec = 0;
-	uint32_t	__index = 0;
-public:
-	sprite_flipbook(const std::string& name, float fps = 0.0f) : __base(name), __fps(fps)
-	{
-		if (__fps <= 0 || __fps > float(global::game_fps))
-			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + __name);
-	}
-	virtual ~sprite_flipbook() = default;
 	inline __attribute__((always_inline))
 	void	fps(float fps)
 	{
@@ -86,17 +69,24 @@ public:
 		return __fps;
 	}
 	inline __attribute__((always_inline))
+	size_t	frame_delay() const
+	{
+		return size_t(1.0f / __fps * global::game_fps);
+	}
+	inline __attribute__((always_inline))
 	size_t	frames() const
 	{
-		return __sprites.size();
+		return textures.size();
 	}
 	inline __attribute__((always_inline))
 	float	seconds() const
 	{
 		return 1.0f / __fps * frames();
 	}
-	void	create(td::renderer&, const std::string&) override;
-	void	render(td::renderer&, render_component&) override;
+	
+	// Preventing copying
+	sprite_flipbook(const sprite_flipbook&) = delete;
+	sprite_flipbook&	operator =(const sprite_flipbook&) = delete;
 };
 
 

@@ -26,11 +26,11 @@ public:
 		read_write,
 	};
 protected:
-	mode						__mode = mode::read_only;
-	std::string					__path;
+	mode		__mode = mode::read_only;
+	std::string	__path;
 #if		defined(TD_POSIX_COMPATIBLE)
-	dir*						__directory = nullptr;
-	dirent*						__entry = nullptr;
+	dir*	__directory = nullptr;
+	dirent*	__entry = nullptr;
 #elif	defined(TD_OS_WINDOWS)
 	
 #endif
@@ -38,8 +38,8 @@ protected:
 	std::vector<std::string>	__entries;
 	std::vector<std::string>	__abs_entries;
 	
-	inline __attribute__((always_inline))
-	bool	is_directory(const std::string& path)
+public:
+	static bool	is_directory(const std::string& path)
 	{
 #if		defined(TD_POSIX_COMPATIBLE)
 		dir*	__ptr = opendir(path.c_str());
@@ -53,8 +53,7 @@ protected:
 		
 #endif
 	}
-	inline __attribute__((always_inline))
-	bool	is_file(const std::string& path)
+	static bool	is_file(const std::string& path)
 	{
 		std::fstream	__file(path);
 		if (__file.is_open())

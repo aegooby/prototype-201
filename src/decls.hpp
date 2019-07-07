@@ -32,6 +32,7 @@ class	engine;
 class	entity;
 class	component;
 class	render_component;
+class	transform_component;
 class	renderer;
 class	sprite_base;
 class	sprite;

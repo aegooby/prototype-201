@@ -3,12 +3,36 @@
 #include	"__common.hpp"
 #include	"sprite.hpp"
 #include	"key.hpp"
+#include	"vector.hpp"
 #include	<map>
 #include	<unordered_map>
 #include	<vector>
 #include	<string>
 
 __begin_ns_td
+
+template	<typename component_type>
+class	component_manager
+{
+public:
+	std::vector<std::shared_ptr<component_type>>	components;
+public:
+	template	<typename ... types>
+	void	add_component(types&& ... args)
+	{
+		components.emplace_back(std::make_shared<component_type>(std::forward<types>(args)...));
+	}
+	void	remove_component(std::shared_ptr<component_type>& component)
+	{
+		components.erase(std::remove_if(components.begin(), components.end(0), [&component](std::shared_ptr<component_type>& __component)
+										{
+											return &component == &__component;
+										}));
+	}
+};
+
+class	render_manager : public component_manager<render_component> {  };
+class	transform_manager : public component_manager<transform_component> {  };
 
 class	component
 {
@@ -27,56 +51,27 @@ public:
 	}
 };
 
+
 class	render_component : public component
 {
 public:
 	using __base = component;
-private:
-	std::unordered_map<std::string, std::unique_ptr<sprite_base>>	__children;
-protected:
-	struct	color
-	{
-		uint8_t	r, g, b, a;
-	};
-	SDL_Rect	__rect;
-	color		__color;
+public:
+	std::unordered_map<std::string, sprite_flipbook>	flipbooks;
+	SDL_Rect	rect = { 100, 100, 100, 74 };
 public:
 	render_component(td::entity& entity) : __base(entity) {  }
 	render_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
 	virtual ~render_component() = default;
-	virtual void	render(td::renderer&);
-	inline __attribute__((always_inline))
-	const SDL_Rect&	rect() const
+	template	<typename ... types>
+	void	add_flipbook(const std::string& name, types&& ... args)
 	{
-		return __rect;
+		flipbooks.emplace(name, sprite_flipbook(name, std::forward<types>(args)...));
 	}
-	inline __attribute__((always_inline))
-	void	rect(const SDL_Rect& rect)
+	void	remove_flipbook(const std::string& name)
 	{
-		__rect = rect;
+		flipbooks.erase(name);
 	}
-	inline __attribute__((always_inline))
-	void	rect(int x, int y, int w, int h)
-	{
-		__rect = { x, y, w, h };
-	}
-	inline __attribute__((always_inline))
-	SDL_Rect*	rect_addr()
-	{
-		return &__rect;
-	}
-	inline __attribute__((always_inline))
-	std::unordered_map<std::string, std::unique_ptr<sprite_base>>&	children()
-	{
-		return __children;
-	}
-	inline __attribute__((always_inline))
-	const std::unordered_map<std::string, std::unique_ptr<sprite_base>>&	children() const
-	{
-		return __children;
-	}
-	void	add_child(std::unique_ptr<sprite_base>&&);
-	void	remove_child(const std::string&);
 };
 
 
@@ -88,6 +83,31 @@ public:
 	physics_component(td::entity& entity) : __base(entity) {  }
 	physics_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
 	virtual ~physics_component() = default;
+};
+
+class	transform_component : public physics_component
+{
+public:
+	using __base = physics_component;
+public:
+	float	x, y, z;
+public:
+	transform_component(td::entity& entity) : __base(entity) {  }
+	transform_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
+	virtual ~transform_component() = default;
+};
+
+class	movement_component : public physics_component
+{
+public:
+	using __base = physics_component;
+public:
+	vector_3	velocity;
+	vector_3	acceleration;
+public:
+	movement_component(td::entity& entity) : __base(entity) {  }
+	movement_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
+	virtual ~movement_component() = default;
 };
 
 // TODO: finish
@@ -105,26 +125,16 @@ class	input_component : public component
 {
 public:
 	using __base = component;
-protected:
-	std::map<action, std::pair<keycode, modifier>>		__key_mappings;
-	std::map<action, std::pair<mousecode, modifier>>	__mouse_mappings;
+public:
+	std::map<action, std::pair<keycode, modifier>>		key_mappings;
+	std::map<action, std::pair<mousecode, modifier>>	mouse_mappings;
 public:
 	input_component(td::entity& entity) : __base(entity) {  }
 	input_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
 	virtual ~input_component() = default;
-	inline __attribute__((always_inline))
-	const std::map<action, std::pair<keycode, modifier>>&	key_mappings() const
-	{
-		return __key_mappings;
-	}
-	inline __attribute__((always_inline))
-	const std::map<action, std::pair<mousecode, modifier>>&	mouse_mappings() const
-	{
-		return __mouse_mappings;
-	}
-	void	map(action, keycode, modifier);
-	void	map(action, mousecode, modifier);
-	void	read(const td::keyboard&, const td::mouse&);
+	void	add_mapping(action, keycode, modifier);
+	void	add_mapping(action, mousecode, modifier);
+	void	remove_mapping(action);
 };
 
 __end_ns_td

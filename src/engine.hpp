@@ -23,14 +23,17 @@ protected:
 	td::clock			clock;
 	td::newton			newton;
 	td::event_handler	event_handler;
+	td::render_manager	render_manager;
 	std::list<std::unique_ptr<entity>>	entities;
 	bool		__running = false, __fpsdebug = false;
 	const float	__time_per_frame = 1.0f / float(global::game_fps);
 	
 	bool	cmd_w() const
 	{
-#if	defined(TD_OS_MACOS)
+#if		defined(TD_OS_MACOS)
 		return (keyboard.down(keycode::W) && keyboard.modifier(modifier::GUI));
+#elif	defined(TD_OS_WINDOWS)
+		return (keyboard.down(keycode::W) && keyboard.modifier(modifier::CTRL));
 #else
 		return false;
 #endif
@@ -40,11 +43,10 @@ public:
 	{
 		window.start();
 		renderer.start();
-		add_entity(std::make_unique<td::player>(event_handler));
-		dynamic_cast<td::player*>(entities.back().get())->render->add_child(std::make_unique<sprite_flipbook>("stand", 10.0f));
-		dynamic_cast<td::player*>(entities.back().get())->render->rect(100, 100, 100, 74);
-		dynamic_cast<td::player*>(entities.back().get())->render->children().at("stand")->create(renderer, "/Users/admin/Desktop/atk");
-		dynamic_cast<td::player*>(entities.back().get())->input->map(action::attack_heavy, keycode::A, modifier::NONE);
+		add_entity<player>("player");
+		render_manager.add_component(*entities.back().get());
+		dynamic_cast<player*>(entities.back().get())->render = render_manager.components.back();
+		renderer.load(entities, "/Users/admin/Desktop/sprites");
 	}
 	~engine() = default;
 	void	start()
@@ -135,16 +137,17 @@ public:
 	{
 		// Input
 		window.update();
-		dynamic_cast<td::player*>(entities.back().get())->input->read(keyboard, mouse);
+//		dynamic_cast<td::player*>(entities.back().get())->input->read(keyboard, mouse);
 		
 //		for (auto& entity : entities)
 //		{
 //			entity->update();
 //		}
 	}
-	void	add_entity(std::unique_ptr<entity>&& entity)
+	template	<typename type, typename ... types>
+	void	add_entity(types&& ... args)
 	{
-		entities.emplace_back(std::forward<decltype(entity)>(entity));
+		entities.emplace_back(std::make_unique<type>(event_handler, std::forward<types>(args)...));
 	}
 	void	remove_entity(const std::unique_ptr<entity>& entity)
 	{

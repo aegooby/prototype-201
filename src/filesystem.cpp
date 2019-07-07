@@ -16,8 +16,10 @@ __attribute__((always_inline))
 void	directory::open(const std::string& path)
 {
 	__path = path;
+	if (__path.back() != TD_DIRECTORY_SLASH)
+		__path += TD_DIRECTORY_SLASH;
 	if (is_file(path))
-		throw std::runtime_error(std::string("Attempt to open a file as a directory: ") + path);
+		throw std::runtime_error(std::string("Attempt to open a file as a directory: ") + __path);
 	if (is_directory(path))
 	{
 #if		defined(TD_POSIX_COMPATIBLE)
