@@ -13,6 +13,7 @@ class	entity
 public:
 	td::event_handler&	event_handler;
 	std::vector<std::weak_ptr<component>>	components;
+	// There HAS to be a better way of doing this
 	vector_3	position;
 protected:
 	const std::string	__name;
