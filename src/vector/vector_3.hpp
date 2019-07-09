@@ -33,12 +33,42 @@ public:
 		}
 		return *this;
 	}
-	inline __attribute__((always_inline)) value_type	x() const	{ return __base::at(0); }
-	inline __attribute__((always_inline)) value_type	y() const	{ return __base::at(1); }
-	inline __attribute__((always_inline)) value_type	z() const	{ return __base::at(2); }
-	inline __attribute__((always_inline)) void	x(value_type x)	{ __base::at(0) = x; }
-	inline __attribute__((always_inline)) void	y(value_type y)	{ __base::at(1) = y; }
-	inline __attribute__((always_inline)) void	z(value_type z)	{ __base::at(2) = z; }
+	inline __attribute__((always_inline)) value_type	x()
+	{
+		return __base::at(0);
+	}
+	inline __attribute__((always_inline)) value_type	y()
+	{
+		return __base::at(1);
+	}
+	inline __attribute__((always_inline)) value_type	z()
+	{
+		return __base::at(2);
+	}
+	inline __attribute__((always_inline)) void	x(value_type x)
+	{
+		__base::at(0) = x;
+	}
+	inline __attribute__((always_inline)) void	y(value_type y)
+	{
+		__base::at(1) = y;
+	}
+	inline __attribute__((always_inline)) void	z(value_type z)
+	{
+		__base::at(2) = z;
+	}
+	inline __attribute__((always_inline)) void	x_mod(value_type x)
+	{
+		__base::at(0) += x;
+	}
+	inline __attribute__((always_inline)) void	y_mod(value_type y)
+	{
+		__base::at(1) += y;
+	}
+	inline __attribute__((always_inline)) void	z_mod(value_type z)
+	{
+		__base::at(2) += z;
+	}
 };
 
 template	<typename value_type>

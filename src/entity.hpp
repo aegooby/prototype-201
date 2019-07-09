@@ -4,6 +4,7 @@
 #include	"renderer.hpp"
 #include	"component.hpp"
 #include	<unordered_map>
+#include	<vector>
 
 __begin_ns_td
 
@@ -11,46 +12,40 @@ class	entity
 {
 public:
 	td::event_handler&	event_handler;
+	std::vector<std::weak_ptr<component>>	components;
+	vector_3	position;
 protected:
 	const std::string	__name;
 public:
-	entity(td::event_handler& event_handler, const std::string& name) : event_handler(event_handler), __name(name) {  }
-	virtual ~entity() = 0;
+	entity(const std::string& name, const vector_3& position, td::event_handler& event_handler) : event_handler(event_handler), position(position), __name(name) {  }
+	virtual ~entity() = default;
 	inline __attribute__((always_inline))
 	const std::string& name() const
 	{
 		return __name;
 	}
+	inline __attribute__((always_inline))
+	void	add_component(std::shared_ptr<component>& component)
+	{
+		for (auto& weak_ptr : components)
+		{
+			if (weak_ptr.expired())
+			{
+				weak_ptr = component;
+				return;
+			}
+		}
+		components.push_back(component);
+	}
+	inline __attribute__((always_inline))
+	void	remove_component(std::weak_ptr<component>& component)
+	{
+		components.erase(std::remove_if(components.begin(), components.end(), [&component](std::weak_ptr<td::component>& __component)
+										{
+											return &component == &__component;
+										}));
+	}
 };
 
-class	actor : public entity
-{
-public:
-	using __base = entity;
-	std::weak_ptr<render_component>	render;
-protected:
-public:
-	actor(td::event_handler& event_handler, const std::string& name) : __base(event_handler, name) {  }
-	virtual ~actor() = default;
-};
-
-class	character : public actor
-{
-public:
-	using __base = actor;
-protected:
-public:
-	character(td::event_handler& event_handler, const std::string& name) : __base(event_handler, name) {  }
-	virtual ~character() = default;
-};
-
-class	player : public character
-{
-public:
-	using __base = character;
-public:
-	player(td::event_handler& event_handler, const std::string& name) : __base(event_handler, name) {  }
-//	std::unique_ptr<input_component>	input = std::make_unique<input_component>(*this);
-};
 
 __end_ns_td

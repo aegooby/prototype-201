@@ -28,27 +28,26 @@ void	renderer::load_flipbook(sprite_flipbook& flipbook, const std::string& path)
 	}
 }
 
-void	renderer::load(std::list<std::unique_ptr<entity>>& entities, const std::string& path)
+void	renderer::load(std::unordered_map<std::string, std::unique_ptr<entity>>& entities, const std::string& path)
 {
 	std::string	__path = path;
 	if (__path.back() != TD_DIRECTORY_SLASH)
 		__path += TD_DIRECTORY_SLASH;
 	for (auto& entity : entities)
 	{
-		auto	ptr = entity.get();
-		if (typeid(*ptr) == typeid(character) || typeid(*ptr) == typeid(player))
+		for (auto& component : entity.second->components)
 		{
-			auto	render_component = dynamic_cast<actor*>(entity.get())->render.lock();
-			if (!render_component.get())
-				throw std::runtime_error("Pointer was not allocated");
-			directory	__directory(directory::mode::read_only, __path + entity->name());
-			__directory.read();
-			for (auto& entry : __directory.entries())
+			if (auto render = memory::weak_cast<render_component*>(component))
 			{
-				if (directory::is_directory(__directory.path() + entry))
+				directory	__directory(directory::mode::read_only, __path + entity.second->name());
+				__directory.read();
+				for (auto& entry : __directory.entries())
 				{
-					render_component->add_flipbook(entry, 10.0f);
-					load_flipbook(render_component->flipbooks.at(entry), __directory.path() + entry);
+					if (directory::is_directory(__directory.path() + entry))
+					{
+						render->add_flipbook(entry, 10.0f);
+						load_flipbook(render->flipbooks.at(entry), __directory.path() + entry);
+					}
 				}
 			}
 		}
@@ -69,25 +68,26 @@ void	renderer::render_flipbook(sprite_flipbook& flipbook, SDL_Rect* rect)
 		++flipbook.index %= flipbook.frames();
 }
 
-void	renderer::render(std::list<std::unique_ptr<entity>>& entities)
+void	renderer::render(std::unordered_map<std::string, std::unique_ptr<entity>>& entities)
 {
 	if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 255, 255))
 		throw sdl_error("Failed to set draw color");
 	if (SDL_RenderClear(__sdl_renderer))
 		throw sdl_error("Failed to clear renderer");
 	
-	// TODO: temp
+	// TODO: temp (it just renders all flipbooks)
 	for (auto& entity : entities)
 	{
-		auto	ptr = entity.get();
-		if (typeid(*ptr) == typeid(character) || typeid(*ptr) == typeid(player))
+		for (auto& component : entity.second->components)
 		{
-			auto	render_component = dynamic_cast<actor*>(entity.get())->render.lock();
-			if (!render_component.get())
-				throw std::runtime_error("Pointer was not allocated");
-			for (auto& flipbook : render_component->flipbooks)
+			if (auto render = memory::weak_cast<render_component*>(component))
 			{
-				render_flipbook(flipbook.second, &(render_component->rect));
+				render->rect.x = entity.second->position.x();
+				render->rect.y = entity.second->position.y();
+				for (auto& flipbook : render->flipbooks)
+				{
+					render_flipbook(flipbook.second, &(render->rect));
+				}
 			}
 		}
 	}

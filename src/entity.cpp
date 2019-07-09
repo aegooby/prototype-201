@@ -4,7 +4,7 @@
 
 __begin_ns_td
 
-entity::~entity() = default;
+//entity::~entity() = default;
 
 __end_ns_td
 

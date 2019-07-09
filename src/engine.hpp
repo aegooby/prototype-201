@@ -7,9 +7,10 @@
 #include	"entity.hpp"
 #include	"newton.hpp"
 #include	"event.hpp"
+#include	"component_manager.hpp"
 #include	<thread>
 #include	<chrono>
-#include	<list>
+#include	<unordered_map>
 
 __begin_ns_td
 
@@ -22,9 +23,10 @@ protected:
 	td::mouse&			mouse;
 	td::clock			clock;
 	td::newton			newton;
-	td::event_handler	event_handler;
-	td::render_manager	render_manager;
-	std::list<std::unique_ptr<entity>>	entities;
+	td::event_handler		event_handler;
+	td::render_manager		render_manager;
+	td::transform_manager	transform_manager;
+	std::unordered_map<std::string, std::unique_ptr<entity>>	entities;
 	bool		__running = false, __fpsdebug = false;
 	const float	__time_per_frame = 1.0f / float(global::game_fps);
 	
@@ -43,9 +45,9 @@ public:
 	{
 		window.start();
 		renderer.start();
-		add_entity<player>("player");
-		render_manager.add_component(*entities.back().get());
-		dynamic_cast<player*>(entities.back().get())->render = render_manager.components.back();
+		add_entity<entity>("player", vector_3(200, 100, 100));
+		render_manager.add_component(*entities.at("player"), "sprite", 100, 74);
+		transform_manager.add_component(*entities.at("player"), "transform");
 		renderer.load(entities, "/Users/admin/Desktop/sprites");
 	}
 	~engine() = default;
@@ -137,6 +139,7 @@ public:
 	{
 		// Input
 		window.update();
+		newton.update(entities);
 //		dynamic_cast<td::player*>(entities.back().get())->input->read(keyboard, mouse);
 		
 //		for (auto& entity : entities)
@@ -145,16 +148,13 @@ public:
 //		}
 	}
 	template	<typename type, typename ... types>
-	void	add_entity(types&& ... args)
+	void	add_entity(const std::string& name, types&& ... args)
 	{
-		entities.emplace_back(std::make_unique<type>(event_handler, std::forward<types>(args)...));
+		entities.emplace(name, std::make_unique<type>(name, std::forward<types>(args)..., event_handler));
 	}
-	void	remove_entity(const std::unique_ptr<entity>& entity)
+	void	remove_entity(const std::string& key)
 	{
-		entities.remove_if([&entity](const std::unique_ptr<td::entity>& __entity)
-						   {
-							   return &__entity == &entity;
-						   });
+		entities.erase(key);
 	}
 	
 	//	Preventing copying and moving

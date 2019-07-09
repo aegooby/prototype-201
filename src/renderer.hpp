@@ -3,7 +3,7 @@
 #include	"__common.hpp"
 #include	"window.hpp"
 #include	"exception.hpp"
-#include	<list>
+#include	<unordered_map>
 
 __begin_ns_td
 
@@ -46,8 +46,8 @@ public:
 	{
 		return __sdl_renderer;
 	}
-	void	render(std::list<std::unique_ptr<entity>>&);
-	void	load(std::list<std::unique_ptr<entity>>&, const std::string&);
+	void	render(std::unordered_map<std::string, std::unique_ptr<entity>>&);
+	void	load(std::unordered_map<std::string, std::unique_ptr<entity>>&, const std::string&);
 	
 	//	Preventing copying and moving
 	renderer(const renderer&) = delete;
