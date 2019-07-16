@@ -5,6 +5,7 @@
 #include	"system.hpp"
 #include	"render_system.hpp"
 #include	"physics_system.hpp"
+#include	"input_system.hpp"
 
 __begin_ns_td
 
@@ -21,6 +22,7 @@ world::world()
 	
 	systems.emplace(typeid(render_system), std::make_unique<render_system>(*this));
 	systems.emplace(typeid(physics_system), std::make_unique<physics_system>(*this));
+	systems.emplace(typeid(input_system), std::make_unique<input_system>(*this));
 }
 
 entity&	world::new_entity(const std::string& name)

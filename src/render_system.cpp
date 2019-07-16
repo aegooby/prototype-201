@@ -37,14 +37,15 @@ void	render_system::load(const std::string& path)
 		__path += TD_DIRECTORY_SLASH;
 	for (auto& entity : __registered_entities)
 	{
-		auto&	render = entity.get().component<render_component>();
-		directory	__directory(directory::mode::read_only, __path + entity.get().name());
+		auto&	render = entity.second.get().component<render_component>();
+		directory	__directory(directory::mode::read_only, __path + entity.second.get().name());
 		__directory.read();
 		for (auto& entry : __directory.entries())
 		{
 			if (directory::is_directory(__directory.path() + entry))
 			{
-				render.add_flipbook(entry, 10.0f);
+				// TODO: change framerate
+				render.add_flipbook(entry, 12.0f);
 				load_flipbook(render.flipbooks.at(entry), __directory.path() + entry);
 			}
 		}
@@ -75,8 +76,8 @@ void	render_system::render()
 	// TODO: temp (it just renders all flipbooks)
 	for (auto& entity : __registered_entities)
 	{
-		auto&	render = entity.get().component<render_component>();
-		auto&	transform = entity.get().component<transform_component>();
+		auto&	render = entity.second.get().component<render_component>();
+		auto&	transform = entity.second.get().component<transform_component>();
 		render.rect.x = transform.position.x();
 		render.rect.y = transform.position.y();
 		for (auto& flipbook : render.flipbooks)

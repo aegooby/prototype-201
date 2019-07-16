@@ -9,7 +9,7 @@ void	physics_system::update()
 {
 	for (auto& entity : __registered_entities)
 	{
-		auto&	transform = entity.get().component<transform_component>();
+		auto&	transform = entity.second.get().component<transform_component>();
 		transform.velocity += transform.acceleration;
 		transform.position += transform.velocity;
 	}

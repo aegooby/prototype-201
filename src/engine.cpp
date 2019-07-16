@@ -5,6 +5,7 @@
 #include	"clock.hpp"
 #include	"render_system.hpp"
 #include	"physics_system.hpp"
+#include	"input_system.hpp"
 #include	"event.hpp"
 #include	"component_manager.hpp"
 #include	<thread>
@@ -20,9 +21,12 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug) :
 	auto&	player = world.new_entity("player");
 	player.add_component<render_component>();
 	player.add_component<transform_component>();
+	player.add_component<collision_component>();
+	player.add_component<input_component>();
 	player.component<transform_component>().position = vector_3(100, 100, 0);
 	player.component<render_component>().rect.w = 100;
 	player.component<render_component>().rect.h = 74;
+	player.component<input_component>().add_mapping(action::attack_heavy, keycode::A, modifier::NONE);
 	world.system<render_system>().load("/Users/admin/Desktop/sprites/");
 }
 
@@ -125,6 +129,7 @@ void	engine::update()
 {
 	// Input
 	window.update();
+	world.system<input_system>().read(keyboard, mouse);
 	world.system<physics_system>().update();
 }
 

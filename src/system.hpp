@@ -33,7 +33,7 @@ public:
 	static std::unordered_map<std::type_index, system::flag>	flags;
 	system_flag		flag;
 protected:
-	std::vector<std::reference_wrapper<entity>>	__registered_entities;
+	std::unordered_map<id_t, std::reference_wrapper<entity>>	__registered_entities;
 	class world&	world;
 public:
 	system(class world&);
