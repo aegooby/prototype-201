@@ -18,6 +18,12 @@ public:
 public:
 	component(class entity& entity) : entity(entity) {  }
 	virtual ~component() = 0;
+	
+	// Preventing copying and moving
+	component(const component&) = delete;
+	component(component&&) = delete;
+	component&	operator =(const component&) = delete;
+	component&	operator =(component&&) = delete;
 };
 
 class	render_component : public component
@@ -56,8 +62,9 @@ class	transform_component : public physics_component
 public:
 	using __base = physics_component;
 public:
+	vector_3	position;
 	vector_3	velocity;
-	vector_3	acceleration = vector_3(0.00f, 0.00f, 0.00f);
+	vector_3	acceleration;
 public:
 	transform_component(class entity& entity) : __base(entity) {  }
 	virtual ~transform_component() = default;

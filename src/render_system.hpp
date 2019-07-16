@@ -8,12 +8,11 @@
 
 __begin_ns_td
 
-class	renderer : public system
+class	render_system : public system
 {
 public:
 	using __base = system;
 protected:
-	window&			window_context;
 	SDL_Renderer*	__sdl_renderer = nullptr;
 protected:
 	void	load_sprite(SDL_Texture*&, const std::string&);
@@ -21,20 +20,20 @@ protected:
 	void	render_sprite(SDL_Texture*, SDL_Rect*);
 	void	render_flipbook(sprite_flipbook&, SDL_Rect*);
 public:
-	renderer(class world& world, window& window_context) : __base(world), window_context(window_context)
+	render_system(class world& world) : __base(world)
 	{
-		__flag.set(system::flag::render);
-		__flag.set(system::flag::transform);
+		flag.set(system::flag::render);
+		flag.set(system::flag::transform);
 	}
-	virtual ~renderer()
+	virtual ~render_system()
 	{
 		stop();
 	}
 	inline __attribute__((always_inline))
-	void	start()
+	void	start(class window& window)
 	{
-		if (!(__sdl_renderer = SDL_CreateRenderer(window_context.sdl_window(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)))
-			throw sdl_error("Failed to create renderer");
+		if (!(__sdl_renderer = SDL_CreateRenderer(window.sdl_window(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)))
+			throw sdl_error("Failed to create render_system");
 		if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
 			throw sdl_error("Failed to load SDL Image libraries");
 	}
@@ -53,14 +52,15 @@ public:
 	{
 		return __sdl_renderer;
 	}
-	void	load(entity_manager&, const std::string&);
-	void	render(entity_manager&);
+	void	load(const std::string&);
+	virtual void	update() override {  }
+	void	render();
 	
 	//	Preventing copying and moving
-	renderer(const renderer&) = delete;
-	renderer(renderer&&) = delete;
-	renderer&	operator =(const renderer&) = delete;
-	renderer&	operator =(renderer&&) = delete;
+	render_system(const render_system&) = delete;
+	render_system(render_system&&) = delete;
+	render_system&	operator =(const render_system&) = delete;
+	render_system&	operator =(render_system&&) = delete;
 };
 
 __end_ns_td

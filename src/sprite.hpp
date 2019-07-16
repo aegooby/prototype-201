@@ -1,7 +1,7 @@
 
 #pragma	once
 #include	"__common.hpp"
-#include	"renderer.hpp"
+#include	"render_system.hpp"
 #include	<vector>
 
 __begin_ns_td

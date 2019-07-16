@@ -1,7 +1,7 @@
 
 #pragma	once
 #include	"__common.hpp"
-#include	"renderer.hpp"
+#include	"system.hpp"
 #include	"component.hpp"
 #include	"ecs_common.hpp"
 #include	<typeinfo>
@@ -15,6 +15,7 @@ class	entity
 {
 public:
 	class world&	world;
+	system_flag		flag;
 protected:
 	const id_t	__id;
 	const std::string	__name;
@@ -24,10 +25,6 @@ protected:
 	void	__remove_component(std::type_index);
 public:
 	entity(const id_t, const std::string&, class world&);
-	entity(const entity&);
-	entity(entity&&);
-	entity&	operator =(const entity&) = default;
-	entity&	operator =(entity&&) = default;
 	virtual ~entity() = default;
 	const id_t	id() const;
 	const std::string&	name() const
@@ -37,7 +34,7 @@ public:
 	template	<typename component_type>
 	component_type&	component()
 	{
-		return *__component(typeid(component_type));
+		return *dynamic_cast<component_type*>(__component(typeid(component_type)).get());
 	}
 	template	<typename component_type, typename ... types>
 	void	add_component(types&& ... args)
@@ -50,6 +47,12 @@ public:
 		__remove_component(typeid(component_type));
 	}
 	bool	operator ==(const entity&);
+	
+	// Preventing copying and moving
+	entity(const entity&) = delete;
+	entity(entity&&) = delete;
+	entity&	operator =(const entity&) = delete;
+	entity&	operator =(entity&&) = delete;
 };
 
 __end_ns_td

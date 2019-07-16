@@ -5,7 +5,7 @@
 #include	"input.hpp"
 #include	"event.hpp"
 #include	"clock.hpp"
-#include	"newton.hpp"
+#include	"physics_system.hpp"
 #include	"entity_manager.hpp"
 #include	"world.hpp"
 
@@ -18,11 +18,9 @@ protected:
 	keyboard&		keyboard;
 	mouse&			mouse;
 	clock			clock;
-	renderer		renderer;
-	newton			newton;
 	event_manager	event_manager;
-	world			world;
 	entity_manager	entity_manager;
+	world			world;
 	bool		__running = false, __fpsdebug = false;
 	const float	__time_per_frame = 1.0f / float(global::game_fps);
 protected:

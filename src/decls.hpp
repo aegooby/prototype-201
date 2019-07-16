@@ -28,7 +28,7 @@ class	table;
 class	window;
 class	mouse;
 class	clock;
-class	newton;
+class	physics_system;
 class	keyboard;
 class	engine;
 class	entity;
@@ -36,7 +36,7 @@ class	component;
 class	render_component;
 class	transform_component;
 class	collision_component;
-class	renderer;
+class	render_system;
 class	sprite_base;
 class	sprite;
 class	sprite_flipbook;
@@ -50,5 +50,6 @@ class	entity_manager;
 class	render_manager;
 class	transform_manager;
 class	collision_manager;
+class	system_flag;
 
 __end_ns_td

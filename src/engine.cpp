@@ -3,8 +3,8 @@
 #include	"engine.hpp"
 #include	"window.hpp"
 #include	"clock.hpp"
-#include	"renderer.hpp"
-#include	"newton.hpp"
+#include	"render_system.hpp"
+#include	"physics_system.hpp"
 #include	"event.hpp"
 #include	"component_manager.hpp"
 #include	<thread>
@@ -13,15 +13,17 @@
 
 __begin_ns_td
 
-engine::engine(const std::string& title, int width, int height, bool fpsdebug) : window(title, width, height), keyboard(window.keyboard), mouse(window.mouse), renderer(world, window), newton(world), entity_manager(world), __fpsdebug(fpsdebug)
+engine::engine(const std::string& title, int width, int height, bool fpsdebug) : window(title, width, height), keyboard(window.keyboard), mouse(window.mouse), __fpsdebug(fpsdebug)
 {
 	window.start();
-	renderer.start();
-	entity_manager.add_entity("player");
-	auto&	player = *entity_manager.entities.at(0);
+	world.system<render_system>().start(window);
+	auto&	player = world.new_entity("player");
 	player.add_component<render_component>();
-//	transform_manager.add_component(*entities.at("player"), "transform");
-//	renderer.load(entities, "/Users/admin/Desktop/sprites");
+	player.add_component<transform_component>();
+	player.component<transform_component>().position = vector_3(100, 100, 0);
+	player.component<render_component>().rect.w = 100;
+	player.component<render_component>().rect.h = 74;
+	world.system<render_system>().load("/Users/admin/Desktop/sprites/");
 }
 
 bool	engine::cmd_w() const
@@ -117,13 +119,13 @@ void	engine::stop()
 }
 void	engine::render()
 {
-//	renderer.render(entities);
+	world.system<render_system>().render();
 }
 void	engine::update()
 {
 	// Input
 	window.update();
-//	newton.update(entities);
+	world.system<physics_system>().update();
 }
 
 __end_ns_td

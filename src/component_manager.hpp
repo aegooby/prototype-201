@@ -37,7 +37,7 @@ public:
 	{
 		if (__entity_map.count(entity.id()))
 			throw std::runtime_error("Duplicate component");
-		__entity_map.at(entity.id()) = components.size();
+		__entity_map.emplace(entity.id(), components.size());
 		components.emplace_back(std::forward<std::unique_ptr<class component>>(component));
 	}
 	virtual void	remove_component(entity& entity)

@@ -3,6 +3,8 @@
 #include	"__common.hpp"
 #include	<vector>
 #include	<bitset>
+#include	<typeindex>
+#include	<unordered_map>
 
 __begin_ns_td
 
@@ -28,15 +30,23 @@ public:
 		input = 0x4,
 		audio = 0x5,
 	};
+	static std::unordered_map<std::type_index, system::flag>	flags;
+	system_flag		flag;
 protected:
 	std::vector<std::reference_wrapper<entity>>	__registered_entities;
-	system_flag		__flag;
 	class world&	world;
 public:
 	system(class world&);
 	virtual ~system() = default;
+	virtual void	update() = 0;
 	void	register_entity(class entity&);
 	void	deregister_entity(class entity&);
+	
+	// Preventing copying and moving
+	system(const system&) = delete;
+	system(system&&) = delete;
+	system&	operator =(const system&) = delete;
+	system&	operator =(system&&) = delete;
 };
 
 __end_ns_td

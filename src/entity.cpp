@@ -6,8 +6,6 @@
 __begin_ns_td
 
 entity::entity(const id_t id, const std::string& name, class world& world) : world(world), __id(id), __name(name) {  }
-entity::entity(const entity& other) : world(other.world), __id(other.__id), __name(other.__name) {  }
-entity::entity(entity&& other) : world(other.world), __id(other.__id), __name(other.__name) {  }
 const id_t	entity::id() const
 {
 	return __id;

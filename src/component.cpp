@@ -1,7 +1,7 @@
 
 #include	"__common.hpp"
 #include	"component.hpp"
-#include	"renderer.hpp"
+#include	"render_system.hpp"
 #include	"filesystem.hpp"
 #include	"sprite.hpp"
 #include	"input.hpp"
