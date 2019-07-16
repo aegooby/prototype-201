@@ -17,7 +17,7 @@ protected:
 	const std::string	__name;
 	float				__fps = 0;
 public:
-	sprite_flipbook(const std::string& name, float fps = 10.0f) : __name(name), __fps(fps)
+	sprite_flipbook(const std::string& name, float fps) : __name(name), __fps(fps)
 	{
 		if (__fps <= 0 || __fps > float(global::game_fps))
 			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + __name);

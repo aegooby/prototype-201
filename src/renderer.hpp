@@ -3,12 +3,15 @@
 #include	"__common.hpp"
 #include	"window.hpp"
 #include	"exception.hpp"
+#include	"system.hpp"
 #include	<unordered_map>
 
 __begin_ns_td
 
-class	renderer
+class	renderer : public system
 {
+public:
+	using __base = system;
 protected:
 	window&			window_context;
 	SDL_Renderer*	__sdl_renderer = nullptr;
@@ -18,8 +21,12 @@ protected:
 	void	render_sprite(SDL_Texture*, SDL_Rect*);
 	void	render_flipbook(sprite_flipbook&, SDL_Rect*);
 public:
-	renderer(window& window_context) : window_context(window_context)	{  }
-	~renderer()
+	renderer(class world& world, window& window_context) : __base(world), window_context(window_context)
+	{
+		__flag.set(system::flag::render);
+		__flag.set(system::flag::transform);
+	}
+	virtual ~renderer()
 	{
 		stop();
 	}
@@ -46,8 +53,8 @@ public:
 	{
 		return __sdl_renderer;
 	}
-	void	render(std::unordered_map<std::string, std::unique_ptr<entity>>&);
-	void	load(std::unordered_map<std::string, std::unique_ptr<entity>>&, const std::string&);
+	void	load(entity_manager&, const std::string&);
+	void	render(entity_manager&);
 	
 	//	Preventing copying and moving
 	renderer(const renderer&) = delete;

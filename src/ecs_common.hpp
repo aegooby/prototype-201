@@ -4,9 +4,6 @@
 
 __begin_ns_td
 
-class	game
-{
-	
-};
+using id_t = size_t;
 
 __end_ns_td

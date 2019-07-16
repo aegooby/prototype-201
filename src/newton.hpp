@@ -6,28 +6,20 @@
 
 __begin_ns_td
 
-class	newton
+class	newton : public system
 {
-private:
+public:
+	using __base = system;
 protected:
 public:
-	newton() = default;
-	~newton() = default;
-	inline __attribute__((always_inline))
-	void	update(std::unordered_map<std::string, std::unique_ptr<entity>>& entities)
+	newton(class world& world) : __base(world)
 	{
-		for (auto& entity : entities)
-		{
-			for (auto& component : entity.second->components)
-			{
-				if (auto transform = memory::weak_cast<transform_component*>(component))
-				{
-					entity.second->position += transform->velocity;
-					transform->velocity += transform->acceleration;
-				}
-			}
-		}
+		__flag.set(system::flag::collision);
+		__flag.set(system::flag::transform);
 	}
+	virtual ~newton() = default;
+	inline __attribute__((always_inline))
+	void	update(entity_manager&);
 };
 
 __end_ns_td

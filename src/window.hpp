@@ -1,6 +1,5 @@
 
 #pragma	once
-
 #include	"__common.hpp"
 #include	"input.hpp"
 #include	"exception.hpp"

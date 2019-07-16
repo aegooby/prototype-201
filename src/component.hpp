@@ -2,8 +2,8 @@
 #pragma	once
 #include	"__common.hpp"
 #include	"sprite.hpp"
-#include	"key.hpp"
 #include	"vector.hpp"
+#include	"ecs_common.hpp"
 #include	<map>
 #include	<unordered_map>
 #include	<vector>
@@ -14,19 +14,11 @@ __begin_ns_td
 class	component
 {
 public:
-	td::entity&	entity;
-protected:
-	const std::string	__id;
+	class entity&	entity;
 public:
-	component(td::entity& entity, const std::string& id) : entity(entity), __id(id) {  }
+	component(class entity& entity) : entity(entity) {  }
 	virtual ~component() = 0;
-	inline __attribute__((always_inline))
-	const std::string&	id() const
-	{
-		return __id;
-	}
 };
-
 
 class	render_component : public component
 {
@@ -36,16 +28,7 @@ public:
 	std::unordered_map<std::string, sprite_flipbook>	flipbooks;
 	SDL_Rect	rect;
 public:
-	render_component(td::entity& entity, size_t width, size_t height) : __base(entity, "render")
-	{
-		rect.w = width;
-		rect.h = height;
-	}
-	render_component(td::entity& entity, const std::string& id, size_t width, size_t height) : __base(entity, id)
-	{
-		rect.w = width;
-		rect.h = height;
-	}
+	render_component(class entity& entity) : __base(entity) {  }
 	virtual ~render_component() = default;
 	template	<typename ... types>
 	void	add_flipbook(const std::string& name, types&& ... args)
@@ -64,7 +47,7 @@ class	physics_component : public component
 public:
 	using __base = component;
 public:
-	physics_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
+	physics_component(class entity& entity) : __base(entity) {  }
 	virtual ~physics_component() = default;
 };
 
@@ -76,8 +59,7 @@ public:
 	vector_3	velocity;
 	vector_3	acceleration = vector_3(0.00f, 0.00f, 0.00f);
 public:
-	transform_component(td::entity& entity) : __base(entity, "transform") {  }
-	transform_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
+	transform_component(class entity& entity) : __base(entity) {  }
 	virtual ~transform_component() = default;
 };
 
@@ -88,8 +70,7 @@ public:
 public:
 	
 public:
-	collision_component(td::entity& entity) : __base(entity, "collision") {  }
-	collision_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
+	collision_component(class entity& entity) : __base(entity) {  }
 	virtual ~collision_component() = default;
 };
 
@@ -99,8 +80,7 @@ class	audio_component : public component
 public:
 	using __base = component;
 public:
-	audio_component(td::entity& entity) : __base(entity, "audio") {  }
-	audio_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
+	audio_component(class entity& entity) : __base(entity) {  }
 	virtual ~audio_component() = default;
 };
 
@@ -112,8 +92,7 @@ public:
 	std::map<action, std::pair<keycode, modifier>>		key_mappings;
 	std::map<action, std::pair<mousecode, modifier>>	mouse_mappings;
 public:
-	input_component(td::entity& entity) : __base(entity, "input") {  }
-	input_component(td::entity& entity, const std::string& id) : __base(entity, id) {  }
+	input_component(class entity& entity) : __base(entity) {  }
 	virtual ~input_component() = default;
 	void	add_mapping(action, keycode, modifier);
 	void	add_mapping(action, mousecode, modifier);

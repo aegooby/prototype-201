@@ -3,9 +3,13 @@
 #include	"__common.hpp"
 #include	"array.hpp"
 #include	"vector.hpp"
-#include	"key.hpp"
+#include	"input_enum.hpp"
 
 __begin_ns_td
+
+KEY_ENUM();
+MODIFIER_ENUM();
+MOUSE_ENUM();
 
 class	input
 {

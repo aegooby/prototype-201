@@ -27,19 +27,28 @@ class	table;
 
 class	window;
 class	mouse;
+class	clock;
+class	newton;
 class	keyboard;
 class	engine;
 class	entity;
 class	component;
 class	render_component;
 class	transform_component;
+class	collision_component;
 class	renderer;
 class	sprite_base;
 class	sprite;
 class	sprite_flipbook;
 class	render_component;
-class	event_handler;
+class	event_manager;
 class	event;
 class	action_event;
+class	world;
+class	system;
+class	entity_manager;
+class	render_manager;
+class	transform_manager;
+class	collision_manager;
 
 __end_ns_td

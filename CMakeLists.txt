@@ -35,6 +35,7 @@ file(
 	GLOB_RECURSE HEADERS
 	${CMAKE_SOURCE_DIR}/src/*.hpp
 	${CMAKE_SOURCE_DIR}/src/*.h
+	${CMAKE_SOURCE_DIR}/src/*.inl
 )
 
 #	Load source files

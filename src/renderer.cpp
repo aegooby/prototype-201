@@ -3,6 +3,7 @@
 #include	"renderer.hpp"
 #include	"entity.hpp"
 #include	"filesystem.hpp"
+#include	"entity_manager.hpp"
 
 __begin_ns_td
 
@@ -28,29 +29,29 @@ void	renderer::load_flipbook(sprite_flipbook& flipbook, const std::string& path)
 	}
 }
 
-void	renderer::load(std::unordered_map<std::string, std::unique_ptr<entity>>& entities, const std::string& path)
+void	renderer::load(entity_manager& entity_manager, const std::string& path)
 {
 	std::string	__path = path;
 	if (__path.back() != TD_DIRECTORY_SLASH)
 		__path += TD_DIRECTORY_SLASH;
-	for (auto& entity : entities)
+	for (auto& entity : entity_manager.entities)
 	{
-		for (auto& component : entity.second->components)
-		{
-			if (auto render = memory::weak_cast<render_component*>(component))
-			{
-				directory	__directory(directory::mode::read_only, __path + entity.second->name());
-				__directory.read();
-				for (auto& entry : __directory.entries())
-				{
-					if (directory::is_directory(__directory.path() + entry))
-					{
-						render->add_flipbook(entry, 10.0f);
-						load_flipbook(render->flipbooks.at(entry), __directory.path() + entry);
-					}
-				}
-			}
-		}
+//		for (auto& component : entity.second->components)
+//		{
+//			if (auto render = memory::weak_cast<render_component*>(component))
+//			{
+//				directory	__directory(directory::mode::read_only, __path + entity.second->name());
+//				__directory.read();
+//				for (auto& entry : __directory.entries())
+//				{
+//					if (directory::is_directory(__directory.path() + entry))
+//					{
+//						render->add_flipbook(entry, 10.0f);
+//						load_flipbook(render->flipbooks.at(entry), __directory.path() + entry);
+//					}
+//				}
+//			}
+//		}
 	}
 }
 
@@ -68,7 +69,7 @@ void	renderer::render_flipbook(sprite_flipbook& flipbook, SDL_Rect* rect)
 		++flipbook.index %= flipbook.frames();
 }
 
-void	renderer::render(std::unordered_map<std::string, std::unique_ptr<entity>>& entities)
+void	renderer::render(entity_manager& entity_manager)
 {
 	if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 255, 255))
 		throw sdl_error("Failed to set draw color");
@@ -76,20 +77,20 @@ void	renderer::render(std::unordered_map<std::string, std::unique_ptr<entity>>& 
 		throw sdl_error("Failed to clear renderer");
 	
 	// TODO: temp (it just renders all flipbooks)
-	for (auto& entity : entities)
+	for (auto& entity : entity_manager.entities)
 	{
-		for (auto& component : entity.second->components)
-		{
-			if (auto render = memory::weak_cast<render_component*>(component))
-			{
-				render->rect.x = entity.second->position.x();
-				render->rect.y = entity.second->position.y();
-				for (auto& flipbook : render->flipbooks)
-				{
-					render_flipbook(flipbook.second, &(render->rect));
-				}
-			}
-		}
+//		for (auto& component : entity.second->components)
+//		{
+//			if (auto render = memory::weak_cast<render_component*>(component))
+//			{
+//				render->rect.x = entity.second->position.x();
+//				render->rect.y = entity.second->position.y();
+//				for (auto& flipbook : render->flipbooks)
+//				{
+//					render_flipbook(flipbook.second, &(render->rect));
+//				}
+//			}
+//		}
 	}
 	// Hey this is IMPORTANT!
 	SDL_RenderPresent(__sdl_renderer);

@@ -1,4 +1,5 @@
 
+#pragma	once
 #include	"__common.hpp"
 
 __begin_ns_td

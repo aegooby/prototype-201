@@ -1,12 +1,10 @@
 
-#pragma	once
 #include	"__common.hpp"
+#include	"component_manager.hpp"
 
 __begin_ns_td
 
-class	game
-{
-	
-};
+
+
 
 __end_ns_td
