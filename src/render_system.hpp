@@ -24,19 +24,14 @@ public:
 	{
 		flag.set(system::flag::render);
 		flag.set(system::flag::transform);
+		flag.set(system::flag::state);
 	}
 	virtual ~render_system()
 	{
 		stop();
 	}
-	inline __attribute__((always_inline))
-	void	start(class window& window)
-	{
-		if (!(__sdl_renderer = SDL_CreateRenderer(window.sdl_window(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)))
-			throw sdl_error("Failed to create render_system");
-		if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
-			throw sdl_error("Failed to load SDL Image libraries");
-	}
+	virtual void	start() override;
+	void	start(class window&);
 	inline __attribute__((always_inline))
 	void	stop()
 	{

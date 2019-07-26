@@ -6,13 +6,14 @@
 
 __begin_ns_td
 
-std::unordered_map<std::type_index, enum system::flag>	system::flags =
+const std::unordered_map<std::type_index, enum system::flag>	system::flags =
 {
 	{ typeid(render_component), system::flag::render },
 	{ typeid(transform_component), system::flag::transform },
 	{ typeid(collision_component), system::flag::collision },
 	{ typeid(input_component), system::flag::input },
 	{ typeid(audio_component), system::flag::audio },
+	{ typeid(state_component), system::flag::state },
 };
 
 system::system(class world& world) : world(world) {  }

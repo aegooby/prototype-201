@@ -18,8 +18,6 @@ protected:
 	keyboard&		keyboard;
 	mouse&			mouse;
 	clock			clock;
-	event_manager	event_manager;
-	entity_manager	entity_manager;
 	world			world;
 	bool		__running = false, __fpsdebug = false;
 	const float	__time_per_frame = 1.0f / float(global::game_fps);

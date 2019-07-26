@@ -103,8 +103,9 @@ static constexpr size_t	game_fps = 60;
 
 __end_ns_global
 
-enum class	action
+enum class	state
 {
+	idle,
 	up,
 	down,
 	left,
@@ -114,6 +115,7 @@ enum class	action
 	down_right,
 	down_left,
 	dash,
+	attack,
 	attack_light,
 	attack_heavy,
 	shield,

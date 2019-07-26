@@ -29,8 +29,9 @@ public:
 		collision = 0x3,
 		input = 0x4,
 		audio = 0x5,
+		state = 0x6,
 	};
-	static std::unordered_map<std::type_index, system::flag>	flags;
+	static const std::unordered_map<std::type_index, system::flag>	flags;
 	system_flag		flag;
 protected:
 	std::unordered_map<id_t, std::reference_wrapper<entity>>	__registered_entities;
@@ -38,6 +39,7 @@ protected:
 public:
 	system(class world&);
 	virtual ~system() = default;
+	virtual void	start() = 0;
 	virtual void	update() = 0;
 	void	register_entity(class entity&);
 	void	deregister_entity(class entity&);

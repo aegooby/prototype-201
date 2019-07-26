@@ -31,19 +31,20 @@ class	render_component : public component
 public:
 	using __base = component;
 public:
-	std::unordered_map<std::string, sprite_flipbook>	flipbooks;
+	std::unordered_map<state, sprite_flipbook>	flipbooks;
 	SDL_Rect	rect;
+	enum state	state;
 public:
 	render_component(class entity& entity) : __base(entity) {  }
 	virtual ~render_component() = default;
 	template	<typename ... types>
 	void	add_flipbook(const std::string& name, types&& ... args)
 	{
-		flipbooks.emplace(name, sprite_flipbook(name, std::forward<types>(args)...));
+		flipbooks.emplace(sprite::states.at(name), sprite_flipbook(name, std::forward<types>(args)...));
 	}
-	void	remove_flipbook(const std::string& name)
+	void	remove_flipbook(enum state state)
 	{
-		flipbooks.erase(name);
+		flipbooks.erase(state);
 	}
 };
 
@@ -96,14 +97,24 @@ class	input_component : public component
 public:
 	using __base = component;
 public:
-	std::map<action, std::pair<keycode, modifier>>		key_mappings;
-	std::map<action, std::pair<mousecode, modifier>>	mouse_mappings;
+	std::map<state, std::pair<keycode, modifier>>		key_mappings;
+	std::map<state, std::pair<mousecode, modifier>>	mouse_mappings;
 public:
 	input_component(class entity& entity) : __base(entity) {  }
 	virtual ~input_component() = default;
-	void	add_mapping(action, keycode, modifier);
-	void	add_mapping(action, mousecode, modifier);
-	void	remove_mapping(action);
+	void	add_mapping(state, keycode, modifier);
+	void	add_mapping(state, mousecode, modifier);
+	void	remove_mapping(state);
+};
+
+class	state_component : public component
+{
+public:
+	using __base = component;
+	enum state	state = state::idle;
+public:
+	state_component(class entity& entity) : __base(entity) {  }
+	virtual ~state_component() = default;
 };
 
 __end_ns_td

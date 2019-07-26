@@ -2,9 +2,16 @@
 #pragma	once
 #include	"__common.hpp"
 #include	"render_system.hpp"
+#include	<unordered_map>
 #include	<vector>
 
 __begin_ns_td
+
+class	sprite
+{
+public:
+	static const	std::unordered_map<std::string, state>	states;
+};
 
 class	sprite_flipbook
 {
@@ -14,15 +21,16 @@ public:
 	uint32_t	framec = 0;
 	uint32_t	index = 0;
 protected:
+	const state		__state;
 	const std::string	__name;
 	float				__fps = 0;
 public:
-	sprite_flipbook(const std::string& name, float fps) : __name(name), __fps(fps)
+	sprite_flipbook(const std::string& name, float fps) : __state(sprite::states.at(name)), __name(name), __fps(fps)
 	{
 		if (__fps <= 0 || __fps > float(global::game_fps))
-			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + __name);
+			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + this->name());
 	}
-	sprite_flipbook(sprite_flipbook&& other) : paths(std::move(other.paths)), __name(other.__name), __fps(other.__fps)
+	sprite_flipbook(sprite_flipbook&& other) : paths(std::move(other.paths)), __state(other.__state), __fps(other.__fps)
 	{
 		for (auto& texture : other.textures)
 		{
@@ -52,15 +60,20 @@ public:
 		}
 	}
 	inline __attribute__((always_inline))
-	virtual const std::string&	name() const
+	const std::string&	name() const
 	{
 		return __name;
+	}
+	inline __attribute__((always_inline))
+	enum state	state() const
+	{
+		return __state;
 	}
 	inline __attribute__((always_inline))
 	void	fps(float fps)
 	{
 		if (__fps <= 0 || __fps > float(global::game_fps))
-			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + __name);
+			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + name());
 		__fps = fps;
 	}
 	inline __attribute__((always_inline))

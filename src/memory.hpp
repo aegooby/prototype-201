@@ -127,19 +127,5 @@ void 	deallocate(type*& ptr)
 	ptr = nullptr;
 }
 
-template	<typename type, typename base>
-std::enable_if_t<std::is_pointer_v<type>, type>	weak_cast(std::weak_ptr<base>& weak_ptr)
-{
-	auto	lock = weak_ptr.lock();
-	if (!lock)
-		return nullptr;
-	auto	ptr = lock.get();
-	if (typeid(*ptr) == typeid(std::remove_pointer_t<type>))
-		return dynamic_cast<type>(ptr);
-	else
-		return nullptr;
-	
-}
-
 __end_ns_memory
 __end_ns_td

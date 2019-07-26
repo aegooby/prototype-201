@@ -18,6 +18,7 @@ public:
 		flag.set(system::flag::transform);
 	}
 	virtual ~physics_system() = default;
+	virtual void	start() override;
 	virtual void	update() override;
 };
 

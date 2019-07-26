@@ -67,5 +67,10 @@ class	input_manager : public component_manager_template<input_component>
 public:
 	virtual ~input_manager() = default;
 };
+class	state_manager : public component_manager_template<state_component>
+{
+public:
+	virtual ~state_manager() = default;
+};
 
 __end_ns_td

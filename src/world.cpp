@@ -13,12 +13,13 @@ std::unique_ptr<system>&	world::__system(std::type_index system_type)
 {
 	return systems.at(system_type);
 }
-world::world()
+world::world() : event_bus(*this)
 {
 	component_managers.emplace(typeid(render_component), std::make_unique<render_manager>());
 	component_managers.emplace(typeid(transform_component), std::make_unique<transform_manager>());
 	component_managers.emplace(typeid(collision_component), std::make_unique<collision_manager>());
 	component_managers.emplace(typeid(input_component), std::make_unique<input_manager>());
+	component_managers.emplace(typeid(state_component), std::make_unique<state_manager>());
 	
 	systems.emplace(typeid(render_system), std::make_unique<render_system>(*this));
 	systems.emplace(typeid(physics_system), std::make_unique<physics_system>(*this));

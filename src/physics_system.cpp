@@ -5,6 +5,10 @@
 
 __begin_ns_td
 
+void	physics_system::start()
+{
+	
+}
 void	physics_system::update()
 {
 	for (auto& entity : __registered_entities)

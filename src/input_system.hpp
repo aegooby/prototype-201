@@ -14,9 +14,11 @@ public:
 	input_system(class world& world) : __base(world)
 	{
 		flag.set(system::flag::input);
+		flag.set(system::flag::state);
 	}
 	virtual ~input_system() = default;
-	virtual void	update() override {  }
+	virtual void	start() override;
+	virtual void	update() override;
 	void	read(class keyboard&, class mouse&);
 };
 

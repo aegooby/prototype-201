@@ -12,7 +12,7 @@ __begin_ns_td
 
 component::~component() = default;
 
-void	input_component::add_mapping(action action, keycode code, modifier modifier = modifier::NONE)
+void	input_component::add_mapping(state state, keycode code, modifier modifier = modifier::NONE)
 {
 	for (auto& mapping : key_mappings)
 	{
@@ -22,13 +22,13 @@ void	input_component::add_mapping(action action, keycode code, modifier modifier
 			break;
 		}
 	}
-	if (mouse_mappings.count(action))
-		mouse_mappings.erase(action);
-	if (key_mappings.count(action))
-		key_mappings.erase(action);
-	key_mappings.emplace(action, std::make_pair(code, modifier));
+	if (mouse_mappings.count(state))
+		mouse_mappings.erase(state);
+	if (key_mappings.count(state))
+		key_mappings.erase(state);
+	key_mappings.emplace(state, std::make_pair(code, modifier));
 }
-void	input_component::add_mapping(action action, mousecode code, modifier modifier = modifier::NONE)
+void	input_component::add_mapping(state state, mousecode code, modifier modifier = modifier::NONE)
 {
 	for (auto& mapping : mouse_mappings)
 	{
@@ -38,17 +38,17 @@ void	input_component::add_mapping(action action, mousecode code, modifier modifi
 			break;
 		}
 	}
-	if (key_mappings.count(action))
-		key_mappings.erase(action);
-	if (mouse_mappings.count(action))
-		mouse_mappings.erase(action);
-	mouse_mappings.emplace(action, std::make_pair(code, modifier));
+	if (key_mappings.count(state))
+		key_mappings.erase(state);
+	if (mouse_mappings.count(state))
+		mouse_mappings.erase(state);
+	mouse_mappings.emplace(state, std::make_pair(code, modifier));
 }
 
-void	input_component::remove_mapping(action action)
+void	input_component::remove_mapping(state state)
 {
-	key_mappings.erase(action);
-	mouse_mappings.erase(action);
+	key_mappings.erase(state);
+	mouse_mappings.erase(state);
 }
 
 __end_ns_td

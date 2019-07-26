@@ -23,10 +23,11 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug) :
 	player.add_component<transform_component>();
 	player.add_component<collision_component>();
 	player.add_component<input_component>();
+	player.add_component<state_component>();
 	player.component<transform_component>().position = vector_3(100, 100, 0);
 	player.component<render_component>().rect.w = 100;
 	player.component<render_component>().rect.h = 74;
-	player.component<input_component>().add_mapping(action::attack_heavy, keycode::A, modifier::NONE);
+	player.component<input_component>().add_mapping(state::attack, keycode::A, modifier::NONE);
 	world.system<render_system>().load("/Users/admin/Desktop/sprites/");
 }
 

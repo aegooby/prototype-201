@@ -5,9 +5,21 @@
 #include	"filesystem.hpp"
 #include	"entity_manager.hpp"
 #include	"world.hpp"
+#include	"event.hpp"
 
 __begin_ns_td
 
+void	render_system::start()
+{
+	
+}
+void	render_system::start(class window& window)
+{
+	if (!(__sdl_renderer = SDL_CreateRenderer(window.sdl_window(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)))
+		throw sdl_error("Failed to create render_system");
+	if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
+		throw sdl_error("Failed to load SDL Image libraries");
+}
 void	render_system::load_sprite(SDL_Texture*& texture, const std::string& path)
 {
 	texture = IMG_LoadTexture(__sdl_renderer, path.c_str());
@@ -46,7 +58,7 @@ void	render_system::load(const std::string& path)
 			{
 				// TODO: change framerate
 				render.add_flipbook(entry, 12.0f);
-				load_flipbook(render.flipbooks.at(entry), __directory.path() + entry);
+				load_flipbook(render.flipbooks.at(sprite::states.at(entry)), __directory.path() + entry);
 			}
 		}
 	}
@@ -78,12 +90,10 @@ void	render_system::render()
 	{
 		auto&	render = entity.second.get().component<render_component>();
 		auto&	transform = entity.second.get().component<transform_component>();
+		auto&	state = entity.second.get().component<state_component>();
 		render.rect.x = transform.position.x();
 		render.rect.y = transform.position.y();
-		for (auto& flipbook : render.flipbooks)
-		{
-			render_flipbook(flipbook.second, &(render.rect));
-		}
+		render_flipbook(render.flipbooks.at(state.state), &(render.rect));
 	}
 	// Hey this is IMPORTANT!
 	SDL_RenderPresent(__sdl_renderer);

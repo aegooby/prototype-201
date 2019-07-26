@@ -34,7 +34,7 @@ public:
 	template	<typename component_type>
 	component_type&	component()
 	{
-		return *dynamic_cast<component_type*>(__component(typeid(component_type)).get());
+		return *static_cast<component_type*>(__component(typeid(component_type)).get());
 	}
 	template	<typename component_type, typename ... types>
 	void	add_component(types&& ... args)
