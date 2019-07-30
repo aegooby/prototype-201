@@ -16,10 +16,12 @@ class Quadtree {
 public:
 	Quadtree() {	};
 
-	void clear() {
-		for (int i = 0, i < nodes.size, i++) {
-			
-			nodes[i] = NULL;
+	static void clear() {
+		for (int i = 0; i < nodes.size; i++) {
+			if (nodes[i] != NULL) {
+				clear();
+				nodes[i] = NULL;
+			}
 		}
 	}
 };
