@@ -1,0 +1,38 @@
+﻿cl : Command line warning D9002: ignoring unknown option '-march=native'
+  component.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  component_manager.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  engine.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  entity.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  entity_manager.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  event.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  exception.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  filesystem.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  game.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  input.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  input_system.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  main.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  memory.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  physics_system.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  render_system.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  sprite.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  system.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  world.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  Generating Code...

@@ -57,9 +57,47 @@ class	transform_manager : public component_manager_template<transform_component>
 public:
 	virtual ~transform_manager() = default;
 };
+
+
 class	collision_manager : public component_manager_template<collision_component>
 {
+private:
+	int leftA, leftB;
+	int rightA, rightB;
+	int topA, topB;
+	int bottomA, bottomB;
+
+
 public:
+	bool collisiondetect(class collision_component& a, class collision_component b) {  
+		leftA = a.x;
+		leftB = b.x;
+		rightA = a.x + a.width;
+		rightB = b.x + b.width;
+		topA = a.y + a.height;
+		topB = b.y + b.height;
+		bottomA = a.y;
+		bottomB = b.y;
+
+		if (bottomA <= topB) {
+			return true;
+		}
+
+		if (topA >= bottomB) {
+			return true;
+		}
+		if (rightA >= leftB) {
+			return true;
+		}
+		if (bottomA <= bottomB) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	
 	virtual ~collision_manager() = default;
 };
 class	input_manager : public component_manager_template<input_component>
