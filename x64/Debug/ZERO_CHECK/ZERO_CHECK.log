@@ -1,0 +1,9 @@
+﻿  Checking Build System
+  CMake is re-running because C:/Users/jpark/Desktop/hackerman/prototype_201/build/CMakeFiles/generate.stamp is out-of-date.
+    the file 'C:/Users/jpark/Desktop/hackerman/prototype_201/CMakeLists.txt'
+    is newer than 'C:/Users/jpark/Desktop/hackerman/prototype_201/build/CMakeFiles/generate.stamp.depend'
+    result='-1'
+  -- Selecting Windows SDK version 10.0.14393.0 to target Windows 10.0.17134.
+  -- Configuring done
+  -- Generating done
+  -- Build files have been written to: C:/Users/jpark/Desktop/hackerman/prototype_201/build
