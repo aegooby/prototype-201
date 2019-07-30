@@ -1,6 +1,7 @@
 
 #pragma	once
 #include	"__common.hpp"
+#include	"vector.hpp"
 #include	<typeindex>
 #include	<unordered_map>
 #include	<list>
@@ -43,6 +44,16 @@ public:
 public:
 	collision_event(class entity& entity_a, class entity& entity_b) : entity_a(entity_a), entity_b(entity_b) {  }
 	virtual ~collision_event() = default;
+};
+
+class	acceleration_event : public event
+{
+public:
+	class entity&	entity;
+	vector_3		acceleration;
+public:
+	acceleration_event(class entity& entity, vector_3 acceleration) : entity(entity), acceleration(acceleration) {  }
+	virtual ~acceleration_event() = default;
 };
 
 __end_ns_td

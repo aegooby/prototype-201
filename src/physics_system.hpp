@@ -23,6 +23,7 @@ public:
 	virtual void	start() override;
 	virtual void	update() override;
 	void	on_collision_event(collision_event&);
+	void	on_acceleration_event(acceleration_event&);
 };
 
 __end_ns_td

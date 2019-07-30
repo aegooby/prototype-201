@@ -26,6 +26,29 @@ void	input_system::update()
 			{
 				state.state = mapping.first;
 				world.event_bus.publish<animation_event>(entity.second.get(), sprite::names.at(state.state));
+				switch (state.state)
+				{
+					case state::right:
+						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(2.0f, 0.0f, 0.0f));
+						break;
+					case state::left:
+						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(-2.0f, 0.0f, 0.0f));
+						break;
+					default:
+						break;
+				}
+			}
+			if (keyboard.up(mapping.second.first) && state.state == mapping.first)
+			{
+				switch (state.state)
+				{
+					case state::right: case state::left:
+						world.event_bus.publish<animation_complete_event>(entity.second.get(), sprite::names.at(state.state));
+						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(0.0f, 0.0f, 0.0f));
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		for (auto& mapping : input.mouse_mappings)
@@ -34,12 +57,22 @@ void	input_system::update()
 			{
 				state.state = mapping.first;
 			}
+			if (mouse.up(mapping.second.first) && state.state == mapping.first)
+			{
+				switch (state.state)
+				{
+					case state::right: case state::left:
+						world.event_bus.publish<animation_complete_event>(entity.second.get(), sprite::names.at(state.state));
+						break;
+					default:
+						break;
+				}
+			}
 		}
 	}
 }
 void	input_system::on_animation_complete_event(animation_complete_event& event)
 {
-	std::cout << "animation_complete(" << event.name << ")" << std::endl;
 	auto&	input = event.entity.component<input_component>();
 	auto&	state = event.entity.component<state_component>();
 	auto&	render = event.entity.component<render_component>();

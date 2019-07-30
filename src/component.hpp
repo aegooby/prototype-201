@@ -67,6 +67,7 @@ public:
 	vector_3	position;
 	vector_3	velocity;
 	vector_3	acceleration;
+	float		max_speed = 10.0f;
 public:
 	transform_component(class entity& entity) : __base(entity) {  }
 	virtual ~transform_component() = default;

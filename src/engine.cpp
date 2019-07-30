@@ -31,7 +31,9 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug) :
 	player.component<transform_component>().position = vector_3(100, 100, 0);
 	player.component<render_component>().rect.w = 100;
 	player.component<render_component>().rect.h = 74;
-	player.component<input_component>().add_mapping(state::attack, keycode::A, modifier::NONE);
+	player.component<input_component>().add_mapping(state::attack, keycode::SPACE, modifier::NONE);
+	player.component<input_component>().add_mapping(state::right, keycode::D, modifier::NONE);
+	player.component<input_component>().add_mapping(state::left, keycode::A, modifier::NONE);
 	world.system<render_system>().load("/Users/admin/Desktop/sprites/");
 }
 
