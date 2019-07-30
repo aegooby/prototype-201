@@ -4,6 +4,7 @@
 #include	"sprite.hpp"
 #include	"vector.hpp"
 #include	"ecs_common.hpp"
+#include	"hitbox.hpp"
 #include	<map>
 #include	<unordered_map>
 #include	<vector>
@@ -75,17 +76,8 @@ class	collision_component : public physics_component
 {
 public:
 	using __base = physics_component;
-
-protected:
-	int x; // the lefternmost x value
-	int y; // the bottom most y value of the rect
-	int height;
-	int width;
-	int radius = width / 2;
-
-
 public:
-	void sethitbox(class Entity& e) {  }
+	capsule	hitbox;
 public:
 	collision_component(class entity& entity) : __base(entity) {  }
 	virtual ~collision_component() = default;

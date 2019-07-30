@@ -35,4 +35,14 @@ public:
 	virtual ~animation_complete_event() = default;
 };
 
+class	collision_event : public event
+{
+public:
+	class entity&	entity_a;
+	class entity&	entity_b;
+public:
+	collision_event(class entity& entity_a, class entity& entity_b) : entity_a(entity_a), entity_b(entity_b) {  }
+	virtual ~collision_event() = default;
+};
+
 __end_ns_td

@@ -45,6 +45,7 @@ class	event_bus;
 class	event;
 class	animation_event;
 class	animation_complete_event;
+class	collision_event;
 class	world;
 class	system;
 class	entity_manager;
