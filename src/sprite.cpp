@@ -6,6 +6,13 @@
 
 __begin_ns_td
 
+const std::unordered_map<state, std::string>	sprite::names =
+{
+	{ state::idle, "idle" },
+	{ state::left, "left" },
+	{ state::right, "right" },
+	{ state::attack, "attack" },
+};
 const std::unordered_map<std::string, state>	sprite::states =
 {
 	{ "idle", state::idle },

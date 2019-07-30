@@ -14,14 +14,25 @@ public:
 	virtual ~event() = 0;
 };
 
-class	state_event : public event
+class	animation_event : public event
 {
 public:
-	enum state		state;
+	
 	class entity&	entity;
+	std::string		name;
 public:
-	state_event(enum state state, class entity& entity) : state(state), entity(entity) {  }
-	virtual ~state_event() = default;
+	animation_event(class entity& entity, const std::string& name) : entity(entity), name(name) {  }
+	virtual ~animation_event() = default;
+};
+
+class	animation_complete_event : public event
+{
+public:
+	class entity&	entity;
+	std::string		name;
+public:
+	animation_complete_event(class entity& entity, const std::string& name) : entity(entity), name(name) {  }
+	virtual ~animation_complete_event() = default;
 };
 
 __end_ns_td

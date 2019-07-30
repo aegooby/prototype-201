@@ -14,9 +14,13 @@
 
 __begin_ns_td
 
-engine::engine(const std::string& title, int width, int height, bool fpsdebug) : window(title, width, height), keyboard(window.keyboard), mouse(window.mouse), __fpsdebug(fpsdebug)
+engine::engine(const std::string& title, int width, int height, bool fpsdebug) : window(title, width, height), keyboard(window.keyboard), mouse(window.mouse), world(keyboard, mouse), __fpsdebug(fpsdebug)
 {
 	window.start();
+	for (auto& system : world.systems)
+	{
+		system.second->start();
+	}
 	world.system<render_system>().start(window);
 	auto&	player = world.new_entity("player");
 	player.add_component<render_component>();
@@ -130,8 +134,10 @@ void	engine::update()
 {
 	// Input
 	window.update();
-	world.system<input_system>().read(keyboard, mouse);
-	world.system<physics_system>().update();
+	for (auto& system : world.systems)
+	{
+		system.second->update();
+	}
 }
 
 __end_ns_td

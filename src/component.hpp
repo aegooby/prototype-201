@@ -31,20 +31,20 @@ class	render_component : public component
 public:
 	using __base = component;
 public:
-	std::unordered_map<state, sprite_flipbook>	flipbooks;
+	std::unordered_map<std::string, sprite_flipbook>	flipbooks;
 	SDL_Rect	rect;
-	enum state	state;
+	std::string	name = "idle";
 public:
 	render_component(class entity& entity) : __base(entity) {  }
 	virtual ~render_component() = default;
 	template	<typename ... types>
 	void	add_flipbook(const std::string& name, types&& ... args)
 	{
-		flipbooks.emplace(sprite::states.at(name), sprite_flipbook(name, std::forward<types>(args)...));
+		flipbooks.emplace(name, sprite_flipbook(name, std::forward<types>(args)...));
 	}
-	void	remove_flipbook(enum state state)
+	void	remove_flipbook(const std::string& name)
 	{
-		flipbooks.erase(state);
+		flipbooks.erase(name);
 	}
 };
 

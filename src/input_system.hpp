@@ -19,7 +19,7 @@ public:
 	virtual ~input_system() = default;
 	virtual void	start() override;
 	virtual void	update() override;
-	void	read(class keyboard&, class mouse&);
+	void	on_animation_complete_event(animation_complete_event&);
 };
 
 __end_ns_td

@@ -11,7 +11,7 @@ __begin_ns_td
 
 void	render_system::start()
 {
-	
+	world.event_bus.subscribe(*this, &render_system::on_animation_event);
 }
 void	render_system::start(class window& window)
 {
@@ -58,7 +58,7 @@ void	render_system::load(const std::string& path)
 			{
 				// TODO: change framerate
 				render.add_flipbook(entry, 12.0f);
-				load_flipbook(render.flipbooks.at(sprite::states.at(entry)), __directory.path() + entry);
+				load_flipbook(render.flipbooks.at(entry), __directory.path() + entry);
 			}
 		}
 	}
@@ -66,16 +66,19 @@ void	render_system::load(const std::string& path)
 
 void	render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect)
 {
-	if (SDL_RenderCopy(__sdl_renderer, texture, nullptr, rect))
+	SDL_Point	center = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
+	if (SDL_RenderCopyEx(__sdl_renderer, texture, nullptr, rect, 0.0, &center, SDL_FLIP_NONE))
 		throw sdl_error("Failed to render texture");
 }
 
-void	render_system::render_flipbook(sprite_flipbook& flipbook, SDL_Rect* rect)
+void	render_system::render_flipbook(class entity& entity, sprite_flipbook& flipbook, SDL_Rect* rect)
 {
 	render_sprite(flipbook.textures.at(flipbook.index), rect);
 	++flipbook.framec %= flipbook.frame_delay();
 	if (!flipbook.framec)
 		++flipbook.index %= flipbook.frames();
+	if (!flipbook.index && flipbook.frames() > 1 && flipbook.name() != "idle")
+		world.event_bus.publish<animation_complete_event>(entity, flipbook.name());
 }
 
 void	render_system::render()
@@ -90,13 +93,16 @@ void	render_system::render()
 	{
 		auto&	render = entity.second.get().component<render_component>();
 		auto&	transform = entity.second.get().component<transform_component>();
-		auto&	state = entity.second.get().component<state_component>();
 		render.rect.x = transform.position.x();
 		render.rect.y = transform.position.y();
-		render_flipbook(render.flipbooks.at(state.state), &(render.rect));
+		render_flipbook(entity.second.get(), render.flipbooks.at(render.name), &(render.rect));
 	}
 	// Hey this is IMPORTANT!
 	SDL_RenderPresent(__sdl_renderer);
+}
+void	render_system::on_animation_event(animation_event& event)
+{
+	event.entity.component<render_component>().name = event.name;
 }
 
 __end_ns_td

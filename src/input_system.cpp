@@ -4,19 +4,18 @@
 #include	"entity.hpp"
 #include	"event_bus.hpp"
 #include	"world.hpp"
+#include	"sprite.hpp"
 
 __begin_ns_td
 
 void	input_system::start()
 {
-	
+	world.event_bus.subscribe(*this, &input_system::on_animation_complete_event);
 }
 void	input_system::update()
 {
-	
-}
-void	input_system::read(class keyboard& keyboard, class mouse& mouse)
-{
+	auto&	keyboard = world.keyboard;
+	auto&	mouse = world.mouse;
 	for (auto& entity : __registered_entities)
 	{
 		auto&	input = entity.second.get().component<input_component>();
@@ -26,6 +25,7 @@ void	input_system::read(class keyboard& keyboard, class mouse& mouse)
 			if (keyboard.down(mapping.second.first) && keyboard.modifier(mapping.second.second))
 			{
 				state.state = mapping.first;
+				world.event_bus.publish<animation_event>(entity.second.get(), sprite::names.at(state.state));
 			}
 		}
 		for (auto& mapping : input.mouse_mappings)
@@ -35,6 +35,24 @@ void	input_system::read(class keyboard& keyboard, class mouse& mouse)
 				state.state = mapping.first;
 			}
 		}
+	}
+}
+void	input_system::on_animation_complete_event(animation_complete_event& event)
+{
+	std::cout << "animation_complete(" << event.name << ")" << std::endl;
+	auto&	input = event.entity.component<input_component>();
+	auto&	state = event.entity.component<state_component>();
+	auto&	render = event.entity.component<render_component>();
+	const auto&	__state = sprite::states.at(event.name);
+	if (input.key_mappings.count(__state) && !world.keyboard.scan(input.key_mappings.at(__state).first))
+	{
+		state.state = state::idle;
+		render.name = "idle";
+	}
+	if (input.mouse_mappings.count(__state) && !world.mouse.scan(input.mouse_mappings.at(__state).first))
+	{
+		state.state = state::idle;
+		render.name = "idle";
 	}
 }
 

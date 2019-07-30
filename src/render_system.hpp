@@ -18,13 +18,12 @@ protected:
 	void	load_sprite(SDL_Texture*&, const std::string&);
 	void	load_flipbook(sprite_flipbook&, const std::string&);
 	void	render_sprite(SDL_Texture*, SDL_Rect*);
-	void	render_flipbook(sprite_flipbook&, SDL_Rect*);
+	void	render_flipbook(class entity&, sprite_flipbook&, SDL_Rect*);
 public:
 	render_system(class world& world) : __base(world)
 	{
 		flag.set(system::flag::render);
 		flag.set(system::flag::transform);
-		flag.set(system::flag::state);
 	}
 	virtual ~render_system()
 	{
@@ -50,6 +49,7 @@ public:
 	void	load(const std::string&);
 	virtual void	update() override {  }
 	void	render();
+	void	on_animation_event(animation_event&);
 	
 	//	Preventing copying and moving
 	render_system(const render_system&) = delete;

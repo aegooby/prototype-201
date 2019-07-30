@@ -16,12 +16,14 @@ public:
 	std::unordered_map<std::type_index, std::unique_ptr<component_manager>>	component_managers;
 	std::unordered_map<std::type_index, std::unique_ptr<system>>	systems;
 	event_bus	event_bus;
+	class keyboard&	keyboard;
+	class mouse&		mouse;
 protected:
 	entity_manager	entity_manager;
 protected:
 	std::unique_ptr<system>&	__system(std::type_index);
 public:
-	world();
+	world(class keyboard&, class mouse&);
 	entity&	new_entity(const std::string&);
 	void	delete_entity(id_t);
 	template	<typename system_type>
