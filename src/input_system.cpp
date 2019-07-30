@@ -34,6 +34,9 @@ void	input_system::update()
 					case state::left:
 						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(-2.0f, 0.0f, 0.0f));
 						break;
+					case state::attack:
+						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(0.0f, 0.0f, 0.0f));
+						break;
 					default:
 						break;
 				}
@@ -56,6 +59,21 @@ void	input_system::update()
 			if (mouse.down(mapping.second.first) && keyboard.modifier(mapping.second.second))
 			{
 				state.state = mapping.first;
+				world.event_bus.publish<animation_event>(entity.second.get(), sprite::names.at(state.state));
+				switch (state.state)
+				{
+					case state::right:
+						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(2.0f, 0.0f, 0.0f));
+						break;
+					case state::left:
+						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(-2.0f, 0.0f, 0.0f));
+						break;
+					case state::attack:
+						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(0.0f, 0.0f, 0.0f));
+						break;
+					default:
+						break;
+				}
 			}
 			if (mouse.up(mapping.second.first) && state.state == mapping.first)
 			{
