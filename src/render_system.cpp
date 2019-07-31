@@ -57,7 +57,7 @@ void	render_system::load(const std::string& path)
 			if (directory::is_directory(__directory.path() + entry))
 			{
 				// TODO: change framerate
-				render.add_flipbook(entry, 12.0f);
+				render.add_flipbook(entry, 4.0f);
 				load_flipbook(render.flipbooks.at(entry), __directory.path() + entry);
 			}
 		}
@@ -78,7 +78,10 @@ void	render_system::render_flipbook(class entity& entity, sprite_flipbook& flipb
 	if (!flipbook.framec)
 		++flipbook.index %= flipbook.frames();
 	if (!flipbook.index && flipbook.frames() > 1 && flipbook.name() != "idle")
+	{
+		std::cout << "complete(" << flipbook.name() << ")" << std::endl;
 		world.event_bus.publish<animation_complete_event>(entity, flipbook.name());
+	}
 }
 
 void	render_system::render()

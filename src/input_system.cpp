@@ -99,11 +99,13 @@ void	input_system::on_animation_complete_event(animation_complete_event& event)
 	{
 		state.state = state::idle;
 		render.name = "idle";
+		render.flipbooks.at(event.name).reset();
 	}
 	if (input.mouse_mappings.count(__state) && !world.mouse.scan(input.mouse_mappings.at(__state).first))
 	{
 		state.state = state::idle;
 		render.name = "idle";
+		render.flipbooks.at(event.name).reset();
 	}
 }
 

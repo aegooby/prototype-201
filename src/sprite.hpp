@@ -91,6 +91,11 @@ public:
 	{
 		return 1.0f / __fps * frames();
 	}
+	void	reset()
+	{
+		framec = 0;
+		index = 0;
+	}
 	
 	// Preventing copying
 	sprite_flipbook(const sprite_flipbook&) = delete;

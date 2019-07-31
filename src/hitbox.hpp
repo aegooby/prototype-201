@@ -6,39 +6,35 @@ __begin_ns_td
 
 struct	capsule
 {
-	float	x = 0; // the lefternmost x value
+	float	x = 0; // the leftmost x value
 	float	y = 0; // the bottom most y value of the rect
 	float	height = 0;
 	float	width = 0;
-	inline __attribute__((always_inline));
-
-	float getx() const 
-	{
-		return x;
-	}
-	float gety() const 
-	{
-		return y;
-	}
-	float getwidth() const 
-	{
-		return width;
-	}
-	float getheight() const
-	{
-		return height;
-	}
+	
+	inline __attribute__((always_inline))
 	float	radius() const
 	{
-		return width / 2;
+		return width / 2.0f;
 	}
-	float getright() const
+	inline __attribute__((always_inline))
+	float 	right() const
 	{
 		return x + width;
 	}
-	float gettop() const
+	inline __attribute__((always_inline))
+	float 	top() const
 	{
 		return y + height;
+	}
+	inline __attribute__((always_inline))
+	float 	left() const
+	{
+		return x;
+	}
+	inline __attribute__((always_inline))
+	float 	bottom() const
+	{
+		return y;
 	}
 };
 
