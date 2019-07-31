@@ -18,7 +18,29 @@ struct Node {
 	float x1; // rightern edge
 	float y0; // bottom edge
 	float y1; // top edge
-	int currentlevel;
+
+	float getx0() {
+		return x0;
+	}
+	float getx1() {
+		return x1;
+	}
+	float gety0() {
+		return y0;
+	}
+	float gety1() {
+		return y1;
+	}
+
+	float subwidth = getx1() / 2;
+	float subheight = gety1() / 2;
+
+	float getsubwidth()	{
+		return subwidth;
+	}
+	float getsubheight() {
+		return subheight;
+	}
 };
 
 
@@ -28,16 +50,16 @@ class Quadtree {
 	std::vector<std::reference_wrapper<struct capsule&>> Object_List;
 	std::vector<std::vector<Node*>> nodelist;
 	int level;
-	Node bounds;
+	Node bounds;  // boundary of the current node
+
 
 	Node Nodemake(float x0, float x1, float y0, float y1) {
-		Node knoten;
-		knoten.x0 = x0;
-		knoten.x1 = x1;
-		knoten.y0 = y0;
-		knoten.y1 = y1;
+		bounds.x0 = x0;
+		bounds.x1 = x1;
+		bounds.y0 = y0;
+		bounds.y1 = y1;
 
-		return knoten;
+		return bounds;
 	};
 
 	public:
@@ -47,17 +69,15 @@ class Quadtree {
 		Nodemake(0, 100, 0, 100);
 	}
 
-	void split(Node& currentlevel) {
+	void split() {
 		level++;
-		int subwidth = currentlevel.x1 / 2;
-		int subheight = currentlevel.y1 / 2;
-		
+
 		Node *subNode = new Node[4];
 		// nodes are labelled from 0 to 3 anticlockwise like unit circle
-		subNode[0] = Nodemake(subwidth, currentlevel.x1, subheight, currentlevel.y1);
-		subNode[1] = Nodemake(currentlevel.x0, subwidth, subheight, currentlevel.y1);
-		subNode[2] = Nodemake(currentlevel.x0, subwidth, currentlevel.y0, subheight);
-		subNode[3] = Nodemake(subwidth, currentlevel.x1, currentlevel.y0, subheight);
+		subNode[0] = Nodemake(bounds.getsubwidth(), bounds.getx1(), bounds.getsubheight(), bounds.gety1());
+		subNode[1] = Nodemake(bounds.getx0(), bounds.getsubwidth(), bounds.getsubheight(), bounds.gety1());
+		subNode[2] = Nodemake(bounds.getx0(), bounds.getsubwidth(), bounds.gety0(), bounds.getsubheight());
+		subNode[3] = Nodemake(bounds.getsubwidth(), bounds.getx1(), bounds.gety0(), bounds.getsubheight());
 
 		for (int i = 0; i < 3; i++) {
 			nodelist.push_back[level][subNode[i]];
@@ -65,19 +85,37 @@ class Quadtree {
 
 	}
 
-	int getIndex(capsule& hitbox) {
-		int index;
+	int getIndex(capsule& hitbox, Node& bounds) {
+		int index = -1; // -1 means it doesnt fit in any subnode and belongs to parent node
 
-		// if the hitbox fits in 0 quadrant
-		if (hitbox.x < x0) {
-
+		if (hitbox.getright() < bounds.getsubwidth()) {
+			if (hitbox.gettop() < bounds.getsubheight()) {
+				index = 2; // belongs to subnode 2
+			}
+			else if (hitbox.gety() > bounds.getsubheight()) {
+				index = 1;
+			}
 		}
+		else if (hitbox.getx() > bounds.getsubwidth()) {
+			if (hitbox.gettop() < bounds.getsubheight()) {
+				index = 3;
+			}
+			else if (hitbox.gety() > bounds.getsubheight()) {
+				index = 0;
+			}
+		}
+
+		return index;
 
 	}
 
+	void insert() {
+
+	}
+
+
+
 	bool EntityCheck() {
-
-
 
 		// if there are more than 5 entities in the node
 		if () {
