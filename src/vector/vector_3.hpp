@@ -17,6 +17,7 @@ private:
 	using __base = __vector_private::__vector_base<value_type, 3>;
 public:
 	using self_reference = vector<value_type, 3>&;
+	using const_self_reference = const vector<value_type, 3>&;
 	vector() = default;
 	vector(value_type x, value_type y, value_type z)
 	: __base::__vector_base(x, y, z) {  }
@@ -33,42 +34,15 @@ public:
 		}
 		return *this;
 	}
-	inline __attribute__((always_inline)) value_type	x()
+	inline __attribute__((always_inline))
+	self_reference	operator =(const_self_reference other)
 	{
-		return __base::at(0);
+		__base::__data = other.__data;
+		return *this;
 	}
-	inline __attribute__((always_inline)) value_type	y()
-	{
-		return __base::at(1);
-	}
-	inline __attribute__((always_inline)) value_type	z()
-	{
-		return __base::at(2);
-	}
-	inline __attribute__((always_inline)) void	x(value_type x)
-	{
-		__base::at(0) = x;
-	}
-	inline __attribute__((always_inline)) void	y(value_type y)
-	{
-		__base::at(1) = y;
-	}
-	inline __attribute__((always_inline)) void	z(value_type z)
-	{
-		__base::at(2) = z;
-	}
-	inline __attribute__((always_inline)) void	x_mod(value_type x)
-	{
-		__base::at(0) += x;
-	}
-	inline __attribute__((always_inline)) void	y_mod(value_type y)
-	{
-		__base::at(1) += y;
-	}
-	inline __attribute__((always_inline)) void	z_mod(value_type z)
-	{
-		__base::at(2) += z;
-	}
+	value_type&	x = __base::at(0);
+	value_type&	y = __base::at(1);
+	value_type&	z = __base::at(3);
 };
 
 template	<typename value_type>

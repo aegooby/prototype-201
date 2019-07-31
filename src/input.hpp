@@ -213,10 +213,10 @@ public:
 		int	dx, dy;
 		SDL_GetMouseState(&x, &y);
 		SDL_GetRelativeMouseState(&dx, &dy);
-		__position.x(float(x));
-		__position.y(float(y));
-		__movement.x(float(dx));
-		__movement.y(float(dy));
+		__position.x = float(x);
+		__position.y = float(y);
+		__movement.x = float(dx);
+		__movement.y = float(dy);
 	}
 	
 	//	Preventing copying and moving

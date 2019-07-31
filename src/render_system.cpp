@@ -96,8 +96,8 @@ void	render_system::render()
 	{
 		auto&	render = entity.second.get().component<render_component>();
 		auto&	transform = entity.second.get().component<transform_component>();
-		render.rect.x = transform.position.x();
-		render.rect.y = transform.position.y();
+		render.rect.x = transform.position.x;
+		render.rect.y = transform.position.y;
 		render_flipbook(entity.second.get(), render.flipbooks.at(render.name), &(render.rect));
 	}
 	// Hey this is IMPORTANT!

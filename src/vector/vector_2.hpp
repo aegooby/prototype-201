@@ -17,6 +17,7 @@ private:
 	using __base = __vector_private::__vector_base<value_type, 2>;
 public:
 	using self_reference = vector<value_type, 2>&;
+	using const_self_reference = const vector<value_type, 2>&;
 	vector() = default;
 	vector(value_type x, value_type y)
 	: __base::__vector_base(x, y) {  }
@@ -33,10 +34,14 @@ public:
 		}
 		return *this;
 	}
-	inline __attribute__((always_inline)) value_type	x() const	{ return __base::at(0); }
-	inline __attribute__((always_inline)) value_type	y() const	{ return __base::at(1); }
-	inline __attribute__((always_inline)) void	x(value_type x)	{ __base::at(0) = x; }
-	inline __attribute__((always_inline)) void	y(value_type y)	{ __base::at(1) = y; }
+	inline __attribute__((always_inline))
+	self_reference	operator =(const_self_reference other)
+	{
+		__base::__data = other.__data;
+		return *this;
+	}
+	value_type&	x = __base::at(0);
+	value_type&	y = __base::at(1);
 };
 
 //	2D vector rotation uses a 2x2 rotational matrix multiplied by the vector (expanded here)

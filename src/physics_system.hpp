@@ -12,7 +12,6 @@ class	physics_system : public system
 public:
 	using __base = system;
 protected:
-	bool	check_collision(capsule&, capsule&);
 public:
 	physics_system(class world& world) : __base(world)
 	{
