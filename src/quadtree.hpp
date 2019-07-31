@@ -74,13 +74,14 @@ public:
 	{
 		level++;
 
-		// TODO: nigga what the fUCK are you doing with the memory here
-//		node *subNode = new node[4];
-		// TODO: nigga fix this too
-//		subNode[0] = nodemake(bounds.subwidth(), bounds.x1, bounds.subheight(), bounds.y1);
-//		subNode[1] = nodemake(bounds.x0, bounds.subwidth(), bounds.subheight(), bounds.y1);
-//		subNode[2] = nodemake(bounds.x0, bounds.subwidth(), bounds.y0, bounds.subheight());
-//		subNode[3] = nodemake(bounds.subwidth(), bounds.x1, bounds.y0, bounds.subheight());
+		
+
+		std::unique_ptr<node[4]> subNode;
+
+		subNode[0] = nodemake(bounds.subwidth(), bounds.x1, bounds.subheight(), bounds.y1);
+		subNode[1] = nodemake(bounds.x0, bounds.subwidth(), bounds.subheight(), bounds.y1);
+		subNode[2] = nodemake(bounds.x0, bounds.subwidth(), bounds.y0, bounds.subheight());
+		subNode[3] = nodemake(bounds.subwidth(), bounds.x1, bounds.y0, bounds.subheight());
 
 		for (int i = 0; i < 4; i++)
 		{
