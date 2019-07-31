@@ -27,6 +27,8 @@ c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error
 c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
   physics_system.cpp
 c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  quadtree.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
   render_system.cpp
 c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
   sprite.cpp
