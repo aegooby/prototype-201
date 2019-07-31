@@ -63,6 +63,7 @@ public:
 		{
 			for (int i = 0; i < 4; i++)
 			{
+				// TODO: fix this shit retard
 //				nodelist.erase[level][i];
 			}
 		}
@@ -73,15 +74,17 @@ public:
 	{
 		level++;
 
-		node *subNode = new node[4];
-		// nodes are labelled from 0 to 3 anticlockwise like unit circle
-		subNode[0] = nodemake(bounds.subwidth(), bounds.x1, bounds.subheight(), bounds.y1);
-		subNode[1] = nodemake(bounds.x0, bounds.subwidth(), bounds.subheight(), bounds.y1);
-		subNode[2] = nodemake(bounds.x0, bounds.subwidth(), bounds.y0, bounds.subheight());
-		subNode[3] = nodemake(bounds.subwidth(), bounds.x1, bounds.y0, bounds.subheight());
+		// TODO: nigga what the fUCK are you doing with the memory here
+//		node *subNode = new node[4];
+		// TODO: nigga fix this too
+//		subNode[0] = nodemake(bounds.subwidth(), bounds.x1, bounds.subheight(), bounds.y1);
+//		subNode[1] = nodemake(bounds.x0, bounds.subwidth(), bounds.subheight(), bounds.y1);
+//		subNode[2] = nodemake(bounds.x0, bounds.subwidth(), bounds.y0, bounds.subheight());
+//		subNode[3] = nodemake(bounds.subwidth(), bounds.x1, bounds.y0, bounds.subheight());
 
 		for (int i = 0; i < 4; i++)
 		{
+			// TODO: fix
 //			nodelist.push_back[level][subNode[i]];
 		}
 	}
@@ -120,8 +123,10 @@ public:
 		for (int i = 0; i < 4; i++)
 		{
 			int index; //= getIndex( /* */, nodelist[1][i]);
+			// TODO: dawg both of these ifs check the same thing retard
 			if (index == i)
 			{
+				// TODO: fix this
 //				object_list.push_back[1][i][hitbox];
 			}
 			if (index == i)
