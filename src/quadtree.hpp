@@ -5,6 +5,8 @@
 #include	"hitbox.hpp"
 #include	"component.hpp"
 
+__begin_ns_td
+
 struct BoundingBox {
 	float x0; // leftern edge
 	float x1; // rightern edge
@@ -13,42 +15,43 @@ struct BoundingBox {
 
 };
 
-struct Node {
-	float x0; // leftern edge
-	float x1; // rightern edge
-	float y0; // bottom edge
-	float y1; // top edge
 
-	float getx0() {
-		return x0;
-	}
-	float getx1() {
-		return x1;
-	}
-	float gety0() {
-		return y0;
-	}
-	float gety1() {
-		return y1;
-	}
-
-	float subwidth = getx1() / 2;
-	float subheight = gety1() / 2;
-
-	float getsubwidth()	{
-		return subwidth;
-	}
-	float getsubheight() {
-		return subheight;
-	}
-};
 
 
 class Quadtree {
 	private:
+	struct Node {
+		float x0; // leftern edge
+		float x1; // rightern edge
+		float y0; // bottom edge
+		float y1; // top edge
 
-	std::vector<std::reference_wrapper<struct capsule&>> Object_List;
-	std::vector<std::vector<Node*>> nodelist;
+		float getx0() {
+			return x0;
+			}
+		float getx1() {
+			return x1;
+		}
+		float gety0() {
+			return y0;
+		}
+		float gety1() {
+			return y1;
+		}
+
+		float subwidth = getx1() / 2;
+		float subheight = gety1() / 2;
+
+		float getsubwidth() {
+			return subwidth;
+		}
+		float getsubheight() {
+			return subheight;
+		}
+	};
+
+	std::vector<std::vector<std::vector<std::reference_wrapper<struct capsule>>>> Object_List;
+	std::vector<std::vector<Node>> nodelist;
 	int level;
 	Node bounds;  // boundary of the current node
 
@@ -66,7 +69,8 @@ class Quadtree {
 
 	Quadtree() {	
 		level = 0;	// amount of divisions
-		Nodemake(0, 100, 0, 100);
+		Nodemake(0, 100, 0, 100); // whatever the min and max x and y coords of the entire screen are
+		split();
 	}
 
 	void split() {
@@ -79,28 +83,28 @@ class Quadtree {
 		subNode[2] = Nodemake(bounds.getx0(), bounds.getsubwidth(), bounds.gety0(), bounds.getsubheight());
 		subNode[3] = Nodemake(bounds.getsubwidth(), bounds.getx1(), bounds.gety0(), bounds.getsubheight());
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			nodelist.push_back[level][subNode[i]];
 		}
 
 	}
 
-	int getIndex(capsule& hitbox, Node& bounds) {
+	int getIndex(capsule& hitbox, Node& currentnode) {
 		int index = -1; // -1 means it doesnt fit in any subnode and belongs to parent node
 
-		if (hitbox.getright() < bounds.getsubwidth()) {
-			if (hitbox.gettop() < bounds.getsubheight()) {
-				index = 2; // belongs to subnode 2
+		if (hitbox.getright() < currentnode.getsubwidth()) {
+			if (hitbox.gettop() < currentnode.getsubheight()) {
+				index = 2; 
 			}
-			else if (hitbox.gety() > bounds.getsubheight()) {
+			else if (hitbox.gety() > currentnode.getsubheight()) {
 				index = 1;
 			}
 		}
-		else if (hitbox.getx() > bounds.getsubwidth()) {
-			if (hitbox.gettop() < bounds.getsubheight()) {
+		else if (hitbox.getx() > currentnode.getsubwidth()) {
+			if (hitbox.gettop() < currentnode.getsubheight()) {
 				index = 3;
 			}
-			else if (hitbox.gety() > bounds.getsubheight()) {
+			else if (hitbox.gety() > currentnode.getsubheight()) {
 				index = 0;
 			}
 		}
@@ -109,35 +113,39 @@ class Quadtree {
 
 	}
 
-	void insert() {
+	// need to figure out how to use collision manager to pass in hitboxes
+	void insert(capsule& hitbox) {
+		for (int i = 0; i < 4; i++) {
+			int index = getIndex( /* */, nodelist[1][i]);
+			if (index == i) {
+				Object_List.push_back[1][i][hitbox];
+			}
+			if (index == i) {
 
-	}
-
-
-
-	bool EntityCheck() {
-
-		// if there are more than 5 entities in the node
-		if () {
-
-			return true;
+			return;
 		}
-		// if there are less than 5 entities in the node
-		else {
-			return false;
 		}
+		
+	
 	}
-
+		
 
 
 
 	//clears the quadtree of all nodes and objects 
 	~Quadtree() {
+		
 		for (level; level >= 1; level--) {
 			for (int i = 0; i < 4; i++) {
-				nodelist[level][i] = nullptr;
+				nodelist.erase[level][i];
 			}
-		}
-	}
-};
+		} 
+		
+		nodelist.clear; // is this just what I did above but better?
 
+	}
+}
+
+
+
+__end_ns_td
