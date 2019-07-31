@@ -5,7 +5,7 @@
 #include	"hitbox.hpp"
 #include	"component.hpp"
 
-typedef struct BoundingBox {
+struct BoundingBox {
 	float x0; // leftern edge
 	float x1; // rightern edge
 	float y0; // bottom edge
@@ -13,7 +13,7 @@ typedef struct BoundingBox {
 
 };
 
-typedef struct Node {
+struct Node {
 	float x0; // leftern edge
 	float x1; // rightern edge
 	float y0; // bottom edge
@@ -24,14 +24,11 @@ typedef struct Node {
 
 class Quadtree {
 	private:
-	std::vector<std::reference_wrapper<struct capsule&>> Object_List;
-	std::vector<Node> nodelist;
-	int level;
 
-	public:
-	Quadtree() {	
-	
-	};
+	std::vector<std::reference_wrapper<struct capsule&>> Object_List;
+	std::vector<std::vector<Node*>> nodelist;
+	int level;
+	Node bounds;
 
 	Node Nodemake(float x0, float x1, float y0, float y1) {
 		Node knoten;
@@ -43,34 +40,54 @@ class Quadtree {
 		return knoten;
 	};
 
-	void split(Node& level) {
-		int subwidth = level.x1 / 2;
-		int subheight = level.y1 / 2;
+	public:
+
+	Quadtree() {	
+		level = 0;	// amount of divisions
+		Nodemake(0, 100, 0, 100);
+	}
+
+	void split(Node& currentlevel) {
+		level++;
+		int subwidth = currentlevel.x1 / 2;
+		int subheight = currentlevel.y1 / 2;
 		
-		Node* subNode = new Node[4];
-		
+		Node *subNode = new Node[4];
 		// nodes are labelled from 0 to 3 anticlockwise like unit circle
-		subNode[0] = Nodemake(subwidth, level.x1, subheight, level.y1);
-		subNode[1] = Nodemake(level.x0, subwidth, subheight, level.y1);
-		subNode[2] = Nodemake(level.x0, subwidth, level.y0, subheight);
-		subNode[3] = Nodemake(subwidth, level.x1, level.y0, subheight);
+		subNode[0] = Nodemake(subwidth, currentlevel.x1, subheight, currentlevel.y1);
+		subNode[1] = Nodemake(currentlevel.x0, subwidth, subheight, currentlevel.y1);
+		subNode[2] = Nodemake(currentlevel.x0, subwidth, currentlevel.y0, subheight);
+		subNode[3] = Nodemake(subwidth, currentlevel.x1, currentlevel.y0, subheight);
 
 		for (int i = 0; i < 3; i++) {
-			nodelist.push_back(subNode[i]);
+			nodelist.push_back[level][subNode[i]];
 		}
 
 	}
 
-	void EntityCheck() {
+	int getIndex(capsule& hitbox) {
+		int index;
+
+		// if the hitbox fits in 0 quadrant
+		if (hitbox.x < x0) {
+
+		}
 
 	}
 
-	void NodeSetup() {
-		// idk the min and max range for x and y coord values this is placeholder
-		Nodemake(0, 100, 0, 100);
-			
-			
+	bool EntityCheck() {
 
+
+
+		// if there are more than 5 entities in the node
+		if () {
+
+			return true;
+		}
+		// if there are less than 5 entities in the node
+		else {
+			return false;
+		}
 	}
 
 
@@ -78,9 +95,9 @@ class Quadtree {
 
 	//clears the quadtree of all nodes and objects 
 	~Quadtree() {
-		for (int i = 0; i < nodelist.size; i++) {
-			if (nodelist[i] != NULL) {
-				nodelist[i] = NULL;
+		for (level; level >= 1; level--) {
+			for (int i = 0; i < 4; i++) {
+				nodelist[level][i] = nullptr;
 			}
 		}
 	}
