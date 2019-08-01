@@ -17,6 +17,8 @@ c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error
 c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
   game.cpp
 c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
+  hitbox.cpp
+c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
   input.cpp
 c:\users\jpark\desktop\hackerman\prototype_201\src\__common.hpp(19): fatal error C1189: #error: 	Not x86
   input_system.cpp

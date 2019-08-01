@@ -38,7 +38,15 @@ public:
 private:
 	std::vector<std::vector<std::vector<std::reference_wrapper<capsule>>>> object_list;
 	std::vector<std::vector<node>> nodelist;
-	int		level;
+	std::vector<std::vector<int>> subnode_num;
+	int		level = 0;
+	int	add_subnodes(int current_level) {
+		for (int i = 1; i < 5; i++)
+		{
+			subnode_num[current_level].push_back(i);
+		}
+	}
+	int		maxobj = 8;
 	node	bounds; // boundary of the current node
 
 	node	nodemake(float x0, float x1, float y0, float y1)
@@ -51,88 +59,11 @@ private:
 		return bounds;
 	};
 public:
-	quadtree()
-	{
-		level = 0; // amount of divisions
-		nodemake(0, 100, 0, 100); // whatever the min and max x and y coords of the entire screen are
-		split();
-	}
-	~quadtree()
-	{
-		for (level; level >= 1; level--)
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				// TODO: fix this shit retard
-//				nodelist.erase[level][i];
-			}
-		}
-		nodelist.clear(); // is this just what I did above but better?
-	}
-
-	void	split()
-	{
-		level++;
-		std::unique_ptr<node[]> sub_node = std::make_unique<node[]>(4);
-
-		sub_node[0] = nodemake(bounds.subwidth(), bounds.x1, bounds.subheight(), bounds.y1);
-		sub_node[1] = nodemake(bounds.x0, bounds.subwidth(), bounds.subheight(), bounds.y1);
-		sub_node[2] = nodemake(bounds.x0, bounds.subwidth(), bounds.y0, bounds.subheight());
-		sub_node[3] = nodemake(bounds.subwidth(), bounds.x1, bounds.y0, bounds.subheight());
-
-		for (int i = 0; i < 4; i++)
-		{
-			// TODO: fix
-//			nodelist.push_back[level][subNode[i]];
-		}
-	}
-
-	int get_index(capsule& hitbox, node& currentnode) {
-		int index = -1; // -1 means it doesnt fit in any subnode and belongs to parent node
-
-		if (hitbox.right() < currentnode.subwidth())
-		{
-			if (hitbox.top() < currentnode.subheight())
-			{
-				index = 2; 
-			}
-			else if (hitbox.bottom() > currentnode.subheight())
-			{
-				index = 1;
-			}
-		}
-		else if (hitbox.left() > currentnode.subwidth())
-		{
-			if (hitbox.top() < currentnode.subheight())
-			{
-				index = 3;
-			}
-			else if (hitbox.bottom() > currentnode.subheight())
-			{
-				index = 0;
-			}
-		}
-		return index;
-	}
-
-	// need to figure out how to use collision manager to pass in hitboxes
-	void	insert(capsule& hitbox)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			int index; //= getIndex( /* */, nodelist[1][i]);
-			// TODO: dawg both of these ifs check the same thing retard
-			if (index == i)
-			{
-				// TODO: fix this
-//				object_list.push_back[1][i][hitbox];
-			}
-			if (index == i)
-			{
-				return;
-			}
-		}
-	}
+	quadtree() { }
+	~quadtree() { }
+	void	split(node& currentbound) {	}
+	int get_index(capsule& hitbox, node& currentnode) { }
+	void	insert(capsule& hitbox) { }
 };
 
 
