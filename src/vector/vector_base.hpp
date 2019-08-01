@@ -114,7 +114,7 @@ public:
 	constexpr size_type	data_size() const noexcept	{ return __data.data_size(); }
 
 	inline __attribute__((always_inline))
-	value_type	length() const
+	value_type	norm() const
 	{
 		value_type	sum = 0;
 		for (const auto& i : __data)
@@ -128,12 +128,12 @@ public:
 	self_type	normalized() const
 	{
 		if (!*this) throw divide_by_zero("Cannot normalize zero vector");
-		return	(*this / length());
+		return	(*this / norm());
 	}
 	inline __attribute__((always_inline))
 	void	normalize()
 	{
-		*this /= length();
+		*this /= norm();
 	}
 	inline __attribute__((always_inline))
 	void	project(const_self_reference normal)
@@ -324,7 +324,7 @@ value_type	distance(const vector<value_type, dim>& one, const vector<value_type,
 {
 	vector<value_type, dim>	result;
 	result = one - two;
-	return result.length();
+	return result.norm();
 }
 template	<typename value_type, size_t dim>
 value_type angle(const vector<value_type, dim>& one, const vector<value_type, dim>& two)

@@ -42,7 +42,7 @@ public:
 	}
 	value_type&	x = __base::at(0);
 	value_type&	y = __base::at(1);
-	value_type&	z = __base::at(3);
+	value_type&	z = __base::at(2);
 };
 
 template	<typename value_type>

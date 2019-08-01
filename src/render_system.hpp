@@ -12,12 +12,15 @@ class	render_system : public system
 {
 public:
 	using __base = system;
+public:
+	const static std::unordered_map<std::string, std::unordered_map<std::string, std::pair<uint32_t, vector_2>>> flipbooks;
+	std::unordered_map<std::string, SDL_Texture*>	textures;
 protected:
 	SDL_Renderer*	__sdl_renderer = nullptr;
 protected:
 	void	load_sprite(SDL_Texture*&, const std::string&);
-	void	load_flipbook(sprite_flipbook&, const std::string&);
-	void	render_sprite(SDL_Texture*, SDL_Rect*);
+	void	load_flipbook(render_component&, const std::string&, float, uint32_t, vector_2);
+	void	render_sprite(SDL_Texture*, SDL_Rect*, vector_2);
 	void	render_flipbook(class entity&, sprite_flipbook&, SDL_Rect*);
 public:
 	render_system(class world& world) : __base(world)

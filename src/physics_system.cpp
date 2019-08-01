@@ -17,11 +17,11 @@ void	physics_system::update()
 	{
 		auto&	transform = entity.second.get().component<transform_component>();
 		auto&	collision = entity.second.get().component<collision_component>();
-		if (transform.velocity.length() <= transform.max_speed)
+		if (transform.velocity.norm() < transform.max_speed)
 			transform.velocity += transform.acceleration;
 		transform.position += transform.velocity;
 		transform.velocity *= 0.5f;
-		if (transform.velocity.length() < 1.0f)
+		if (transform.velocity.norm() < 1.0f)
 			transform.velocity = vector_3(0.0f, 0.0f, 0.0f);
 	}
 }

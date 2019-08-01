@@ -38,15 +38,8 @@ public:
 public:
 	render_component(class entity& entity) : __base(entity) {  }
 	virtual ~render_component() = default;
-	template	<typename ... types>
-	void	add_flipbook(const std::string& name, types&& ... args)
-	{
-		flipbooks.emplace(name, sprite_flipbook(name, std::forward<types>(args)...));
-	}
-	void	remove_flipbook(const std::string& name)
-	{
-		flipbooks.erase(name);
-	}
+	void	add_flipbook(const std::string&, float, uint32_t, vector_2);
+	void	remove_flipbook(const std::string& name);
 };
 
 

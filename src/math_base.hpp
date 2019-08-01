@@ -65,7 +65,14 @@ inline __attribute__((always_inline))
 constexpr std::enable_if_t<std::is_floating_point_v<value_type>, bool>
 equal(value_type __a, value_type __b, value_type threshold) noexcept
 {
-	return (std::abs(__a - __b) <= threshold);
+	return (std::abs(__a - __b) < threshold);
+}
+template	<typename value_type>
+inline __attribute__((always_inline))
+constexpr std::enable_if_t<std::is_floating_point_v<value_type>, value_type>
+distance(value_type __a, value_type __b) noexcept
+{
+	return std::hypot(__a, __b);
 }
 
 class	divide_by_zero : public std::domain_error

@@ -12,6 +12,15 @@ __begin_ns_td
 
 component::~component() = default;
 
+void	render_component::add_flipbook(const std::string& name, float fps, uint32_t frames, vector_2 origin)
+{
+	flipbooks.emplace(name, sprite_flipbook(__base::entity.name(), name, fps, frames, origin));
+}
+void	render_component::remove_flipbook(const std::string& name)
+{
+	flipbooks.erase(name);
+}
+
 void	input_component::add_mapping(state state, keycode code, modifier modifier = modifier::NONE)
 {
 	for (auto& mapping : key_mappings)

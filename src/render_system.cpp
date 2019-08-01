@@ -9,6 +9,17 @@
 
 __begin_ns_td
 
+const std::unordered_map<std::string, std::unordered_map<std::string, std::pair<uint32_t, vector_2>>>	render_system::flipbooks =
+{
+	{ "player",
+		{
+			{ "idle", std::make_pair(24, vector_2(0, 4952)) },
+			{ "right", std::make_pair(45, vector_2(0, 5085)) },
+		}
+		
+	},
+};
+
 void	render_system::start()
 {
 	world.event_bus.subscribe(*this, &render_system::on_animation_event);
@@ -20,26 +31,9 @@ void	render_system::start(class window& window)
 	if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
 		throw sdl_error("Failed to load SDL Image libraries");
 }
-void	render_system::load_sprite(SDL_Texture*& texture, const std::string& path)
+void	render_system::load_flipbook(render_component& render, const std::string& name, float fps, uint32_t frames, vector_2 origin)
 {
-	texture = IMG_LoadTexture(__sdl_renderer, path.c_str());
-	if (!texture)
-		throw sdl_error("Failed to load texture");
-}
-void	render_system::load_flipbook(sprite_flipbook& flipbook, const std::string& path)
-{
-	directory	__directory(directory::mode::read_only, path);
-	__directory.read();
-	
-	for (uint32_t i = 0; i < __directory.entries().size(); ++i)
-	{
-		flipbook.paths.push_back(__directory.path() + std::to_string(i) + ".png");
-	}
-	for (auto& path : flipbook.paths)
-	{
-		flipbook.textures.emplace_back(nullptr);
-		load_sprite(flipbook.textures.back(), path);
-	}
+	render.add_flipbook(name, fps, frames, origin);
 }
 
 void	render_system::load(const std::string& path)
@@ -50,30 +44,32 @@ void	render_system::load(const std::string& path)
 	for (auto& entity : __registered_entities)
 	{
 		auto&	render = entity.second.get().component<render_component>();
-		directory	__directory(directory::mode::read_only, __path + entity.second.get().name());
-		__directory.read();
-		for (auto& entry : __directory.entries())
+		auto&	name = entity.second.get().name();
+		textures.emplace(name, IMG_LoadTexture(__sdl_renderer, (__path + name + ".png").c_str()));
+		if (!textures.at(name))
+			throw sdl_error("Failed to load texture");
+		for (auto& flipbook : flipbooks.at(name))
 		{
-			if (directory::is_directory(__directory.path() + entry))
-			{
-				// TODO: change framerate
-				render.add_flipbook(entry, 4.0f);
-				load_flipbook(render.flipbooks.at(entry), __directory.path() + entry);
-			}
+			load_flipbook(render, flipbook.first, 12.0f, flipbook.second.first, flipbook.second.second);
 		}
 	}
 }
 
-void	render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect)
+void	render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect, vector_2 location)
 {
 	SDL_Point	center = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
-	if (SDL_RenderCopyEx(__sdl_renderer, texture, nullptr, rect, 0.0, &center, SDL_FLIP_NONE))
+	SDL_Rect	srcrect = { int(location.x), int(location.y), rect->w, rect->h };
+	if (SDL_RenderCopyEx(__sdl_renderer, texture, &srcrect, rect, 0.0, &center, SDL_FLIP_NONE))
 		throw sdl_error("Failed to render texture");
+	// TODO: this is for debugging
+	SDL_SetRenderDrawColor(__sdl_renderer, 0, 255, 0, 255);
+	SDL_Rect	center_rect = { center.x - 2, center.y - 2, 4, 4 };
+	SDL_RenderFillRect(__sdl_renderer, &center_rect);
 }
 
 void	render_system::render_flipbook(class entity& entity, sprite_flipbook& flipbook, SDL_Rect* rect)
 {
-	render_sprite(flipbook.textures.at(flipbook.index), rect);
+	render_sprite(textures.at(entity.name()), rect, flipbook.origin + vector_2(rect->w * flipbook.index, 0.0f));
 	++flipbook.framec %= flipbook.frame_delay();
 	if (!flipbook.framec)
 		++flipbook.index %= flipbook.frames();
@@ -98,6 +94,7 @@ void	render_system::render()
 		auto&	transform = entity.second.get().component<transform_component>();
 		render.rect.x = transform.position.x;
 		render.rect.y = transform.position.y;
+		std::cout << render.flipbooks.at(render.name).origin << std::endl;
 		render_flipbook(entity.second.get(), render.flipbooks.at(render.name), &(render.rect));
 	}
 	// Hey this is IMPORTANT!
