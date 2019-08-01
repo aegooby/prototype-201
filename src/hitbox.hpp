@@ -12,8 +12,6 @@ struct	circle : public hitbox
 public:
 	vector_2	center = vector_2();
 	float		radius = 0.0f;
-	float&		x = center.x;
-	float&		y = center.y;
 public:
 	circle() = default;
 	circle(vector_2 center, float radius) : center(center), radius(radius) {  }

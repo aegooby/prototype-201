@@ -9,12 +9,13 @@
 
 __begin_ns_td
 
-const std::unordered_map<std::string, std::unordered_map<std::string, std::pair<uint32_t, vector_2>>>	render_system::flipbooks =
+const std::unordered_map<std::string, std::unordered_map<std::string, sprite_info>>	render_system::flipbooks =
 {
 	{ "player",
 		{
-			{ "idle", std::make_pair(24, vector_2(0, 4952)) },
-			{ "right", std::make_pair(45, vector_2(0, 5085)) },
+			{ "idle", sprite_info(26, point_2(0, 559), 128, 128) },
+			{ "right", sprite_info(45, point_2(0, 5085), 160, 132) },
+			{ "left", sprite_info(45, point_2(0, 6072), 160, 132) },
 		}
 		
 	},
@@ -31,9 +32,9 @@ void	render_system::start(class window& window)
 	if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
 		throw sdl_error("Failed to load SDL Image libraries");
 }
-void	render_system::load_flipbook(render_component& render, const std::string& name, float fps, uint32_t frames, vector_2 origin)
+void	render_system::load_flipbook(render_component& render, const std::string& name, float fps, const sprite_info& info)
 {
-	render.add_flipbook(name, fps, frames, origin);
+	render.add_flipbook(name, fps, info);
 }
 
 void	render_system::load(const std::string& path)
@@ -50,12 +51,12 @@ void	render_system::load(const std::string& path)
 			throw sdl_error("Failed to load texture");
 		for (auto& flipbook : flipbooks.at(name))
 		{
-			load_flipbook(render, flipbook.first, 12.0f, flipbook.second.first, flipbook.second.second);
+			load_flipbook(render, flipbook.first, 20.0f, flipbook.second);
 		}
 	}
 }
 
-void	render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect, vector_2 location)
+void	render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect, const point_2& location)
 {
 	SDL_Point	center = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
 	SDL_Rect	srcrect = { int(location.x), int(location.y), rect->w, rect->h };
@@ -69,13 +70,13 @@ void	render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect, vector_2
 
 void	render_system::render_flipbook(class entity& entity, sprite_flipbook& flipbook, SDL_Rect* rect)
 {
-	render_sprite(textures.at(entity.name()), rect, flipbook.origin + vector_2(rect->w * flipbook.index, 0.0f));
+	render_sprite(textures.at(entity.name()), rect, flipbook.info.origin + point_2(rect->w * flipbook.index, 0.0f));
 	++flipbook.framec %= flipbook.frame_delay();
 	if (!flipbook.framec)
 		++flipbook.index %= flipbook.frames();
 	if (!flipbook.index && flipbook.frames() > 1 && flipbook.name() != "idle")
 	{
-		std::cout << "complete(" << flipbook.name() << ")" << std::endl;
+//		std::cout << "complete(" << flipbook.name() << ")" << std::endl;
 		world.event_bus.publish<animation_complete_event>(entity, flipbook.name());
 	}
 }
@@ -94,7 +95,8 @@ void	render_system::render()
 		auto&	transform = entity.second.get().component<transform_component>();
 		render.rect.x = transform.position.x;
 		render.rect.y = transform.position.y;
-		std::cout << render.flipbooks.at(render.name).origin << std::endl;
+		render.rect.w = render.flipbooks.at(render.name).info.width;
+		render.rect.h = render.flipbooks.at(render.name).info.height;
 		render_flipbook(entity.second.get(), render.flipbooks.at(render.name), &(render.rect));
 	}
 	// Hey this is IMPORTANT!

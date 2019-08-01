@@ -11,7 +11,7 @@ template	<typename value_type, size_t dim>
 class	vector;
 
 template	<typename value_type, size_t dim>
-class	vertex;
+class	point;
 
 template	<typename value_type, size_t __size>
 class	st_array;
@@ -54,5 +54,7 @@ class	render_manager;
 class	transform_manager;
 class	collision_manager;
 class	system_flag;
+
+struct	sprite_info;
 
 __end_ns_td

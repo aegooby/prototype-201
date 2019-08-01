@@ -78,28 +78,28 @@ public:
 	{
 		if (index >= dim)
 			throw std::out_of_range("td::vector::at: Element is out of range");
-		return __data[index];
+		return __data.at(index);
 	}
 	inline __attribute__((always_inline))
 	constexpr const_reference	at(size_type index) const
 	{
 		if (index >= dim)
 			throw std::out_of_range("td::vector::at: Element is out of range");
-		return __data[index];
+		return __data.at(index);
 	}
 	inline __attribute__((always_inline))
 	constexpr reference		operator [](size_type index)
 	{
 		if (index >= dim)
 			throw std::out_of_range("td::vector::at: Element is out of range");
-		return __data[index];
+		return __data.at(index);
 	}
 	inline __attribute__((always_inline))
 	constexpr const_reference	operator [](size_type index) const
 	{
 		if (index >= dim)
 			throw std::out_of_range("td::vector::at: Element is out of range");
-		return __data[index];
+		return __data.at(index);
 	}
 	inline __attribute__((always_inline))
 	auto&	array()	{ return __data; }
@@ -159,13 +159,23 @@ public:
 		if (!*this) throw divide_by_zero("Cannot reflect zero vector");
 		return reflection(*this, normal);
 	}
+	inline __attribute__((always_inline))
+	value_type	dot(const_self_reference other)
+	{
+		value_type	result = 0;
+		for (size_t i = 0; i < dim; ++i)
+		{
+			result += (at(i) * other.at(i));
+		}
+		return result;
+	}
 	
 	inline __attribute__((always_inline))
 	self_reference	operator +=(const_self_reference other)
 	{
 		for (size_type i = 0; i < dim; ++i)
 		{
-			__data[i] += other.__data[i];
+			__data.at(i) += other.__data.at(i);
 		}
 		return *this;
 	}
@@ -174,7 +184,7 @@ public:
 	{
 		for (size_type i = 0; i < dim; ++i)
 		{
-			__data[i] -= other.__data[i];
+			__data.at(i) -= other.__data.at(i);
 		}
 		return *this;
 	}
@@ -224,6 +234,37 @@ public:
 	bool	operator !() const
 	{
 		return !(bool(this));
+	}
+};
+
+template	<typename vtype, size_t dim>
+class	vector : public __vector_private::__vector_base<vtype, dim>
+{
+public:
+	using __base = __vector_private::__vector_base<vtype, dim>;
+	using value_type = typename __base::value_type;
+	using reference = typename __base::reference;
+	using const_reference = typename __base::const_reference;
+	using array_type = typename __base::array_type;
+	using array_reference = typename __base::array_reference;
+	using const_array_reference = typename __base::const_array_reference;
+	using self_type = vector<value_type, dim>;
+	using const_self_type = const vector<value_type, dim>;
+	using self_reference = vector<value_type, dim>&;
+	using const_self_reference = const vector<value_type, dim>&;
+	using size_type = typename __base::size_type;
+public:
+	constexpr vector() = default;
+	template	<typename ... types>
+	constexpr vector(types&& ... args) : __base(std::forward<types>(args)...) {  }
+	vector(const std::initializer_list<value_type>& list) : __base(list) {  }
+	inline __attribute__((always_inline))
+	self_reference operator =(const std::initializer_list<value_type>& list)
+	{
+		if (list.size() > dim)
+			throw std::overflow_error("td::vector: Initializer list is larger than vector size");
+		__base::__data = list;
+		return *this;
 	}
 };
 
@@ -282,7 +323,7 @@ bool	operator ==(const vector<value_type, dim>& one, const vector<value_type, di
 {
 	for (size_t i = 0; i < dim; ++i)
 	{
-		if (one[i] != two[i])
+		if (one.at(i) != two.at(i))
 		{
 			return false;
 		}
@@ -312,12 +353,7 @@ template	<typename value_type, size_t dim>
 value_type
 dot(const vector<value_type, dim>& one, const vector<value_type, dim>& two)
 {
-	value_type	result = 0;
-	for (size_t i = 0; i < dim; ++i)
-	{
-		result += (one[i] * two[i]);
-	}
-	return result;
+	return one.dot(two);
 }
 template	<typename value_type, size_t dim>
 value_type	distance(const vector<value_type, dim>& one, const vector<value_type, dim>& two)
@@ -330,7 +366,7 @@ template	<typename value_type, size_t dim>
 value_type angle(const vector<value_type, dim>& one, const vector<value_type, dim>& two)
 {
 	if (!one || !two) throw divide_by_zero("Cannot find angle for zero vector(s)");
-	return acos(dot(one, two) / (one.length() * two.length()));
+	return acos(dot(one, two) / (one.norm() * two.norm()));
 }
 
 template	<typename value_type, size_t dim>

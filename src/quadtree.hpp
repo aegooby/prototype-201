@@ -59,11 +59,11 @@ private:
 		return bounds;
 	};
 public:
-	quadtree() { }
-	~quadtree() { }
-	void	split(node& currentbound) {	}
-	int get_index(capsule& hitbox, node& currentnode) { }
-	void	insert(capsule& hitbox) { }
+	quadtree();
+	~quadtree();
+	void	split(node& currentbound);
+	int get_index(capsule& hitbox, node& currentnode);
+	void	insert(capsule& hitbox);
 };
 
 

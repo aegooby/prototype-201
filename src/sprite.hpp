@@ -2,6 +2,7 @@
 #pragma	once
 #include	"__common.hpp"
 #include	"render_system.hpp"
+#include	"point.hpp"
 #include	<unordered_map>
 #include	<vector>
 
@@ -14,6 +15,16 @@ public:
 	static const	std::unordered_map<std::string, state>	states;
 };
 
+struct	sprite_info
+{
+	const uint32_t	frames;
+	const point_2	origin;
+	const uint32_t	width;
+	const uint32_t	height;
+	sprite_info(uint32_t frames, const point_2& origin, uint32_t width, uint32_t height) : frames(frames), origin(origin), width(width), height(height) {  }
+	~sprite_info() = default;
+};
+
 class	sprite_flipbook
 {
 public:
@@ -23,16 +34,15 @@ protected:
 	const std::string	__entity_name;
 	const std::string	__name;
 	float				__fps = 0;
-	const uint32_t		__frames;
 public:
-	const vector_2		origin;
+	const sprite_info	info;
 public:
-	sprite_flipbook(const std::string& entity_name, const std::string& name, float fps, uint32_t frames, vector_2 origin) : __entity_name(entity_name), __name(name), __fps(fps), __frames(frames), origin(origin)
+	sprite_flipbook(const std::string& entity_name, const std::string& name, float fps, const sprite_info& info) : __entity_name(entity_name), __name(name), __fps(fps), info(info)
 	{
 		if (__fps <= 0 || __fps > float(global::game_fps))
 			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + this->name());
 	}
-	sprite_flipbook(sprite_flipbook&& other) : __entity_name(other.__entity_name), __name(other.__name), __fps(other.__fps), __frames(other.__frames), origin(other.origin)
+	sprite_flipbook(sprite_flipbook&& other) : __entity_name(other.__entity_name), __name(other.__name), __fps(other.__fps), info(other.info)
 	{
 		
 	}
@@ -72,7 +82,7 @@ public:
 	inline __attribute__((always_inline))
 	size_t	frames() const
 	{
-		return __frames;
+		return info.frames;
 	}
 	inline __attribute__((always_inline))
 	float	seconds() const

@@ -3,6 +3,7 @@
 #include	"__common.hpp"
 #include	"sprite.hpp"
 #include	"vector.hpp"
+#include	"point.hpp"
 #include	"ecs_common.hpp"
 #include	"hitbox.hpp"
 #include	<map>
@@ -38,7 +39,7 @@ public:
 public:
 	render_component(class entity& entity) : __base(entity) {  }
 	virtual ~render_component() = default;
-	void	add_flipbook(const std::string&, float, uint32_t, vector_2);
+	void	add_flipbook(const std::string&, float, const sprite_info&);
 	void	remove_flipbook(const std::string& name);
 };
 
