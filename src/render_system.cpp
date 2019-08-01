@@ -42,13 +42,17 @@ void	render_system::load(const std::string& path)
 	std::string	__path = path;
 	if (__path.back() != TD_DIRECTORY_SLASH)
 		__path += TD_DIRECTORY_SLASH;
+	for (auto& entity_type : flipbooks)
+	{
+		auto&	name = entity_type.first;
+		textures.emplace(name, IMG_LoadTexture(__sdl_renderer, (__path + name + ".png").c_str()));
+		if (!textures.at(name))
+			throw sdl_error("Failed to load texture");
+	}
 	for (auto& entity : __registered_entities)
 	{
 		auto&	render = entity.second.get().component<render_component>();
 		auto&	name = entity.second.get().name();
-		textures.emplace(name, IMG_LoadTexture(__sdl_renderer, (__path + name + ".png").c_str()));
-		if (!textures.at(name))
-			throw sdl_error("Failed to load texture");
 		for (auto& flipbook : flipbooks.at(name))
 		{
 			load_flipbook(render, flipbook.first, 20.0f, flipbook.second);
