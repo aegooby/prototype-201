@@ -16,6 +16,7 @@ const std::unordered_map<std::string, std::unordered_map<std::string, sprite_inf
 			{ "idle", sprite_info(26, point_2(0, 559), 128, 128) },
 			{ "right", sprite_info(45, point_2(0, 5085), 160, 132) },
 			{ "left", sprite_info(45, point_2(0, 6072), 160, 132) },
+			{ "up_right", sprite_info(45, point_2(0, 6072), 160, 132) },
 		}
 		
 	},

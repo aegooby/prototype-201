@@ -7,6 +7,35 @@
 #include	"sprite.hpp"
 
 __begin_ns_td
+void	input_system::on_down(class entity& entity, enum state state)
+{
+	switch (state)
+	{
+		case state::right:
+			world.event_bus.publish<acceleration_event>(entity, vector_3(2.0f, 0.0f, 0.0f), acceleration_event::mode::mod);
+			break;
+		case state::left:
+			world.event_bus.publish<acceleration_event>(entity, vector_3(-2.0f, 0.0f, 0.0f), acceleration_event::mode::mod);
+			break;
+		case state::attack:
+			world.event_bus.publish<acceleration_event>(entity, vector_3(0.0f, 0.0f, 0.0f), acceleration_event::mode::set);
+			break;
+		default:
+			break;
+	}
+}
+void	input_system::on_up(class entity& entity, enum state state)
+{
+	switch (state)
+	{
+		case state::right: case state::left:
+			world.event_bus.publish<animation_complete_event>(entity, sprite::names.at(state));
+			world.event_bus.publish<acceleration_event>(entity, vector_3(0.0f, 0.0f, 0.0f), acceleration_event::mode::set);
+			break;
+		default:
+			break;
+	}
+}
 
 void	input_system::start()
 {
@@ -26,32 +55,11 @@ void	input_system::update()
 			{
 				state.state = mapping.first;
 				world.event_bus.publish<animation_event>(entity.second.get(), sprite::names.at(state.state));
-				switch (state.state)
-				{
-					case state::right:
-						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(2.0f, 0.0f, 0.0f));
-						break;
-					case state::left:
-						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(-2.0f, 0.0f, 0.0f));
-						break;
-					case state::attack:
-						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(0.0f, 0.0f, 0.0f));
-						break;
-					default:
-						break;
-				}
+				on_down(entity.second.get(), state.state);
 			}
 			if (keyboard.up(mapping.second.first) && state.state == mapping.first)
 			{
-				switch (state.state)
-				{
-					case state::right: case state::left:
-						world.event_bus.publish<animation_complete_event>(entity.second.get(), sprite::names.at(state.state));
-						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(0.0f, 0.0f, 0.0f));
-						break;
-					default:
-						break;
-				}
+				on_up(entity.second.get(), state.state);
 			}
 		}
 		for (auto& mapping : input.mouse_mappings)
@@ -60,31 +68,11 @@ void	input_system::update()
 			{
 				state.state = mapping.first;
 				world.event_bus.publish<animation_event>(entity.second.get(), sprite::names.at(state.state));
-				switch (state.state)
-				{
-					case state::right:
-						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(2.0f, 0.0f, 0.0f));
-						break;
-					case state::left:
-						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(-2.0f, 0.0f, 0.0f));
-						break;
-					case state::attack:
-						world.event_bus.publish<acceleration_event>(entity.second.get(), vector_3(0.0f, 0.0f, 0.0f));
-						break;
-					default:
-						break;
-				}
+				on_down(entity.second.get(), state.state);
 			}
 			if (mouse.up(mapping.second.first) && state.state == mapping.first)
 			{
-				switch (state.state)
-				{
-					case state::right: case state::left:
-						world.event_bus.publish<animation_complete_event>(entity.second.get(), sprite::names.at(state.state));
-						break;
-					default:
-						break;
-				}
+				on_up(entity.second.get(), state.state);
 			}
 		}
 	}

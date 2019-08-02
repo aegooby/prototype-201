@@ -49,10 +49,16 @@ public:
 class	acceleration_event : public event
 {
 public:
+	enum class	mode
+	{
+		mod,
+		set,
+	};
 	class entity&	entity;
 	vector_3		acceleration;
+	mode			mode;
 public:
-	acceleration_event(class entity& entity, vector_3 acceleration) : entity(entity), acceleration(acceleration) {  }
+	acceleration_event(class entity& entity, vector_3 acceleration, enum mode mode) : entity(entity), acceleration(acceleration), mode(mode) {  }
 	virtual ~acceleration_event() = default;
 };
 

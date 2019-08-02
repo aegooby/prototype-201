@@ -3,13 +3,9 @@
 #include	"__common.hpp"
 #include	"array.hpp"
 #include	"vector.hpp"
-#include	"input_enum.hpp"
+#include	"key.hpp"
 
 __begin_ns_td
-
-KEY_ENUM();
-MODIFIER_ENUM();
-MOUSE_ENUM();
 
 class	input
 {
@@ -60,6 +56,72 @@ public:
 	bool	up(keycode code) const
 	{
 		return __up.at(size_t(code));
+	}
+	inline __attribute__((always_inline))
+	bool	scan(const std::unique_ptr<key>& code) const
+	{
+		auto	ptr = code.get();
+		if (typeid(*ptr) == typeid(single_key))
+		{
+			return scan(static_cast<single_key*>(ptr)->code);
+		}
+		else if (typeid(*ptr) == typeid(multi_key))
+		{
+			for (auto& key : static_cast<multi_key*>(ptr)->codes)
+			{
+				if (!scan(key))
+					return false;
+			}
+			return true;
+		}
+		else
+			throw std::runtime_error("Invalid typeid");
+	}
+	inline __attribute__((always_inline))
+	bool	down(const std::unique_ptr<key>& code) const
+	{
+		auto	ptr = code.get();
+		if (typeid(*ptr) == typeid(single_key))
+		{
+			return down(static_cast<single_key*>(ptr)->code);
+		}
+		else if (typeid(*ptr) == typeid(multi_key))
+		{
+			size_t	scan_count = 0, down_count = 0, size = static_cast<multi_key*>(ptr)->codes.size();
+			for (auto& key : static_cast<multi_key*>(ptr)->codes)
+			{
+				if (scan(key) && !down(key))
+					++scan_count;
+				if (down(key))
+					++down_count;
+			}
+			return (scan_count + down_count == size && scan_count < size);
+		}
+		else
+			throw std::runtime_error("Invalid typeid");
+	}
+	inline __attribute__((always_inline))
+	bool	up(const std::unique_ptr<key>& code) const
+	{
+		auto	ptr = code.get();
+		if (typeid(*ptr) == typeid(single_key))
+		{
+			return up(static_cast<single_key*>(ptr)->code);
+		}
+		else if (typeid(*ptr) == typeid(multi_key))
+		{
+			size_t	scan_count = 0, up_count = 0, size = static_cast<multi_key*>(ptr)->codes.size();
+			for (auto& key : static_cast<multi_key*>(ptr)->codes)
+			{
+				if (scan(key))
+					++scan_count;
+				if (up(key))
+					++up_count;
+			}
+			return (scan_count + up_count == size && scan_count < size);
+		}
+		else
+			throw std::runtime_error("Invalid typeid");
 	}
 	inline __attribute__((always_inline))
 	void	scan(keycode code, bool value)

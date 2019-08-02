@@ -32,7 +32,17 @@ void	physics_system::on_collision_event(collision_event& event)
 void	physics_system::on_acceleration_event(acceleration_event& event)
 {
 	auto&	transform = event.entity.component<transform_component>();
-	transform.acceleration = event.acceleration;
+	switch (event.mode)
+	{
+		case acceleration_event::mode::mod:
+			transform.acceleration += event.acceleration;
+			break;
+		case acceleration_event::mode::set:
+			transform.acceleration = event.acceleration;
+			break;
+		default:
+			break;
+	}
 }
 
 __end_ns_td
