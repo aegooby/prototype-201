@@ -14,7 +14,7 @@ struct	bounding_box
 	float	x1; // rightern edge
 	float	y0; // bottom edge
 	float	y1; // top edge
-};
+} current_box;
 
 class	quadtree
 {
@@ -39,8 +39,9 @@ private:
 	std::vector<std::vector<std::vector<std::reference_wrapper<capsule>>>> object_list;
 	std::vector<std::vector<node>> nodelist;
 	std::vector<std::vector<int>> subnode_num;
+	Node Basisknoten;
 	int		level = 0;
-	int	add_subnodes(int current_level) {
+	void	add_subnodes(int current_level) {
 		for (int i = 1; i < 5; i++)
 		{
 			subnode_num[current_level].push_back(i);
@@ -59,11 +60,13 @@ private:
 		return bounds;
 	};
 public:
-	quadtree() { };
-	~quadtree() { };
-	void	split(node& currentbound) { };
-	int get_index(capsule& hitbox, node& currentnode) { };
-	void	insert(capsule& hitbox) { };
+	quadtree();
+	~quadtree();
+	void	split(node& currentbound);
+	int		get_index(hitbox& hitbox, node& currentnode);
+	void	insert(hitbox& hitbox);
+	void	recursive_insert(hitbox& hitbox);
+	void	collisioncheck(hitbox& hitbox);
 };
 
 
