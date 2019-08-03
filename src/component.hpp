@@ -73,7 +73,7 @@ class	collision_component : public physics_component
 public:
 	using __base = physics_component;
 public:
-	capsule	hitbox;
+	circle	hitbox;
 public:
 	collision_component(class entity& entity) : __base(entity) {  }
 	virtual ~collision_component() = default;

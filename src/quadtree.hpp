@@ -27,14 +27,14 @@ public:
 		}
 	};
 private:
-	std::vector<std::vector<std::vector<std::reference_wrapper<hitbox>>>> object_list;
-	std::vector<std::vector<std::vector<std::reference_wrapper<hitbox>>>> anal_list;
-	std::vector<std::vector<node>> nodelist;
-	std::vector<std::vector<int>> subnode_num;
+	std::vector<std::vector<std::vector<std::reference_wrapper<circle>>>>	object_list;
+	std::vector<std::vector<std::vector<std::reference_wrapper<circle>>>>	anal_list;
+	std::vector<std::vector<node>>	nodelist;
+	std::vector<std::vector<int>>	subnode_num;
 	std::pair<int, int> level_subnode;
-	int index;
+	int	index;
 
-	Node Basisknoten;
+	node	Basisknoten;
 	int		level = 0;
 	void	add_subnodes(int current_level) {
 		for (int i = 1; i < 5; i++)
@@ -60,13 +60,12 @@ public:
 	quadtree();
 	~quadtree();
 	void	split(node& currentbound);
-	int		get_index(hitbox& hitbox, node& currentnode);
-	void	insert(hitbox& hitbox);
-	void	recursive_insert(hitbox& hitbox);
-	void	collision_check(hitbox& hitbox);
-	void	anal_check(hitbox& hitbox);
-	void	get_level(hitbox& hitbox);
-	void	get_subnode(hitbox& hitbox);
+	int		get_index(circle& hitbox, node& currentnode);
+	void	insert(circle& hitbox);
+	void	recursive_insert(circle& hitbox, int currentlevel);
+	void	collision_check(circle& hitbox);
+	void	anal_check(circle& hitbox);
+	std::pair<int, int>&	get_levelsubnode(circle& hitbox);
 };
 
 

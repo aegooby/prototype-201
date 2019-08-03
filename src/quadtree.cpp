@@ -1,3 +1,4 @@
+
 #include	"__common.hpp"
 #include	"entity.hpp"
 #include	"component.hpp"
@@ -25,7 +26,7 @@ void	quadtree::split(node& currentbound)
 	}
 }
 
-int	quadtree::get_index(hitbox& hitbox, node& currentnode) {
+int	quadtree::get_index(circle& hitbox, node& currentnode) {
 	
 	if (hitbox.right() < currentnode.subwidth())
 	{
@@ -84,7 +85,7 @@ int	quadtree::get_index(hitbox& hitbox, node& currentnode) {
 }
 
 // need to figure out how to use collision manager to pass in hitboxes
-void	quadtree::insert(hitbox& hitbox)
+void	quadtree::insert(circle& hitbox)
 {
 	for (int i = 0; i < subnode_num[level].size() + 1; i++)
 	{
@@ -110,12 +111,12 @@ void	quadtree::insert(hitbox& hitbox)
 	}
 }
 
-void	quadtree::recursive_insert(hitbox& hitbox, int& currentlevel)
+void	quadtree::recursive_insert(circle& hitbox, int currentlevel)
 {
 	int Kommunismus = currentlevel - 1;
 	if (currentlevel > 1) 
 	{
-		for (int i = 0; i < subnode_num[Kommunismus].size(); i++)
+		for (int i = 0; i < subnode_num.at(Kommunismus).size(); i++)
 		{
 			int index; //= getIndex( /* */, nodelist[1][i]);
 			if (index < 0)
@@ -124,60 +125,61 @@ void	quadtree::recursive_insert(hitbox& hitbox, int& currentlevel)
 			}
 			if (index == i)
 			{
-				object_list[Kommunismus][i].push_back(hitbox);
-				anal_list[Kommunismus][i].push_back(hitbox);
+				object_list.at(Kommunismus).at(i).push_back(hitbox);
+				anal_list.at(Kommunismus).at(i).push_back(hitbox);
 				break;
 			}
 		}
 	}
-	if else (currentlevel == 1) 
+	else if (currentlevel == 1)
 	{
 		object_list[0][0].push_back(hitbox);
 	}
 	
 }
 
-quadtree::get_levelsubnode(hitbox& hitbox)
+std::pair<int, int>&	quadtree::get_levelsubnode(circle& hitbox)
 {
 	for (int j = 1; j < level; j++)
 	{
-		for (int i = 0; i < subnode_num[j].size(); i++)
+		for (int i = 0; i < subnode_num.at(j).size(); i++)
 		{
-			for (int k = 0; k < object_list[j][i].size(); k++)
+			for (int k = 0; k < object_list.at(j).at(i).size(); k++)
 			{
-				if (object_list[j][i][k] == this->hitbox)
+				if (&object_list.at(j).at(i).at(k).get() == &hitbox)
 				{
 					level_subnode.first = j;
 					level_subnode.second = i;
-					return level_subnode&;
+					return level_subnode;
 				}
 			}
 
 		}
 	}
+	throw std::runtime_error("Hitbox not found");
 }
 
-quadtree::collision_check(hitbox& hitbox)
+void	quadtree::collision_check(circle& hitbox)
 {
 	int entity_level = get_levelsubnode(hitbox).first;
 	int entity_subnode = get_levelsubnode(hitbox).second;
-	for (int k = 0; k < object_list[entity_level][entity_subnode].size(); k++)
+	for (int k = 0; k < object_list.at(entity_level).at(entity_subnode).size(); k++)
 	{
-		check_collision(hitbox, object_list[entity_level][entity_subnode][k]);
+		circle::check_collision(hitbox, object_list.at(entity_level).at(entity_subnode).at(k));
 		// check if a certain entity in its own given node collides with any other entities in its node
 	}
 			
 }
 
-quadtree::anal_check(hitbox& hitbox)
+void	quadtree::anal_check(circle& hitbox)
 {
 	for (int j = 1; j < level; j++) 
 	{
-		for (int i = 0; i < subnode_num[j].size(); i++)
+		for (int i = 0; i < subnode_num.at(j).size(); i++)
 		{
-			for (int piece_of_shit = 0; piece_of_shit < anal_list[j].size(); piece_of_shit++)
+			for (int piece_of_shit = 0; piece_of_shit < anal_list.at(j).size(); piece_of_shit++)
 			{
-				int fucko = get_index(anal_list[j][i][piece_of_shit], nodelist[j][i]);
+				int fucko = get_index(anal_list.at(j).at(i).at(piece_of_shit), nodelist.at(j).at(i));
 				if (fucko == -2)
 				{
 					// collision check with entities within its own node and subnode 0 and 1
@@ -213,7 +215,7 @@ quadtree::quadtree()
 {
 	Basisknoten = nodemake(0, 100, 0, 100);
 	// whatever the min and max x and y coords of the entire screen are
-	nodelist[0][0] = Basisknoten;
+	nodelist.at(0).at(0) = Basisknoten;
 	split(Basisknoten);
 
 }
