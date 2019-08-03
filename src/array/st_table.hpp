@@ -7,11 +7,11 @@
 
 __begin_ns_td
 
-template	<typename vtype, size_t rows, size_t columns>
+template	<typename __value_type, size_t rows, size_t columns>
 class	st_table
 {
 public:
-	using value_type = vtype;
+	using value_type = __value_type;
 	using reference = value_type&;
 	using const_reference = const value_type&;
 	using array_reference = st_array<value_type, columns>&;
@@ -31,7 +31,7 @@ public:
 	using const_self_reference = const st_table<value_type, rows, columns>&;
 	using self_rvalue_reference = st_table<value_type, rows, columns>&&;
 
-	template	<typename _vtype, size_t __rows, size_t __cols>
+	template	<typename ___value_type, size_t __rows, size_t __cols>
 	friend class	table;
 	friend class	st_table<value_type, rows, columns>;
 	friend class	st_array<value_type, columns>;

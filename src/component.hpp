@@ -7,6 +7,7 @@
 #include	"ecs_common.hpp"
 #include	"hitbox.hpp"
 #include	"key.hpp"
+#include	"state.hpp"
 #include	<map>
 #include	<unordered_map>
 #include	<vector>
@@ -34,14 +35,13 @@ class	render_component : public component
 public:
 	using __base = component;
 public:
-	std::unordered_map<std::string, sprite_flipbook>	flipbooks;
+	std::unordered_map<class state, sprite_flipbook>	flipbooks;
 	SDL_Rect	rect;
-	std::string	name = "idle";
 public:
 	render_component(class entity& entity) : __base(entity) {  }
 	virtual ~render_component() = default;
-	void	add_flipbook(const std::string&, float, const sprite_info&);
-	void	remove_flipbook(const std::string& name);
+	void	add_flipbook(const class state&, float, const sprite_info&);
+	void	remove_flipbook(const class state&);
 };
 
 
@@ -94,19 +94,19 @@ class	input_component : public component
 public:
 	using __base = component;
 public:
-	std::map<state, std::pair<std::unique_ptr<key>, modifier>>	key_mappings;
-	std::map<state, std::pair<mousecode, modifier>>				mouse_mappings;
+	std::unordered_map<state, std::pair<std::unique_ptr<key>, modifier>>	key_mappings;
+	std::unordered_map<state, std::pair<mousecode, modifier>>				mouse_mappings;
 public:
 	input_component(class entity& entity) : __base(entity)
 	{
-		key_mappings.emplace(state::up, std::make_pair(std::make_unique<single_key>(keycode::W), modifier::NONE));
-		key_mappings.emplace(state::down, std::make_pair(std::make_unique<single_key>(keycode::S), modifier::NONE));
-		key_mappings.emplace(state::left, std::make_pair(std::make_unique<single_key>(keycode::A), modifier::NONE));
-		key_mappings.emplace(state::right, std::make_pair(std::make_unique<single_key>(keycode::D), modifier::NONE));
-		key_mappings.emplace(state::up_right, std::make_pair(std::make_unique<multi_key>(keycode::W, keycode::D), modifier::NONE));
-		key_mappings.emplace(state::up_left, std::make_pair(std::make_unique<multi_key>(keycode::W, keycode::A), modifier::NONE));
-		key_mappings.emplace(state::down_right, std::make_pair(std::make_unique<multi_key>(keycode::S, keycode::D), modifier::NONE));
-		key_mappings.emplace(state::down_left, std::make_pair(std::make_unique<multi_key>(keycode::S, keycode::A), modifier::NONE));
+		key_mappings.emplace(state(direction_state::up, movement_state::walk, attack_state::neutral), std::make_pair(std::make_unique<single_key>(keycode::W), modifier::NONE));
+//		key_mappings.emplace(state::down, std::make_pair(std::make_unique<single_key>(keycode::S), modifier::NONE));
+//		key_mappings.emplace(state::left, std::make_pair(std::make_unique<single_key>(keycode::A), modifier::NONE));
+//		key_mappings.emplace(state::right, std::make_pair(std::make_unique<single_key>(keycode::D), modifier::NONE));
+//		key_mappings.emplace(state::up_right, std::make_pair(std::make_unique<multi_key>(keycode::W, keycode::D), modifier::NONE));
+//		key_mappings.emplace(state::up_left, std::make_pair(std::make_unique<multi_key>(keycode::W, keycode::A), modifier::NONE));
+//		key_mappings.emplace(state::down_right, std::make_pair(std::make_unique<multi_key>(keycode::S, keycode::D), modifier::NONE));
+//		key_mappings.emplace(state::down_left, std::make_pair(std::make_unique<multi_key>(keycode::S, keycode::A), modifier::NONE));
 	}
 	virtual ~input_component() = default;
 };
@@ -115,7 +115,7 @@ class	state_component : public component
 {
 public:
 	using __base = component;
-	enum state	state = state::idle;
+	state	state;
 public:
 	state_component(class entity& entity) : __base(entity) {  }
 	virtual ~state_component() = default;

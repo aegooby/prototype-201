@@ -29,21 +29,21 @@ public:
 	virtual ~component_manager_template() = default;
 	virtual std::unique_ptr<class component>&	component(entity& entity)
 	{
-		if (!__entity_map.count(entity.id()))
+		if (!__entity_map.count(entity.id))
 			throw std::runtime_error("Entity does not have requested component");
-		return components.at(__entity_map.at(entity.id()));
+		return components.at(__entity_map.at(entity.id));
 	}
 	virtual void	add_component(entity& entity, std::unique_ptr<class component>&& component)
 	{
-		if (__entity_map.count(entity.id()))
+		if (__entity_map.count(entity.id))
 			throw std::runtime_error("Duplicate component");
-		__entity_map.emplace(entity.id(), components.size());
+		__entity_map.emplace(entity.id, components.size());
 		components.emplace_back(std::forward<std::unique_ptr<class component>>(component));
 	}
 	virtual void	remove_component(entity& entity)
 	{
-		components.erase(components.begin() + __entity_map.at(entity.id()));
-		__entity_map.erase(entity.id());
+		components.erase(components.begin() + __entity_map.at(entity.id));
+		__entity_map.erase(entity.id);
 	}
 };
 
