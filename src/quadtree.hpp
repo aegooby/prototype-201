@@ -28,12 +28,10 @@ public:
 	};
 private:
 	std::vector<std::vector<std::vector<std::reference_wrapper<circle>>>>	object_list;
-	std::vector<std::vector<std::vector<std::reference_wrapper<circle>>>>	anal_list;
 	std::vector<std::vector<node>>	nodelist;
 	std::vector<std::vector<int>>	subnode_num;
 	std::pair<int, int> level_subnode;
 	int	index;
-
 	node	Basisknoten;
 	int		level = 0;
 	void	add_subnodes(int current_level) {
@@ -64,8 +62,8 @@ public:
 	void	insert(circle& hitbox);
 	void	recursive_insert(circle& hitbox, int currentlevel);
 	void	collision_check(circle& hitbox);
-	void	anal_check(circle& hitbox);
 	std::pair<int, int>&	get_levelsubnode(circle& hitbox);
+	void	total_collision_check(std::vector<std::unique_ptr<class component>>& hitbox);
 };
 
 

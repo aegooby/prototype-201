@@ -28,88 +28,88 @@ void	quadtree::split(node& currentbound)
 
 int	quadtree::get_index(circle& hitbox, node& currentnode) {
 	
-	if (hitbox.right() < currentnode.subwidth())
+	if (currentnode == Basisknoten)
 	{
-		if (hitbox.top() < currentnode.subheight())
+		index = 0;
+	}
+
+	if (hitbox.right() <= currentnode.subwidth())
+	{
+		if (hitbox.top() <= currentnode.subheight())
 		{
 			index = 2;
 		}
-		else if (hitbox.bottom() > currentnode.subheight())
+		else if (hitbox.bottom() >= currentnode.subheight())
 		{
 			index = 1;
 		}
 	}
-	if (hitbox.left() > currentnode.subwidth())
+
+	if (hitbox.left() >= currentnode.subwidth())
 	{
-		if (hitbox.top() < currentnode.subheight())
+		if (hitbox.top() <= currentnode.subheight())
 		{
 			index = 3;
 		}
-		else if (hitbox.bottom() > currentnode.subheight())
+		else if (hitbox.bottom() >= currentnode.subheight())
 		{
 			index = 0;
 		}
 	}
+
+	if (hitbox.right() > currentnode.subwidth() && hitbox.left() < currentnode.subwidth()) {
+		if (hitbox.top() <= currentnode.subheight())
+		{
+			index = 2;
+		}
+		else if (hitbox.bottom() >= currentnode.subheight())
+		{
+			index = 0;
+		}
+	}
+
+	if (hitbox.top() > currentnode.subheight() && hitbox.bottom() < currentnode.subheight()) {
+		if (hitbox.right() <= currentnode.subwidth())
+		{
+			index = 1;
+		}
+		else if (hitbox.left() >= currentnode.subwidth())
+		{
+			index = 3;
+		}
+	}
+
 	else {
-		if (hitbox.right() < currentnode.subwidth()) {
-			if (hitbox.bottom() < currentnode.subheight() && hitbox.top() > currentnode.subheight()) {
-				index = -3;
-			}
-		}
-		if (hitbox.left() > currentnode.subwidth()) {
-			if (hitbox.bottom() < currentnode.subheight() && hitbox.top() > currentnode.subheight()) {
-				index = -5;
-			}
-		}
-		if (hitbox.top() < currentnode.subheight()) {
-			if (hitbox.left() < currentnode.subwidth() && hitbox.right() > currentnode.subwidth()) {
-				index = -4;
-			}
-		}
-		if (hitbox.bottom() > currentnode.subheight()) {
-			if (hitbox.left() < currentnode.subwidth() && hitbox.right() > currentnode.subwidth()) {
-				index = -2;
-			}
-		}
-		else {
-			index = -1;
-		}
-		// -1 = entity is touching all 4 subnodes
-		// -2 = entity is touching subnode 0 and 1
-		// -3 = entity is touching subnode 1 and 2
-		// -4 = entity is touching subnode 2 and 3
-		// -5 = entity is touching subnode 3 and 0
+		index = 0;
 	}
 
 	return index;
 }
 
-// need to figure out how to use collision manager to pass in hitboxes
-void	quadtree::insert(circle& hitbox)
+void	quadtree::insert(circle& hitbox, int& currentlevel)
 {
-	for (int i = 0; i < subnode_num[level].size() + 1; i++)
+	int antes = currentlevel - 1;
+	for (int i = 0; i < subnode_num.at(antes).size(); i++)
 	{
-		int index; //= getIndex( /* */, nodelist[level][i]);
-		if (index < 0)
-		{
-			recursive_insert(hitbox, level);
-			break;
-		}
+		int index = getIndex(hitbox, nodelist.at(antes).at(i));
 		if (index == i)
 		{
-			if (object_list[level][i].size() >= maxobj)
+			if (object_list[currentlevel][i].size() >= maxobj)
 			{
-				split(nodelist[level][i]);
-				insert(hitbox);
+				split(nodelist.at(currentlevel).at(i));
+				insert(hitbox, currentlevel + 1);
 			}
-			else if (object_list[level][i].size() < maxobj)
+			else if (object_list[currentlevel][i].size() < maxobj)
 			{
-				object_list[level][i].push_back(hitbox);
+				object_list[currentlevel][i].push_back(hitbox);
 				break;
 			}
 		}
 	}
+	
+	
 }
+
 
 void	quadtree::recursive_insert(circle& hitbox, int currentlevel)
 {
@@ -118,7 +118,7 @@ void	quadtree::recursive_insert(circle& hitbox, int currentlevel)
 	{
 		for (int i = 0; i < subnode_num.at(Kommunismus).size(); i++)
 		{
-			int index; //= getIndex( /* */, nodelist[1][i]);
+			int index = getIndex(hitbox, nodelist[1][i]);
 			if (index < 0)
 			{
 				recursive_insert(hitbox, Kommunismus);
@@ -126,7 +126,6 @@ void	quadtree::recursive_insert(circle& hitbox, int currentlevel)
 			if (index == i)
 			{
 				object_list.at(Kommunismus).at(i).push_back(hitbox);
-				anal_list.at(Kommunismus).at(i).push_back(hitbox);
 				break;
 			}
 		}
@@ -171,51 +170,42 @@ void	quadtree::collision_check(circle& hitbox)
 			
 }
 
-void	quadtree::anal_check(circle& hitbox)
+void	total_collision_check(std::vector<std::unique_ptr<class component>>& hitbox)
 {
-	for (int j = 1; j < level; j++) 
+	for (int j = 0; j < hitbox.size(); j++)
 	{
-		for (int i = 0; i < subnode_num.at(j).size(); i++)
-		{
-			for (int piece_of_shit = 0; piece_of_shit < anal_list.at(j).size(); piece_of_shit++)
-			{
-				int fucko = get_index(anal_list.at(j).at(i).at(piece_of_shit), nodelist.at(j).at(i));
-				if (fucko == -2)
-				{
-					// collision check with entities within its own node and subnode 0 and 1
-				}
-				if (fucko == -3)
-				{
-					// collision check with entities within its own node and subnode 1 and 2
+		insert(hitbox.at(j), 1);
+	}
 
-				}
-				if (fucko == -4)
-				{
-					// collision check with entities within its own node and subnode 2 and 3
-
-				}
-				if (fucko == -5)
-				{
-					// collision check with entities within its own node and subnode 3 and 0
-
-				}
-				else if (fucko == -1)
-				{
-					// collision check with entities within its own node and all subnodes
-
-				}
-			}
-
-		}
+	for (int i = 0; i < object_list.at(0).at(0).size(); i++)
+	{
+		anal_check();
 	}
 	
+	for (int i = 1; i < level; i++)
+	{
+		for (int k = 0; k < subnode_num.at(i).size(); k++)
+		{
+			for (int j = 0; j < hitbox.size(); j++)
+			{
+				int index = getIndex(hitbox.at(j), nodelist[Osama][i]);
+			}
+		}
+	}
+
+	collision_check(hitbox.at(j));
+
 }
 
 quadtree::quadtree()
 {
 	Basisknoten = nodemake(0, 100, 0, 100);
 	// whatever the min and max x and y coords of the entire screen are
-	nodelist.at(0).at(0) = Basisknoten;
+
+	for (int i = 0; i < 4; i++)
+	{
+		nodelist.at(0).push_back(Basisknoten);
+	}
 	split(Basisknoten);
 
 }
