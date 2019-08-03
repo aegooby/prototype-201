@@ -3,17 +3,11 @@
 #include	"__common.hpp"
 #include	"render_system.hpp"
 #include	"point.hpp"
+#include	"state.hpp"
 #include	<unordered_map>
 #include	<vector>
 
 __begin_ns_td
-
-class	sprite
-{
-public:
-	static const	std::unordered_map<state, std::string>	names;
-	static const	std::unordered_map<std::string, state>	states;
-};
 
 struct	sprite_info
 {
@@ -31,21 +25,18 @@ public:
 	uint32_t	framec = 0;
 	uint32_t	index = 0;
 protected:
-	const std::string	__entity_name;
-	const std::string	__name;
-	float				__fps = 0;
+	float		__fps = 0;
 public:
-	const sprite_info	info;
+	const entity_type		entity_type;
+	const sprite_info		info;
+	const class state		state;
 public:
-	sprite_flipbook(const std::string& entity_name, const std::string& name, float fps, const sprite_info& info) : __entity_name(entity_name), __name(name), __fps(fps), info(info)
+	sprite_flipbook(const enum entity_type entity_type, const class state& state, float fps, const sprite_info& info) : __fps(fps), entity_type(entity_type), info(info), state(state)
 	{
 		if (__fps <= 0 || __fps > float(global::game_fps))
-			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + this->name());
+			throw std::runtime_error("Invalid fps");
 	}
-	sprite_flipbook(sprite_flipbook&& other) : __entity_name(other.__entity_name), __name(other.__name), __fps(other.__fps), info(other.info)
-	{
-		
-	}
+	sprite_flipbook(sprite_flipbook&& other) : __fps(other.__fps), entity_type(other.entity_type), info(other.info), state(other.state) {  }
 	sprite_flipbook&	operator =(sprite_flipbook&& other)
 	{
 		__fps = other.__fps;
@@ -53,20 +44,10 @@ public:
 	}
 	virtual ~sprite_flipbook() = default;
 	inline __attribute__((always_inline))
-	const std::string&	name() const
-	{
-		return __name;
-	}
-	inline __attribute__((always_inline))
-	const std::string&	entity_name() const
-	{
-		return __entity_name;
-	}
-	inline __attribute__((always_inline))
 	void	fps(float fps)
 	{
 		if (__fps <= 0 || __fps > float(global::game_fps))
-			throw std::runtime_error(std::string("Invalid fps, flipbook: ") + name());
+			throw std::runtime_error("Invalid fps");
 		__fps = fps;
 	}
 	inline __attribute__((always_inline))

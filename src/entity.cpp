@@ -5,14 +5,10 @@
 
 __begin_ns_td
 
-entity::entity(const id_t id, const std::string& name, class world& world) : world(world), __id(id), __name(name) {  }
-const id_t	entity::id() const
-{
-	return __id;
-}
+entity::entity(const id_t id, const entity_type type, class world& world) : world(world), id(id), type(type) {  }
 bool	entity::operator ==(const entity& other)
 {
-	return __id == other.__id;
+	return id == other.id;
 }
 std::unique_ptr<component>&	entity::__component(std::type_index component_type)
 {

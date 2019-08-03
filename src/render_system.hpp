@@ -6,6 +6,7 @@
 #include	"system.hpp"
 #include	"sprite.hpp"
 #include	"point.hpp"
+#include	"state.hpp"
 #include	<unordered_map>
 
 __begin_ns_td
@@ -15,13 +16,13 @@ class	render_system : public system
 public:
 	using __base = system;
 public:
-	const static std::unordered_map<std::string, std::unordered_map<std::string, sprite_info>> flipbooks;
-	std::unordered_map<std::string, SDL_Texture*>	textures;
+	const static std::unordered_map<entity_type, std::string>	spritesheet_names;
+	const static std::unordered_map<entity_type, std::unordered_map<class state, sprite_info>> flipbooks;
+	std::unordered_map<entity_type, SDL_Texture*>	textures;
 protected:
 	SDL_Renderer*	__sdl_renderer = nullptr;
 protected:
-	void	load_sprite(SDL_Texture*&, const std::string&);
-	void	load_flipbook(render_component&, const std::string&, float, const sprite_info&);
+	void	load_flipbook(render_component&, const class state&, float, const sprite_info&);
 	void	render_sprite(SDL_Texture*, SDL_Rect*, const point_2&);
 	void	render_flipbook(class entity&, sprite_flipbook&, SDL_Rect*);
 public:

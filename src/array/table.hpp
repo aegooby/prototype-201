@@ -6,11 +6,11 @@
 
 __begin_ns_td
 
-template	<typename vtype, size_t rows, size_t columns>
+template	<typename __value_type, size_t rows, size_t columns>
 class	table
 {
 public:
-	using value_type = vtype;
+	using value_type = __value_type;
 	using reference = value_type&;
 	using rvalue_reference = value_type&&;
 	using const_reference = const value_type&;

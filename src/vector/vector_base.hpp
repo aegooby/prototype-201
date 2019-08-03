@@ -28,16 +28,16 @@ public:
 	__vector_private&	operator =(__vector_private&&) = delete;
 };
 
-template	<typename vtype, size_t dim>
+template	<typename __value_type, size_t dim>
 class	__vector_private::__vector_base
 {
-	static_assert(std::is_literal_type_v<vtype>);
-	static_assert(std::is_arithmetic_v<vtype>);
-	static_assert(std::is_floating_point_v<vtype>);
-	static_assert(std::is_signed_v<vtype>);
+	static_assert(std::is_literal_type_v<__value_type>);
+	static_assert(std::is_arithmetic_v<__value_type>);
+	static_assert(std::is_floating_point_v<__value_type>);
+	static_assert(std::is_signed_v<__value_type>);
 	static_assert(dim > 1);
 public:
-	using value_type = vtype;
+	using value_type = __value_type;
 	using reference = value_type&;
 	using const_reference = const value_type&;
 	using array_type = array<value_type, dim>;
@@ -237,11 +237,11 @@ public:
 	}
 };
 
-template	<typename vtype, size_t dim>
-class	vector : public __vector_private::__vector_base<vtype, dim>
+template	<typename __value_type, size_t dim>
+class	vector : public __vector_private::__vector_base<__value_type, dim>
 {
 public:
-	using __base = __vector_private::__vector_base<vtype, dim>;
+	using __base = __vector_private::__vector_base<__value_type, dim>;
 	using value_type = typename __base::value_type;
 	using reference = typename __base::reference;
 	using const_reference = typename __base::const_reference;

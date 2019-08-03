@@ -20,9 +20,9 @@ class	animation_event : public event
 public:
 	
 	class entity&	entity;
-	std::string		name;
+	class state		state;
 public:
-	animation_event(class entity& entity, const std::string& name) : entity(entity), name(name) {  }
+	animation_event(class entity& entity, const class state& state) : entity(entity), state(state) {  }
 	virtual ~animation_event() = default;
 };
 
@@ -30,9 +30,9 @@ class	animation_complete_event : public event
 {
 public:
 	class entity&	entity;
-	std::string		name;
+	class state		state;
 public:
-	animation_complete_event(class entity& entity, const std::string& name) : entity(entity), name(name) {  }
+	animation_complete_event(class entity& entity, const class state& state) : entity(entity), state(state) {  }
 	virtual ~animation_complete_event() = default;
 };
 

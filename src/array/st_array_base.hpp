@@ -7,11 +7,11 @@
 
 __begin_ns_td
 
-template	<typename vtype, size_t __size>
+template	<typename __value_type, size_t __size>
 class	st_array
 {
 public:
-	using value_type = vtype;
+	using value_type = __value_type;
 	using reference = value_type&;
 	using const_reference = const value_type&;
 	using iterator = value_type*;
@@ -27,12 +27,12 @@ public:
 	using const_self_reference = const st_array<value_type, __size>&;
 	using self_rvalue_reference = st_array<value_type, __size>&&;
 
-	template	<typename __vtype, size_t __size__>
+	template	<typename ____value_type, size_t __size__>
 	friend class	array;
 	friend class	st_array<value_type, __size>;
-	template	<typename _vtype, size_t rows, size_t columns>
+	template	<typename ___value_type, size_t rows, size_t columns>
 	friend class	st_table;
-	template	<typename _vtype, size_t rows, size_t columns>
+	template	<typename ___value_type, size_t rows, size_t columns>
 	friend class	table;
 protected:
 	value_type	__data[__size > 0 ? __size : 1];

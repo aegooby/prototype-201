@@ -103,28 +103,6 @@ static constexpr size_t	game_fps = 60;
 
 __end_ns_global
 
-enum class	state
-{
-	idle,
-	up,
-	down,
-	left,
-	right,
-	up_right,
-	up_left,
-	down_right,
-	down_left,
-	dash,
-	attack,
-	attack_light,
-	attack_heavy,
-	shield,
-	spell_1,
-	spell_2,
-	spell_3,
-	size,
-};
-
 __end_ns_td
 
 #include	"decls.hpp"

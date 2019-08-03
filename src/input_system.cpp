@@ -7,34 +7,13 @@
 #include	"sprite.hpp"
 
 __begin_ns_td
-void	input_system::on_down(class entity& entity, enum state state)
+void	input_system::on_down(class entity& entity, class state& state)
 {
-	switch (state)
-	{
-		case state::right:
-			world.event_bus.publish<acceleration_event>(entity, vector_3(2.0f, 0.0f, 0.0f), acceleration_event::mode::mod);
-			break;
-		case state::left:
-			world.event_bus.publish<acceleration_event>(entity, vector_3(-2.0f, 0.0f, 0.0f), acceleration_event::mode::mod);
-			break;
-		case state::attack:
-			world.event_bus.publish<acceleration_event>(entity, vector_3(0.0f, 0.0f, 0.0f), acceleration_event::mode::set);
-			break;
-		default:
-			break;
-	}
+	
 }
-void	input_system::on_up(class entity& entity, enum state state)
+void	input_system::on_up(class entity& entity, class state& state)
 {
-	switch (state)
-	{
-		case state::right: case state::left:
-			world.event_bus.publish<animation_complete_event>(entity, sprite::names.at(state));
-			world.event_bus.publish<acceleration_event>(entity, vector_3(0.0f, 0.0f, 0.0f), acceleration_event::mode::set);
-			break;
-		default:
-			break;
-	}
+	
 }
 
 void	input_system::start()
@@ -54,7 +33,7 @@ void	input_system::update()
 			if (keyboard.down(mapping.second.first) && keyboard.modifier(mapping.second.second))
 			{
 				state.state = mapping.first;
-				world.event_bus.publish<animation_event>(entity.second.get(), sprite::names.at(state.state));
+				world.event_bus.publish<animation_event>(entity.second.get(), state.state);
 				on_down(entity.second.get(), state.state);
 			}
 			if (keyboard.up(mapping.second.first) && state.state == mapping.first)
@@ -67,7 +46,7 @@ void	input_system::update()
 			if (mouse.down(mapping.second.first) && keyboard.modifier(mapping.second.second))
 			{
 				state.state = mapping.first;
-				world.event_bus.publish<animation_event>(entity.second.get(), sprite::names.at(state.state));
+				world.event_bus.publish<animation_event>(entity.second.get(), state.state);
 				on_down(entity.second.get(), state.state);
 			}
 			if (mouse.up(mapping.second.first) && state.state == mapping.first)
@@ -82,7 +61,7 @@ void	input_system::on_animation_complete_event(animation_complete_event& event)
 	auto&	input = event.entity.component<input_component>();
 	auto&	state = event.entity.component<state_component>();
 	auto&	render = event.entity.component<render_component>();
-	const auto&	__state = sprite::states.at(event.name);
+	const auto&	__state = event.name;
 	if (input.key_mappings.count(__state) && !world.keyboard.scan(input.key_mappings.at(__state).first))
 	{
 		state.state = state::idle;

@@ -25,6 +25,9 @@ class	array;
 template	<typename value_type, size_t rows, size_t cols>
 class	table;
 
+template	<typename value_type>
+struct	state_info;
+
 class	window;
 class	mouse;
 class	clock;
