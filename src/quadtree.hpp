@@ -8,14 +8,6 @@
 
 __begin_ns_td
 
-struct	bounding_box
-{
-	float	x0; // leftern edge
-	float	x1; // rightern edge
-	float	y0; // bottom edge
-	float	y1; // top edge
-} current_box;
-
 class	quadtree
 {
 public:
@@ -36,9 +28,11 @@ public:
 		}
 	};
 private:
-	std::vector<std::vector<std::vector<std::reference_wrapper<capsule>>>> object_list;
+	std::vector<std::vector<std::vector<std::reference_wrapper<hitbox>>>> object_list;
+	std::vector<std::vector<std::vector<std::reference_wrapper<hitbox>>>> anal_list;
 	std::vector<std::vector<node>> nodelist;
 	std::vector<std::vector<int>> subnode_num;
+
 	Node Basisknoten;
 	int		level = 0;
 	void	add_subnodes(int current_level) {
@@ -66,7 +60,8 @@ public:
 	int		get_index(hitbox& hitbox, node& currentnode);
 	void	insert(hitbox& hitbox);
 	void	recursive_insert(hitbox& hitbox);
-	void	collisioncheck(hitbox& hitbox);
+	void	collision_check(hitbox& hitbox);
+	void	anal_check(hitbox& hitbox);
 };
 
 
