@@ -2,6 +2,7 @@
 #include	"entity.hpp"
 #include	"component.hpp"
 #include	"hitbox.hpp"
+#include	"hitbox.cpp"
 #include	"component.hpp"
 #include	"quadtree.hpp"
 
@@ -136,7 +137,7 @@ void	quadtree::recursive_insert(hitbox& hitbox, int& currentlevel)
 	
 }
 
-quadtree::collision_check(hitbox& hitbox)
+quadtree::get_levelsubnode(hitbox& hitbox)
 {
 	for (int j = 1; j < level; j++)
 	{
@@ -144,14 +145,28 @@ quadtree::collision_check(hitbox& hitbox)
 		{
 			for (int k = 0; k < object_list[j][i].size(); k++)
 			{
-				// check if entity in its own given node collides with any other entities in its node
-				// collision algorithm for object_list[j][i][k];
+				if (object_list[j][i][k] == this->hitbox)
+				{
+					level_subnode.first = j;
+					level_subnode.second = i;
+					return level_subnode&;
+				}
 			}
 
 		}
 	}
+}
 
-
+quadtree::collision_check(hitbox& hitbox)
+{
+	int entity_level = get_levelsubnode(hitbox).first;
+	int entity_subnode = get_levelsubnode(hitbox).second;
+	for (int k = 0; k < object_list[entity_level][entity_subnode].size(); k++)
+	{
+		check_collision(hitbox, object_list[entity_level][entity_subnode][k]);
+		// check if a certain entity in its own given node collides with any other entities in its node
+	}
+			
 }
 
 quadtree::anal_check(hitbox& hitbox)
@@ -196,10 +211,11 @@ quadtree::anal_check(hitbox& hitbox)
 
 quadtree::quadtree()
 {
-	Basisknoten = (nodemake(0, 100, 0, 100);
-	split(Basisknoten);
-	nodelist[0][0] = Basisknoten;
+	Basisknoten = nodemake(0, 100, 0, 100);
 	// whatever the min and max x and y coords of the entire screen are
+	nodelist[0][0] = Basisknoten;
+	split(Basisknoten);
+
 }
 quadtree::~quadtree()
 {

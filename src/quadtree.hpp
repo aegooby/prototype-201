@@ -4,7 +4,6 @@
 #include	"entity.hpp"
 #include	"component.hpp"
 #include	"hitbox.hpp"
-#include	"component.hpp"
 
 __begin_ns_td
 
@@ -32,6 +31,8 @@ private:
 	std::vector<std::vector<std::vector<std::reference_wrapper<hitbox>>>> anal_list;
 	std::vector<std::vector<node>> nodelist;
 	std::vector<std::vector<int>> subnode_num;
+	std::pair<int, int> level_subnode;
+	int index;
 
 	Node Basisknoten;
 	int		level = 0;
@@ -53,6 +54,8 @@ private:
 
 		return bounds;
 	};
+
+
 public:
 	quadtree();
 	~quadtree();
@@ -62,6 +65,8 @@ public:
 	void	recursive_insert(hitbox& hitbox);
 	void	collision_check(hitbox& hitbox);
 	void	anal_check(hitbox& hitbox);
+	void	get_level(hitbox& hitbox);
+	void	get_subnode(hitbox& hitbox);
 };
 
 
