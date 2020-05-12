@@ -2,6 +2,7 @@
 #pragma	once
 #include	"__common.hpp"
 #include	"ecs_common.hpp"
+#include    "entity.hpp"
 #include	<unordered_map>
 
 __begin_ns_td
@@ -15,7 +16,7 @@ protected:
 public:
 	entity_manager() = default;
 	~entity_manager() = default;
-	entity&	new_entity(const std::string&, class world&);
+	entity&	new_entity(entity_type, class world&);
 	void	delete_entity(id_t);
 };
 

@@ -2,6 +2,7 @@
 #pragma	once
 #include	"__common.hpp"
 #include	"vector.hpp"
+#include    "state.hpp"
 #include	<typeindex>
 #include	<unordered_map>
 #include	<list>
@@ -18,22 +19,21 @@ public:
 class	animation_event : public event
 {
 public:
-	
-	class entity&	entity;
-	class state		state;
+    class entity&   entity;
 public:
-	animation_event(class entity& entity, const class state& state) : entity(entity), state(state) {  }
-	virtual ~animation_event() = default;
+    animation_event(class entity& entity)
+        : entity(entity) {  }
+    virtual ~animation_event() = default;
 };
 
 class	animation_complete_event : public event
 {
 public:
-	class entity&	entity;
-	class state		state;
+    class entity&    entity;
 public:
-	animation_complete_event(class entity& entity, const class state& state) : entity(entity), state(state) {  }
-	virtual ~animation_complete_event() = default;
+    animation_complete_event(class entity& entity)
+        : entity(entity) {  }
+    virtual ~animation_complete_event() = default;
 };
 
 class	collision_event : public event
@@ -42,7 +42,8 @@ public:
 	class entity&	entity_a;
 	class entity&	entity_b;
 public:
-	collision_event(class entity& entity_a, class entity& entity_b) : entity_a(entity_a), entity_b(entity_b) {  }
+	collision_event(class entity& entity_a, class entity& entity_b)
+        : entity_a(entity_a), entity_b(entity_b) {  }
 	virtual ~collision_event() = default;
 };
 

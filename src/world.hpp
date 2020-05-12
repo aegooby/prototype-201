@@ -24,7 +24,7 @@ protected:
 	std::unique_ptr<system>&	__system(std::type_index);
 public:
 	world(class keyboard&, class mouse&);
-	entity&	new_entity(const std::string&);
+	entity&	new_entity(entity_type);
 	void	delete_entity(id_t);
 	template	<typename system_type>
 	system_type&	system()

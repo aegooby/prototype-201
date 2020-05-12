@@ -6,9 +6,9 @@
 
 __begin_ns_td
 
-entity&	entity_manager::new_entity(const std::string& name, class world& world)
+entity&	entity_manager::new_entity(entity_type type, class world& world)
 {
-	entities.emplace(__entityc, std::make_unique<entity>(__entityc, name, world));
+	entities.emplace(__entityc, std::make_unique<entity>(__entityc, type, world));
 	auto	__entityc_temp = __entityc;
 	++__entityc;
 	return *entities.at(__entityc_temp);

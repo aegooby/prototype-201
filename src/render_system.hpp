@@ -7,6 +7,7 @@
 #include	"sprite.hpp"
 #include	"point.hpp"
 #include	"state.hpp"
+#include    "ecs_common.hpp"
 #include	<unordered_map>
 
 __begin_ns_td
@@ -17,12 +18,12 @@ public:
 	using __base = system;
 public:
 	const static std::unordered_map<entity_type, std::string>	spritesheet_names;
-	const static std::unordered_map<entity_type, std::unordered_map<class state, sprite_info>> flipbooks;
+	// data structure holding flipbooks? or hold them in render component
 	std::unordered_map<entity_type, SDL_Texture*>	textures;
 protected:
 	SDL_Renderer*	__sdl_renderer = nullptr;
 protected:
-	void	load_flipbook(render_component&, const class state&, float, const sprite_info&);
+	void	load_flipbook(render_component&, float, const sprite_info&);
 	void	render_sprite(SDL_Texture*, SDL_Rect*, const point_2&);
 	void	render_flipbook(class entity&, sprite_flipbook&, SDL_Rect*);
 public:

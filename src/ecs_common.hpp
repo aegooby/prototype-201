@@ -6,4 +6,9 @@ __begin_ns_td
 
 using id_t = size_t;
 
+enum class    entity_type
+{
+    player,
+};
+
 __end_ns_td

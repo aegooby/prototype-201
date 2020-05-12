@@ -33,7 +33,8 @@ protected:
 		(__system.*__function)(*static_cast<event_t*>(event.get()));
 	}
 public:
-	function_handler_sp(system_t& system, function_t function) : __system(system), __function(function) {  }
+	function_handler_sp(system_t& system, function_t function)
+        : __system(system), __function(function) {  }
 	virtual ~function_handler_sp() = default;
 };
 
@@ -42,7 +43,7 @@ class	event_bus
 public:
 	using list_t = std::list<std::unique_ptr<function_handler>>;
 protected:
-	std::unordered_map<std::type_index, std::unique_ptr<list_t>>	__subscribers;
+	std::unordered_map<std::type_index, std::unique_ptr<list_t>>    __subscribers;
 	class world&	world;
 public:
 	event_bus(class world& world) : world(world) {  }
@@ -56,7 +57,8 @@ public:
 		for (auto& handler : *handlers)
 		{
 			if (handler)
-				handler->exec(std::make_unique<event_type>(std::forward<types>(args)...));
+				handler->exec(std::make_unique<event_type>
+                              (std::forward<types>(args)...));
 		}
 	}
 	template	<typename system_type, typename event_type>
@@ -67,7 +69,8 @@ public:
 			__subscribers.emplace(typeid(event_type), std::make_unique<list_t>());
 		}
 		auto&	handlers = __subscribers.at(typeid(event_type));
-		handlers->emplace_back(std::make_unique<function_handler_sp<system_type, event_type>>(system, function));
+		handlers->emplace_back(std::make_unique<function_handler_sp<system_type,
+                                   event_type>>(system, function));
 	}
 };
 

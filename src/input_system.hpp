@@ -10,8 +10,8 @@ class	input_system : public system
 public:
 	using __base = system;
 protected:
-	void	on_down(class entity&, class state&);
-	void	on_up(class entity&, class state&);
+	void	on_down(class entity&);
+	void	on_up(class entity&);
 public:
 	input_system(class world& world) : __base(world)
 	{

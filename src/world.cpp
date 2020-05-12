@@ -26,9 +26,9 @@ world::world(class keyboard& keyboard, class mouse& mouse) : event_bus(*this), k
 	systems.emplace(typeid(input_system), std::make_unique<input_system>(*this));
 }
 
-entity&	world::new_entity(const std::string& name)
+entity&	world::new_entity(entity_type type)
 {
-	return entity_manager.new_entity(name, *this);
+	return entity_manager.new_entity(type, *this);
 }
 void	world::delete_entity(id_t id)
 {

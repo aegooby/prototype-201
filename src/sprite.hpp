@@ -27,16 +27,16 @@ public:
 protected:
 	float		__fps = 0;
 public:
-	const entity_type		entity_type;
-	const sprite_info		info;
-	const class state		state;
+	const sprite_info	info;
 public:
-	sprite_flipbook(const enum entity_type entity_type, const class state& state, float fps, const sprite_info& info) : __fps(fps), entity_type(entity_type), info(info), state(state)
+	sprite_flipbook(float fps, const sprite_info& info)
+        : __fps(fps), info(info)
 	{
 		if (__fps <= 0 || __fps > float(global::game_fps))
 			throw std::runtime_error("Invalid fps");
 	}
-	sprite_flipbook(sprite_flipbook&& other) : __fps(other.__fps), entity_type(other.entity_type), info(other.info), state(other.state) {  }
+	sprite_flipbook(sprite_flipbook&& other)
+        : __fps(other.__fps), info(other.info) {  }
 	sprite_flipbook&	operator =(sprite_flipbook&& other)
 	{
 		__fps = other.__fps;

@@ -57,13 +57,13 @@ private:
 public:
 	quadtree();
 	~quadtree();
-	void	split(node& currentbound);
-	int		get_index(circle& hitbox, node& currentnode);
-	void	insert(circle& hitbox);
-	void	recursive_insert(circle& hitbox, int currentlevel);
-	void	collision_check(circle& hitbox);
-	std::pair<int, int>&	get_levelsubnode(circle& hitbox);
-	void	total_collision_check(std::vector<std::unique_ptr<class component>>& hitbox);
+	void	split(node&);
+	int		get_index(circle&, node&);
+    void    insert(circle&, int&);
+    void	recursive_insert(circle&, int);
+	void	collision_check(circle&);
+	std::pair<int, int>&	get_levelsubnode(circle&);
+	void	total_collision_check(std::vector<std::unique_ptr<class component>>&);
 };
 
 
