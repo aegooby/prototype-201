@@ -5,34 +5,35 @@
 #include "exception.hpp"
 #include "point.hpp"
 #include "sprite.hpp"
-#include "state.hpp"
 #include "system.hpp"
 #include "window.hpp"
 
 #include <unordered_map>
+
+// TODO: this file is a mess
 
 namespace p201
 {
 
 class render_system : public system
 {
-    public:
+public:
     using __base = system;
 
-    public:
+public:
     const static std::unordered_map<entity_type, std::string> spritesheet_names;
     // data structure holding flipbooks? or hold them in render component
     std::unordered_map<entity_type, SDL_Texture*> textures;
 
-    protected:
+protected:
     SDL_Renderer* __sdl_renderer = nullptr;
 
-    protected:
+protected:
     void load_flipbook(render_component&, float, const sprite_info&);
     void render_sprite(SDL_Texture*, SDL_Rect*, const point_2&);
     void render_flipbook(class entity&, sprite_flipbook&, SDL_Rect*);
 
-    public:
+public:
     render_system(class world& world) : __base(world)
     {
         flag.set(system::flag::render);

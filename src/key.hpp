@@ -6,6 +6,11 @@
 namespace p201
 {
 
+/**
+ * @brief These macros were defined in another file for the sake of conserving
+ *        space in this file since they are very long.
+ * @see input_enum.hpp
+ */
 KEY_ENUM();
 MODIFIER_ENUM();
 MOUSE_ENUM();

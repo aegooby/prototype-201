@@ -26,8 +26,6 @@ world::world(class keyboard& keyboard, class mouse& mouse)
                                std::make_unique<collision_manager>());
     component_managers.emplace(typeid(input_component),
                                std::make_unique<input_manager>());
-    component_managers.emplace(typeid(state_component),
-                               std::make_unique<state_manager>());
 
     systems.emplace(typeid(render_system),
                     std::make_unique<render_system>(*this));

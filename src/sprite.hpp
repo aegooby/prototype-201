@@ -3,7 +3,6 @@
 #include "__common.hpp"
 #include "point.hpp"
 #include "render_system.hpp"
-#include "state.hpp"
 
 #include <unordered_map>
 #include <vector>

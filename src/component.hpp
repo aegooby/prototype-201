@@ -6,7 +6,6 @@
 #include "key.hpp"
 #include "point.hpp"
 #include "sprite.hpp"
-#include "state.hpp"
 #include "vector.hpp"
 
 #include <map>
@@ -17,6 +16,13 @@
 namespace p201
 {
 
+/**
+ * @brief Components contain data only. There's no reason for a component to
+ *        contain anything other than a constructor or destructor. I've broken
+ *        that rule though because I'm an idiot. So this is why I have to go
+ *        through this shit and add dumb ass documentation because I don't know
+ *        what the fuck I'm doing.
+ */
 class component
 {
 public:
@@ -105,19 +111,8 @@ public:
     using __base = component;
 
 public:
-public:
     input_component(class entity& entity) : __base(entity) { }
     virtual ~input_component() = default;
-};
-
-class state_component : public component
-{
-public:
-    using __base = component;
-    //    state    state;
-public:
-    state_component(class entity& entity) : __base(entity) { }
-    virtual ~state_component() = default;
 };
 
 } // namespace p201

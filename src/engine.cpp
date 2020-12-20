@@ -32,18 +32,17 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug)
     player.add_component<transform_component>();
     player.add_component<collision_component>();
     player.add_component<input_component>();
-    player.add_component<state_component>();
     player.component<transform_component>().position = vector_3(100, 100, 0);
     player.component<render_component>().rect.w      = 160;
     player.component<render_component>().rect.h      = 132;
     world.system<render_system>().load("/Users/admin/Desktop/sprites/");
 }
 
-bool engine::cmd_w() const
+bool engine::window_close_key() const
 {
-#if defined(TD_OS_MACOS)
+#if defined(P201_OS_MACOS)
     return (keyboard.down(keycode::W) && keyboard.modifier(modifier::GUI));
-#elif defined(TD_OS_WINDOWS)
+#elif defined(P201_OS_WINDOWS)
     return (keyboard.down(keycode::W) && keyboard.modifier(modifier::CTRL));
 #else
     return false;
@@ -113,7 +112,7 @@ void engine::start()
         if (render_ready)
         {
             render();
-            if (cmd_w()) { stop(); }
+            if (window_close_key()) { stop(); }
 
             //	Every time a frame is rendered successfully
             __frame_count++;

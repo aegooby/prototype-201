@@ -8,23 +8,23 @@ namespace p201
 
 __attribute__((always_inline)) void directory::create(const std::string& path)
 {
-#if defined(TD_POSIX_COMPATIBLE)
+#if defined(P201_POSIX_COMPATIBLE)
     mkdir(path.c_str(), ACCESSPERMS);
-#elif defined(TD_OS_WINDOWS)
+#elif defined(P201_OS_WINDOWS)
 #endif
 }
 __attribute__((always_inline)) void directory::open(const std::string& path)
 {
     __path = path;
-    if (__path.back() != TD_DIRECTORY_SLASH) __path += TD_DIRECTORY_SLASH;
+    if (__path.back() != P201_DIRECTORY_SLASH) __path += P201_DIRECTORY_SLASH;
     if (is_file(path))
         throw std::runtime_error(
             std::string("Attempt to open a file as a directory: ") + __path);
     if (is_directory(path))
     {
-#if defined(TD_POSIX_COMPATIBLE)
+#if defined(P201_POSIX_COMPATIBLE)
         __directory = opendir(path.c_str());
-#elif defined(TD_OS_WINDOWS)
+#elif defined(P201_OS_WINDOWS)
 #endif
     }
     else
@@ -44,18 +44,18 @@ __attribute__((always_inline)) void directory::open(const std::string& path)
 }
 __attribute__((always_inline)) void directory::close()
 {
-#if defined(TD_POSIX_COMPATIBLE)
+#if defined(P201_POSIX_COMPATIBLE)
     closedir(__directory);
     __directory = nullptr;
     __entry     = nullptr;
-#elif defined(TD_OS_WINDOWS)
+#elif defined(P201_OS_WINDOWS)
 #endif
     __open = false;
     __path = std::string();
 }
 __attribute__((always_inline)) void directory::read()
 {
-#if defined(TD_POSIX_COMPATIBLE)
+#if defined(P201_POSIX_COMPATIBLE)
     rewinddir(__directory);
     while ((__entry = readdir(__directory)))
     {
@@ -63,7 +63,7 @@ __attribute__((always_inline)) void directory::read()
             std::string(__entry->d_name) != "..")
         { __entries.emplace_back(__entry->d_name); }
     }
-#elif defined(TD_OS_WINDOWS)
+#elif defined(P201_OS_WINDOWS)
 #endif
 }
 __attribute__((always_inline)) directory::operator std::string()

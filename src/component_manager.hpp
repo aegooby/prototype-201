@@ -9,6 +9,10 @@
 namespace p201
 {
 
+/**
+ * @brief Component managers are responsible for adding and removing components
+ *        to & from entities. That's all they do bitch.
+ */
 class component_manager
 {
 public:
@@ -74,11 +78,6 @@ class input_manager : public component_manager_template<input_component>
 {
 public:
     virtual ~input_manager() = default;
-};
-class state_manager : public component_manager_template<state_component>
-{
-public:
-    virtual ~state_manager() = default;
 };
 
 } // namespace p201

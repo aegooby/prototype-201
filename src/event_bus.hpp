@@ -3,6 +3,11 @@
 #include "__common.hpp"
 #include "event.hpp"
 
+/**
+ * @brief Don't worry too much about how the shit in this file works because
+ *        frankly I have no fucking idea either.
+ */
+
 namespace p201
 {
 

@@ -3,7 +3,6 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "ecs_common.hpp"
-#include "state.hpp"
 #include "system.hpp"
 
 #include <typeindex>
@@ -14,6 +13,11 @@
 namespace p201
 {
 
+/**
+ * @brief Entities are an id, flag, and type they shouldn't have shit else.
+ *        They don't actually store components they just forward them to the
+ *        world which forwards them to the component managers.
+ */
 class entity
 {
 public:

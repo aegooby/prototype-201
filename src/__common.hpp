@@ -2,13 +2,13 @@
 #pragma once
 
 #if defined(__cplusplus)
-#    if !defined(TD_CPP_VER)
+#    if !defined(P201_CPP_VER)
 #        if __cplusplus <= 201103L
-#            define TD_CPP_VER 11
+#            define P201_CPP_VER 11
 #        elif __cplusplus <= 201402L
-#            define TD_CPP_VER 14
+#            define P201_CPP_VER 14
 #        elif __cplusplus <= 201703L
-#            define TD_CPP_VER 17
+#            define P201_CPP_VER 17
 #        endif
 #    endif
 #else
@@ -19,43 +19,43 @@
 #    error Not x86
 #endif
 
-#if TD_CPP_VER < 17
+#if P201_CPP_VER < 17
 #    error Not C++17
 #endif
 
 #if defined(__clang__)
-#    define TD_COMPILER_CLANG
+#    define P201_COMPILER_CLANG
 #elif defined(_MSC_VER)
-#    define TD_COMPILER_MSVC
+#    define P201_COMPILER_MSVC
 #elif defined(__INTEL_COMPILER)
-#    define TD_COMPILER_INTEL
+#    define P201_COMPILER_INTEL
 #elif defined(__GNUC__)
-#    define TD_COMPILER_GCC
+#    define P201_COMPILER_GCC
 #else
-#    define TD_COMPILER_UNKNOWN
+#    define P201_COMPILER_UNKNOWN
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
-#    define TD_OS_WINDOWS
+#    define P201_OS_WINDOWS
 #elif defined(__APPLE__) && defined(__MACH__)
-#    define TD_OS_MACOS
+#    define P201_OS_MACOS
 #elif defined(__linux__)
-#    define TD_OS_LINUX
+#    define P201_OS_LINUX
 #else
-#    define TD_OS_UNKNOWN
+#    define P201_OS_UNKNOWN
 #endif
 
-#if defined(__unix__) || defined(TD_OS_MACOS)
+#if defined(__unix__) || defined(P201_OS_MACOS)
 #    include <unistd.h>
 #    if defined(_POSIX_VERSION)
-#        define TD_POSIX_COMPATIBLE
+#        define P201_POSIX_COMPATIBLE
 #    endif
 #endif
 
 // GNU C++ extensions (__attribute__)
 #if !defined(__GNUC__)
 #    ifndef __attribute__
-#         #        define __attribute__(...)
+#        define __attribute__(...)
 #    endif
 #endif
 
@@ -70,12 +70,8 @@
 #    undef main
 #endif
 
-#define __strfy(__str)      #__str
-#define td_stringify(__str) __strfy(__str)
-#define td_concat(__a, __b) __a##__b
-
-#if defined(TD_CPP_VER)
-#    if TD_CPP_VER > 11
+#if defined(P201_CPP_VER)
+#    if P201_CPP_VER > 11
 #        if defined(NULL)
 #            undef NULL
 #        endif

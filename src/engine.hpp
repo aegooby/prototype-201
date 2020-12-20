@@ -24,7 +24,7 @@ protected:
     const float __time_per_frame = 1.0f / float(global::game_fps);
 
 protected:
-    bool cmd_w() const;
+    bool window_close_key() const;
 
 public:
     engine(const std::string&, int, int, bool);

@@ -9,6 +9,7 @@
 namespace p201
 {
 
+/** @brief The entity manager manages entities it's in the fucking name. */
 class entity_manager
 {
 public:

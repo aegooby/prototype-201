@@ -4,13 +4,13 @@
 
 #include <fstream>
 #include <vector>
-#if defined(TD_POSIX_COMPATIBLE)
+#if defined(P201_POSIX_COMPATIBLE)
 #    include <dirent.h>
 #    include <sys/stat.h>
-#    define TD_DIRECTORY_SLASH '/'
-#elif defined(TD_OS_WINDOWS)
+#    define P201_DIRECTORY_SLASH '/'
+#elif defined(P201_OS_WINDOWS)
 #    include <windows.h>
-#    define TD_DIRECTORY_SLASH '\'
+#    define P201_DIRECTORY_SLASH '\'
 #endif
 
 namespace p201
@@ -31,10 +31,10 @@ public:
 protected:
     mode        __mode = mode::read_only;
     std::string __path;
-#if defined(TD_POSIX_COMPATIBLE)
+#if defined(P201_POSIX_COMPATIBLE)
     dir*    __directory = nullptr;
     dirent* __entry     = nullptr;
-#elif defined(TD_OS_WINDOWS)
+#elif defined(P201_OS_WINDOWS)
 
 #endif
     bool                     __open = false;
@@ -44,7 +44,7 @@ protected:
 public:
     static bool is_directory(const std::string& path)
     {
-#if defined(TD_POSIX_COMPATIBLE)
+#if defined(P201_POSIX_COMPATIBLE)
         dir* __ptr = opendir(path.c_str());
         if (__ptr)
         {
@@ -52,7 +52,7 @@ public:
             return true;
         }
         return false;
-#elif defined(TD_OS_WINDOWS)
+#elif defined(P201_OS_WINDOWS)
 
 #endif
     }
