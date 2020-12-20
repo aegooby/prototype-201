@@ -1,14 +1,15 @@
 
-#pragma	once
-#include	"__common.hpp"
+#pragma once
+#include "__common.hpp"
 
-__begin_ns_td
+namespace p201
+{
 
 using id_t = size_t;
 
-enum class    entity_type
+enum class entity_type
 {
     player,
 };
 
-__end_ns_td
+} // namespace p201

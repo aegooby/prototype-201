@@ -1,25 +1,27 @@
 
-#include	"__common.hpp"
-#include	"component.hpp"
-#include	"render_system.hpp"
-#include	"filesystem.hpp"
-#include	"sprite.hpp"
-#include	"input.hpp"
-#include	"event.hpp"
-#include	"entity.hpp"
+#include "component.hpp"
 
-__begin_ns_td
+#include "__common.hpp"
+#include "entity.hpp"
+#include "event.hpp"
+#include "filesystem.hpp"
+#include "input.hpp"
+#include "render_system.hpp"
+#include "sprite.hpp"
+
+namespace p201
+{
 
 component::~component() = default;
 
-void	render_component::add_flipbook(const std::string&, float fps,
-                                       const sprite_info& info)
+void render_component::add_flipbook(const std::string&, float fps,
+                                    const sprite_info& info)
 {
-//  flipbooks.emplace
+    //  flipbooks.emplace
 }
-void	render_component::remove_flipbook(const std::string& str)
+void render_component::remove_flipbook(const std::string& str)
 {
-	flipbooks.erase(str);
+    flipbooks.erase(str);
 }
 
-__end_ns_td
+} // namespace p201

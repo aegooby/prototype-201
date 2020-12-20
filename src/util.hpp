@@ -1,9 +1,8 @@
 
-#pragma	once
-#include	"__common.hpp"
+#pragma once
+#include "__common.hpp"
 
-__begin_ns_td
+namespace p201
+{
 
-
-
-__end_ns_td
+} // namespace p201

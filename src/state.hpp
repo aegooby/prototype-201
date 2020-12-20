@@ -2,40 +2,40 @@
 //#pragma    once
 //#include    "__common.hpp"
 //
-//__begin_ns_td
+// namespace p201 {
 //
-//enum    direction_state : uint32_t
+// enum    direction_state : uint32_t
 //{
 //    left = 0x0,
 //    right = 0x1,
 //    up = 0x2,
 //    down = 0x3,
 //};
-//enum    movement_state : uint32_t
+// enum    movement_state : uint32_t
 //{
 //    idle = 0x4,
 //    walk = 0x5,
 //    run = 0x6,
 //    dash = 0x7,
 //};
-//enum    attack_state : uint32_t
+// enum    attack_state : uint32_t
 //{
 //    neutral = 0x8,
 //    melee = 0x9,
 //    ranged = 0xa,
 //};
-//class    state
+// class    state
 //{
-//public:
+// public:
 //    friend bool     operator ==(const state& __a, const state& __b);
 //    friend bool     operator !=(const state& __a, const state& __b);
 //    friend state    operator &(const state& __a, const state& __b);
 //    friend state    operator |(const state& __a, const state& __b);
 //    friend state    operator ^(const state& __a, const state& __b);
 //    friend struct   std::hash<class state>;
-//protected:
+// protected:
 //    std::bitset<32>    bitset;
-//public:
+// public:
 //    state() = default;
 //    state(const std::bitset<32>& bitset) : bitset(bitset) {  }
 //    template    <typename ... types>
@@ -95,38 +95,38 @@
 //    }
 //};
 //
-//bool    operator ==(const state& __a, const state& __b)
+// bool    operator ==(const state& __a, const state& __b)
 //{
 //    return (__a.bitset == __b.bitset);
 //}
-//bool    operator !=(const state& __a, const state& __b)
+// bool    operator !=(const state& __a, const state& __b)
 //{
 //    return !(__a == __b);
 //}
-//state   operator &(const state& __a, const state& __b)
+// state   operator &(const state& __a, const state& __b)
 //{
 //    return state(__a.bitset & __b.bitset);
 //}
-//state   operator |(const state& __a, const state& __b)
+// state   operator |(const state& __a, const state& __b)
 //{
 //    return state(__a.bitset | __b.bitset);
 //}
-//state   operator ^(const state& __a, const state& __b)
+// state   operator ^(const state& __a, const state& __b)
 //{
 //    return state(__a.bitset ^ __b.bitset);
 //}
 //
 //
 //
-//__end_ns_td
+//} //namespace p201
 //
-//namespace std
+// namespace std
 //{
 //    template    <>
-//    class    std::hash<td::state>
+//    class    std::hash<p201::state>
 //    {
 //    public:
-//        const size_t    operator()(const td::state& state) const
+//        const size_t    operator()(const p201::state& state) const
 //        {
 //            return std::hash<std::bitset<32>>()(state.bitset);
 //        }

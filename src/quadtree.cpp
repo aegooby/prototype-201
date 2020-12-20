@@ -7,18 +7,21 @@
 //#include    "component.hpp"
 //#include    "quadtree.hpp"
 //
-//__begin_ns_td
+// namespace p201 {
 //
-//void    quadtree::split(node& currentbound)
+// void    quadtree::split(node& currentbound)
 //{
 //    level++;
 //    add_subnodes(level);
 //    std::unique_ptr<node[]> sub_node = std::make_unique<node[]>(5);
 //
-//    sub_node[0] = nodemake(currentbound.subwidth(), currentbound.x1, currentbound.subheight(), currentbound.y1);
-//    sub_node[1] = nodemake(currentbound.x0, currentbound.subwidth(), currentbound.subheight(), currentbound.y1);
-//    sub_node[2] = nodemake(currentbound.x0, currentbound.subwidth(), currentbound.y0, currentbound.subheight());
-//    sub_node[3] = nodemake(currentbound.subwidth(), currentbound.x1, currentbound.y0, currentbound.subheight());
+//    sub_node[0] = nodemake(currentbound.subwidth(), currentbound.x1,
+//    currentbound.subheight(), currentbound.y1); sub_node[1] =
+//    nodemake(currentbound.x0, currentbound.subwidth(),
+//    currentbound.subheight(), currentbound.y1); sub_node[2] =
+//    nodemake(currentbound.x0, currentbound.subwidth(), currentbound.y0,
+//    currentbound.subheight()); sub_node[3] = nodemake(currentbound.subwidth(),
+//    currentbound.x1, currentbound.y0, currentbound.subheight());
 //
 //    for (int i = 0; i < 4; i++)
 //    {
@@ -26,7 +29,7 @@
 //    }
 //}
 //
-//int    quadtree::get_index(circle& hitbox, node& currentnode) {
+// int    quadtree::get_index(circle& hitbox, node& currentnode) {
 //
 //    if (currentnode == Basisknoten)
 //    {
@@ -57,7 +60,8 @@
 //        }
 //    }
 //
-//    if (hitbox.right() > currentnode.subwidth() && hitbox.left() < currentnode.subwidth()) {
+//    if (hitbox.right() > currentnode.subwidth() && hitbox.left() <
+//    currentnode.subwidth()) {
 //        if (hitbox.top() <= currentnode.subheight())
 //        {
 //            index = 2;
@@ -68,7 +72,8 @@
 //        }
 //    }
 //
-//    if (hitbox.top() > currentnode.subheight() && hitbox.bottom() < currentnode.subheight()) {
+//    if (hitbox.top() > currentnode.subheight() && hitbox.bottom() <
+//    currentnode.subheight()) {
 //        if (hitbox.right() <= currentnode.subwidth())
 //        {
 //            index = 1;
@@ -86,7 +91,7 @@
 //    return index;
 //}
 //
-//void    quadtree::insert(circle& hitbox, int& currentlevel)
+// void    quadtree::insert(circle& hitbox, int& currentlevel)
 //{
 //    int antes = currentlevel - 1;
 //    for (int i = 0; i < subnode_num.at(antes).size(); i++)
@@ -111,7 +116,7 @@
 //}
 //
 //
-//void    quadtree::recursive_insert(circle& hitbox, int currentlevel)
+// void    quadtree::recursive_insert(circle& hitbox, int currentlevel)
 //{
 //    int Kommunismus = currentlevel - 1;
 //    if (currentlevel > 1)
@@ -137,7 +142,7 @@
 //
 //}
 //
-//std::pair<int, int>&    quadtree::get_levelsubnode(circle& hitbox)
+// std::pair<int, int>&    quadtree::get_levelsubnode(circle& hitbox)
 //{
 //    for (int j = 1; j < level; j++)
 //    {
@@ -158,19 +163,23 @@
 //    throw std::runtime_error("Hitbox not found");
 //}
 //
-//void    quadtree::collision_check(circle& hitbox)
+// void    quadtree::collision_check(circle& hitbox)
 //{
 //    int entity_level = get_levelsubnode(hitbox).first;
 //    int entity_subnode = get_levelsubnode(hitbox).second;
-//    for (int k = 0; k < object_list.at(entity_level).at(entity_subnode).size(); k++)
+//    for (int k = 0; k <
+//    object_list.at(entity_level).at(entity_subnode).size(); k++)
 //    {
-//        circle::check_collision(hitbox, object_list.at(entity_level).at(entity_subnode).at(k));
-//        // check if a certain entity in its own given node collides with any other entities in its node
+//        circle::check_collision(hitbox,
+//        object_list.at(entity_level).at(entity_subnode).at(k));
+//        // check if a certain entity in its own given node collides with any
+//        other entities in its node
 //    }
 //
 //}
 //
-//void    total_collision_check(std::vector<std::unique_ptr<class component>>& hitbox)
+// void    total_collision_check(std::vector<std::unique_ptr<class component>>&
+// hitbox)
 //{
 //    for (int j = 0; j < hitbox.size(); j++)
 //    {
@@ -197,7 +206,7 @@
 //
 //}
 //
-//quadtree::quadtree()
+// quadtree::quadtree()
 //{
 //    Basisknoten = nodemake(0, 100, 0, 100);
 //    // whatever the min and max x and y coords of the entire screen are
@@ -209,11 +218,11 @@
 //    split(Basisknoten);
 //
 //}
-//quadtree::~quadtree()
+// quadtree::~quadtree()
 //{
 //    nodelist.clear();
 //    object_list.clear();
 //}
 //
 //
-//__end_ns_td
+//} //namespace p201

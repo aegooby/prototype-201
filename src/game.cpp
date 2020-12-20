@@ -1,9 +1,9 @@
 
-#include	"__common.hpp"
-#include	"game.hpp"
+#include "game.hpp"
 
-__begin_ns_td
+#include "__common.hpp"
 
+namespace p201
+{
 
-
-__end_ns_td
+} // namespace p201

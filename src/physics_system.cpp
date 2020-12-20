@@ -1,48 +1,47 @@
 
-#include	"__common.hpp"
-#include	"physics_system.hpp"
-#include	"entity_manager.hpp"
-#include	"event.hpp"
-#include	"world.hpp"
+#include "physics_system.hpp"
 
-__begin_ns_td
+#include "__common.hpp"
+#include "entity_manager.hpp"
+#include "event.hpp"
+#include "world.hpp"
 
-void	physics_system::start()
+namespace p201
 {
-	world.event_bus.subscribe(*this, &physics_system::on_acceleration_event);
+
+void physics_system::start()
+{
+    world.event_bus.subscribe(*this, &physics_system::on_acceleration_event);
 }
-void	physics_system::update()
+void physics_system::update()
 {
-	for (auto& entity : __registered_entities)
-	{
-		auto&	transform = entity.second.get().component<transform_component>();
-		auto&	collision = entity.second.get().component<collision_component>();
-		if (transform.velocity.norm() < transform.max_speed)
-			transform.velocity += transform.acceleration;
-		transform.position += transform.velocity;
-		transform.velocity *= 0.5f;
-		if (transform.velocity.norm() < 1.0f)
-			transform.velocity = vector_3(0.0f, 0.0f, 0.0f);
-	}
+    for (auto& entity : __registered_entities)
+    {
+        auto& transform = entity.second.get().component<transform_component>();
+        auto& collision = entity.second.get().component<collision_component>();
+        if (transform.velocity.norm() < transform.max_speed)
+            transform.velocity += transform.acceleration;
+        transform.position += transform.velocity;
+        transform.velocity *= 0.5f;
+        if (transform.velocity.norm() < 1.0f)
+            transform.velocity = vector_3(0.0f, 0.0f, 0.0f);
+    }
 }
-void	physics_system::on_collision_event(collision_event& event)
+void physics_system::on_collision_event(collision_event& event) { }
+void physics_system::on_acceleration_event(acceleration_event& event)
 {
-	
-}
-void	physics_system::on_acceleration_event(acceleration_event& event)
-{
-	auto&	transform = event.entity.component<transform_component>();
-	switch (event.mode)
-	{
-		case acceleration_event::mode::mod:
-			transform.acceleration += event.acceleration;
-			break;
-		case acceleration_event::mode::set:
-			transform.acceleration = event.acceleration;
-			break;
-		default:
-			break;
-	}
+    auto& transform = event.entity.component<transform_component>();
+    switch (event.mode)
+    {
+        case acceleration_event::mode::mod:
+            transform.acceleration += event.acceleration;
+            break;
+        case acceleration_event::mode::set:
+            transform.acceleration = event.acceleration;
+            break;
+        default:
+            break;
+    }
 }
 
-__end_ns_td
+} // namespace p201

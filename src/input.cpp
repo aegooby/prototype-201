@@ -1,20 +1,24 @@
 
-#include	"__common.hpp"
-#include	"input.hpp"
-#include	"window.hpp"
+#include "input.hpp"
 
-__begin_ns_td
+#include "__common.hpp"
+#include "window.hpp"
 
-void	mouse::position(float x, float y)
+namespace p201
 {
-	__position.x = x;
-	__position.y = y;
-	SDL_WarpMouseInWindow(window_context.sdl_window(), int(__position.x), int(__position.y));
-}
-void	mouse::position(const vector_2& position)
+
+void mouse::position(float x, float y)
 {
-	__position = position;
-	SDL_WarpMouseInWindow(window_context.sdl_window(), int(__position.x), int(__position.y));
+    __position.x = x;
+    __position.y = y;
+    SDL_WarpMouseInWindow(window_context.sdl_window(), int(__position.x),
+                          int(__position.y));
+}
+void mouse::position(const vector_2& position)
+{
+    __position = position;
+    SDL_WarpMouseInWindow(window_context.sdl_window(), int(__position.x),
+                          int(__position.y));
 }
 
-__end_ns_td
+} // namespace p201

@@ -1,27 +1,34 @@
 
-#include	"__common.hpp"
-#include	"entity.hpp"
-#include	"world.hpp"
+#include "entity.hpp"
 
-__begin_ns_td
+#include "__common.hpp"
+#include "world.hpp"
 
-entity::entity(const id_t id, const entity_type type, class world& world) : world(world), id(id), type(type) {  }
-bool	entity::operator ==(const entity& other)
+namespace p201
 {
-	return id == other.id;
+
+entity::entity(const id_t id, const entity_type type, class world& world)
+    : world(world), id(id), type(type)
+{
 }
-std::unique_ptr<component>&	entity::__component(std::type_index component_type)
+bool entity::operator==(const entity& other)
 {
-	return world.component(*this, component_type);
+    return id == other.id;
 }
-void	entity::__add_component(std::unique_ptr<class component>&& component, std::type_index component_type)
+std::unique_ptr<component>& entity::__component(std::type_index component_type)
 {
-	world.add_component(*this, std::forward<std::unique_ptr<class component>>(component), component_type);
+    return world.component(*this, component_type);
 }
-void	entity::__remove_component(std::type_index component_type)
+void entity::__add_component(std::unique_ptr<class component>&& component,
+                             std::type_index                    component_type)
 {
-	world.remove_component(*this, component_type);
+    world.add_component(
+        *this, std::forward<std::unique_ptr<class component>>(component),
+        component_type);
+}
+void entity::__remove_component(std::type_index component_type)
+{
+    world.remove_component(*this, component_type);
 }
 
-__end_ns_td
-
+} // namespace p201

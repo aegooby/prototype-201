@@ -1,11 +1,11 @@
 
-#include	"__common.hpp"
-#include	"sprite.hpp"
-#include	"filesystem.hpp"
-#include	"component.hpp"
+#include "sprite.hpp"
 
-__begin_ns_td
+#include "__common.hpp"
+#include "component.hpp"
+#include "filesystem.hpp"
 
+namespace p201
+{
 
-
-__end_ns_td
+} // namespace p201

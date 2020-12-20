@@ -1,12 +1,12 @@
 
-#pragma	once
-#include	"__common.hpp"
+#pragma once
+#include "__common.hpp"
 
-__begin_ns_td
-
-class	game
+namespace p201
 {
-	
+
+class game
+{
 };
 
-__end_ns_td
+} // namespace p201
