@@ -15,11 +15,11 @@ namespace p201
 
 class __vector_private
 {
-    private:
+private:
     template<typename value_type, size_t dim>
     class __vector_base;
 
-    public:
+public:
     template<typename value_type, size_t dim>
     friend class vector;
 
@@ -40,7 +40,7 @@ class __vector_private::__vector_base
     static_assert(std::is_signed_v<__value_type>);
     static_assert(dim > 1);
 
-    public:
+public:
     using value_type            = __value_type;
     using reference             = value_type&;
     using const_reference       = const value_type&;
@@ -54,10 +54,10 @@ class __vector_private::__vector_base
     using size_type             = size_t;
     friend class vector<value_type, dim>;
 
-    protected:
+protected:
     array<value_type, dim> __data;
 
-    public:
+public:
     constexpr __vector_base() = default;
     template<typename... types>
     constexpr __vector_base(types&&... args)
@@ -242,7 +242,7 @@ class __vector_private::__vector_base
 template<typename __value_type, size_t dim>
 class vector : public __vector_private::__vector_base<__value_type, dim>
 {
-    public:
+public:
     using __base          = __vector_private::__vector_base<__value_type, dim>;
     using value_type      = typename __base::value_type;
     using reference       = typename __base::reference;
@@ -256,7 +256,7 @@ class vector : public __vector_private::__vector_base<__value_type, dim>
     using const_self_reference  = const vector<value_type, dim>&;
     using size_type             = typename __base::size_type;
 
-    public:
+public:
     constexpr vector() = default;
     template<typename... types>
     constexpr vector(types&&... args) : __base(std::forward<types>(args)...)

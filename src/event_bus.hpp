@@ -8,10 +8,10 @@ namespace p201
 
 class function_handler
 {
-    protected:
+protected:
     virtual void call(std::unique_ptr<event>&& event) = 0;
 
-    public:
+public:
     virtual ~function_handler() = default;
     virtual void exec(std::unique_ptr<event>&& event)
     {
@@ -22,22 +22,22 @@ class function_handler
 template<typename system_type, typename event_type>
 class function_handler_sp : public function_handler
 {
-    public:
+public:
     using event_t  = event_type;
     using system_t = system_type;
     typedef void (system_t::*function_t)(event_t&);
 
-    private:
+private:
     system_t&  __system;
     function_t __function;
 
-    protected:
+protected:
     virtual void call(std::unique_ptr<event>&& event) override
     {
         (__system.*__function)(*static_cast<event_t*>(event.get()));
     }
 
-    public:
+public:
     function_handler_sp(system_t& system, function_t function)
         : __system(system), __function(function)
     {
@@ -47,14 +47,14 @@ class function_handler_sp : public function_handler
 
 class event_bus
 {
-    public:
+public:
     using list_t = std::list<std::unique_ptr<function_handler>>;
 
-    protected:
+protected:
     std::unordered_map<std::type_index, std::unique_ptr<list_t>> __subscribers;
     class world&                                                 world;
 
-    public:
+public:
     event_bus(class world& world) : world(world) { }
     ~event_bus() = default;
     template<typename event_type, typename... types>

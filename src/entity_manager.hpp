@@ -11,13 +11,13 @@ namespace p201
 
 class entity_manager
 {
-    public:
+public:
     std::unordered_map<id_t, std::unique_ptr<entity>> entities;
 
-    protected:
+protected:
     size_t __entityc = 0;
 
-    public:
+public:
     entity_manager()  = default;
     ~entity_manager() = default;
     entity& new_entity(entity_type, class world&);

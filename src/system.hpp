@@ -12,10 +12,10 @@ namespace p201
 
 class system_flag : public std::bitset<32>
 {
-    public:
+public:
     using __base = std::bitset<32>;
 
-    public:
+public:
     constexpr system_flag() noexcept = default;
     constexpr system_flag(unsigned long long val) noexcept : __base(val) { }
     ~system_flag() = default;
@@ -23,7 +23,7 @@ class system_flag : public std::bitset<32>
 
 class system
 {
-    public:
+public:
     enum flag
     {
         unknown   = 0x0,
@@ -37,12 +37,12 @@ class system
     static const std::unordered_map<std::type_index, system::flag> flags;
     system_flag                                                    flag;
 
-    protected:
+protected:
     std::unordered_map<id_t, std::reference_wrapper<entity>>
                  __registered_entities;
     class world& world;
 
-    public:
+public:
     system(class world&);
     virtual ~system()     = default;
     virtual void start()  = 0;

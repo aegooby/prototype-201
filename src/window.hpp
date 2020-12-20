@@ -9,14 +9,14 @@ namespace p201
 
 class window
 {
-    protected:
+protected:
     std::string   __title = std::string();
     int           __width = int(), __height = int();
     SDL_Window*   __sdl_window = nullptr;
     bool          __closed     = false;
     SDL_SysWMinfo __syswm_info = SDL_SysWMinfo();
 
-    public:
+public:
     keyboard keyboard;
     mouse    mouse;
     window(const std::string& title, int width, int height)

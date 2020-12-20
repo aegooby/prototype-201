@@ -22,14 +22,14 @@ static constexpr double nspms = 1.0E6;
 
 class clock
 {
-    protected:
+protected:
     inline static t_point start = std::chrono::high_resolution_clock::now();
     inline static t_point now()
     {
         return std::chrono::high_resolution_clock::now();
     }
 
-    public:
+public:
     clock()  = default;
     ~clock() = default;
     inline void reset()

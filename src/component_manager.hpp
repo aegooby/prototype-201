@@ -11,7 +11,7 @@ namespace p201
 
 class component_manager
 {
-    public:
+public:
     virtual ~component_manager()                           = default;
     virtual std::unique_ptr<component>& component(entity&) = 0;
     virtual void add_component(entity&, std::unique_ptr<class component>&&) = 0;
@@ -21,15 +21,15 @@ class component_manager
 template<typename component_type>
 class component_manager_template : public component_manager
 {
-    public:
+public:
     using component_t = component_type;
     using index_t     = size_t;
     std::vector<std::unique_ptr<class component>> components;
 
-    protected:
+protected:
     std::unordered_map<id_t, index_t> __entity_map;
 
-    public:
+public:
     virtual ~component_manager_template() = default;
     virtual std::unique_ptr<class component>& component(entity& entity)
     {
@@ -56,28 +56,28 @@ class component_manager_template : public component_manager
 
 class render_manager : public component_manager_template<render_component>
 {
-    public:
+public:
     virtual ~render_manager() = default;
 };
 class transform_manager : public component_manager_template<transform_component>
 {
-    public:
+public:
     virtual ~transform_manager() = default;
 };
 
 class collision_manager : public component_manager_template<collision_component>
 {
-    public:
+public:
     virtual ~collision_manager() = default;
 };
 class input_manager : public component_manager_template<input_component>
 {
-    public:
+public:
     virtual ~input_manager() = default;
 };
 class state_manager : public component_manager_template<state_component>
 {
-    public:
+public:
     virtual ~state_manager() = default;
 };
 

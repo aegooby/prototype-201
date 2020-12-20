@@ -77,7 +77,7 @@ distance(value_type __a, value_type __b) noexcept
 
 class divide_by_zero : public std::domain_error
 {
-    public:
+public:
     explicit divide_by_zero(const std::string& what) noexcept
         : std::domain_error(what)
     {

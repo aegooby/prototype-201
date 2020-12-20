@@ -12,11 +12,11 @@ struct hitbox
 
 struct circle : public hitbox
 {
-    public:
+public:
     vector_2 center = vector_2();
     float    radius = 0.0f;
 
-    public:
+public:
     circle() = default;
     circle(vector_2 center, float radius) : center(center), radius(radius) { }
     circle(float x, float y, float radius) : center(x, y), radius(radius) { }

@@ -9,10 +9,10 @@ namespace p201
 
 class sdl_error : public std::runtime_error
 {
-    public:
+public:
     using __base = std::runtime_error;
 
-    public:
+public:
     sdl_error(const char* what_arg) noexcept
         : __base(std::string(what_arg) + " (SDL Error: " + SDL_GetError() + ")")
     {

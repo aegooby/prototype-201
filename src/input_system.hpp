@@ -8,14 +8,14 @@ namespace p201
 
 class input_system : public system
 {
-    public:
+public:
     using __base = system;
 
-    protected:
+protected:
     void on_down(class entity&);
     void on_up(class entity&);
 
-    public:
+public:
     input_system(class world& world) : __base(world)
     {
         flag.set(system::flag::input);

@@ -10,7 +10,7 @@ namespace p201
 
 class quadtree
 {
-    public:
+public:
     struct node
     {
         float x0; // leftern edge
@@ -28,7 +28,7 @@ class quadtree
         }
     };
 
-    private:
+private:
     std::vector<std::vector<std::vector<std::reference_wrapper<circle>>>>
                                    object_list;
     std::vector<std::vector<node>> nodelist;
@@ -54,7 +54,7 @@ class quadtree
         return bounds;
     };
 
-    public:
+public:
     quadtree();
     ~quadtree();
     void                 split(node&);

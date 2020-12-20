@@ -20,10 +20,10 @@ class point<value_type, 2>
     static_assert(std::is_integral_v<value_type>);
     static_assert(std::is_signed_v<value_type>);
 
-    public:
+public:
     value_type x = value_type(), y = value_type();
 
-    public:
+public:
     using self_reference       = point<value_type, 2>&;
     using const_self_reference = const point<value_type, 2>&;
     using self_type            = point<value_type, 2>;

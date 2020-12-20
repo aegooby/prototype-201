@@ -16,20 +16,20 @@ namespace p201
 
 class entity
 {
-    public:
+public:
     class world& world;
     system_flag  flag;
 
-    public:
+public:
     const id_t        id;
     const entity_type type;
 
-    protected:
+protected:
     std::unique_ptr<component>& __component(std::type_index);
     void __add_component(std::unique_ptr<class component>&&, std::type_index);
     void __remove_component(std::type_index);
 
-    public:
+public:
     entity(const id_t, const entity_type, class world&);
     virtual ~entity() = default;
     template<typename component_type>

@@ -27,17 +27,17 @@ struct sprite_info
 
 class sprite_flipbook
 {
-    public:
+public:
     uint32_t framec = 0;
     uint32_t index  = 0;
 
-    protected:
+protected:
     float __fps = 0;
 
-    public:
+public:
     const sprite_info info;
 
-    public:
+public:
     sprite_flipbook(float fps, const sprite_info& info) : __fps(fps), info(info)
     {
         if (__fps <= 0 || __fps > float(global::game_fps))

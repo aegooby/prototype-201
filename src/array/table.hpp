@@ -10,7 +10,7 @@ namespace p201
 template<typename __value_type, size_t rows, size_t columns>
 class table
 {
-    public:
+public:
     using value_type             = __value_type;
     using reference              = value_type&;
     using rvalue_reference       = value_type&&;
@@ -39,10 +39,10 @@ class table
     friend class st_table<value_type, rows, columns>;
     friend class st_array<value_type, columns>;
 
-    protected:
+protected:
     st_array<value_type, columns>* __data = nullptr;
 
-    private:
+private:
     inline __attribute__((always_inline)) void allocate(size_type size)
     {
         if (size > std::numeric_limits<difference_type>::max())
@@ -65,7 +65,7 @@ class table
         if (__data) memory::deallocate(__data);
     }
 
-    public:
+public:
     template<class... types>
     constexpr table(types&&... args)
     {

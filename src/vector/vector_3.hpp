@@ -20,10 +20,10 @@ class vector<value_type, 3>
     static_assert(std::is_floating_point_v<value_type>);
     static_assert(std::is_signed_v<value_type>);
 
-    public:
+public:
     value_type x = value_type(), y = value_type(), z = value_type();
 
-    public:
+public:
     using self_reference       = vector<value_type, 3>&;
     using const_self_reference = const vector<value_type, 3>&;
     using self_type            = vector<value_type, 3>;

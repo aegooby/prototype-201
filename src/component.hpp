@@ -19,10 +19,10 @@ namespace p201
 
 class component
 {
-    public:
+public:
     class entity& entity;
 
-    public:
+public:
     component(class entity& entity) : entity(entity) { }
     virtual ~component() = 0;
 
@@ -35,14 +35,14 @@ class component
 
 class render_component : public component
 {
-    public:
+public:
     using __base = component;
 
-    public:
+public:
     std::unordered_map<std::string, sprite_flipbook> flipbooks;
     SDL_Rect                                         rect;
 
-    public:
+public:
     render_component(class entity& entity) : __base(entity) { }
     virtual ~render_component() = default;
     void add_flipbook(const std::string&, float, const sprite_info&);
@@ -51,39 +51,39 @@ class render_component : public component
 
 class physics_component : public component
 {
-    public:
+public:
     using __base = component;
 
-    public:
+public:
     physics_component(class entity& entity) : __base(entity) { }
     virtual ~physics_component() = default;
 };
 
 class transform_component : public physics_component
 {
-    public:
+public:
     using __base = physics_component;
 
-    public:
+public:
     vector_3 position;
     vector_3 velocity;
     vector_3 acceleration;
     float    max_speed = 10.0f;
 
-    public:
+public:
     transform_component(class entity& entity) : __base(entity) { }
     virtual ~transform_component() = default;
 };
 
 class collision_component : public physics_component
 {
-    public:
+public:
     using __base = physics_component;
 
-    public:
+public:
     circle hitbox;
 
-    public:
+public:
     collision_component(class entity& entity) : __base(entity) { }
     virtual ~collision_component() = default;
 };
@@ -91,31 +91,31 @@ class collision_component : public physics_component
 // TODO: finish
 class audio_component : public component
 {
-    public:
+public:
     using __base = component;
 
-    public:
+public:
     audio_component(class entity& entity) : __base(entity) { }
     virtual ~audio_component() = default;
 };
 
 class input_component : public component
 {
-    public:
+public:
     using __base = component;
 
-    public:
-    public:
+public:
+public:
     input_component(class entity& entity) : __base(entity) { }
     virtual ~input_component() = default;
 };
 
 class state_component : public component
 {
-    public:
+public:
     using __base = component;
     //    state    state;
-    public:
+public:
     state_component(class entity& entity) : __base(entity) { }
     virtual ~state_component() = default;
 };

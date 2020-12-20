@@ -9,7 +9,7 @@ namespace p201
 template<typename __value_type, size_t __size>
 class array
 {
-    public:
+public:
     using value_type             = __value_type;
     using reference              = value_type&;
     using rvalue_reference       = value_type&&;
@@ -32,10 +32,10 @@ class array
     friend class st_array<value_type, __size>;
     friend class array<value_type, __size>;
 
-    protected:
+protected:
     value_type* __data = nullptr;
 
-    private:
+private:
     inline __attribute__((always_inline)) void allocate(size_type size)
     {
         if (size > std::numeric_limits<difference_type>::max())
@@ -58,7 +58,7 @@ class array
         if (__data) memory::deallocate(__data);
     }
 
-    public:
+public:
     template<class... types>
     constexpr array(types&&... args)
     {

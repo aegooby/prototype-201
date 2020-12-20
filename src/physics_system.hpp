@@ -10,11 +10,11 @@ namespace p201
 
 class physics_system : public system
 {
-    public:
+public:
     using __base = system;
 
-    protected:
-    public:
+protected:
+public:
     physics_system(class world& world) : __base(world)
     {
         flag.set(system::flag::collision);

@@ -14,7 +14,7 @@ namespace p201
 
 class engine
 {
-    protected:
+protected:
     window      window;
     keyboard&   keyboard;
     mouse&      mouse;
@@ -23,10 +23,10 @@ class engine
     bool        __running = false, __fpsdebug = false;
     const float __time_per_frame = 1.0f / float(global::game_fps);
 
-    protected:
+protected:
     bool cmd_w() const;
 
-    public:
+public:
     engine(const std::string&, int, int, bool);
     ~engine() = default;
     void start();

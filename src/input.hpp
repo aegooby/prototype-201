@@ -10,10 +10,10 @@ namespace p201
 
 class input
 {
-    protected:
+protected:
     window& window_context;
 
-    public:
+public:
     input(window& window_context) : window_context(window_context) { }
     ~input() = default;
 
@@ -26,13 +26,13 @@ class input
 
 class keyboard : public input
 {
-    protected:
+protected:
     array<bool, size_t(keycode::size)>  __scan;
     array<bool, size_t(keycode::size)>  __down;
     array<bool, size_t(keycode::size)>  __up;
     array<bool, size_t(modifier::size)> __modifier;
 
-    public:
+public:
     keyboard(window& window_context) : input(window_context)
     {
         __scan.fill(false);
@@ -167,14 +167,14 @@ class keyboard : public input
 
 class mouse : public input
 {
-    protected:
+protected:
     array<bool, size_t(mousecode::size)> __scan;
     array<bool, size_t(mousecode::size)> __down;
     array<bool, size_t(mousecode::size)> __up;
     vector_2                             __position;
     vector_2                             __movement;
 
-    public:
+public:
     mouse(window& window_context) : input(window_context)
     {
         __scan.fill(false);

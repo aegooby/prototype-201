@@ -29,7 +29,7 @@ namespace memory
 
     class __memory_private
     {
-        private:
+    private:
         inline static void* allocate(size_t bytes, std::align_val_t align)
         {
             return operator new(bytes, align);
@@ -39,7 +39,7 @@ namespace memory
             operator delete(ptr, align);
         }
 
-        public:
+    public:
         template<typename type>
         friend type* allocate(type*&, size_t, std::align_val_t);
         template<typename type>
@@ -65,7 +65,7 @@ namespace memory
     allocate(type* ptr, size_t count, std::align_val_t align)
     {
         //	Allocation and assignment to parameter "ptr" is already done inside
-        //this 	function, but it returns "ptr" for ease of use.
+        // this 	function, but it returns "ptr" for ease of use.
         return static_cast<type*>(
             __memory_private::allocate(count * sizeof(type), align));
     }
@@ -100,14 +100,14 @@ namespace memory
         //	and should always be implemented in sequential order.
 
         //	Conditional static_assert to improve error readibility when
-        //attempting 	to default-initialize a class with a deleted default
-        //constructor.
+        // attempting 	to default-initialize a class with a deleted default
+        // constructor.
         if constexpr (!sizeof...(args))
             static_assert(std::is_default_constructible_v<type>);
 
         //	Placement-new on selected block of memory.
         //	Type "type" may need to be typecasted if working with nested
-        //containers.
+        // containers.
         new (ptr) type(std::forward<types>(args)...);
         return ptr;
     }
@@ -115,7 +115,7 @@ namespace memory
     inline __attribute__((always_inline)) void destruct(type* ptr)
     {
         //	Destructs in reverse order, which is why construct() should always
-        //be 	implemented in sequential order.
+        // be 	implemented in sequential order.
         ptr->~type();
     }
     template<typename type>

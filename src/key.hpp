@@ -12,16 +12,16 @@ MOUSE_ENUM();
 
 class key
 {
-    public:
+public:
     virtual ~key() = default;
 };
 
 class single_key : public key
 {
-    public:
+public:
     keycode code;
 
-    public:
+public:
     single_key() = default;
     single_key(keycode code) : code(code) { }
     virtual ~single_key() = default;
@@ -29,10 +29,10 @@ class single_key : public key
 
 class multi_key : public key
 {
-    public:
+public:
     std::vector<keycode> codes;
 
-    public:
+public:
     multi_key() = default;
     template<typename... types>
     multi_key(types&&... args) : codes({ std::forward<types>(args)... })

@@ -18,7 +18,7 @@ namespace p201
 
 class directory
 {
-    public:
+public:
     using dirent = struct dirent;
     using dir    = DIR;
     using file   = FILE;
@@ -28,7 +28,7 @@ class directory
         read_write,
     };
 
-    protected:
+protected:
     mode        __mode = mode::read_only;
     std::string __path;
 #if defined(TD_POSIX_COMPATIBLE)
@@ -41,7 +41,7 @@ class directory
     std::vector<std::string> __entries;
     std::vector<std::string> __abs_entries;
 
-    public:
+public:
     static bool is_directory(const std::string& path)
     {
 #if defined(TD_POSIX_COMPATIBLE)
@@ -68,7 +68,7 @@ class directory
         return false;
     }
 
-    public:
+public:
     directory() = default;
     directory(mode mode) : __mode(mode) { }
     directory(const std::string& path)

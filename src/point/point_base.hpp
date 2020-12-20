@@ -15,11 +15,11 @@ namespace p201
 
 class __point_private
 {
-    private:
+private:
     template<typename value_type, size_t dim>
     class __point_base;
 
-    public:
+public:
     template<typename value_type, size_t dim>
     friend class point;
 
@@ -40,7 +40,7 @@ class __point_private::__point_base
     static_assert(std::is_signed_v<__value_type>);
     static_assert(dim > 1);
 
-    public:
+public:
     using value_type            = __value_type;
     using reference             = value_type&;
     using const_reference       = const value_type&;
@@ -54,10 +54,10 @@ class __point_private::__point_base
     using size_type             = size_t;
     friend class point<value_type, dim>;
 
-    protected:
+protected:
     array<value_type, dim> __data;
 
-    public:
+public:
     constexpr __point_base() = default;
     template<typename... types>
     constexpr __point_base(types&&... args)
@@ -176,7 +176,7 @@ class __point_private::__point_base
 template<typename __value_type, size_t dim>
 class point : public __point_private::__point_base<__value_type, dim>
 {
-    public:
+public:
     using __base          = __point_private::__point_base<__value_type, dim>;
     using value_type      = typename __base::value_type;
     using reference       = typename __base::reference;
@@ -190,7 +190,7 @@ class point : public __point_private::__point_base<__value_type, dim>
     using const_self_reference  = const point<value_type, dim>&;
     using size_type             = typename __base::size_type;
 
-    public:
+public:
     constexpr point() = default;
     template<typename... types>
     constexpr point(types&&... args) : __base(std::forward<types>(args)...)

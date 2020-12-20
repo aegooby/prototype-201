@@ -14,7 +14,7 @@ namespace p201
 
 class world
 {
-    public:
+public:
     std::unordered_map<std::type_index, std::unique_ptr<component_manager>>
                                                                  component_managers;
     std::unordered_map<std::type_index, std::unique_ptr<system>> systems;
@@ -22,13 +22,13 @@ class world
     class keyboard&                                              keyboard;
     class mouse&                                                 mouse;
 
-    protected:
+protected:
     entity_manager entity_manager;
 
-    protected:
+protected:
     std::unique_ptr<system>& __system(std::type_index);
 
-    public:
+public:
     world(class keyboard&, class mouse&);
     entity& new_entity(entity_type);
     void    delete_entity(id_t);

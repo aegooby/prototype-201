@@ -12,7 +12,7 @@ namespace p201
 template<typename __value_type, size_t __size>
 class st_array
 {
-    public:
+public:
     using value_type             = __value_type;
     using reference              = value_type&;
     using const_reference        = const value_type&;
@@ -37,10 +37,10 @@ class st_array
     template<typename ___value_type, size_t rows, size_t columns>
     friend class table;
 
-    protected:
+protected:
     value_type __data[__size > 0 ? __size : 1];
 
-    public:
+public:
     st_array() = default;
     st_array(const array<value_type, __size>& other)
     {
