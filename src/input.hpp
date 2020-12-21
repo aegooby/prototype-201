@@ -1,9 +1,10 @@
 
 #pragma once
 #include "__common.hpp"
-#include "array.hpp"
 #include "key.hpp"
 #include "vector.hpp"
+
+#include <array>
 
 namespace p201
 {
@@ -27,10 +28,10 @@ public:
 class keyboard : public input
 {
 protected:
-    array<bool, size_t(keycode::size)>  __scan;
-    array<bool, size_t(keycode::size)>  __down;
-    array<bool, size_t(keycode::size)>  __up;
-    array<bool, size_t(modifier::size)> __modifier;
+    std::array<bool, size_t(keycode::size)>  __scan;
+    std::array<bool, size_t(keycode::size)>  __down;
+    std::array<bool, size_t(keycode::size)>  __up;
+    std::array<bool, size_t(modifier::size)> __modifier;
 
 public:
     keyboard(window& window_context) : input(window_context)
@@ -62,7 +63,9 @@ public:
     {
         auto ptr = code.get();
         if (typeid(*ptr) == typeid(single_key))
-        { return scan(static_cast<single_key*>(ptr)->code); }
+        {
+            return scan(static_cast<single_key*>(ptr)->code);
+        }
         else if (typeid(*ptr) == typeid(multi_key))
         {
             for (auto& key : static_cast<multi_key*>(ptr)->codes)
@@ -79,7 +82,9 @@ public:
     {
         auto ptr = code.get();
         if (typeid(*ptr) == typeid(single_key))
-        { return down(static_cast<single_key*>(ptr)->code); }
+        {
+            return down(static_cast<single_key*>(ptr)->code);
+        }
         else if (typeid(*ptr) == typeid(multi_key))
         {
             size_t scan_count = 0, down_count = 0,
@@ -99,7 +104,9 @@ public:
     {
         auto ptr = code.get();
         if (typeid(*ptr) == typeid(single_key))
-        { return up(static_cast<single_key*>(ptr)->code); }
+        {
+            return up(static_cast<single_key*>(ptr)->code);
+        }
         else if (typeid(*ptr) == typeid(multi_key))
         {
             size_t scan_count = 0, up_count = 0,

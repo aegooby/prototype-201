@@ -3,71 +3,83 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity.hpp"
-#include "hitbox.hpp"
+#include "hitquadrant.hpp"
 
 namespace p201
 {
 
-struct node
+struct quadrant
 {
-    float x0; // leftern edge
-    float x1; // rightern edge
-    float y0; // bottom edge
-    float y1; // top edge
+    float x;
+    float y;
+    float w;
+    float h;
 
-    float subwidth() const
+    constexpr quadrant(float x, float y, float w, float h) noexcept
+        : x(x), y(y), w(w), h(h)
     {
-        return x1 / 2.0f;
     }
-    float subheight() const
+    ~quadrant() = default;
+
+    constexpr float right() const noexcept
     {
-        return y1 / 2.0f;
+        return x + w;
+    }
+    constexpr float left() const noexcept
+    {
+        return x;
+    }
+    constexpr float bottom() const noexcept
+    {
+        return y + h;
+    }
+    constexpr float top() const noexcept
+    {
+        return y;
+    }
+    vector_2 center() const noexcept
+    {
+        return vector_2(x + w / 2.0f, y + h / 2.0f);
+    }
+    constexpr bool contains(const quadrant& other) const noexcept
+    {
+        return left() <= other.left() && other.right() <= right() &&
+               top() <= other.top() && other.bottom() <= bottom();
+    }
+    constexpr bool intersects(const quadrant& other) const noexcept
+    {
+        return !(left() >= other.right() || right() <= other.left() ||
+                 top() >= other.bottom() || bottom() <= other.top());
     }
 };
-inline bool operator==(const node& one, const node& two)
+
+inline constexpr bool intersect(const quadrant& one,
+                                const quadrant& two) noexcept
 {
-    return one.x0 == two.x0 && one.x1 == two.x1 && one.y0 == two.y0 &&
-           one.y1 == two.y1;
+    return !(one.left() >= two.right() || one.right() <= two.left() ||
+             one.top() >= two.bottom() || one.bottom() <= two.top());
 }
 
 class quadtree
 {
-protected:
-    std::vector<std::vector<std::vector<std::reference_wrapper<circle>>>>
-                                   object_list;
-    std::vector<std::vector<node>> nodelist;
-    std::vector<std::vector<int>>  subnode_num;
-    std::pair<int, int>            level_subnode;
-    int                            index;
-    node                           base_node;
-    int                            level = 0;
-    void                           add_subnodes(int current_level)
+public:
+    struct node
     {
-        for (int i = 1; i < 5; i++) subnode_num[current_level].push_back(i);
-    }
-    int  maxobj = 8;
-    node bounds; // boundary of the current node
+        std::array<std::unique_ptr<node>, 4> children;
+        std::vector<float>                   values;
 
-    node nodemake(float x0, float x1, float y0, float y1)
-    {
-        bounds.x0 = x0;
-        bounds.x1 = x1;
-        bounds.y0 = y0;
-        bounds.y1 = y1;
-
-        return bounds;
+        bool leaf() const
+        {
+            return !static_cast<bool>(children.at(0));
+        }
     };
 
-public:
-    quadtree();
-    ~quadtree();
-    void                 split(node&);
-    int                  get_index(circle&, node&);
-    void                 insert(circle&, int);
-    void                 recursive_insert(circle&, int);
-    void                 collision_check(circle&);
-    std::pair<int, int>& get_levelsubnode(circle&);
-    void total_collision_check(std::vector<std::unique_ptr<class component>>&);
+protected:
+    static constexpr size_t threshold = 16;
+    static constexpr size_t max_depth = 8;
+
+    quadrant              main_box;
+    std::unique_ptr<node> root;
 };
 
 } // namespace p201
