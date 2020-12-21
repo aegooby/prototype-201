@@ -5,7 +5,6 @@
 #include "entity.hpp"
 #include "entity_manager.hpp"
 #include "event.hpp"
-#include "filesystem.hpp"
 #include "world.hpp"
 
 // TODO: this file is a mess
@@ -38,8 +37,6 @@ void render_system::load_flipbook(render_component& render, float fps,
 
 void render_system::load(const std::string& path)
 {
-    std::string __path = path;
-    if (__path.back() != P201_DIRECTORY_SLASH) __path += P201_DIRECTORY_SLASH;
     //        IMG_LoadTexture()
 }
 
