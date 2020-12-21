@@ -41,3 +41,6 @@ buildux/
 build/
 .vs/
 prototype201.dir/
+compile_commands.json
+.cache/
+.DS_Store

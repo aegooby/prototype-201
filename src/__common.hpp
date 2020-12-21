@@ -19,10 +19,6 @@
 #    error Not x86
 #endif
 
-#if P201_CPP_VER < 17
-#    error Not C++17
-#endif
-
 #if defined(__clang__)
 #    define P201_COMPILER_CLANG
 #elif defined(_MSC_VER)
@@ -82,17 +78,5 @@
 #if !defined(__cpp_aligned_new)
 #    error Operator "new" is not aligned (use C++17)
 #endif
-
-namespace p201
-{
-
-using size_t = std::size_t;
-
-namespace global
-{
-    static constexpr size_t game_fps = 60;
-} // namespace global
-
-} // namespace p201
 
 #include "decls.hpp"

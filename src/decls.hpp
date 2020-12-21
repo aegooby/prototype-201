@@ -1,9 +1,17 @@
 
 #pragma once
-#include "__common.hpp"
+
+#include <cstddef>
 
 namespace p201
 {
+
+using size_t = std::size_t;
+
+namespace global
+{
+    static constexpr size_t game_fps = 60;
+} // namespace global
 
 template<typename value_type, size_t rows, size_t cols>
 class matrix;
