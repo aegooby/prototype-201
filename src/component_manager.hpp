@@ -3,6 +3,7 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity.hpp"
+#include "exception.hpp"
 
 #include <unordered_map>
 
@@ -18,8 +19,10 @@ class component_manager
 public:
     virtual ~component_manager()                           = default;
     virtual std::unique_ptr<component>& component(entity&) = 0;
+    /** @brief Registers a component under the specified entity. */
     virtual void add_component(entity&, std::unique_ptr<class component>&&) = 0;
-    virtual void remove_component(entity&)                                  = 0;
+    /** @brief Removes the component associated with the manager's type. */
+    virtual void remove_component(entity&) = 0;
 };
 
 template<typename component_type>
@@ -38,8 +41,7 @@ public:
     virtual std::unique_ptr<class component>& component(entity& entity)
     {
         if (!__entity_map.count(entity.id))
-            throw std::runtime_error(
-                "Entity does not have requested component");
+            throw std::runtime_error("Component not found.");
         return components.at(__entity_map.at(entity.id));
     }
     virtual void add_component(entity&                            entity,

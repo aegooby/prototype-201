@@ -22,16 +22,12 @@ public:
 
 public:
     const static std::unordered_map<entity_type, std::string> spritesheet_names;
-    // data structure holding flipbooks? or hold them in render component
-    std::unordered_map<entity_type, SDL_Texture*> textures;
 
 protected:
     SDL_Renderer* __sdl_renderer = nullptr;
 
 protected:
-    void load_flipbook(render_component&, float, const sprite_info&);
     void render_sprite(SDL_Texture*, SDL_Rect*, const point_2&);
-    void render_flipbook(class entity&, sprite_flipbook&, SDL_Rect*);
 
 public:
     render_system(class world& world) : __base(world)
@@ -58,10 +54,8 @@ public:
     {
         return __sdl_renderer;
     }
-    void         load(const std::string&);
     virtual void update() override { }
     void         render();
-    void         on_animation_event(animation_event&);
 
     //	Preventing copying and moving
     render_system(const render_system&) = delete;

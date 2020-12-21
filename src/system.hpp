@@ -10,22 +10,7 @@
 namespace p201
 {
 
-/**
- * @brief Flags are used to determine what types of components a system is
- *        allowed to operate on. For example, a system with the render and
- *        physics flags set is only allowed to operate on those two components
- *        of any entity it encounters.
- */
-class system_flag : public std::bitset<32>
-{
-public:
-    using __base = std::bitset<32>;
-
-public:
-    constexpr system_flag() noexcept = default;
-    constexpr system_flag(unsigned long long val) noexcept : __base(val) { }
-    ~system_flag() = default;
-};
+static const size_t flag_bits = 32;
 
 /**
  * @brief Systems are one third of the ECS architecture. Whereas entities are
@@ -49,7 +34,7 @@ public:
     /** @brief Conversion table between component types and flags. */
     static const std::unordered_map<std::type_index, system::flag> flags;
     /** @brief The flag bitset associated with this system instance. */
-    system_flag flag;
+    std::bitset<flag_bits> flag;
 
 protected:
     std::unordered_map<id_t, std::reference_wrapper<entity>>

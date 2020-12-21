@@ -21,8 +21,8 @@ namespace p201
 class entity
 {
 public:
-    class world& world;
-    system_flag  flag;
+    class world&           world;
+    std::bitset<flag_bits> flag;
 
 public:
     const id_t        id;

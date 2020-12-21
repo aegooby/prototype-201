@@ -60,7 +60,6 @@ class entity_manager;
 class render_manager;
 class transform_manager;
 class collision_manager;
-class system_flag;
 
 struct sprite_info;
 

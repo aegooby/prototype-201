@@ -27,15 +27,16 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug)
     window.start();
     for (auto& system : world.systems) { system.second->start(); }
     world.system<render_system>().start(window);
+
+    // TODO: placeholder
     auto& player = world.new_entity(entity_type::player);
     player.add_component<render_component>();
     player.add_component<transform_component>();
     player.add_component<collision_component>();
     player.add_component<input_component>();
     player.component<transform_component>().position = vector_3(100, 100, 0);
-    player.component<render_component>().rect.w      = 160;
-    player.component<render_component>().rect.h      = 132;
-    world.system<render_system>().load("/Users/admin/Desktop/sprites/");
+    player.component<render_component>().rect.w      = 50;
+    player.component<render_component>().rect.h      = 50;
 }
 
 bool engine::window_close_key() const

@@ -71,8 +71,7 @@ void world::add_component(class entity&                      entity,
     for (auto& system : systems)
     {
         auto& sys = *system.second;
-        if ((sys.flag & entity.flag) == sys.flag)
-        { sys.register_entity(entity); }
+        if ((sys.flag & entity.flag).count()) sys.register_entity(entity);
     }
 }
 void world::remove_component(class entity&   entity,
@@ -83,7 +82,9 @@ void world::remove_component(class entity&   entity,
     {
         auto& sys = *system.second;
         if (sys.flag.test(system::flags.at(component_type)))
-        { sys.deregister_entity(entity); }
+        {
+            sys.deregister_entity(entity);
+        }
     }
 }
 

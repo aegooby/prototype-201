@@ -19,7 +19,6 @@ public:
     virtual ~input_system() = default;
     virtual void start() override;
     virtual void update() override;
-    void         on_animation_complete_event(animation_complete_event&);
 };
 
 } // namespace p201

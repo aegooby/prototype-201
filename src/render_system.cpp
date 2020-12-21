@@ -17,10 +17,7 @@ const std::unordered_map<entity_type, std::string>
         { entity_type::player, "player" },
     };
 
-void render_system::start()
-{
-    world.event_bus.subscribe(*this, &render_system::on_animation_event);
-}
+void render_system::start() { }
 void render_system::start(class window& window)
 {
     if (!(__sdl_renderer = SDL_CreateRenderer(window.sdl_window(), -1,
@@ -29,15 +26,6 @@ void render_system::start(class window& window)
         throw sdl_error("Failed to create render_system");
     if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
         throw sdl_error("Failed to load SDL Image libraries");
-}
-void render_system::load_flipbook(render_component& render, float fps,
-                                  const sprite_info& info)
-{
-}
-
-void render_system::load(const std::string& path)
-{
-    //        IMG_LoadTexture()
 }
 
 void render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect,
@@ -54,23 +42,23 @@ void render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect,
     SDL_RenderFillRect(__sdl_renderer, &center_rect);
 }
 
-void render_system::render_flipbook(class entity&    entity,
-                                    sprite_flipbook& flipbook, SDL_Rect* rect)
-{
-}
-
 void render_system::render()
 {
-    if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 255, 255))
+    if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 0, 255))
         throw sdl_error("Failed to set draw color");
     if (SDL_RenderClear(__sdl_renderer))
         throw sdl_error("Failed to clear render_system");
 
-    // TODO: temp (it just loops over all flipbooks)
-    for (auto& entity : __registered_entities) { }
+    // Render all the registered entities one by one
+    for (auto& entity : __registered_entities)
+    {
+        auto& render = entity.second.get().component<render_component>();
+        SDL_SetRenderDrawColor(__sdl_renderer, 255, 255, 255, 255);
+        SDL_RenderFillRect(__sdl_renderer, &render.rect);
+    }
+
     // Hey this is IMPORTANT!
     SDL_RenderPresent(__sdl_renderer);
 }
-void render_system::on_animation_event(animation_event& event) { }
 
 } // namespace p201
