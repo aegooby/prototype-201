@@ -8,18 +8,18 @@
 namespace p201
 {
 
-struct quadrant
+struct box
 {
     float x;
     float y;
     float w;
     float h;
 
-    constexpr quadrant(float x, float y, float w, float h) noexcept
+    constexpr box(float x, float y, float w, float h) noexcept
         : x(x), y(y), w(w), h(h)
     {
     }
-    ~quadrant() = default;
+    ~box() = default;
 
     constexpr float right() const noexcept
     {
@@ -41,20 +41,19 @@ struct quadrant
     {
         return vector_2(x + w / 2.0f, y + h / 2.0f);
     }
-    constexpr bool contains(const quadrant& other) const noexcept
+    constexpr bool contains(const box& other) const noexcept
     {
         return left() <= other.left() && other.right() <= right() &&
                top() <= other.top() && other.bottom() <= bottom();
     }
-    constexpr bool intersects(const quadrant& other) const noexcept
+    constexpr bool intersects(const box& other) const noexcept
     {
         return !(left() >= other.right() || right() <= other.left() ||
                  top() >= other.bottom() || bottom() <= other.top());
     }
 };
 
-inline constexpr bool intersect(const quadrant& one,
-                                const quadrant& two) noexcept
+inline constexpr bool intersect(const box& one, const box& two) noexcept
 {
     return !(one.left() >= two.right() || one.right() <= two.left() ||
              one.top() >= two.bottom() || one.bottom() <= two.top());
@@ -78,7 +77,6 @@ protected:
     static constexpr size_t threshold = 16;
     static constexpr size_t max_depth = 8;
 
-    quadrant              main_box;
     std::unique_ptr<node> root;
 };
 
