@@ -9,7 +9,10 @@
 namespace p201
 {
 
-void physics_system::start() { }
+void physics_system::start()
+{
+    world.event_bus.subscribe(*this, &physics_system::on_acceleration_event);
+}
 void physics_system::update()
 {
     for (auto& entity : __registered_entities)
@@ -18,7 +21,7 @@ void physics_system::update()
         if (transform.velocity.norm() < transform.max_speed)
             transform.velocity += transform.acceleration;
         transform.position += transform.velocity;
-        transform.velocity *= 0.5f;
+        transform.velocity *= friction;
         if (transform.velocity.norm() < 1.0f)
             transform.velocity = vector_3(0.0f, 0.0f, 0.0f);
 
@@ -32,6 +35,12 @@ void physics_system::update()
             render.rect.y = transform.position.y;
         }
     }
+}
+
+void physics_system::on_acceleration_event(acceleration_event& event)
+{
+    auto& transform = event.entity.component<transform_component>();
+    transform.acceleration += event.vector;
 }
 
 } // namespace p201

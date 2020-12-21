@@ -8,6 +8,8 @@
 namespace p201
 {
 
+static const float friction = 0.6f;
+
 class physics_system : public system
 {
 public:
@@ -23,6 +25,8 @@ public:
     virtual ~physics_system() = default;
     virtual void start() override;
     virtual void update() override;
+
+    void on_acceleration_event(acceleration_event& event);
 };
 
 } // namespace p201

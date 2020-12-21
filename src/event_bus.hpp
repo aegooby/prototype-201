@@ -25,7 +25,7 @@ public:
 };
 
 template<typename system_type, typename event_type>
-class function_handler_sp : public function_handler
+class function_handler_template : public function_handler
 {
 public:
     using event_t  = event_type;
@@ -43,11 +43,11 @@ protected:
     }
 
 public:
-    function_handler_sp(system_t& system, function_t function)
+    function_handler_template(system_t& system, function_t function)
         : __system(system), __function(function)
     {
     }
-    virtual ~function_handler_sp() = default;
+    virtual ~function_handler_template() = default;
 };
 
 class event_bus
@@ -65,28 +65,26 @@ public:
     template<typename event_type, typename... types>
     void publish(types&&... args)
     {
+        using std::forward;
+        using std::make_unique;
         auto& handlers = __subscribers.at(typeid(event_type));
         if (!handlers) return;
         for (auto& handler : *handlers)
         {
             if (handler)
-                handler->exec(
-                    std::make_unique<event_type>(std::forward<types>(args)...));
+                handler->exec(make_unique<event_type>(forward<types>(args)...));
         }
     }
     template<typename system_type, typename event_type>
     void subscribe(system_type& system,
                    void (system_type::*function)(event_type&))
     {
+        using fht_t = function_handler_template<system_type, event_type>;
+        constexpr auto& unique_list = std::make_unique<list_t>;
         if (!__subscribers.count(typeid(event_type)))
-        {
-            __subscribers.emplace(typeid(event_type),
-                                  std::make_unique<list_t>());
-        }
+            __subscribers.emplace(typeid(event_type), unique_list());
         auto& handlers = __subscribers.at(typeid(event_type));
-        handlers->emplace_back(
-            std::make_unique<function_handler_sp<system_type, event_type>>(
-                system, function));
+        handlers->emplace_back(std::make_unique<fht_t>(system, function));
     }
 };
 
