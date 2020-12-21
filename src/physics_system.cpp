@@ -9,10 +9,7 @@
 namespace p201
 {
 
-void physics_system::start()
-{
-    world.event_bus.subscribe(*this, &physics_system::on_acceleration_event);
-}
+void physics_system::start() { }
 void physics_system::update()
 {
     for (auto& entity : __registered_entities)
@@ -34,22 +31,6 @@ void physics_system::update()
             render.rect.x = transform.position.x;
             render.rect.y = transform.position.y;
         }
-    }
-}
-void physics_system::on_collision_event(collision_event& event) { }
-void physics_system::on_acceleration_event(acceleration_event& event)
-{
-    auto& transform = event.entity.component<transform_component>();
-    switch (event.mode)
-    {
-        case acceleration_event::mode::mod:
-            transform.acceleration += event.acceleration;
-            break;
-        case acceleration_event::mode::set:
-            transform.acceleration = event.acceleration;
-            break;
-        default:
-            break;
     }
 }
 
