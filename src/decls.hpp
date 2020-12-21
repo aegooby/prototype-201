@@ -1,6 +1,5 @@
 
 #pragma once
-
 #include <cstddef>
 
 namespace p201
@@ -34,9 +33,6 @@ class array;
 template<typename value_type, size_t rows, size_t cols>
 class table;
 
-template<typename value_type>
-struct state_info;
-
 class window;
 class mouse;
 class clock;
@@ -54,7 +50,6 @@ class sprite;
 class sprite_flipbook;
 class render_component;
 class event_bus;
-class event;
 class animation_event;
 class animation_complete_event;
 class collision_event;
