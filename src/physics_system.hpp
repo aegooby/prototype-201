@@ -15,8 +15,6 @@ class physics_system : public system
 public:
     using __base = system;
 
-protected:
-public:
     physics_system(class world& world) : __base(world)
     {
         flag.set(system::flag::collision);

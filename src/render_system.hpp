@@ -19,14 +19,11 @@ class render_system : public system
 {
 public:
     using __base = system;
-
-public:
     const static std::unordered_map<entity_type, std::string> spritesheet_names;
 
 protected:
     SDL_Renderer* __sdl_renderer = nullptr;
 
-protected:
     void render_sprite(SDL_Texture*, SDL_Rect*, const point_2&);
 
 public:
