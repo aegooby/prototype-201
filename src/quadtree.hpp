@@ -59,13 +59,14 @@ inline constexpr bool intersect(const box& one, const box& two) noexcept
              one.top() >= two.bottom() || one.bottom() <= two.top());
 }
 
+template<typename type>
 class quadtree
 {
 public:
     struct node
     {
         std::array<std::unique_ptr<node>, 4> children;
-        std::vector<float>                   values;
+        std::vector<type>                    values;
 
         bool leaf() const
         {
@@ -74,10 +75,15 @@ public:
     };
 
 protected:
-    static constexpr size_t threshold = 16;
-    static constexpr size_t max_depth = 8;
+    static constexpr size_t threshold   = 16;
+    static constexpr size_t max_depth   = 8;
+    static constexpr size_t max_objects = 8;
 
     std::unique_ptr<node> root;
+
+public:
+    quadtree()  = default;
+    ~quadtree() = default;
 };
 
 } // namespace p201
