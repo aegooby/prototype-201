@@ -3,7 +3,7 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity.hpp"
-#include "hitquadrant.hpp"
+#include "hitbox.hpp"
 
 namespace p201
 {
