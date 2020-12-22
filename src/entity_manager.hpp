@@ -1,7 +1,6 @@
 
 #pragma once
 #include "__common.hpp"
-#include "ecs_common.hpp"
 #include "entity.hpp"
 
 #include <unordered_map>
