@@ -14,6 +14,11 @@ namespace p201
 
 using id_t = size_t;
 
+enum class entity_type
+{
+    player,
+};
+
 /**
  * @brief Entities are an id, flag, and type they shouldn't have shit else.
  *        They don't actually store components they just forward them to the
