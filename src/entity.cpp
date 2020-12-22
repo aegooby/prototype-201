@@ -19,11 +19,11 @@ std::unique_ptr<component>& entity::__component(std::type_index component_type)
 {
     return world.component(*this, component_type);
 }
-void entity::__add_component(std::unique_ptr<class component>&& component,
+void entity::__add_component(std::unique_ptr<struct component>&& component,
                              std::type_index                    component_type)
 {
     world.add_component(
-        *this, std::forward<std::unique_ptr<class component>>(component),
+        *this, std::forward<std::unique_ptr<struct component>>(component),
         component_type);
 }
 void entity::__remove_component(std::type_index component_type)

@@ -40,15 +40,18 @@ class physics_system;
 class keyboard;
 class engine;
 class entity;
-class component;
-class render_component;
-class transform_component;
-class collision_component;
+
+// Components
+struct component;
+struct render_component;
+struct physics_component;
+struct transform_component;
+struct collision_component;
+
 class render_system;
 class sprite_base;
 class sprite;
 class sprite_flipbook;
-class render_component;
 class event_bus;
 class animation_event;
 class animation_complete_event;

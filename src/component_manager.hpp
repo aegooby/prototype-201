@@ -20,7 +20,7 @@ public:
     virtual ~component_manager()                           = default;
     virtual std::unique_ptr<component>& component(entity&) = 0;
     /** @brief Registers a component under the specified entity. */
-    virtual void add_component(entity&, std::unique_ptr<class component>&&) = 0;
+    virtual void add_component(entity&, std::unique_ptr<struct component>&&) = 0;
     /** @brief Removes the component associated with the manager's type. */
     virtual void remove_component(entity&) = 0;
 };
@@ -31,27 +31,27 @@ class component_manager_template : public component_manager
 public:
     using component_t = component_type;
     using index_t     = size_t;
-    std::vector<std::unique_ptr<class component>> components;
+    std::vector<std::unique_ptr<struct component>> components;
 
 protected:
     std::unordered_map<id_t, index_t> __entity_map;
 
 public:
     virtual ~component_manager_template() = default;
-    virtual std::unique_ptr<class component>& component(entity& entity)
+    virtual std::unique_ptr<struct component>& component(entity& entity)
     {
         if (!__entity_map.count(entity.id))
             throw std::runtime_error("Component not found.");
         return components.at(__entity_map.at(entity.id));
     }
     virtual void add_component(entity&                            entity,
-                               std::unique_ptr<class component>&& component)
+                               std::unique_ptr<struct component>&& component)
     {
         if (__entity_map.count(entity.id))
             throw std::runtime_error("Duplicate component");
         __entity_map.emplace(entity.id, components.size());
         components.emplace_back(
-            std::forward<std::unique_ptr<class component>>(component));
+            std::forward<std::unique_ptr<struct component>>(component));
     }
     virtual void remove_component(entity& entity)
     {

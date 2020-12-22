@@ -30,7 +30,7 @@ public:
 
 protected:
     std::unique_ptr<component>& __component(std::type_index);
-    void __add_component(std::unique_ptr<class component>&&, std::type_index);
+    void __add_component(std::unique_ptr<struct component>&&, std::type_index);
     void __remove_component(std::type_index);
 
 public:

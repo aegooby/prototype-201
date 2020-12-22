@@ -3,6 +3,8 @@
 #include "__common.hpp"
 #include "input_enum.hpp"
 
+#include <vector>
+
 namespace p201
 {
 

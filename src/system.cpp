@@ -13,7 +13,6 @@ const std::unordered_map<std::type_index, enum system::flag> system::flags = {
     { typeid(transform_component), system::flag::transform },
     { typeid(collision_component), system::flag::collision },
     { typeid(input_component), system::flag::input },
-    { typeid(audio_component), system::flag::audio },
 };
 
 system::system(class world& world) : world(world) { }

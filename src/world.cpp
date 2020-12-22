@@ -55,18 +55,18 @@ void world::delete_entity(id_t id)
     entity_manager.delete_entity(id);
 }
 
-std::unique_ptr<class component>&
+std::unique_ptr<struct component>&
 world::component(class entity& entity, std::type_index component_type)
 {
     return component_managers.at(component_type)->component(entity);
 }
 void world::add_component(class entity&                      entity,
-                          std::unique_ptr<class component>&& component,
+                          std::unique_ptr<struct component>&& component,
                           std::type_index                    component_type)
 {
     component_managers.at(component_type)
         ->add_component(
-            entity, std::forward<std::unique_ptr<class component>>(component));
+            entity, std::forward<std::unique_ptr<struct component>>(component));
     entity.flag.set(system::flags.at(component_type));
     for (auto& system : systems)
     {

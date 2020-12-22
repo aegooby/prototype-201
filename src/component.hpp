@@ -22,9 +22,8 @@ namespace p201
  *        through this shit and add dumb ass documentation because I don't know
  *        what the fuck I'm doing.
  */
-class component
+struct component
 {
-public:
     class entity& entity;
 
     component(class entity& entity) : entity(entity) { }
@@ -37,9 +36,8 @@ public:
     component& operator=(component&&) = delete;
 };
 
-class render_component : public component
+struct render_component : public component
 {
-public:
     using __base = component;
 
     // TODO: placeholder (needs a texture)
@@ -50,18 +48,16 @@ public:
     virtual ~render_component() = default;
 };
 
-class physics_component : public component
+struct physics_component : public component
 {
-public:
     using __base = component;
 
     physics_component(class entity& entity) : __base(entity) { }
     virtual ~physics_component() = default;
 };
 
-class transform_component : public physics_component
+struct transform_component : public physics_component
 {
-public:
     using __base = physics_component;
 
     vector_3 position;
@@ -73,9 +69,8 @@ public:
     virtual ~transform_component() = default;
 };
 
-class collision_component : public physics_component
+struct collision_component : public physics_component
 {
-public:
     using __base = physics_component;
 
     circle hitbox;
@@ -84,19 +79,8 @@ public:
     virtual ~collision_component() = default;
 };
 
-// TODO: finish
-class audio_component : public component
+struct input_component : public component
 {
-public:
-    using __base = component;
-
-    audio_component(class entity& entity) : __base(entity) { }
-    virtual ~audio_component() = default;
-};
-
-class input_component : public component
-{
-public:
     using __base = component;
 
     input_component(class entity& entity) : __base(entity) { }
