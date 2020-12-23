@@ -36,14 +36,15 @@
 *.xcworkspace
 
 # CMake
-buildxc/
-buildux/
-build/
-.vs/
-prototype201.dir/
-compile_commands.json
-.cache/
-.DS_Store
-
 CMakeCache.txt
 CMakeFiles/
+
+# Build
+build/
+.vs/
+.cache/
+prototype201.dir/
+compile_commands.json
+
+# MacOS
+.DS_Store
