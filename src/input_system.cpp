@@ -14,9 +14,9 @@ namespace p201
 void input_system::start() { }
 void input_system::update()
 {
-    // TODO: implement the rest of the input system update loop
     auto& keyboard = world.keyboard;
-    // auto& mouse    = world.mouse;
+    auto& mouse    = world.mouse;
+    (void)mouse;
     for (auto& entity : __registered_entities)
     {
         auto& movement = entity.second.get().component<movement_component>();

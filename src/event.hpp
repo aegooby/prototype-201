@@ -19,4 +19,6 @@ public:
     virtual ~event() = 0;
 };
 
+inline event::~event() = default;
+
 } // namespace p201
