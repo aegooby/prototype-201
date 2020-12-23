@@ -1,6 +1,7 @@
 
 #pragma once
 #include "__common.hpp"
+#include "component.hpp"
 
 #include <bitset>
 #include <typeindex>
@@ -9,8 +10,6 @@
 
 namespace p201
 {
-
-static const size_t flag_bits = 32;
 
 /**
  * @brief Systems are one third of the ECS architecture. Whereas entities are
@@ -32,8 +31,15 @@ public:
         input     = 0x6,
         audio     = 0x7,
     };
+    using flag_map_t = std::unordered_map<std::type_index, system::flag>;
     /** @brief Conversion table between component types and flags. */
-    static const std::unordered_map<std::type_index, system::flag> flags;
+    inline static const flag_map_t flags = {
+        { typeid(render_component), system::flag::render },
+        { typeid(transform_component), system::flag::transform },
+        { typeid(movement_component), system::flag::movement },
+        { typeid(collision_component), system::flag::collision },
+        { typeid(input_component), system::flag::input },
+    };
     /** @brief The flag bitset associated with this system instance. */
     std::bitset<flag_bits> flag;
 
@@ -43,7 +49,7 @@ protected:
     class world& world;
 
 public:
-    system(class world&);
+    system(class world& world) : world(world) { }
     virtual ~system() = default;
     /** @brief All the needed system initialization. */
     virtual void start() = 0;

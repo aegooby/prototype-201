@@ -14,6 +14,8 @@
 namespace p201
 {
 
+static const size_t flag_bits = 32;
+
 /**
  * @brief Components contain data only. There's no reason for a component to
  *        contain anything other than a constructor or destructor. I've broken
