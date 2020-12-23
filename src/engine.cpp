@@ -38,6 +38,14 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug)
     player.component<transform_component>().position = vector_3(100, 100, 0);
     player.component<render_component>().rect.w      = 50;
     player.component<render_component>().rect.h      = 50;
+
+    auto& platform = world.new_entity();
+    platform.add_component<render_component>();
+    platform.add_component<transform_component>();
+    platform.add_component<collision_component>();
+    platform.component<transform_component>().position = vector_3(200, 200, 0);
+    platform.component<render_component>().rect.w      = 130;
+    platform.component<render_component>().rect.h      = 20;
 }
 
 bool engine::window_close_key() const
