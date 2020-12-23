@@ -15,6 +15,7 @@ public:
     input_system(class world& world) : __base(world)
     {
         flag.set(system::flag::input);
+        flag.set(system::flag::movement);
     }
     virtual ~input_system() = default;
     virtual void start() override;

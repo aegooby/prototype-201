@@ -22,8 +22,6 @@ public:
     virtual ~movement_system() = default;
     virtual void start() override;
     virtual void update() override;
-
-    void on_acceleration_event(acceleration_event& event);
 };
 
 } // namespace p201

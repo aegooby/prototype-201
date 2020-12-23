@@ -19,17 +19,4 @@ public:
     virtual ~event() = 0;
 };
 
-class acceleration_event : public event
-{
-public:
-    class entity& entity;
-    vector_3      vector;
-
-    acceleration_event(class entity& entity, vector_3 vector)
-        : entity(entity), vector(vector)
-    {
-    }
-    virtual ~acceleration_event() = default;
-};
-
 } // namespace p201

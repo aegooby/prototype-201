@@ -9,10 +9,7 @@
 namespace p201
 {
 
-void movement_system::start()
-{
-    world.event_bus.subscribe(*this, &movement_system::on_acceleration_event);
-}
+void movement_system::start() { }
 void movement_system::update()
 {
     for (auto& entity : __registered_entities)
@@ -26,12 +23,6 @@ void movement_system::update()
         if (movement.velocity.norm() < 1.0f)
             movement.velocity = vector_3(0.0f, 0.0f, 0.0f);
     }
-}
-
-void movement_system::on_acceleration_event(acceleration_event& event)
-{
-    auto& movement = event.entity.component<movement_component>();
-    movement.acceleration += event.vector;
 }
 
 } // namespace p201
