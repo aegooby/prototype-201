@@ -62,6 +62,9 @@ inline constexpr bool intersect(const box& one, const box& two) noexcept
 template<typename type>
 class quadtree
 {
+private:
+    
+    
 public:
     struct node
     {
@@ -75,15 +78,17 @@ public:
     };
 
 protected:
-    static constexpr size_t threshold   = 16;
-    static constexpr size_t max_depth   = 8;
-    static constexpr size_t max_objects = 8;
+    size_t threshold;
+    size_t max_depth;
+    size_t max_objects;
 
     std::unique_ptr<node> root;
 
 public:
-    quadtree()  = default;
+    quadtree(size_t threshold, size_t max_depth, size_t max_objects);
     ~quadtree() = default;
+    
+    
 };
 
 } // namespace p201
