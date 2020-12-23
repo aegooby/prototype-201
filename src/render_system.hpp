@@ -19,7 +19,6 @@ class render_system : public system
 {
 public:
     using __base = system;
-    const static std::unordered_map<entity_type, std::string> spritesheet_names;
 
 protected:
     SDL_Renderer* __sdl_renderer = nullptr;

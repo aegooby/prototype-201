@@ -20,7 +20,7 @@ protected:
 public:
     entity_manager()  = default;
     ~entity_manager() = default;
-    entity& new_entity(entity_type, class world&);
+    entity& new_entity(class world&);
     void    delete_entity(id_t);
 };
 

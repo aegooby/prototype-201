@@ -12,11 +12,6 @@
 namespace p201
 {
 
-const std::unordered_map<entity_type, std::string>
-    render_system::spritesheet_names = {
-        { entity_type::player, "player" },
-    };
-
 void render_system::start() { }
 void render_system::start(class window& window)
 {

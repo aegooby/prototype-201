@@ -35,9 +35,9 @@ world::world(class keyboard& keyboard, class mouse& mouse)
                     std::make_unique<input_system>(*this));
 }
 
-entity& world::new_entity(entity_type type)
+entity& world::new_entity()
 {
-    return entity_manager.new_entity(type, *this);
+    return entity_manager.new_entity(*this);
 }
 void world::delete_entity(id_t id)
 {
@@ -60,9 +60,9 @@ world::component(class entity& entity, std::type_index component_type)
 {
     return component_managers.at(component_type)->component(entity);
 }
-void world::add_component(class entity&                      entity,
+void world::add_component(class entity&                       entity,
                           std::unique_ptr<struct component>&& component,
-                          std::type_index                    component_type)
+                          std::type_index                     component_type)
 {
     component_managers.at(component_type)
         ->add_component(

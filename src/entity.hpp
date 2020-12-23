@@ -14,11 +14,6 @@ namespace p201
 
 using id_t = size_t;
 
-enum class entity_type
-{
-    player,
-};
-
 /**
  * @brief Entities are an id, flag, and type they shouldn't have shit else.
  *        They don't actually store components they just forward them to the
@@ -31,8 +26,7 @@ public:
     std::bitset<flag_bits> flag;
 
 public:
-    const id_t        id;
-    const entity_type type;
+    const id_t id;
 
 protected:
     std::unique_ptr<component>& __component(std::type_index);
@@ -40,7 +34,7 @@ protected:
     void __remove_component(std::type_index);
 
 public:
-    entity(const id_t, const entity_type, class world&);
+    entity(const id_t, class world&);
     virtual ~entity() = default;
     template<typename component_type>
     component_type& component()

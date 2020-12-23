@@ -29,7 +29,7 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug)
     world.system<render_system>().start(window);
 
     // TODO: placeholder
-    auto& player = world.new_entity(entity_type::player);
+    auto& player = world.new_entity();
     player.add_component<render_component>();
     player.add_component<transform_component>();
     player.add_component<collision_component>();
