@@ -3,24 +3,23 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity.hpp"
-#include "hitbox.hpp"
 
 namespace p201
 {
 
 static const float friction = 0.6f;
 
-class physics_system : public system
+class movement_system : public system
 {
 public:
     using __base = system;
 
-    physics_system(class world& world) : __base(world)
+    movement_system(class world& world) : __base(world)
     {
-        flag.set(system::flag::collision);
         flag.set(system::flag::transform);
+        flag.set(system::flag::movement);
     }
-    virtual ~physics_system() = default;
+    virtual ~movement_system() = default;
     virtual void start() override;
     virtual void update() override;
 

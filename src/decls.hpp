@@ -36,7 +36,6 @@ class table;
 class window;
 class mouse;
 class clock;
-class physics_system;
 class keyboard;
 class engine;
 class entity;
@@ -44,8 +43,8 @@ class entity;
 // Components
 struct component;
 struct render_component;
-struct physics_component;
 struct transform_component;
+struct movement_component;
 struct collision_component;
 
 class render_system;

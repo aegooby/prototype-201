@@ -20,7 +20,8 @@ public:
     virtual ~component_manager()                           = default;
     virtual std::unique_ptr<component>& component(entity&) = 0;
     /** @brief Registers a component under the specified entity. */
-    virtual void add_component(entity&, std::unique_ptr<struct component>&&) = 0;
+    virtual void add_component(entity&,
+                               std::unique_ptr<struct component>&&) = 0;
     /** @brief Removes the component associated with the manager's type. */
     virtual void remove_component(entity&) = 0;
 };
@@ -44,7 +45,7 @@ public:
             throw std::runtime_error("Component not found.");
         return components.at(__entity_map.at(entity.id));
     }
-    virtual void add_component(entity&                            entity,
+    virtual void add_component(entity&                             entity,
                                std::unique_ptr<struct component>&& component)
     {
         if (__entity_map.count(entity.id))
@@ -70,7 +71,11 @@ class transform_manager : public component_manager_template<transform_component>
 public:
     virtual ~transform_manager() = default;
 };
-
+class movement_manager : public component_manager_template<transform_component>
+{
+public:
+    virtual ~movement_manager() = default;
+};
 class collision_manager : public component_manager_template<collision_component>
 {
 public:

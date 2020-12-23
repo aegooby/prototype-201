@@ -27,9 +27,10 @@ public:
         unknown   = 0x0,
         render    = 0x1,
         transform = 0x2,
-        collision = 0x3,
-        input     = 0x4,
-        audio     = 0x5,
+        movement  = 0x4,
+        collision = 0x5,
+        input     = 0x6,
+        audio     = 0x7,
     };
     /** @brief Conversion table between component types and flags. */
     static const std::unordered_map<std::type_index, system::flag> flags;

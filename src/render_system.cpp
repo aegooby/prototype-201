@@ -47,7 +47,10 @@ void render_system::render()
     // Render all the registered entities one by one
     for (auto& entity : __registered_entities)
     {
-        auto& render = entity.second.get().component<render_component>();
+        auto& render    = entity.second.get().component<render_component>();
+        auto& transform = entity.second.get().component<transform_component>();
+        render.rect.x   = transform.position.x;
+        render.rect.y   = transform.position.y;
         SDL_SetRenderDrawColor(__sdl_renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(__sdl_renderer, &render.rect);
     }

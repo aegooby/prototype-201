@@ -6,7 +6,7 @@
 #include "component_manager.hpp"
 #include "event.hpp"
 #include "input_system.hpp"
-#include "physics_system.hpp"
+#include "movement_system.hpp"
 #include "render_system.hpp"
 #include "window.hpp"
 
@@ -32,6 +32,7 @@ engine::engine(const std::string& title, int width, int height, bool fpsdebug)
     auto& player = world.new_entity();
     player.add_component<render_component>();
     player.add_component<transform_component>();
+    player.add_component<movement_component>();
     player.add_component<collision_component>();
     player.add_component<input_component>();
     player.component<transform_component>().position = vector_3(100, 100, 0);

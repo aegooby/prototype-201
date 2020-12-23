@@ -4,7 +4,7 @@
 #include "__common.hpp"
 #include "entity_manager.hpp"
 #include "input_system.hpp"
-#include "physics_system.hpp"
+#include "movement_system.hpp"
 #include "render_system.hpp"
 #include "system.hpp"
 
@@ -24,13 +24,15 @@ world::world(class keyboard& keyboard, class mouse& mouse)
                                std::make_unique<transform_manager>());
     component_managers.emplace(typeid(collision_component),
                                std::make_unique<collision_manager>());
+    component_managers.emplace(typeid(movement_component),
+                               std::make_unique<movement_manager>());
     component_managers.emplace(typeid(input_component),
                                std::make_unique<input_manager>());
 
     systems.emplace(typeid(render_system),
                     std::make_unique<render_system>(*this));
-    systems.emplace(typeid(physics_system),
-                    std::make_unique<physics_system>(*this));
+    systems.emplace(typeid(movement_system),
+                    std::make_unique<movement_system>(*this));
     systems.emplace(typeid(input_system),
                     std::make_unique<input_system>(*this));
 }
@@ -64,14 +66,15 @@ void world::add_component(class entity&                       entity,
                           std::unique_ptr<struct component>&& component,
                           std::type_index                     component_type)
 {
+    using ptr_t = std::unique_ptr<struct component>;
     component_managers.at(component_type)
-        ->add_component(
-            entity, std::forward<std::unique_ptr<struct component>>(component));
+        ->add_component(entity, std::forward<ptr_t>(component));
     entity.flag.set(system::flags.at(component_type));
     for (auto& system : systems)
     {
         auto& sys = *system.second;
-        if ((sys.flag & entity.flag).count()) sys.register_entity(entity);
+        if (!(sys.flag & entity.flag ^ sys.flag).count())
+            sys.register_entity(entity);
     }
 }
 void world::remove_component(class entity&   entity,

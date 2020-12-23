@@ -47,30 +47,31 @@ struct render_component : public component
     virtual ~render_component() = default;
 };
 
-struct physics_component : public component
+struct transform_component : public component
 {
     using __base = component;
 
-    physics_component(class entity& entity) : __base(entity) { }
-    virtual ~physics_component() = default;
-};
-
-struct transform_component : public physics_component
-{
-    using __base = physics_component;
-
     vector_3 position;
-    vector_3 velocity;
-    vector_3 acceleration;
-    float    max_speed = 10.0f;
 
     transform_component(class entity& entity) : __base(entity) { }
     virtual ~transform_component() = default;
 };
 
-struct collision_component : public physics_component
+struct movement_component : public component
 {
-    using __base = physics_component;
+    using __base = component;
+
+    vector_3 velocity;
+    vector_3 acceleration;
+    float    max_speed = 10.0f;
+
+    movement_component(class entity& entity) : __base(entity) { }
+    virtual ~movement_component() = default;
+};
+
+struct collision_component : public component
+{
+    using __base = component;
 
     circle hitbox;
 
@@ -85,5 +86,7 @@ struct input_component : public component
     input_component(class entity& entity) : __base(entity) { }
     virtual ~input_component() = default;
 };
+
+inline component::~component() = default;
 
 } // namespace p201
