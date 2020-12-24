@@ -7,10 +7,17 @@
 #include "event.hpp"
 #include "world.hpp"
 
-// TODO: this file is a mess
-
 namespace p201
 {
+
+static const float sqrt_2_2 = 1 / std::sqrt(2.0f);
+static const float sqrt_6_6 = 1 / std::sqrt(6.0f);
+static const float sqrt_3_3 = 1 / std::sqrt(3.0f);
+
+// static const table<float, 3, 3> isometric_transform = {
+//     sqrt_2_2, 0,        -sqrt_2_2, sqrt_6_6, 2 * sqrt_6_6,
+//     sqrt_6_6, sqrt_3_3, -sqrt_3_3, sqrt_3_3
+// };
 
 void render_system::start() { }
 void render_system::start(class window& window)
@@ -22,16 +29,24 @@ void render_system::start(class window& window)
     if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
         throw sdl_error("Failed to load SDL Image libraries");
 }
+void render_system::stop()
+{
+    if (__sdl_renderer)
+    {
+        SDL_DestroyRenderer(__sdl_renderer);
+        __sdl_renderer = nullptr;
+    }
+    IMG_Quit();
+}
 
 void render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect,
-                                  const point_2& location)
+                                  const vector_2& location)
 {
-    SDL_Point center  = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
-    SDL_Rect  srcrect = { int(location.x), int(location.y), rect->w, rect->h };
+    SDL_Point center = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
+    SDL_Rect srcrect = { int(location[0]), int(location[1]), rect->w, rect->h };
     if (SDL_RenderCopyEx(__sdl_renderer, texture, &srcrect, rect, 0.0, &center,
                          SDL_FLIP_NONE))
         throw sdl_error("Failed to render texture");
-    // TODO: this is for debugging
     SDL_SetRenderDrawColor(__sdl_renderer, 0, 255, 0, 255);
     SDL_Rect center_rect = { center.x - 2, center.y - 2, 4, 4 };
     SDL_RenderFillRect(__sdl_renderer, &center_rect);
@@ -49,8 +64,8 @@ void render_system::render()
     {
         auto& render    = entity.second.get().component<render_component>();
         auto& transform = entity.second.get().component<transform_component>();
-        render.rect.x   = transform.position.x;
-        render.rect.y   = transform.position.y;
+        render.rect.x   = transform.position(0);
+        render.rect.y   = transform.position(1);
         SDL_SetRenderDrawColor(__sdl_renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(__sdl_renderer, &render.rect);
     }

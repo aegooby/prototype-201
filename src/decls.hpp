@@ -12,27 +12,6 @@ namespace global
     static constexpr size_t game_fps = 60;
 } // namespace global
 
-template<typename value_type, size_t rows, size_t cols>
-class matrix;
-
-template<typename value_type, size_t dim>
-class vector;
-
-template<typename value_type, size_t dim>
-class point;
-
-template<typename value_type, size_t __size>
-class st_array;
-
-template<typename value_type, size_t rows, size_t columns>
-class st_table;
-
-template<typename value_type, size_t __size>
-class array;
-
-template<typename value_type, size_t rows, size_t cols>
-class table;
-
 class window;
 class mouse;
 class clock;

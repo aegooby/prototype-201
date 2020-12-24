@@ -3,8 +3,6 @@
 #include "__common.hpp"
 #include "hitbox.hpp"
 #include "key.hpp"
-#include "point.hpp"
-#include "vector.hpp"
 
 #include <map>
 #include <string>
@@ -64,7 +62,7 @@ struct transform_component : public component
 {
     using __base = component;
 
-    vector_3 position;
+    vector_3 position = vector_3(3);
 
     transform_component(class entity& entity) : __base(entity) { }
     virtual ~transform_component() = default;
@@ -74,9 +72,9 @@ struct movement_component : public component
 {
     using __base = component;
 
-    vector_3 velocity;
-    vector_3 acceleration;
-    float    max_speed = 10.0f;
+    vector_3 velocity     = vector_3(3);
+    vector_3 acceleration = vector_3(3);
+    float    max_speed    = 10.0f;
 
     movement_component(class entity& entity) : __base(entity) { }
     virtual ~movement_component() = default;

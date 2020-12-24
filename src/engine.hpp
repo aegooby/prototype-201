@@ -156,7 +156,6 @@ inline void engine::render()
 }
 inline void engine::update()
 {
-    // Input
     window.update();
     for (auto& system : world.systems) { system.second->update(); }
 }

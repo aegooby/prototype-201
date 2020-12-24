@@ -1,7 +1,7 @@
 
 #pragma once
 #include "__common.hpp"
-#include "vector.hpp"
+#include "linalg.hpp"
 
 #include <list>
 #include <typeindex>

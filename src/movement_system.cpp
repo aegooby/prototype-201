@@ -16,12 +16,17 @@ void movement_system::update()
     {
         auto& transform = entity.second.get().component<transform_component>();
         auto& movement  = entity.second.get().component<movement_component>();
-        if (movement.velocity.norm() < movement.max_speed)
+        if (boost::numeric::ublas::norm_2(movement.velocity) <
+            movement.max_speed)
             movement.velocity += movement.acceleration;
         transform.position += movement.velocity;
         movement.velocity *= friction;
-        if (movement.velocity.norm() < 1.0f)
-            movement.velocity = vector_3(0.0f, 0.0f, 0.0f);
+        if (boost::numeric::ublas::norm_2(movement.velocity) < 1.0f)
+        {
+            movement.velocity[0] = 0.0f;
+            movement.velocity[1] = 0.0f;
+            movement.velocity[2] = 0.0f;
+        }
     }
 }
 

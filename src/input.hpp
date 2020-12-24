@@ -2,7 +2,7 @@
 #pragma once
 #include "__common.hpp"
 #include "key.hpp"
-#include "vector.hpp"
+#include "linalg.hpp"
 
 #include <array>
 
@@ -175,11 +175,11 @@ public:
 class mouse : public input
 {
 protected:
-    array<bool, size_t(mousecode::size)> __scan;
-    array<bool, size_t(mousecode::size)> __down;
-    array<bool, size_t(mousecode::size)> __up;
-    vector_2                             __position;
-    vector_2                             __movement;
+    std::array<bool, size_t(mousecode::size)> __scan;
+    std::array<bool, size_t(mousecode::size)> __down;
+    std::array<bool, size_t(mousecode::size)> __up;
+    vector_2                                  __position = vector_2(2);
+    vector_2                                  __movement = vector_2(2);
 
 public:
     mouse(window& window_context) : input(window_context)
@@ -234,11 +234,11 @@ public:
     {
         SDL_ShowCursor(int(visible));
     }
-    inline __attribute__((always_inline)) vector_2 position() const
+    inline __attribute__((always_inline)) const vector_2& position() const
     {
         return __position;
     }
-    inline __attribute__((always_inline)) vector_2 movement() const
+    inline __attribute__((always_inline)) const vector_2& movement() const
     {
         return __movement;
     }
@@ -254,10 +254,10 @@ public:
         int dx, dy;
         SDL_GetMouseState(&x, &y);
         SDL_GetRelativeMouseState(&dx, &dy);
-        __position.x = float(x);
-        __position.y = float(y);
-        __movement.x = float(dx);
-        __movement.y = float(dy);
+        __position[0] = float(x);
+        __position[1] = float(y);
+        __movement[0] = float(dx);
+        __movement[1] = float(dy);
     }
 
     //	Preventing copying and moving

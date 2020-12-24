@@ -21,23 +21,23 @@ void input_system::update()
     {
         auto& movement = entity.second.get().component<movement_component>();
         // Right
-        if (keyboard.down(keycode::D)) movement.acceleration.x += 10.0;
-        if (keyboard.up(keycode::D)) movement.acceleration.x += -10.0;
+        if (keyboard.down(keycode::D)) movement.acceleration[0] += 10.0;
+        if (keyboard.up(keycode::D)) movement.acceleration[0] += -10.0;
 
         // Left
-        if (keyboard.down(keycode::A)) movement.acceleration.x += -10.0;
-        if (keyboard.up(keycode::A)) movement.acceleration.x += 10.0;
+        if (keyboard.down(keycode::A)) movement.acceleration[0] += -10.0;
+        if (keyboard.up(keycode::A)) movement.acceleration[0] += 10.0;
 
         // Up
-        if (keyboard.down(keycode::W)) movement.acceleration.y += -10.0;
-        if (keyboard.up(keycode::W)) movement.acceleration.y += 10.0;
+        if (keyboard.down(keycode::W)) movement.acceleration[1] += -10.0;
+        if (keyboard.up(keycode::W)) movement.acceleration[1] += 10.0;
 
         // Down
-        if (keyboard.down(keycode::S)) movement.acceleration.y += 10.0;
-        if (keyboard.up(keycode::S)) movement.acceleration.y += -10.0;
+        if (keyboard.down(keycode::S)) movement.acceleration[1] += 10.0;
+        if (keyboard.up(keycode::S)) movement.acceleration[1] += -10.0;
 
         // Dash
-        if (keyboard.down(keycode::SPACE)) movement.velocity.x += 50.0;
+        if (keyboard.down(keycode::SPACE)) movement.velocity[0] += 50.0;
     }
 }
 

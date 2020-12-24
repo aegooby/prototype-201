@@ -41,9 +41,9 @@ public:
                 {
                     auto& transform =
                         entity.add_component<transform_component>();
-                    transform.position.x = component.get<size_t>("position.x");
-                    transform.position.y = component.get<size_t>("position.y");
-                    transform.position.z = component.get<size_t>("position.z");
+                    transform.position[0] = component.get<size_t>("position.x");
+                    transform.position[1] = component.get<size_t>("position.y");
+                    transform.position[2] = component.get<size_t>("position.z");
                     break;
                 }
                 case component::flag::movement:
@@ -94,9 +94,9 @@ public:
                 case component::flag::transform:
                 {
                     auto& transform = entity.component<transform_component>();
-                    component.add("position.x", transform.position.x);
-                    component.add("position.y", transform.position.y);
-                    component.add("position.z", transform.position.z);
+                    component.add("position.x", transform.position[0]);
+                    component.add("position.y", transform.position[1]);
+                    component.add("position.z", transform.position[2]);
                     break;
                 }
                 case component::flag::movement:
