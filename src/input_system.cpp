@@ -29,12 +29,12 @@ void input_system::update()
         if (keyboard.up(keycode::A)) movement.acceleration[0] += 10.0;
 
         // Up
-        if (keyboard.down(keycode::W)) movement.acceleration[1] += -10.0;
-        if (keyboard.up(keycode::W)) movement.acceleration[1] += 10.0;
+        if (keyboard.down(keycode::W)) movement.acceleration[2] += -10.0;
+        if (keyboard.up(keycode::W)) movement.acceleration[2] += 10.0;
 
         // Down
-        if (keyboard.down(keycode::S)) movement.acceleration[1] += 10.0;
-        if (keyboard.up(keycode::S)) movement.acceleration[1] += -10.0;
+        if (keyboard.down(keycode::S)) movement.acceleration[2] += 10.0;
+        if (keyboard.up(keycode::S)) movement.acceleration[2] += -10.0;
 
         // Dash
         if (keyboard.down(keycode::SPACE)) movement.velocity[0] += 50.0;

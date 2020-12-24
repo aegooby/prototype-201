@@ -5,21 +5,30 @@
 #include "entity.hpp"
 #include "entity_manager.hpp"
 #include "event.hpp"
+#include "linalg.hpp"
 #include "world.hpp"
 
 namespace p201
 {
 
-static const float sqrt_2_2 = 1 / std::sqrt(2.0f);
-static const float sqrt_6_6 = 1 / std::sqrt(6.0f);
-static const float sqrt_3_3 = 1 / std::sqrt(3.0f);
+static const float sqrt_2 = std::sqrt(2.0f);
+static const float sqrt_3 = std::sqrt(3.0f);
+static const float sqrt_6 = std::sqrt(6.0f);
 
-// static const table<float, 3, 3> isometric_transform = {
-//     sqrt_2_2, 0,        -sqrt_2_2, sqrt_6_6, 2 * sqrt_6_6,
-//     sqrt_6_6, sqrt_3_3, -sqrt_3_3, sqrt_3_3
-// };
+void render_system::start()
+{
+    iso_matrix.at_element(0, 0) = sqrt_3;
+    iso_matrix.at_element(0, 1) = 0;
+    iso_matrix.at_element(0, 2) = -sqrt_3;
+    iso_matrix.at_element(1, 0) = 1;
+    iso_matrix.at_element(1, 1) = 2;
+    iso_matrix.at_element(1, 2) = 1;
+    iso_matrix.at_element(2, 0) = sqrt_2;
+    iso_matrix.at_element(2, 1) = -sqrt_2;
+    iso_matrix.at_element(2, 2) = sqrt_2;
 
-void render_system::start() { }
+    iso_matrix /= sqrt_6;
+}
 void render_system::start(class window& window)
 {
     if (!(__sdl_renderer = SDL_CreateRenderer(window.sdl_window(), -1,
@@ -64,8 +73,10 @@ void render_system::render()
     {
         auto& render    = entity.second.get().component<render_component>();
         auto& transform = entity.second.get().component<transform_component>();
-        render.rect.x   = transform.position(0);
-        render.rect.y   = transform.position(1);
+        auto  iso_position =
+            boost::numeric::ublas::prod(iso_matrix, transform.position);
+        render.rect.x = iso_position(0);
+        render.rect.y = iso_position(1);
         SDL_SetRenderDrawColor(__sdl_renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(__sdl_renderer, &render.rect);
     }
