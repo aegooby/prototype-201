@@ -42,6 +42,18 @@ entity& world::new_entity()
 {
     return entity_manager.new_entity(*this);
 }
+entity& world::new_entity(const std::string& filename)
+{
+    entity& entity = new_entity();
+    serializer.load_entity(filename, entity);
+    return entity;
+}
+void world::delete_entity(id_t id, const std::string& filename)
+{
+    auto& entity = *entity_manager.entities.at(id);
+    serializer.save_entity(filename, entity);
+    delete_entity(id);
+}
 void world::delete_entity(id_t id)
 {
     auto& entity = *entity_manager.entities.at(id);
@@ -74,7 +86,7 @@ void world::add_component(class entity&                       entity,
     for (auto& system : systems)
     {
         auto& sys = *system.second;
-        if (!(sys.flag & entity.flag ^ sys.flag).count())
+        if ((sys.flag & entity.flag ^ sys.flag).none())
             sys.register_entity(entity);
     }
 }

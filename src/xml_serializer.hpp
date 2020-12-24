@@ -1,4 +1,5 @@
 
+#pragma once
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity.hpp"
@@ -15,16 +16,11 @@ class xml_serializer
 public:
     std::filesystem::path directory;
 
-    xml_serializer() = default;
-    xml_serializer(const std::string& directory)
-    {
-        this->directory = directory;
-    }
+    xml_serializer()  = default;
     ~xml_serializer() = default;
-    entity& load_entity(const std::string& name, class entity& entity)
+    void load_entity(const std::string& name, class entity& entity)
     {
-        std::filesystem::path filepath = (directory / name);
-        filepath.concat(".xml");
+        std::filesystem::path filepath = (directory / name).concat(".xml");
         boost::property_tree::ptree ptree;
         boost::property_tree::read_xml(filepath.string(), ptree);
 
@@ -73,8 +69,14 @@ public:
                     break;
             }
         }
+    }
+    void save_entity(const std::string& name, class entity& entity)
+    {
+        std::filesystem::path filepath = (directory / name).concat(".xml");
+        boost::property_tree::ptree ptree;
+        ptree.put("entity.name", name);
 
-        return entity;
+        boost::property_tree::write_xml(filepath.string(), ptree);
     }
 };
 

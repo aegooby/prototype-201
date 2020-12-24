@@ -21,19 +21,16 @@ using id_t = size_t;
  */
 class entity
 {
-public:
-    class world&                      world;
-    std::bitset<component::flag_bits> flag;
-
-public:
-    const id_t id;
-
 protected:
+    class world&                world;
     std::unique_ptr<component>& __component(std::type_index);
     void __add_component(std::unique_ptr<struct component>&&, std::type_index);
     void __remove_component(std::type_index);
 
 public:
+    std::bitset<component::flag_bits> flag;
+    const id_t                        id;
+
     entity(const id_t, class world&);
     virtual ~entity() = default;
     template<typename component_type>

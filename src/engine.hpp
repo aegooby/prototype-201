@@ -57,14 +57,10 @@ inline engine::engine(const std::string& title, int width, int height,
     window.start();
     for (auto& system : world.systems) { system.second->start(); }
     world.system<render_system>().start(window);
+    world.serializer.directory = "entities";
 
-    xml_serializer serializer = xml_serializer("entities");
-
-    auto& player = world.new_entity();
-    serializer.load_entity("player", player);
-
-    auto& platform = world.new_entity();
-    serializer.load_entity("platform", platform);
+    world.new_entity("player");
+    world.new_entity("platform");
 }
 
 inline bool engine::window_close_key() const
