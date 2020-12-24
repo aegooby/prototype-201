@@ -75,6 +75,46 @@ public:
         std::filesystem::path filepath = (directory / name).concat(".xml");
         boost::property_tree::ptree ptree;
         ptree.put("entity.name", name);
+        ptree.put("entity.components", "");
+
+        for (size_t i = 0; i < entity.flag.size(); ++i)
+        {
+            if (!entity.flag.test(i)) continue;
+            auto& component = ptree.add("entity.components.component", "");
+            component.add("flag", i);
+            switch (i)
+            {
+                case component::flag::render:
+                {
+                    auto& render = entity.component<render_component>();
+                    component.add("rect.w", render.rect.w);
+                    component.add("rect.h", render.rect.h);
+                    break;
+                }
+                case component::flag::transform:
+                {
+                    auto& transform = entity.component<transform_component>();
+                    component.add("position.x", transform.position.x);
+                    component.add("position.y", transform.position.y);
+                    component.add("position.z", transform.position.z);
+                    break;
+                }
+                case component::flag::movement:
+                {
+                    break;
+                }
+                case component::flag::collision:
+                {
+                    break;
+                }
+                case component::flag::input:
+                {
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
 
         boost::property_tree::write_xml(filepath.string(), ptree);
     }
