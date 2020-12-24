@@ -2,6 +2,7 @@
 #include "world.hpp"
 
 #include "__common.hpp"
+#include "component.hpp"
 #include "entity_manager.hpp"
 #include "input_system.hpp"
 #include "movement_system.hpp"

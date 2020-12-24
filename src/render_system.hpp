@@ -28,8 +28,8 @@ protected:
 public:
     render_system(class world& world) : __base(world)
     {
-        flag.set(system::flag::render);
-        flag.set(system::flag::transform);
+        flag.set(component::flag::render);
+        flag.set(component::flag::transform);
     }
     virtual ~render_system()
     {

@@ -1,0 +1,28 @@
+<entity>
+    <components>
+        <component>
+            <flag>1</flag>
+            <rect>
+                <w>50</w>
+                <h>50</h>
+            </rect>
+        </component>
+        <component>
+            <flag>2</flag>
+            <position>
+                <x>100</x>
+                <y>100</y>
+                <z>0</z>
+            </position>
+        </component>
+        <component>
+            <flag>3</flag>
+        </component>
+        <component>
+            <flag>4</flag>
+        </component>
+        <component>
+            <flag>5</flag>
+        </component>
+    </components>
+</entity>

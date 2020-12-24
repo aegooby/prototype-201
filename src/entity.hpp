@@ -22,8 +22,8 @@ using id_t = size_t;
 class entity
 {
 public:
-    class world&           world;
-    std::bitset<flag_bits> flag;
+    class world&                      world;
+    std::bitset<component::flag_bits> flag;
 
 public:
     const id_t id;
@@ -42,12 +42,12 @@ public:
         return *static_cast<component_type*>(
             __component(typeid(component_type)).get());
     }
-    template<typename component_type, typename... types>
-    void add_component(types&&... args)
+    template<typename component_type>
+    component_type& add_component()
     {
-        __add_component(std::make_unique<component_type>(
-                            *this, std::forward<types>(args)...),
+        __add_component(std::make_unique<component_type>(*this),
                         typeid(component_type));
+        return component<component_type>();
     }
     template<typename component_type>
     void remove_component()

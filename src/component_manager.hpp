@@ -49,7 +49,8 @@ public:
                                std::unique_ptr<struct component>&& component)
     {
         if (__entity_map.count(entity.id))
-            throw std::runtime_error("Duplicate component");
+            throw std::runtime_error(std::string("Duplicate component type ") +
+                                     typeid(component_type).name());
         __entity_map.emplace(entity.id, components.size());
         components.emplace_back(
             std::forward<std::unique_ptr<struct component>>(component));

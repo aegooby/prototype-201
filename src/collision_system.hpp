@@ -15,8 +15,8 @@ public:
 
     collision_system(class world& world) : __base(world)
     {
-        flag.set(system::flag::transform);
-        flag.set(system::flag::collision);
+        flag.set(component::flag::transform);
+        flag.set(component::flag::collision);
     }
     virtual ~collision_system() = default;
     virtual void start() override;

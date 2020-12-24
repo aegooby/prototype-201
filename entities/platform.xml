@@ -1,0 +1,22 @@
+<entity>
+    <components>
+        <component>
+            <flag>1</flag>
+            <rect>
+                <w>130</w>
+                <h>20</h>
+            </rect>
+        </component>
+        <component>
+            <flag>2</flag>
+            <position>
+                <x>200</x>
+                <y>200</y>
+                <z>0</z>
+            </position>
+        </component>
+        <component>
+            <flag>4</flag>
+        </component>
+    </components>
+</entity>

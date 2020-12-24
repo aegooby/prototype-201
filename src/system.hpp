@@ -21,27 +21,17 @@ namespace p201
 class system
 {
 public:
-    enum flag
-    {
-        unknown   = 0x0,
-        render    = 0x1,
-        transform = 0x2,
-        movement  = 0x4,
-        collision = 0x5,
-        input     = 0x6,
-        audio     = 0x7,
-    };
-    using flag_map_t = std::unordered_map<std::type_index, system::flag>;
+    using flag_map_t = std::unordered_map<std::type_index, component::flag>;
     /** @brief Conversion table between component types and flags. */
     inline static const flag_map_t flags = {
-        { typeid(render_component), system::flag::render },
-        { typeid(transform_component), system::flag::transform },
-        { typeid(movement_component), system::flag::movement },
-        { typeid(collision_component), system::flag::collision },
-        { typeid(input_component), system::flag::input },
+        { typeid(render_component), component::flag::render },
+        { typeid(transform_component), component::flag::transform },
+        { typeid(movement_component), component::flag::movement },
+        { typeid(collision_component), component::flag::collision },
+        { typeid(input_component), component::flag::input },
     };
     /** @brief The flag bitset associated with this system instance. */
-    std::bitset<flag_bits> flag;
+    std::bitset<component::flag_bits> flag;
 
 protected:
     std::unordered_map<id_t, std::reference_wrapper<entity>>

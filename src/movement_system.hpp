@@ -16,8 +16,8 @@ public:
 
     movement_system(class world& world) : __base(world)
     {
-        flag.set(system::flag::transform);
-        flag.set(system::flag::movement);
+        flag.set(component::flag::transform);
+        flag.set(component::flag::movement);
     }
     virtual ~movement_system() = default;
     virtual void start() override;

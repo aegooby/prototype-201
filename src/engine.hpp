@@ -9,6 +9,7 @@
 #include "system.hpp"
 #include "window.hpp"
 #include "world.hpp"
+#include "xml_serializer.hpp"
 
 #include <chrono>
 #include <thread>
@@ -57,24 +58,13 @@ inline engine::engine(const std::string& title, int width, int height,
     for (auto& system : world.systems) { system.second->start(); }
     world.system<render_system>().start(window);
 
-    // TODO: placeholder
+    xml_serializer serializer = xml_serializer("entities");
+
     auto& player = world.new_entity();
-    player.add_component<render_component>();
-    player.add_component<transform_component>();
-    player.add_component<movement_component>();
-    player.add_component<collision_component>();
-    player.add_component<input_component>();
-    player.component<transform_component>().position = vector_3(100, 100, 0);
-    player.component<render_component>().rect.w      = 50;
-    player.component<render_component>().rect.h      = 50;
+    serializer.load_entity("player", player);
 
     auto& platform = world.new_entity();
-    platform.add_component<render_component>();
-    platform.add_component<transform_component>();
-    platform.add_component<collision_component>();
-    platform.component<transform_component>().position = vector_3(200, 200, 0);
-    platform.component<render_component>().rect.w      = 130;
-    platform.component<render_component>().rect.h      = 20;
+    serializer.load_entity("platform", platform);
 }
 
 inline bool engine::window_close_key() const

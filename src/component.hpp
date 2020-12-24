@@ -14,8 +14,6 @@
 namespace p201
 {
 
-static const size_t flag_bits = 32;
-
 /**
  * @brief Components contain data only. There's no reason for a component to
  *        contain anything other than a constructor or destructor. I've broken
@@ -25,6 +23,19 @@ static const size_t flag_bits = 32;
  */
 struct component
 {
+    enum flag
+    {
+        unknown   = 0,
+        render    = 1,
+        transform = 2,
+        movement  = 3,
+        collision = 4,
+        input     = 5,
+        audio     = 6,
+    };
+
+    static constexpr size_t flag_bits = 32;
+
     class entity& entity;
 
     component(class entity& entity) : entity(entity) { }
