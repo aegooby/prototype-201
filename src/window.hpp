@@ -92,6 +92,8 @@ public:
 
         while (SDL_PollEvent(&event))
         {
+            keycode   __keycode   = keycode(event.key.keysym.scancode);
+            mousecode __mousecode = mousecode(event.button.button);
             switch (event.type)
             {
                 case SDL_WINDOWEVENT_CLOSE:
@@ -99,21 +101,20 @@ public:
                     __closed = true;
                     break;
                 case SDL_KEYDOWN:
-                    if (!event.key.repeat)
-                        keyboard.down(keycode(event.key.keysym.scancode), true);
-                    keyboard.scan(keycode(event.key.keysym.scancode), true);
+                    if (!event.key.repeat) keyboard.down_set(true, __keycode);
+                    keyboard.scan_set(true, __keycode);
                     break;
                 case SDL_KEYUP:
-                    keyboard.up(keycode(event.key.keysym.scancode), true);
-                    keyboard.scan(keycode(event.key.keysym.scancode), false);
+                    keyboard.up_set(true, __keycode);
+                    keyboard.scan_set(false, __keycode);
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-                    mouse.down(mousecode(event.button.button), true);
-                    mouse.scan(mousecode(event.button.button), true);
+                    mouse.down_set(true, __mousecode);
+                    mouse.scan_set(true, __mousecode);
                     break;
                 case SDL_MOUSEBUTTONUP:
-                    mouse.up(mousecode(event.button.button), true);
-                    mouse.scan(mousecode(event.button.button), false);
+                    mouse.up_set(true, __mousecode);
+                    mouse.scan_set(false, __mousecode);
                     break;
             }
         }

@@ -9,6 +9,19 @@
 namespace p201
 {
 
+template<size_t size, typename... types>
+bool multi_test(const std::array<bool, size>& array, types... args)
+{
+    bool result = true;
+    for (auto& code : { args... }) result = result && array.at(size_t(code));
+    return result;
+}
+template<size_t size, typename... types>
+void multi_set(std::array<bool, size>& array, bool value, types... args)
+{
+    for (auto& code : { args... }) array.at(size_t(code)) = value;
+}
+
 class input
 {
 protected:
@@ -47,71 +60,65 @@ public:
         __up.fill(false);
     }
     template<typename... types>
-    inline bool scan(types... args) const
+    bool scan(types... args) const
     {
-        auto keycodes = { args... };
-        bool result   = true;
-        for (auto& code : keycodes) result = result && __scan.at(size_t(code));
-        return result;
+        return multi_test(__scan, args...);
     }
     template<typename... types>
-    inline bool down(types... args) const
+    bool down(types... args) const
     {
-        auto keycodes = { args... };
-        bool result   = true;
-        for (auto& code : keycodes) result = result && __down.at(size_t(code));
-        return result;
+        return multi_test(__down, args...);
     }
     template<typename... types>
-    inline bool up(types... args) const
+    bool up(types... args) const
     {
-        auto keycodes = { args... };
-        bool result   = true;
-        for (auto& code : keycodes) result = result && __up.at(size_t(code));
-        return result;
+        return multi_test(__up, args...);
     }
-    inline __attribute__((always_inline)) void scan(keycode code, bool value)
+    template<typename... types>
+    void scan_set(bool value, types... args)
     {
-        __scan.at(size_t(code)) = value;
+        multi_set(__scan, value, args...);
     }
-    inline __attribute__((always_inline)) void down(keycode code, bool value)
+    template<typename... types>
+    void down_set(bool value, types... args)
     {
-        __down.at(size_t(code)) = value;
+        multi_set(__down, value, args...);
     }
-    inline __attribute__((always_inline)) void up(keycode code, bool value)
+    template<typename... types>
+    void up_set(bool value, types... args)
     {
-        __up.at(size_t(code)) = value;
+        multi_set(__up, value, args...);
     }
-    inline __attribute__((always_inline)) void scan_clear()
+    void scan_clear()
     {
         __scan.fill(false);
     }
-    inline __attribute__((always_inline)) void down_clear()
+    void down_clear()
     {
         __down.fill(false);
     }
-    inline __attribute__((always_inline)) void up_clear()
+    void up_clear()
     {
         __up.fill(false);
     }
-    inline __attribute__((always_inline)) bool
-    modifier(enum modifier code) const
+    template<typename... types>
+    bool modifier(types... args) const
     {
-        return __modifier.at(size_t(code));
+        return multi_test(__modifier, args...);
     }
-    inline __attribute__((always_inline)) void modifier(enum modifier code,
-                                                        bool          value)
+    template<typename... types>
+    void modifier_set(bool value, types... args)
     {
-        __modifier.at(size_t(code)) = value;
+        multi_set(__modifier, value, args...);
     }
-    inline __attribute__((always_inline)) void update()
+    void update()
     {
         auto __mod = SDL_GetModState();
-        modifier(modifier::ALT, bool(__mod & KMOD_ALT));
-        modifier(modifier::CTRL, bool(__mod & KMOD_CTRL));
-        modifier(modifier::GUI, bool(__mod & KMOD_GUI));
-        modifier(modifier::SHIFT, bool(__mod & KMOD_SHIFT));
-        modifier(modifier::NONE, bool(__mod == KMOD_NONE));
+        modifier_set(bool(__mod & KMOD_ALT), modifier::ALT);
+        modifier_set(bool(__mod & KMOD_CTRL), modifier::CTRL);
+        modifier_set(bool(__mod & KMOD_GUI), modifier::GUI);
+        modifier_set(bool(__mod & KMOD_SHIFT), modifier::SHIFT);
+        modifier_set(bool(__mod == KMOD_NONE), modifier::NONE);
     }
 
     //	Preventing copying and moving
@@ -145,55 +152,61 @@ public:
         __down.fill(false);
         __up.fill(false);
     }
-    inline __attribute__((always_inline)) bool scan(mousecode code) const
+    template<typename... types>
+    bool scan(types... args) const
     {
-        return __scan.at(size_t(code));
+        return multi_test(__scan, args...);
     }
-    inline __attribute__((always_inline)) bool down(mousecode code) const
+    template<typename... types>
+    bool down(types... args) const
     {
-        return __down.at(size_t(code));
+        return multi_test(__down, args...);
     }
-    inline __attribute__((always_inline)) bool up(mousecode code) const
+    template<typename... types>
+    bool up(types... args) const
     {
-        return __up.at(size_t(code));
+        return multi_test(__up, args...);
     }
-    inline __attribute__((always_inline)) void scan(mousecode code, bool value)
+    template<typename... types>
+    void scan_set(bool value, types... args)
     {
-        __scan.at(size_t(code)) = value;
+        multi_set(__scan, value, args...);
     }
-    inline __attribute__((always_inline)) void down(mousecode code, bool value)
+    template<typename... types>
+    void down_set(bool value, types... args)
     {
-        __down.at(size_t(code)) = value;
+        multi_set(__down, value, args...);
     }
-    inline __attribute__((always_inline)) void up(mousecode code, bool value)
+    template<typename... types>
+    void up_set(bool value, types... args)
     {
-        __up.at(size_t(code)) = value;
+        multi_set(__up, value, args...);
     }
-    inline __attribute__((always_inline)) void scan_clear()
+    void scan_clear()
     {
         __scan.fill(false);
     }
-    inline __attribute__((always_inline)) void down_clear()
+    void down_clear()
     {
         __down.fill(false);
     }
-    inline __attribute__((always_inline)) void up_clear()
+    void up_clear()
     {
         __up.fill(false);
     }
-    inline __attribute__((always_inline)) void visible(bool visible)
+    void visible(bool visible)
     {
         SDL_ShowCursor(int(visible));
     }
-    inline __attribute__((always_inline)) const vector_2& position() const
+    const vector_2& position() const
     {
         return __position;
     }
-    inline __attribute__((always_inline)) const vector_2& movement() const
+    const vector_2& movement() const
     {
         return __movement;
     }
-    inline __attribute__((always_inline)) bool visible() const
+    bool visible() const
     {
         return SDL_ShowCursor(-1);
     }
