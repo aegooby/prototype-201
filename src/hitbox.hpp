@@ -13,7 +13,7 @@ struct hitbox
 struct circle : public hitbox
 {
 public:
-    vector_2 center = vector_2(2);
+    vector_2 center;
     float    radius = 0.0f;
 
 public:
@@ -21,8 +21,8 @@ public:
     circle(vector_2 center, float radius) : center(center), radius(radius) { }
     circle(float x, float y, float radius) : radius(radius)
     {
-        center[0] = x;
-        center[1] = y;
+        center.x() = x;
+        center.y() = y;
     }
     ~circle() = default;
     // static bool check_collision(const circle& hitbox_a, const circle&
@@ -33,19 +33,19 @@ public:
     // }
     inline __attribute__((always_inline)) float top() const
     {
-        return center[1] + radius;
+        return center.y() + radius;
     }
     inline __attribute__((always_inline)) float bottom() const
     {
-        return center[1] - radius;
+        return center.y() - radius;
     }
     inline __attribute__((always_inline)) float right() const
     {
-        return center[0] + radius;
+        return center.x() + radius;
     }
     inline __attribute__((always_inline)) float left() const
     {
-        return center[0] - radius;
+        return center.x() - radius;
     }
 };
 

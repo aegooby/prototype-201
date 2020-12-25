@@ -41,15 +41,23 @@ public:
                 {
                     auto& transform =
                         entity.add_component<transform_component>();
-                    transform.position[0] = component.get<size_t>("position.x");
-                    transform.position[1] = component.get<size_t>("position.y");
-                    transform.position[2] = component.get<size_t>("position.z");
+                    transform.position.x() = component.get<float>("position.x");
+                    transform.position.y() = component.get<float>("position.y");
+                    transform.position.z() = component.get<float>("position.z");
                     break;
                 }
                 case component::flag::movement:
                 {
                     auto& movement = entity.add_component<movement_component>();
-                    (void)movement;
+                    movement.velocity.x() = component.get<float>("velocity.x");
+                    movement.velocity.y() = component.get<float>("velocity.y");
+                    movement.velocity.z() = component.get<float>("velocity.z");
+                    movement.acceleration.x() =
+                        component.get<float>("acceleration.x");
+                    movement.acceleration.y() =
+                        component.get<float>("acceleration.y");
+                    movement.acceleration.z() =
+                        component.get<float>("acceleration.z");
                     break;
                 }
                 case component::flag::collision:
@@ -94,9 +102,9 @@ public:
                 case component::flag::transform:
                 {
                     auto& transform = entity.component<transform_component>();
-                    component.add("position.x", transform.position[0]);
-                    component.add("position.y", transform.position[1]);
-                    component.add("position.z", transform.position[2]);
+                    component.add("position.x", transform.position.x());
+                    component.add("position.y", transform.position.y());
+                    component.add("position.z", transform.position.z());
                     break;
                 }
                 case component::flag::movement:

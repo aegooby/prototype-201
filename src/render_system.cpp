@@ -11,24 +11,7 @@
 namespace p201
 {
 
-static const float sqrt_2 = std::sqrt(2.0f);
-static const float sqrt_3 = std::sqrt(3.0f);
-static const float sqrt_6 = std::sqrt(6.0f);
-
-void render_system::start()
-{
-    iso_matrix.at_element(0, 0) = sqrt_3;
-    iso_matrix.at_element(0, 1) = 0;
-    iso_matrix.at_element(0, 2) = -sqrt_3;
-    iso_matrix.at_element(1, 0) = 1;
-    iso_matrix.at_element(1, 1) = 2;
-    iso_matrix.at_element(1, 2) = 1;
-    iso_matrix.at_element(2, 0) = sqrt_2;
-    iso_matrix.at_element(2, 1) = -sqrt_2;
-    iso_matrix.at_element(2, 2) = sqrt_2;
-
-    iso_matrix /= sqrt_6;
-}
+void render_system::start() { }
 void render_system::start(class window& window)
 {
     if (!(__sdl_renderer = SDL_CreateRenderer(window.sdl_window(), -1,
@@ -51,8 +34,9 @@ void render_system::stop()
 void render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect,
                                   const vector_2& location)
 {
-    SDL_Point center = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
-    SDL_Rect srcrect = { int(location[0]), int(location[1]), rect->w, rect->h };
+    SDL_Point center  = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
+    SDL_Rect  srcrect = { int(location.x()), int(location.y()), rect->w,
+                         rect->h };
     if (SDL_RenderCopyEx(__sdl_renderer, texture, &srcrect, rect, 0.0, &center,
                          SDL_FLIP_NONE))
         throw sdl_error("Failed to render texture");
@@ -73,10 +57,8 @@ void render_system::render()
     {
         auto& render    = entity.second.get().component<render_component>();
         auto& transform = entity.second.get().component<transform_component>();
-        auto  iso_position =
-            boost::numeric::ublas::prod(iso_matrix, transform.position);
-        render.rect.x = iso_position(0);
-        render.rect.y = iso_position(1);
+        render.rect.x   = transform.position.x();
+        render.rect.y   = transform.position.y();
         SDL_SetRenderDrawColor(__sdl_renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(__sdl_renderer, &render.rect);
     }

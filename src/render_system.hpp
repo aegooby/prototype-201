@@ -19,7 +19,7 @@ public:
 
 protected:
     SDL_Renderer* __sdl_renderer = nullptr;
-    matrix_3_3    iso_matrix     = matrix_3_3(3, 3);
+    matrix_3      iso_matrix;
 
     void render_sprite(SDL_Texture*, SDL_Rect*, const vector_2&);
 

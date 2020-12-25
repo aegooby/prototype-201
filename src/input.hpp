@@ -46,80 +46,29 @@ public:
         __down.fill(false);
         __up.fill(false);
     }
-    inline __attribute__((always_inline)) bool scan(keycode code) const
+    template<typename... types>
+    inline bool scan(types... args) const
     {
-        return __scan.at(size_t(code));
+        auto keycodes = { args... };
+        bool result   = true;
+        for (auto& code : keycodes) result = result && __scan.at(size_t(code));
+        return result;
     }
-    inline __attribute__((always_inline)) bool down(keycode code) const
+    template<typename... types>
+    inline bool down(types... args) const
     {
-        return __down.at(size_t(code));
+        auto keycodes = { args... };
+        bool result   = true;
+        for (auto& code : keycodes) result = result && __down.at(size_t(code));
+        return result;
     }
-    inline __attribute__((always_inline)) bool up(keycode code) const
+    template<typename... types>
+    inline bool up(types... args) const
     {
-        return __up.at(size_t(code));
-    }
-    inline __attribute__((always_inline)) bool
-    scan(const std::unique_ptr<key>& code) const
-    {
-        auto ptr = code.get();
-        if (typeid(*ptr) == typeid(single_key))
-        {
-            return scan(static_cast<single_key*>(ptr)->code);
-        }
-        else if (typeid(*ptr) == typeid(multi_key))
-        {
-            for (auto& key : static_cast<multi_key*>(ptr)->codes)
-            {
-                if (!scan(key)) return false;
-            }
-            return true;
-        }
-        else
-            throw std::runtime_error("Invalid typeid");
-    }
-    inline __attribute__((always_inline)) bool
-    down(const std::unique_ptr<key>& code) const
-    {
-        auto ptr = code.get();
-        if (typeid(*ptr) == typeid(single_key))
-        {
-            return down(static_cast<single_key*>(ptr)->code);
-        }
-        else if (typeid(*ptr) == typeid(multi_key))
-        {
-            size_t scan_count = 0, down_count = 0,
-                   size = static_cast<multi_key*>(ptr)->codes.size();
-            for (auto& key : static_cast<multi_key*>(ptr)->codes)
-            {
-                if (scan(key) && !down(key)) ++scan_count;
-                if (down(key)) ++down_count;
-            }
-            return (scan_count + down_count == size && scan_count < size);
-        }
-        else
-            throw std::runtime_error("Invalid typeid");
-    }
-    inline __attribute__((always_inline)) bool
-    up(const std::unique_ptr<key>& code) const
-    {
-        auto ptr = code.get();
-        if (typeid(*ptr) == typeid(single_key))
-        {
-            return up(static_cast<single_key*>(ptr)->code);
-        }
-        else if (typeid(*ptr) == typeid(multi_key))
-        {
-            size_t scan_count = 0, up_count = 0,
-                   size = static_cast<multi_key*>(ptr)->codes.size();
-            for (auto& key : static_cast<multi_key*>(ptr)->codes)
-            {
-                if (scan(key)) ++scan_count;
-                if (up(key)) ++up_count;
-            }
-            return (scan_count + up_count == size && scan_count < size);
-        }
-        else
-            throw std::runtime_error("Invalid typeid");
+        auto keycodes = { args... };
+        bool result   = true;
+        for (auto& code : keycodes) result = result && __up.at(size_t(code));
+        return result;
     }
     inline __attribute__((always_inline)) void scan(keycode code, bool value)
     {
@@ -175,11 +124,13 @@ public:
 class mouse : public input
 {
 protected:
+    /** @brief Keycode state storages. */
     std::array<bool, size_t(mousecode::size)> __scan;
     std::array<bool, size_t(mousecode::size)> __down;
     std::array<bool, size_t(mousecode::size)> __up;
-    vector_2                                  __position = vector_2(2);
-    vector_2                                  __movement = vector_2(2);
+    /** @brief Movement and position of mouse on screen. */
+    vector_2 __position;
+    vector_2 __movement;
 
 public:
     mouse(window& window_context) : input(window_context)
@@ -254,10 +205,10 @@ public:
         int dx, dy;
         SDL_GetMouseState(&x, &y);
         SDL_GetRelativeMouseState(&dx, &dy);
-        __position[0] = float(x);
-        __position[1] = float(y);
-        __movement[0] = float(dx);
-        __movement[1] = float(dy);
+        __position.x() = float(x);
+        __position.y() = float(y);
+        __movement.x() = float(dx);
+        __movement.y() = float(dy);
     }
 
     //	Preventing copying and moving

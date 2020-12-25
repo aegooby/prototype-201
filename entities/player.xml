@@ -12,13 +12,23 @@
         <component>
             <flag>2</flag>
             <position>
-                <x>0</x>
-                <y>0</y>
-                <z>0</z>
+                <x>0.0</x>
+                <y>0.0</y>
+                <z>0.0</z>
             </position>
         </component>
         <component>
             <flag>3</flag>
+            <velocity>
+                <x>0.0</x>
+                <y>0.0</y>
+                <z>0.0</z>
+            </velocity>
+            <acceleration>
+                <x>0.0</x>
+                <y>0.0</y>
+                <z>0.0</z>
+            </acceleration>
         </component>
         <component>
             <flag>4</flag>

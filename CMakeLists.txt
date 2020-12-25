@@ -19,7 +19,9 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
 		CMAKE_BUILD_TYPE
 			"Debug"
 		CACHE STRING
-			"Choose the type of build, options are: None (CMAKE_CXX_FLAGS or 	CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
+			"Choose the type of build, options are: None (CMAKE_CXX_FLAGS or
+                CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\"
+                \"MinSizeRel\"."
 		FORCE
 	)
 endif (CMAKE_BUILD_TYPE STREQUAL "")
@@ -52,6 +54,7 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_ttf.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_mixer.cmake)
 
 find_package(Boost)
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 # Define the include DIRs
 include_directories(
@@ -68,6 +71,7 @@ include_directories(
 # Define the link libraries
 target_link_libraries(
 	${PROJECT_NAME}
+    Eigen3::Eigen
 	${SDL2_LIBRARIES}
 	${SDL2_IMAGE_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}

@@ -7,8 +7,6 @@
 namespace p201
 {
 
-static const float friction = 0.6f;
-
 class movement_system : public system
 {
 public:

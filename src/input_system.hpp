@@ -12,6 +12,9 @@ class input_system : public system
 public:
     using __base = system;
 
+protected:
+    matrix_3 iiso_matrix;
+
 public:
     input_system(class world& world) : __base(world)
     {
