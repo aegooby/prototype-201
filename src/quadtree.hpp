@@ -3,6 +3,9 @@
 #include "__common.hpp"
 #include "linalg.hpp"
 
+#include <unordered_map>
+
+
 namespace p201
 {
 
@@ -22,8 +25,9 @@ public:
     quadtree(size_t threshold, size_t max_depth, size_t max_objects, size_t width, size_t height, vector_3 position);
     ~quadtree() = default;
     void add_nodes();
-    void populate();
-    void smashable();
+    void populate(std::unordered_map<id_t, std::reference_wrapper<entity>> entities);
+    void get_entities(vector_3 position, std::unordered_map<id_t, std::reference_wrapper<entity>> entities);
+    
 };
 
 } // namespace p201

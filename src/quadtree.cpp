@@ -17,21 +17,36 @@ quadtree::quadtree(size_t threshold, size_t max_depth, size_t max_objects, size_
 }
 
 void quadtree::add_nodes() {
-    int new_width = _width/2;
-    int new_height = _height/2;
+    int half_width = _width/2;
+    int half_height = _height/2;
     
-    nodes[0] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, new_width, new_height, vector_3(_position(1) + new_width, _position(2), 0));
+    nodes[0] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, half_width, half_height, vector_3(_position(1) + half_width, _position(2), 0));
     
-    nodes[1] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, new_width, new_height, vector_3(_position(1),  _position(2), 0));
+    nodes[1] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, half_width, half_height, vector_3(_position(1),  _position(2), 0));
     
-    nodes[2] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, new_width, new_height, vector_3(_position(1),  _position(2) - new_height,0));
+    nodes[2] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, half_width, half_height, vector_3(_position(1),  _position(2) - half_height,0));
     
-    nodes[3] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, new_width, new_height, vector_3(_position(1) + new_width, _position(2) - new_height,0));
+    nodes[3] = std::make_unique<quadtree>(_threshold, _max_depth-1, _max_objects, half_width, half_height, vector_3(_position(1) + half_width, _position(2) - half_height,0));
 }
 
 
-void quadtree::populate() { }
+void quadtree::populate(std::unordered_map<id_t, std::reference_wrapper<entity>> entities) {
+    if (_threshold < entities.size()){
+        add_nodes();
+        for (int i = 0; i < 4; i++){
+            
+            //nodes[i]->populate();
+        }
+    }
+    
+}
 
-void quadtree::smashable() { }
+void quadtree::get_entities(vector_3 position, std::unordered_map<id_t, std::reference_wrapper<entity>> entities) {
+    
+    
+    for (auto& entity : entities){
+        
+    }
+}
 
 } // namespace p201
