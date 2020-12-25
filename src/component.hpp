@@ -52,7 +52,7 @@ struct render_component : public component
 
     // TODO: placeholder (needs a texture)
     /** @brief Rectangle that sprite is rendered onto. */
-    SDL_Rect rect;
+    SDL_FRect rect;
 
     render_component(class entity& entity) : __base(entity) { }
     virtual ~render_component() = default;

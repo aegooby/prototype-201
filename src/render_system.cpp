@@ -11,7 +11,35 @@
 namespace p201
 {
 
-void render_system::start() { }
+// TODO: this is a temporary function
+static void iso_tile(const vector_3& vec, const matrix_3& matrix,
+                     SDL_FRect& rect, std::int16_t* vx, std::int16_t* vy)
+{
+    vector_3 iso_vec    = matrix * vec;
+    vector_3 iso_vec_p1 = matrix * vector_3(rect.w, 0.0f, 0.0f);
+    vector_3 iso_vec_p2 = matrix * vector_3(rect.w, rect.h, 0.0f);
+    vector_3 iso_vec_p3 = matrix * vector_3(0.0f, rect.h, 0.0f);
+
+    vx[0] = iso_vec.x();
+    vy[0] = iso_vec.y();
+
+    vx[1] = iso_vec.x() + iso_vec_p1.x();
+    vy[1] = iso_vec.y() + iso_vec_p1.y();
+
+    vx[2] = iso_vec.x() + iso_vec_p2.x();
+    vy[2] = iso_vec.y() + iso_vec_p2.y();
+
+    vx[3] = iso_vec.x() + iso_vec_p3.x();
+    vy[3] = iso_vec.y() + iso_vec_p3.y();
+}
+
+void render_system::start()
+{
+    iso_matrix << 1.0f, -1.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, sqrt_2;
+    // flipped:
+    // iso_matrix << -1.0f, 1.0f, 0.0f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, sqrt_2;
+    iso_matrix /= sqrt_2;
+}
 void render_system::start(class window& window)
 {
     if (!(__sdl_renderer = SDL_CreateRenderer(window.sdl_window(), -1,
@@ -57,10 +85,14 @@ void render_system::render()
     {
         auto& render    = entity.second.get().component<render_component>();
         auto& transform = entity.second.get().component<transform_component>();
-        render.rect.x   = transform.position.x();
-        render.rect.y   = transform.position.y();
-        SDL_SetRenderDrawColor(__sdl_renderer, 255, 255, 255, 255);
-        SDL_RenderFillRect(__sdl_renderer, &render.rect);
+        (void)render;
+        (void)transform;
+
+        // TODO: this is a temporary setup to test the isometric rendering
+        std::int16_t vx[4], vy[4];
+        iso_tile(transform.position, iso_matrix, render.rect, vx, vy);
+        filledPolygonRGBA(__sdl_renderer, vx, vy, 4, 255, 255, 255, 255);
+        polygonRGBA(__sdl_renderer, vx, vy, 4, 255, 0, 0, 255);
     }
 
     // Hey this is IMPORTANT!

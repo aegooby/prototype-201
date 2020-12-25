@@ -38,7 +38,7 @@ void input_system::update()
         if (keyboard.up(keycode::S)) movement.acceleration.y() += -10.0f;
 
         // Dash
-        if (keyboard.down(keycode::SPACE)) movement.velocity.x() += 50.0;
+        if (keyboard.down(keycode::SPACE)) movement.velocity.z() += 50.0;
     }
 }
 
