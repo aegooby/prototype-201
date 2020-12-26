@@ -25,14 +25,14 @@ protected:
     mouse&      mouse;
     clock       clock;
     world       world;
-    bool        __running = false, __fpsdebug = false;
+    bool        __running        = false;
     const float __time_per_frame = 1.0f / float(global::game_fps);
 
 protected:
     bool window_close_key() const;
 
 public:
-    engine(const std::string&, int, int, bool);
+    engine(const std::string&);
     ~engine() = default;
     void start();
     void stop();
@@ -46,13 +46,11 @@ public:
     engine& operator=(engine&&) = delete;
 };
 
-inline engine::engine(const std::string& title, int width, int height,
-                      bool fpsdebug)
-    : window(title, width, height),
+inline engine::engine(const std::string& title)
+    : window(title, window::default_width, window::default_height),
       keyboard(window.keyboard),
       mouse(window.mouse),
-      world(keyboard, mouse),
-      __fpsdebug(fpsdebug)
+      world(keyboard, mouse)
 {
     window.start();
     for (auto& system : world.systems) { system.second->start(); }
@@ -103,12 +101,6 @@ inline void engine::start()
         // Check frame rate
         if (__frame_time >= __frame_rate_check)
         {
-            if (__fpsdebug)
-            {
-                std::cout << "fps: ";
-                std::cout << float(__frame_count) / __frame_rate_check;
-                std::cout << std::endl;
-            }
             __frame_time  = 0;
             __frame_count = 0;
         }

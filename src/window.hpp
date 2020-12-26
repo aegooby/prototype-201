@@ -17,6 +17,9 @@ protected:
     SDL_SysWMinfo __syswm_info = SDL_SysWMinfo();
 
 public:
+    static constexpr int default_width  = 1366;
+    static constexpr int default_height = 768;
+
     keyboard keyboard;
     mouse    mouse;
     window(const std::string& title, int width, int height)

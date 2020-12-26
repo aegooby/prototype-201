@@ -5,16 +5,16 @@
         <component>
             <flag>1</flag>
             <rect>
-                <w>50</w>
-                <h>50</h>
+                <w>100</w>
+                <h>100</h>
             </rect>
         </component>
         <component>
             <flag>2</flag>
             <position>
-                <x>100.0</x>
-                <y>30.0</y>
-                <z>0.0</z>
+                <x>200.0</x>
+                <y>80.0</y>
+                <z>100.0</z>
             </position>
         </component>
         <component>

@@ -1,6 +1,8 @@
 
 #pragma once
 
+// #define P201_DEBUG
+
 #if defined(__cplusplus)
 #    if !defined(P201_CPP_VER)
 #        if __cplusplus <= 201103L
@@ -79,5 +81,14 @@
 #if !defined(__cpp_aligned_new)
 #    error Operator "new" is not aligned (use C++17)
 #endif
+
+namespace p201
+{
+#if defined(P201_DEBUG)
+static constexpr bool __debug = true;
+#else
+static constexpr bool __debug = false;
+#endif
+} // namespace p201
 
 #include "decls.hpp"

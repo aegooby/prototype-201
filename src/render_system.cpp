@@ -35,9 +35,7 @@ static void iso_tile(const vector_3& vec, const matrix_3& matrix,
 
 void render_system::start()
 {
-    iso_matrix << 1.0f, -1.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, sqrt_2;
-    // flipped:
-    // iso_matrix << -1.0f, 1.0f, 0.0f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, sqrt_2;
+    iso_matrix << 1.0f, -1.0f, 0.0f, 0.5f, 0.5f, -sqrt_2, 0.0f, 0.0f, sqrt_2;
     iso_matrix /= sqrt_2;
 }
 void render_system::start(class window& window)

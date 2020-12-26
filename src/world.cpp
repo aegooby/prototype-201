@@ -8,6 +8,7 @@
 #include "movement_system.hpp"
 #include "render_system.hpp"
 #include "system.hpp"
+#include "util.hpp"
 
 namespace p201
 {
@@ -42,16 +43,16 @@ entity& world::new_entity()
 {
     return entity_manager.new_entity(*this);
 }
-entity& world::new_entity(const std::string& filename)
+entity& world::new_entity(const std::string& name)
 {
     entity& entity = new_entity();
-    serializer.load_entity(filename, entity);
+    serializer.load_entity(name, entity);
     return entity;
 }
-void world::delete_entity(id_t id, const std::string& filename)
+void world::delete_entity(id_t id, const std::string& name)
 {
     auto& entity = *entity_manager.entities.at(id);
-    serializer.save_entity(filename, entity);
+    serializer.save_entity(name, entity);
     delete_entity(id);
 }
 void world::delete_entity(id_t id)
