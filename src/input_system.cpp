@@ -24,7 +24,7 @@ void input_system::update()
     {
         auto& movement = entity.second.get().component<movement_component>();
 
-        // Direct down
+        // Down
         if (keyboard.down(keycode::S))
         {
             movement.accel.x() += speed / sqrt_2;
@@ -36,7 +36,7 @@ void input_system::update()
             movement.accel.y() -= speed / sqrt_2;
         }
 
-        // Direct up
+        // Up
         if (keyboard.down(keycode::W))
         {
             movement.accel.x() -= speed / sqrt_2;
@@ -48,7 +48,7 @@ void input_system::update()
             movement.accel.y() += speed / sqrt_2;
         }
 
-        // Direct right
+        // Right
         if (keyboard.down(keycode::D))
         {
             movement.accel.x() += speed / sqrt_2;
@@ -60,7 +60,7 @@ void input_system::update()
             movement.accel.y() += speed / sqrt_2;
         }
 
-        // Direct left
+        // Left
         if (keyboard.down(keycode::A))
         {
             movement.accel.x() -= speed / sqrt_2;
