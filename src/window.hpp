@@ -29,7 +29,7 @@ public:
     {
         stop();
     }
-    inline __attribute__((always_inline)) void start()
+    void start()
     {
         if (SDL_Init(SDL_INIT_EVERYTHING))
             throw sdl_error("Failed to initialize SDL");
@@ -42,7 +42,7 @@ public:
         SDL_GetVersion(&__syswm_info.version);
         SDL_GetWindowWMInfo(__sdl_window, &__syswm_info);
     }
-    inline __attribute__((always_inline)) void stop()
+    void stop()
     {
         if (__sdl_window)
         {
@@ -51,24 +51,23 @@ public:
         }
         SDL_Quit();
     }
-    inline __attribute__((always_inline)) const std::string& title()
+    const std::string& title()
     {
         return __title;
     }
-    inline __attribute__((always_inline)) SDL_Window* sdl_window()
+    SDL_Window* sdl_window()
     {
         return __sdl_window;
     }
-    inline __attribute__((always_inline)) bool closed() const
+    bool closed() const
     {
         return __closed;
     }
-    inline __attribute__((always_inline)) const SDL_SysWMinfo&
-    syswm_info() const
+    const SDL_SysWMinfo& syswm_info() const
     {
         return __syswm_info;
     }
-    inline __attribute__((always_inline)) void update()
+    void update()
     {
         keyboard.down_clear();
         keyboard.up_clear();

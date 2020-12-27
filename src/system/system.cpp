@@ -1,9 +1,9 @@
 
 #include "system.hpp"
 
-#include "__common.hpp"
-#include "entity.hpp"
-#include "world.hpp"
+#include "../__common.hpp"
+#include "../entity.hpp"
+#include "../world.hpp"
 
 namespace p201
 {

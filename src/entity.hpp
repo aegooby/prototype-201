@@ -2,7 +2,6 @@
 #pragma once
 #include "__common.hpp"
 #include "component.hpp"
-#include "system.hpp"
 
 #include <typeindex>
 #include <typeinfo>

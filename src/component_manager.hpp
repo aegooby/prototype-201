@@ -2,7 +2,6 @@
 #pragma once
 #include "__common.hpp"
 #include "component.hpp"
-#include "entity.hpp"
 #include "exception.hpp"
 
 #include <unordered_map>
@@ -17,49 +16,30 @@ namespace p201
 class component_manager
 {
 public:
-    virtual ~component_manager()                           = default;
-    virtual std::unique_ptr<component>& component(entity&) = 0;
+    using index_t = std::size_t;
+    std::vector<std::unique_ptr<component>> components;
+
+protected:
+    std::unordered_map<id_t, index_t> __entity_map;
+
+public:
+    virtual ~component_manager();
+    std::unique_ptr<struct component>& component(entity&);
     /** @brief Registers a component under the specified entity. */
-    virtual void add_component(entity&,
-                               std::unique_ptr<struct component>&&) = 0;
+    void add_component(entity&, std::unique_ptr<struct component>&&);
     /** @brief Removes the component associated with the manager's type. */
-    virtual void remove_component(entity&) = 0;
+    void remove_component(entity&);
 };
+
+inline component_manager::~component_manager() { }
 
 template<typename component_type>
 class component_manager_template : public component_manager
 {
 public:
     using component_t = component_type;
-    using index_t     = std::size_t;
-    std::vector<std::unique_ptr<struct component>> components;
 
-protected:
-    std::unordered_map<id_t, index_t> __entity_map;
-
-public:
     virtual ~component_manager_template() = default;
-    virtual std::unique_ptr<struct component>& component(entity& entity)
-    {
-        if (!__entity_map.count(entity.id))
-            throw std::runtime_error("Component not found.");
-        return components.at(__entity_map.at(entity.id));
-    }
-    virtual void add_component(entity&                             entity,
-                               std::unique_ptr<struct component>&& component)
-    {
-        if (__entity_map.count(entity.id))
-            throw std::runtime_error(std::string("Duplicate component type ") +
-                                     typeid(component_type).name());
-        __entity_map.emplace(entity.id, components.size());
-        components.emplace_back(
-            std::forward<std::unique_ptr<struct component>>(component));
-    }
-    virtual void remove_component(entity& entity)
-    {
-        components.erase(components.begin() + __entity_map.at(entity.id));
-        __entity_map.erase(entity.id);
-    }
 };
 
 class render_manager : public component_manager_template<render_component>

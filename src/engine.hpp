@@ -5,7 +5,6 @@
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "input.hpp"
-#include "render_system.hpp"
 #include "system.hpp"
 #include "window.hpp"
 #include "world.hpp"
@@ -55,8 +54,8 @@ inline engine::engine(const std::string& title)
 {
     window.start();
     for (auto& system : world.systems) { system.second->start(); }
-    world.system<render_system>().start(window);
-    world.system<render_system>().load();
+    world.system<systems::render>().start(window);
+    world.system<systems::render>().load();
 
     world.serializer.directory = "entities";
     world.serializer.load_entity(world.new_entity(), "player");
@@ -146,7 +145,7 @@ inline void engine::stop()
 }
 inline void engine::render()
 {
-    world.system<render_system>().render();
+    world.system<systems::render>().render_frame();
 }
 inline void engine::update()
 {

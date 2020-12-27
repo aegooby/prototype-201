@@ -4,9 +4,6 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity_manager.hpp"
-#include "input_system.hpp"
-#include "movement_system.hpp"
-#include "render_system.hpp"
 #include "system.hpp"
 #include "util.hpp"
 
@@ -31,12 +28,12 @@ world::world(class keyboard& keyboard, class mouse& mouse)
     component_managers.emplace(typeid(input_component),
                                std::make_unique<input_manager>());
 
-    systems.emplace(typeid(render_system),
-                    std::make_unique<render_system>(*this));
-    systems.emplace(typeid(movement_system),
-                    std::make_unique<movement_system>(*this));
-    systems.emplace(typeid(input_system),
-                    std::make_unique<input_system>(*this));
+    systems.emplace(typeid(systems::render),
+                    std::make_unique<systems::render>(*this));
+    systems.emplace(typeid(systems::movement),
+                    std::make_unique<systems::movement>(*this));
+    systems.emplace(typeid(systems::input),
+                    std::make_unique<systems::input>(*this));
 }
 
 entity& world::new_entity()
