@@ -27,14 +27,14 @@ public:
         for (auto& component_pair : ptree.get_child("entity.components"))
         {
             const auto& component = component_pair.second;
-            const auto& flag = component::flag(component.get<size_t>("flag"));
+            const auto& flag = component::flag(component.get<std::size_t>("flag"));
             switch (flag)
             {
                 case component::flag::render:
                 {
                     auto& render  = entity.add_component<render_component>();
-                    render.rect.w = component.get<size_t>("rect.w");
-                    render.rect.h = component.get<size_t>("rect.h");
+                    render.rect.w = component.get<std::size_t>("rect.w");
+                    render.rect.h = component.get<std::size_t>("rect.h");
                     break;
                 }
                 case component::flag::transform:
@@ -82,7 +82,7 @@ public:
         ptree.put("entity.name", name);
         ptree.put("entity.components", "");
 
-        for (size_t i = 0; i < entity.flag.size(); ++i)
+        for (std::size_t i = 0; i < entity.flag.size(); ++i)
         {
             if (!entity.flag.test(i)) continue;
             auto& component = ptree.add("entity.components.component", "");

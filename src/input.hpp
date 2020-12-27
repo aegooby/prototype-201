@@ -9,17 +9,17 @@
 namespace p201
 {
 
-template<size_t size, typename... types>
+template<std::size_t size, typename... types>
 bool multi_test(const std::array<bool, size>& array, types... args)
 {
     bool result = true;
-    for (auto& code : { args... }) result = result && array.at(size_t(code));
+    for (auto& code : { args... }) result = result && array.at(std::size_t(code));
     return result;
 }
-template<size_t size, typename... types>
+template<std::size_t size, typename... types>
 void multi_set(std::array<bool, size>& array, bool value, types... args)
 {
-    for (auto& code : { args... }) array.at(size_t(code)) = value;
+    for (auto& code : { args... }) array.at(std::size_t(code)) = value;
 }
 
 class input
@@ -41,10 +41,10 @@ public:
 class keyboard : public input
 {
 protected:
-    std::array<bool, size_t(keycode::size)>  __scan;
-    std::array<bool, size_t(keycode::size)>  __down;
-    std::array<bool, size_t(keycode::size)>  __up;
-    std::array<bool, size_t(modifier::size)> __modifier;
+    std::array<bool, std::size_t(keycode::size)>  __scan;
+    std::array<bool, std::size_t(keycode::size)>  __down;
+    std::array<bool, std::size_t(keycode::size)>  __up;
+    std::array<bool, std::size_t(modifier::size)> __modifier;
 
 public:
     keyboard(window& window_context) : input(window_context)
@@ -132,9 +132,9 @@ class mouse : public input
 {
 protected:
     /** @brief Keycode state storages. */
-    std::array<bool, size_t(mousecode::size)> __scan;
-    std::array<bool, size_t(mousecode::size)> __down;
-    std::array<bool, size_t(mousecode::size)> __up;
+    std::array<bool, std::size_t(mousecode::size)> __scan;
+    std::array<bool, std::size_t(mousecode::size)> __down;
+    std::array<bool, std::size_t(mousecode::size)> __up;
     /** @brief Movement and position of mouse on screen. */
     vector_2 __position;
     vector_2 __movement;

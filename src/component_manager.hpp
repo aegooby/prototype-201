@@ -31,7 +31,7 @@ class component_manager_template : public component_manager
 {
 public:
     using component_t = component_type;
-    using index_t     = size_t;
+    using index_t     = std::size_t;
     std::vector<std::unique_ptr<struct component>> components;
 
 protected:

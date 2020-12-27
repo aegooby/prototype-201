@@ -32,7 +32,7 @@ struct component
         audio     = 6,
     };
 
-    static constexpr size_t flag_bits = 32;
+    static constexpr std::size_t flag_bits = 32;
 
     class entity& entity;
 

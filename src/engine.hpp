@@ -47,7 +47,7 @@ public:
 };
 
 inline engine::engine(const std::string& title)
-    : window(title, window::default_width, window::default_height),
+    : window(title),
       keyboard(window.keyboard),
       mouse(window.mouse),
       world(keyboard, mouse)

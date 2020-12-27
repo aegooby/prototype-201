@@ -5,7 +5,7 @@
 
 namespace p201
 {
-quadtree::quadtree(size_t threshold, size_t max_depth, size_t max_objects, size_t width, size_t height, vector_3 position) {
+quadtree::quadtree(std::size_t threshold, std::size_t max_depth, std::size_t max_objects, std::size_t width, std::size_t height, vector_3 position) {
     _threshold   = threshold;
     _max_depth   = max_depth;
     _max_objects = max_objects;

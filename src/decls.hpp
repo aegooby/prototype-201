@@ -5,11 +5,9 @@
 namespace p201
 {
 
-using size_t = std::size_t;
-
 namespace global
 {
-    static constexpr size_t game_fps = 60;
+    static constexpr std::size_t game_fps = 60;
 } // namespace global
 
 class window;
