@@ -20,11 +20,12 @@ namespace p201
 class engine
 {
 protected:
-    window      window;
-    keyboard&   keyboard;
-    mouse&      mouse;
-    clock       clock;
-    world       world;
+    window    window;
+    keyboard& keyboard;
+    mouse&    mouse;
+    clock     clock;
+    world     world;
+
     bool        __running        = false;
     const float __time_per_frame = 1.0f / float(global::game_fps);
 
@@ -55,8 +56,9 @@ inline engine::engine(const std::string& title)
     window.start();
     for (auto& system : world.systems) { system.second->start(); }
     world.system<render_system>().start(window);
-    world.serializer.directory = "entities";
+    world.system<render_system>().load();
 
+    world.serializer.directory = "entities";
     world.serializer.load_entity(world.new_entity(), "player");
     world.serializer.load_entity(world.new_entity(), "platform");
 }

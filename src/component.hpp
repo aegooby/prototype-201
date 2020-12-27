@@ -3,6 +3,7 @@
 #include "__common.hpp"
 #include "hitbox.hpp"
 #include "key.hpp"
+#include "sprite.hpp"
 
 #include <map>
 #include <string>
@@ -50,8 +51,8 @@ struct render_component : public component
 {
     using __base = component;
 
-    // TODO: placeholder (needs a texture)
-    /** @brief Rectangle that sprite is rendered onto. */
+    sprite::type type;
+    /** @brief Floating point rect that textures are rendered onto. */
     SDL_FRect rect;
 
     render_component(class entity& entity) : __base(entity) { }

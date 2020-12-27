@@ -4,9 +4,10 @@
     <components>
         <component>
             <flag>1</flag>
+            <type>1</type>
             <rect>
-                <w>100</w>
-                <h>100</h>
+                <w>140</w>
+                <h>132</h>
             </rect>
         </component>
         <component>

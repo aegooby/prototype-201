@@ -24,21 +24,12 @@ struct transform_component;
 struct movement_component;
 struct collision_component;
 
-class render_system;
-class sprite_base;
-class sprite;
-class sprite_flipbook;
 class event_bus;
-class animation_event;
-class animation_complete_event;
-class collision_event;
 class world;
 class system;
 class entity_manager;
 class render_manager;
 class transform_manager;
 class collision_manager;
-
-struct sprite_info;
 
 } // namespace p201

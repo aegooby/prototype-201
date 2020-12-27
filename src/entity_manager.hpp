@@ -20,9 +20,9 @@ protected:
 public:
     entity_manager()  = default;
     ~entity_manager() = default;
-    entity& new_entity(class world&);
-    void    delete_entity(id_t);
-    std::size_t  entityc() const;
+    entity&     new_entity(class world&);
+    void        delete_entity(id_t);
+    std::size_t entityc() const;
 };
 
 } // namespace p201

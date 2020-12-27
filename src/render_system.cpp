@@ -66,8 +66,13 @@ void render_system::start(class window& window)
                                               SDL_RENDERER_ACCELERATED |
                                                   SDL_RENDERER_PRESENTVSYNC)))
         throw sdl_error("Failed to create render_system");
-    if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP))
+    if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
         throw sdl_error("Failed to load SDL Image libraries");
+}
+void render_system::load()
+{
+    sprite_manager.new_flipbook(sprite::unknown, "sprites/unknown");
+    sprite_manager.new_flipbook(sprite::player, "sprites/player");
 }
 void render_system::stop()
 {
@@ -79,18 +84,18 @@ void render_system::stop()
     IMG_Quit();
 }
 
-void render_system::render_sprite(SDL_Texture* texture, SDL_Rect* rect,
-                                  const vector_2& location)
+void render_system::render_sprite(SDL_Texture* texture, SDL_FRect* rect)
 {
-    SDL_Point center  = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
-    SDL_Rect  srcrect = { int(location.x()), int(location.y()), rect->w,
-                         rect->h };
-    if (SDL_RenderCopyEx(__sdl_renderer, texture, &srcrect, rect, 0.0, &center,
-                         SDL_FLIP_NONE))
+    // SDL_Point center = { rect->x + (rect->w / 2), rect->y + (rect->h / 2) };
+    if (SDL_RenderCopyF(__sdl_renderer, texture, NULL, rect))
         throw sdl_error("Failed to render texture");
-    SDL_SetRenderDrawColor(__sdl_renderer, 0, 255, 0, 255);
-    SDL_Rect center_rect = { center.x - 2, center.y - 2, 4, 4 };
-    SDL_RenderFillRect(__sdl_renderer, &center_rect);
+    // SDL_SetRenderDrawColor(__sdl_renderer, 0, 255, 0, 255);
+    // SDL_Rect center_rect = { center.x - 2, center.y - 2, 4, 4 };
+    // SDL_RenderFillRect(__sdl_renderer, &center_rect);
+}
+void render_system::render_flipbook(sprite::flipbook& flipbook, SDL_FRect* rect)
+{
+    for (auto& texture : flipbook.textures) render_sprite(texture, rect);
 }
 
 void render_system::render()
@@ -100,22 +105,24 @@ void render_system::render()
     if (SDL_RenderClear(__sdl_renderer))
         throw sdl_error("Failed to clear render_system");
 
+    // TODO: this is laggy as fuck
+    // debug(render_grid(__sdl_renderer, 100, 200));
+
     // Render all the registered entities one by one
     for (auto& entity : __registered_entities)
     {
         auto& render    = entity.second.get().component<render_component>();
         auto& transform = entity.second.get().component<transform_component>();
-        (void)render;
-        (void)transform;
 
-        // TODO: this is a temporary setup to test the isometric rendering
-        std::int16_t vx[4], vy[4];
-        iso_tile(transform.position, render.rect, vx, vy);
-        filledPolygonRGBA(__sdl_renderer, vx, vy, 4, 255, 255, 255, 255);
-        polygonRGBA(__sdl_renderer, vx, vy, 4, 255, 0, 0, 255);
+        const vector_3 iso_position = iso_matrix * transform.position;
+
+        render.rect.x = iso_position.x() - render.rect.w / 2;
+        render.rect.y = iso_position.y() - render.rect.h / 2;
+
+        auto& flipbook = sprite_manager.flipbook(render.type);
+        render_flipbook(flipbook, &render.rect);
     }
 
-    // Hey this is IMPORTANT!
     SDL_RenderPresent(__sdl_renderer);
 }
 
