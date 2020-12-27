@@ -34,8 +34,11 @@ namespace sprite
         /** @brief Frame rate of animation. */
         size_t fps = 60;
 
-        flipbook()  = default;
-        ~flipbook() = default;
+        flipbook() = default;
+        ~flipbook()
+        {
+            for (auto& texture : textures) SDL_DestroyTexture(texture);
+        }
 
         std::size_t frames() const
         {
@@ -51,7 +54,10 @@ namespace sprite
 
     public:
         manager(SDL_Renderer*& renderer) : sdl_renderer(renderer) { }
-        ~manager() = default;
+        ~manager()
+        {
+            flipbooks.clear();
+        }
 
         flipbook& new_flipbook(sprite::type type, const std::string& directory)
         {
@@ -61,11 +67,11 @@ namespace sprite
             {
                 const std::string& path_str  = entry.path().string();
                 const char*        path_cstr = path_str.c_str();
+                debug(std::cout << path_cstr << std::endl);
                 SDL_Texture* texture = IMG_LoadTexture(sdl_renderer, path_cstr);
                 if (!texture) throw sdl_error("Null texture");
                 flipbook.textures.emplace_back(texture);
             }
-            debug(std::cout << "new flipbook(\"" << directory << "\")");
             debug(std::cout << std::endl);
             return flipbook;
         }

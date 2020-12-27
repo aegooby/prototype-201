@@ -110,7 +110,7 @@ namespace systems
             throw sdl_error("Failed to clear renderer");
 
         // TODO: this is laggy as fuck
-        // debug(render_grid(__sdl_renderer, 100, 200));
+        debug(render_grid(__sdl_renderer, 100, 200));
 
         // Render all the registered entities one by one
         for (auto& entity : __registered_entities)
