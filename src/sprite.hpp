@@ -65,7 +65,7 @@ namespace sprite
                 if (!texture) throw sdl_error("Null texture");
                 flipbook.textures.emplace_back(texture);
             }
-            debug(std::cout << "new flipbook (\"" << directory << "\")");
+            debug(std::cout << "new flipbook(\"" << directory << "\")");
             debug(std::cout << std::endl);
             return flipbook;
         }

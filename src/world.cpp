@@ -38,14 +38,14 @@ world::world(class keyboard& keyboard, class mouse& mouse)
 
 entity& world::new_entity()
 {
-    debug(std::cout << "new entity (id: " << entity_manager.entityc() << ")");
+    debug(std::cout << "new entity(id: " << entity_manager.entityc() << ")");
     debug(std::cout << std::endl);
     return entity_manager.new_entity(*this);
 }
 void world::delete_entity(id_t id)
 {
     auto& entity = *entity_manager.entities.at(id);
-    debug(std::cout << "delete entity (id: " << id << ")" << std::endl);
+    debug(std::cout << "delete entity(id: " << id << ")" << std::endl);
     for (auto& manager : component_managers)
     {
         auto& mgr = *manager.second;
