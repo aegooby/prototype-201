@@ -1,7 +1,7 @@
 
 #pragma once
 #include "__common.hpp"
-#include "component_manager.hpp"
+#include "component.hpp"
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "event_bus.hpp"

@@ -33,7 +33,7 @@ public:
             {
                 case component::flag::render:
                 {
-                    auto& render = entity.add_component<render_component>();
+                    auto& render = entity.add_component<components::render>();
                     render.type =
                         sprite::type(component.get<std::size_t>("type"));
                     render.rect.w = component.get<std::size_t>("rect.w");
@@ -43,7 +43,7 @@ public:
                 case component::flag::transform:
                 {
                     auto& transform =
-                        entity.add_component<transform_component>();
+                        entity.add_component<components::transform>();
                     transform.position.x() = component.get<float>("position.x");
                     transform.position.y() = component.get<float>("position.y");
                     transform.position.z() = component.get<float>("position.z");
@@ -51,7 +51,8 @@ public:
                 }
                 case component::flag::movement:
                 {
-                    auto& movement = entity.add_component<movement_component>();
+                    auto& movement =
+                        entity.add_component<components::movement>();
                     movement.velocity.x() = component.get<float>("velocity.x");
                     movement.velocity.y() = component.get<float>("velocity.y");
                     movement.velocity.z() = component.get<float>("velocity.z");
@@ -63,13 +64,13 @@ public:
                 case component::flag::collision:
                 {
                     auto& collision =
-                        entity.add_component<collision_component>();
+                        entity.add_component<components::collision>();
                     (void)collision;
                     break;
                 }
                 case component::flag::input:
                 {
-                    auto& input = entity.add_component<input_component>();
+                    auto& input = entity.add_component<components::input>();
                     (void)input;
                     break;
                 }
@@ -94,7 +95,7 @@ public:
             {
                 case component::flag::render:
                 {
-                    auto& render = entity.component<render_component>();
+                    auto& render = entity.component<components::render>();
                     component.add("type", std::size_t(render.type));
                     component.add("rect.w", render.rect.w);
                     component.add("rect.h", render.rect.h);
@@ -102,7 +103,7 @@ public:
                 }
                 case component::flag::transform:
                 {
-                    auto& transform = entity.component<transform_component>();
+                    auto& transform = entity.component<components::transform>();
                     component.add("position.x", transform.position.x());
                     component.add("position.y", transform.position.y());
                     component.add("position.z", transform.position.z());

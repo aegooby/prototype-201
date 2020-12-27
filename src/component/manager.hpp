@@ -1,8 +1,8 @@
 
 #pragma once
-#include "__common.hpp"
+#include "../__common.hpp"
+#include "../exception.hpp"
 #include "component.hpp"
-#include "exception.hpp"
 
 #include <unordered_map>
 
@@ -42,30 +42,33 @@ public:
     virtual ~component_manager_template() = default;
 };
 
-class render_manager : public component_manager_template<render_component>
+namespace managers
 {
-public:
-    virtual ~render_manager() = default;
-};
-class transform_manager : public component_manager_template<transform_component>
-{
-public:
-    virtual ~transform_manager() = default;
-};
-class movement_manager : public component_manager_template<transform_component>
-{
-public:
-    virtual ~movement_manager() = default;
-};
-class collision_manager : public component_manager_template<collision_component>
-{
-public:
-    virtual ~collision_manager() = default;
-};
-class input_manager : public component_manager_template<input_component>
-{
-public:
-    virtual ~input_manager() = default;
-};
 
+    class render : public component_manager_template<components::render>
+    {
+    public:
+        virtual ~render() = default;
+    };
+    class transform : public component_manager_template<components::transform>
+    {
+    public:
+        virtual ~transform() = default;
+    };
+    class movement : public component_manager_template<components::movement>
+    {
+    public:
+        virtual ~movement() = default;
+    };
+    class collision : public component_manager_template<components::collision>
+    {
+    public:
+        virtual ~collision() = default;
+    };
+    class input : public component_manager_template<components::input>
+    {
+    public:
+        virtual ~input() = default;
+    };
+} // namespace managers
 } // namespace p201

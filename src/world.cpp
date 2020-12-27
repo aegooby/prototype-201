@@ -17,16 +17,16 @@ std::unique_ptr<system>& world::__system(std::type_index system_type)
 world::world(class keyboard& keyboard, class mouse& mouse)
     : event_bus(*this), keyboard(keyboard), mouse(mouse)
 {
-    component_managers.emplace(typeid(render_component),
-                               std::make_unique<render_manager>());
-    component_managers.emplace(typeid(transform_component),
-                               std::make_unique<transform_manager>());
-    component_managers.emplace(typeid(collision_component),
-                               std::make_unique<collision_manager>());
-    component_managers.emplace(typeid(movement_component),
-                               std::make_unique<movement_manager>());
-    component_managers.emplace(typeid(input_component),
-                               std::make_unique<input_manager>());
+    component_managers.emplace(typeid(components::render),
+                               std::make_unique<managers::render>());
+    component_managers.emplace(typeid(components::transform),
+                               std::make_unique<managers::transform>());
+    component_managers.emplace(typeid(components::collision),
+                               std::make_unique<managers::collision>());
+    component_managers.emplace(typeid(components::movement),
+                               std::make_unique<managers::movement>());
+    component_managers.emplace(typeid(components::input),
+                               std::make_unique<managers::input>());
 
     systems.emplace(typeid(systems::render),
                     std::make_unique<systems::render>(*this));

@@ -24,11 +24,11 @@ public:
     using flag_map_t = std::unordered_map<std::type_index, component::flag>;
     /** @brief Conversion table between component types and flags. */
     inline static const flag_map_t flags = {
-        { typeid(render_component), component::flag::render },
-        { typeid(transform_component), component::flag::transform },
-        { typeid(movement_component), component::flag::movement },
-        { typeid(collision_component), component::flag::collision },
-        { typeid(input_component), component::flag::input },
+        { typeid(components::render), component::flag::render },
+        { typeid(components::transform), component::flag::transform },
+        { typeid(components::movement), component::flag::movement },
+        { typeid(components::collision), component::flag::collision },
+        { typeid(components::input), component::flag::input },
     };
     /** @brief The flag bitset associated with this system instance. */
     std::bitset<component::flag_bits> flag;

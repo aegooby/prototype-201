@@ -19,17 +19,10 @@ class entity;
 
 // Components
 struct component;
-struct render_component;
-struct transform_component;
-struct movement_component;
-struct collision_component;
 
 class event_bus;
 class world;
 class system;
 class entity_manager;
-class render_manager;
-class transform_manager;
-class collision_manager;
 
 } // namespace p201

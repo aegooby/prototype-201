@@ -1,8 +1,8 @@
 
-#include "component_manager.hpp"
+#include "manager.hpp"
 
-#include "__common.hpp"
-#include "entity.hpp"
+#include "../__common.hpp"
+#include "../entity.hpp"
 
 namespace p201
 {

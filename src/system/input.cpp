@@ -25,7 +25,7 @@ namespace systems
         for (auto& entity : __registered_entities)
         {
             auto& movement =
-                entity.second.get().component<movement_component>();
+                entity.second.get().component<components::movement>();
 
             // Down
             if (keyboard.down(keycode::S))

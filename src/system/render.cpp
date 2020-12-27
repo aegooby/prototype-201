@@ -115,9 +115,9 @@ namespace systems
         // Render all the registered entities one by one
         for (auto& entity : __registered_entities)
         {
-            auto& render = entity.second.get().component<render_component>();
+            auto& render = entity.second.get().component<components::render>();
             auto& transform =
-                entity.second.get().component<transform_component>();
+                entity.second.get().component<components::transform>();
 
             const vector_3 iso_position = iso_matrix * transform.position;
 

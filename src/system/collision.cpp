@@ -16,9 +16,9 @@ namespace systems
         for (auto& entity : __registered_entities)
         {
             auto& transform =
-                entity.second.get().component<transform_component>();
+                entity.second.get().component<components::transform>();
             auto& collision =
-                entity.second.get().component<collision_component>();
+                entity.second.get().component<components::collision>();
             (void)transform;
             (void)collision;
         }

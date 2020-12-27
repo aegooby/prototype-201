@@ -16,9 +16,9 @@ namespace systems
         for (auto& entity : __registered_entities)
         {
             auto& transform =
-                entity.second.get().component<transform_component>();
+                entity.second.get().component<components::transform>();
             auto& movement =
-                entity.second.get().component<movement_component>();
+                entity.second.get().component<components::movement>();
             if (movement.velocity.norm() < movement.max_speed)
                 movement.velocity += movement.accel;
             transform.position += movement.velocity;
