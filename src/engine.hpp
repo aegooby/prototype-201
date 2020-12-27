@@ -53,7 +53,7 @@ inline engine::engine(const std::string& title)
       world(keyboard, mouse)
 {
     window.start();
-    for (auto& system : world.systems) { system.second->start(); }
+    for (auto& system : world.systems) system.second->start();
     world.system<systems::render>().start(window);
     world.system<systems::render>().load();
 
@@ -150,7 +150,7 @@ inline void engine::render()
 inline void engine::update()
 {
     window.update();
-    for (auto& system : world.systems) { system.second->update(); }
+    for (auto& system : world.systems) system.second->update();
 }
 
 } // namespace p201
