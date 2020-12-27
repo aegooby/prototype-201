@@ -47,15 +47,8 @@ void world::delete_entity(id_t id)
     auto& entity = *entity_manager.entities.at(id);
     debug(std::cout << "delete entity(id: " << id << ")" << std::endl);
     for (auto& manager : component_managers)
-    {
-        auto& mgr = *manager.second;
-        mgr.remove_component(entity);
-    }
-    for (auto& system : systems)
-    {
-        auto& sys = *system.second;
-        sys.deregister_entity(entity);
-    }
+        manager.second->remove_component(entity);
+    for (auto& system : systems) system.second->deregister_entity(entity);
     entity_manager.delete_entity(id);
 }
 
@@ -74,9 +67,8 @@ void world::add_component(class entity&                       entity,
     entity.flag.set(system::flags.at(component_type));
     for (auto& system : systems)
     {
-        auto& sys = *system.second;
-        if ((sys.flag & entity.flag ^ sys.flag).none())
-            sys.register_entity(entity);
+        if ((system.second->flag & entity.flag ^ system.second->flag).none())
+            system.second->register_entity(entity);
     }
 }
 void world::remove_component(class entity&   entity,
@@ -85,11 +77,8 @@ void world::remove_component(class entity&   entity,
     component_managers.at(component_type)->remove_component(entity);
     for (auto& system : systems)
     {
-        auto& sys = *system.second;
-        if (sys.flag.test(system::flags.at(component_type)))
-        {
-            sys.deregister_entity(entity);
-        }
+        if (system.second->flag.test(system::flags.at(component_type)))
+            system.second->deregister_entity(entity);
     }
 }
 
