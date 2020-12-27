@@ -65,14 +65,10 @@ namespace sprite
             auto& flipbook = flipbooks.at(type);
             for (auto& entry : std::filesystem::directory_iterator(directory))
             {
-                const std::string& path_str  = entry.path().string();
-                const char*        path_cstr = path_str.c_str();
-                debug(std::cout << path_cstr << std::endl);
-                SDL_Texture* texture = IMG_LoadTexture(sdl_renderer, path_cstr);
-                if (!texture) throw sdl_error("Null texture");
-                flipbook.textures.emplace_back(texture);
+                const auto& path_str = entry.path().string();
+                auto texture = IMG_LoadTexture(sdl_renderer, path_str.c_str());
+                if (texture) flipbook.textures.emplace_back(texture);
             }
-            debug(std::cout << std::endl);
             return flipbook;
         }
         flipbook& flipbook(sprite::type type)
