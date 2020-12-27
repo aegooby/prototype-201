@@ -22,6 +22,7 @@ public:
     ~entity_manager() = default;
     entity& new_entity(class world&);
     void    delete_entity(id_t);
+    size_t  entityc() const;
 };
 
 } // namespace p201

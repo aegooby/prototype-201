@@ -17,7 +17,7 @@ void movement_system::update()
         auto& transform = entity.second.get().component<transform_component>();
         auto& movement  = entity.second.get().component<movement_component>();
         if (movement.velocity.norm() < movement.max_speed)
-            movement.velocity += movement.acceleration;
+            movement.velocity += movement.accel;
         transform.position += movement.velocity;
         movement.velocity *= movement.friction;
         if (movement.velocity.norm() < 1.0f)

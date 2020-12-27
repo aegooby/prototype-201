@@ -38,8 +38,6 @@ protected:
 public:
     world(class keyboard&, class mouse&);
     entity& new_entity();
-    entity& new_entity(const std::string&);
-    void    delete_entity(id_t, const std::string&);
     void    delete_entity(id_t);
     template<typename system_type>
     system_type& system()

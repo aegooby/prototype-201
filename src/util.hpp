@@ -4,8 +4,10 @@
 
 namespace p201
 {
-namespace debug
-{
-
-} // namespace debug
+/** @brief Macro to only run a statement in debug mode. */
+#if defined(P201_DEBUG)
+#    define debug(statement) statement
+#else
+#    define debug(statement)
+#endif
 } // namespace p201

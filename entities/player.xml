@@ -24,11 +24,11 @@
                 <y>0.0</y>
                 <z>0.0</z>
             </velocity>
-            <acceleration>
+            <accel>
                 <x>0.0</x>
                 <y>0.0</y>
                 <z>0.0</z>
-            </acceleration>
+            </accel>
         </component>
         <component>
             <flag>4</flag>

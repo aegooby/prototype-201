@@ -18,7 +18,7 @@ public:
 
     xml_serializer()  = default;
     ~xml_serializer() = default;
-    void load_entity(const std::string& name, class entity& entity)
+    void load_entity(class entity& entity, const std::string& name)
     {
         std::filesystem::path filepath = (directory / name).concat(".xml");
         boost::property_tree::ptree ptree;
@@ -52,12 +52,9 @@ public:
                     movement.velocity.x() = component.get<float>("velocity.x");
                     movement.velocity.y() = component.get<float>("velocity.y");
                     movement.velocity.z() = component.get<float>("velocity.z");
-                    movement.acceleration.x() =
-                        component.get<float>("acceleration.x");
-                    movement.acceleration.y() =
-                        component.get<float>("acceleration.y");
-                    movement.acceleration.z() =
-                        component.get<float>("acceleration.z");
+                    movement.accel.x()    = component.get<float>("accel.x");
+                    movement.accel.y()    = component.get<float>("accel.y");
+                    movement.accel.z()    = component.get<float>("accel.z");
                     break;
                 }
                 case component::flag::collision:
@@ -78,7 +75,7 @@ public:
             }
         }
     }
-    void save_entity(const std::string& name, class entity& entity)
+    void save_entity(class entity& entity, const std::string& name)
     {
         std::filesystem::path filepath = (directory / name).concat(".xml");
         boost::property_tree::ptree ptree;

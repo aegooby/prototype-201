@@ -73,7 +73,7 @@ struct movement_component : public component
     using __base = component;
 
     vector_3 velocity;
-    vector_3 acceleration;
+    vector_3 accel;
     float    max_speed = 10.0f;
     float    friction  = 0.6f;
 

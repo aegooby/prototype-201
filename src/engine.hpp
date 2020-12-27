@@ -57,8 +57,8 @@ inline engine::engine(const std::string& title)
     world.system<render_system>().start(window);
     world.serializer.directory = "entities";
 
-    world.new_entity("player");
-    world.new_entity("platform");
+    world.serializer.load_entity(world.new_entity(), "player");
+    world.serializer.load_entity(world.new_entity(), "platform");
 }
 
 inline bool engine::window_close_key() const
