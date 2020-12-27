@@ -22,7 +22,7 @@ protected:
     matrix_3      iso_matrix;
 
     void render_sprite(SDL_Texture*, SDL_Rect*, const vector_2&);
-    void render_grid(SDL_Renderer*, std::uint8_t);
+    void render_grid(SDL_Renderer*, std::size_t, std::uint8_t);
     void iso_tile(const vector_3&, SDL_FRect&, std::int16_t*, std::int16_t*);
 
 public:

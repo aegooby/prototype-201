@@ -27,24 +27,24 @@ void input_system::update()
         // Down
         if (keyboard.down(keycode::S))
         {
-            movement.accel.x() += speed / sqrt_2;
+            movement.accel.x() -= speed / sqrt_2;
             movement.accel.y() += speed / sqrt_2;
         }
         if (keyboard.up(keycode::S))
         {
-            movement.accel.x() -= speed / sqrt_2;
+            movement.accel.x() += speed / sqrt_2;
             movement.accel.y() -= speed / sqrt_2;
         }
 
         // Up
         if (keyboard.down(keycode::W))
         {
-            movement.accel.x() -= speed / sqrt_2;
+            movement.accel.x() += speed / sqrt_2;
             movement.accel.y() -= speed / sqrt_2;
         }
         if (keyboard.up(keycode::W))
         {
-            movement.accel.x() += speed / sqrt_2;
+            movement.accel.x() -= speed / sqrt_2;
             movement.accel.y() += speed / sqrt_2;
         }
 
@@ -52,24 +52,24 @@ void input_system::update()
         if (keyboard.down(keycode::D))
         {
             movement.accel.x() += speed / sqrt_2;
-            movement.accel.y() -= speed / sqrt_2;
+            movement.accel.y() += speed / sqrt_2;
         }
         if (keyboard.up(keycode::D))
         {
             movement.accel.x() -= speed / sqrt_2;
-            movement.accel.y() += speed / sqrt_2;
+            movement.accel.y() -= speed / sqrt_2;
         }
 
         // Left
         if (keyboard.down(keycode::A))
         {
             movement.accel.x() -= speed / sqrt_2;
-            movement.accel.y() += speed / sqrt_2;
+            movement.accel.y() -= speed / sqrt_2;
         }
         if (keyboard.up(keycode::A))
         {
             movement.accel.x() += speed / sqrt_2;
-            movement.accel.y() -= speed / sqrt_2;
+            movement.accel.y() += speed / sqrt_2;
         }
     }
 }
