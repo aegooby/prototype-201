@@ -6,6 +6,7 @@
 #include "event.hpp"
 #include "event_bus.hpp"
 #include "input.hpp"
+#include "linalg.hpp"
 #include "world.hpp"
 
 namespace p201
@@ -17,28 +18,59 @@ void input_system::update()
     auto& keyboard = world.keyboard;
     auto& mouse    = world.mouse;
     (void)mouse;
+    // TODO:
+    static const float speed = 10.0f;
     for (auto& entity : __registered_entities)
     {
         auto& movement = entity.second.get().component<movement_component>();
 
-        // Right
-        if (keyboard.down(keycode::D)) movement.accel.x() += 10.0f;
-        if (keyboard.up(keycode::D)) movement.accel.x() += -10.0f;
+        // Direct down
+        if (keyboard.down(keycode::S))
+        {
+            movement.accel.x() += speed / sqrt_2;
+            movement.accel.y() += speed / sqrt_2;
+        }
+        if (keyboard.up(keycode::S))
+        {
+            movement.accel.x() -= speed / sqrt_2;
+            movement.accel.y() -= speed / sqrt_2;
+        }
 
-        // Left
-        if (keyboard.down(keycode::A)) movement.accel.x() += -10.0f;
-        if (keyboard.up(keycode::A)) movement.accel.x() += 10.0f;
+        // Direct up
+        if (keyboard.down(keycode::W))
+        {
+            movement.accel.x() -= speed / sqrt_2;
+            movement.accel.y() -= speed / sqrt_2;
+        }
+        if (keyboard.up(keycode::W))
+        {
+            movement.accel.x() += speed / sqrt_2;
+            movement.accel.y() += speed / sqrt_2;
+        }
 
-        // Up
-        if (keyboard.down(keycode::W)) movement.accel.y() += -10.0f;
-        if (keyboard.up(keycode::W)) movement.accel.y() += 10.0f;
+        // Direct right
+        if (keyboard.down(keycode::D))
+        {
+            movement.accel.x() += speed / sqrt_2;
+            movement.accel.y() -= speed / sqrt_2;
+        }
+        if (keyboard.up(keycode::D))
+        {
+            movement.accel.x() -= speed / sqrt_2;
+            movement.accel.y() += speed / sqrt_2;
+        }
 
-        // Down
-        if (keyboard.down(keycode::S)) movement.accel.y() += 10.0f;
-        if (keyboard.up(keycode::S)) movement.accel.y() += -10.0f;
-
-        // Dash
-        if (keyboard.down(keycode::SPACE)) movement.velocity.z() += 50.0;
+        // Direct left
+        if (keyboard.down(keycode::A))
+        {
+            movement.accel.x() -= speed / sqrt_2;
+            movement.accel.y() += speed / sqrt_2;
+        }
+        if (keyboard.up(keycode::A))
+        {
+            movement.accel.x() += speed / sqrt_2;
+            movement.accel.y() -= speed / sqrt_2;
+        }
     }
 }
 
