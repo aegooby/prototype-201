@@ -28,7 +28,7 @@ namespace systems
             auto& movement = entity.component<components::movement>();
 
             auto animation = [&entity, this](const std::string& name) {
-                world.event_bus.publish<animation_event>(entity, name);
+                world.event_bus.publish<events::animation>(entity, name);
             };
 
             // Down

@@ -21,17 +21,20 @@ public:
 
 inline event::~event() = default;
 
-class animation_event : public event
+namespace events
 {
-public:
-    class entity& entity;
-    std::string   name;
-
-    animation_event(class entity& entity, const std::string& name)
-        : entity(entity), name(name)
+    class animation : public event
     {
-    }
-    virtual ~animation_event() = default;
-};
+    public:
+        class entity& entity;
+        std::string   name;
+
+        animation(class entity& entity, const std::string& name)
+            : entity(entity), name(name)
+        {
+        }
+        virtual ~animation() = default;
+    };
+} // namespace events
 
 } // namespace p201

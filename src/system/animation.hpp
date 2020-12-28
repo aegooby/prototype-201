@@ -30,7 +30,7 @@ namespace systems
         virtual void start() override;
         virtual void update() override;
 
-        void on_animation_event(animation_event&);
+        void on_animation_event(events::animation&);
 
         //	Preventing copying and moving
         animation(const animation&) = delete;

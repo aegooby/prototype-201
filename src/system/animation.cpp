@@ -35,7 +35,7 @@ namespace systems
             render.texture = flipbook.at(animation.index);
         }
     }
-    void animation::on_animation_event(animation_event& event)
+    void animation::on_animation_event(events::animation& event)
     {
         auto& animation = event.entity.component<components::animation>();
         animation.name  = event.name;
