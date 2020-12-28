@@ -77,10 +77,11 @@ namespace components
     {
         using __base = component;
 
-        vector_3 velocity;
-        vector_3 accel;
-        float    max_speed = 10.0f;
-        float    friction  = 0.6f;
+        vector_3       velocity;
+        vector_3       accel;
+        std::bitset<4> facing;
+        float          max_speed = 10.0f;
+        float          friction  = 0.6f;
 
         movement(class entity& entity) : __base(entity) { }
         virtual ~movement() = default;
