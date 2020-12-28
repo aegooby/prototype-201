@@ -4,17 +4,18 @@
     <components>
         <component>
             <flag>1</flag>
+            <family>player</family>
             <rect>
-                <w>100</w>
-                <h>100</h>
+                <w>140</w>
+                <h>132</h>
             </rect>
         </component>
         <component>
             <flag>2</flag>
             <position>
-                <x>200.0</x>
-                <y>80.0</y>
-                <z>100.0</z>
+                <x>0.0</x>
+                <y>0.0</y>
+                <z>0.0</z>
             </position>
         </component>
         <component>
@@ -24,17 +25,20 @@
                 <y>0.0</y>
                 <z>0.0</z>
             </velocity>
-            <acceleration>
+            <accel>
                 <x>0.0</x>
                 <y>0.0</y>
                 <z>0.0</z>
-            </acceleration>
+            </accel>
         </component>
         <component>
             <flag>4</flag>
         </component>
         <component>
             <flag>5</flag>
+        </component>
+        <component>
+            <flag>6</flag>
         </component>
     </components>
 </entity>

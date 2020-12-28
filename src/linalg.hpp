@@ -13,11 +13,11 @@ namespace p201
 
 namespace eigen = Eigen;
 
-template<size_t m, size_t n>
+template<std::size_t m, std::size_t n>
 using matrix   = eigen::Matrix<float, m, n>;
 using matrix_3 = matrix<3, 3>;
 
-template<size_t n>
+template<std::size_t n>
 using vector   = matrix<n, 1>;
 using vector_2 = vector<2>;
 using vector_3 = vector<3>;

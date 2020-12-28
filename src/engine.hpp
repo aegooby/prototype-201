@@ -5,7 +5,6 @@
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "input.hpp"
-#include "render_system.hpp"
 #include "system.hpp"
 #include "window.hpp"
 #include "world.hpp"
@@ -20,11 +19,12 @@ namespace p201
 class engine
 {
 protected:
-    window      window;
-    keyboard&   keyboard;
-    mouse&      mouse;
-    clock       clock;
-    world       world;
+    window    window;
+    keyboard& keyboard;
+    mouse&    mouse;
+    clock     clock;
+    world     world;
+
     bool        __running        = false;
     const float __time_per_frame = 1.0f / float(global::game_fps);
 
@@ -47,18 +47,18 @@ public:
 };
 
 inline engine::engine(const std::string& title)
-    : window(title, window::default_width, window::default_height),
+    : window(title),
       keyboard(window.keyboard),
       mouse(window.mouse),
-      world(keyboard, mouse)
+      world(window, keyboard, mouse)
 {
     window.start();
-    for (auto& system : world.systems) { system.second->start(); }
-    world.system<render_system>().start(window);
-    world.serializer.directory = "entities";
+    for (auto& system : world.systems) system.second->start();
+    world.sprite_manager.load();
 
-    world.new_entity("player");
-    world.new_entity("platform");
+    world.serializer.directory = "entities";
+    world.serializer.load_entity(world.new_entity(), "player");
+    world.serializer.load_entity(world.new_entity(), "platform");
 }
 
 inline bool engine::window_close_key() const
@@ -144,12 +144,12 @@ inline void engine::stop()
 }
 inline void engine::render()
 {
-    world.system<render_system>().render();
+    world.system<systems::render>().render_frame();
 }
 inline void engine::update()
 {
     window.update();
-    for (auto& system : world.systems) { system.second->update(); }
+    for (auto& system : world.systems) system.second->update();
 }
 
 } // namespace p201

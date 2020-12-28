@@ -19,5 +19,9 @@ void entity_manager::delete_entity(id_t id)
 {
     entities.erase(id);
 }
+std::size_t entity_manager::entityc() const
+{
+    return __entityc;
+}
 
 } // namespace p201

@@ -4,9 +4,6 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity_manager.hpp"
-#include "input_system.hpp"
-#include "movement_system.hpp"
-#include "render_system.hpp"
 #include "system.hpp"
 #include "util.hpp"
 
@@ -17,57 +14,51 @@ std::unique_ptr<system>& world::__system(std::type_index system_type)
 {
     return systems.at(system_type);
 }
-world::world(class keyboard& keyboard, class mouse& mouse)
-    : event_bus(*this), keyboard(keyboard), mouse(mouse)
+world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
+    : event_bus(*this),
+      window(window),
+      keyboard(keyboard),
+      mouse(mouse),
+      sprite_manager("sprites")
 {
-    component_managers.emplace(typeid(render_component),
-                               std::make_unique<render_manager>());
-    component_managers.emplace(typeid(transform_component),
-                               std::make_unique<transform_manager>());
-    component_managers.emplace(typeid(collision_component),
-                               std::make_unique<collision_manager>());
-    component_managers.emplace(typeid(movement_component),
-                               std::make_unique<movement_manager>());
-    component_managers.emplace(typeid(input_component),
-                               std::make_unique<input_manager>());
+    component_managers.emplace(typeid(components::render),
+                               std::make_unique<managers::render>());
+    component_managers.emplace(typeid(components::transform),
+                               std::make_unique<managers::transform>());
+    component_managers.emplace(typeid(components::collision),
+                               std::make_unique<managers::collision>());
+    component_managers.emplace(typeid(components::movement),
+                               std::make_unique<managers::movement>());
+    component_managers.emplace(typeid(components::input),
+                               std::make_unique<managers::input>());
+    component_managers.emplace(typeid(components::animation),
+                               std::make_unique<managers::animation>());
 
-    systems.emplace(typeid(render_system),
-                    std::make_unique<render_system>(*this));
-    systems.emplace(typeid(movement_system),
-                    std::make_unique<movement_system>(*this));
-    systems.emplace(typeid(input_system),
-                    std::make_unique<input_system>(*this));
+    systems.emplace(typeid(systems::render),
+                    std::make_unique<systems::render>(*this));
+    systems.emplace(typeid(systems::movement),
+                    std::make_unique<systems::movement>(*this));
+    systems.emplace(typeid(systems::collision),
+                    std::make_unique<systems::collision>(*this));
+    systems.emplace(typeid(systems::input),
+                    std::make_unique<systems::input>(*this));
+    systems.emplace(typeid(systems::animation),
+                    std::make_unique<systems::animation>(*this));
 }
 
 entity& world::new_entity()
 {
+    debug(std::cout << "new entity(id: " << entity_manager.entityc() << ")");
+    debug(std::cout << std::endl);
     return entity_manager.new_entity(*this);
-}
-entity& world::new_entity(const std::string& name)
-{
-    entity& entity = new_entity();
-    serializer.load_entity(name, entity);
-    return entity;
-}
-void world::delete_entity(id_t id, const std::string& name)
-{
-    auto& entity = *entity_manager.entities.at(id);
-    serializer.save_entity(name, entity);
-    delete_entity(id);
 }
 void world::delete_entity(id_t id)
 {
     auto& entity = *entity_manager.entities.at(id);
+    debug(std::cout << "delete entity(id: " << id << ")" << std::endl);
     for (auto& manager : component_managers)
-    {
-        auto& mgr = *manager.second;
-        mgr.remove_component(entity);
-    }
-    for (auto& system : systems)
-    {
-        auto& sys = *system.second;
-        sys.deregister_entity(entity);
-    }
+        manager.second->remove_component(entity);
+    for (auto& system : systems) system.second->deregister_entity(entity);
     entity_manager.delete_entity(id);
 }
 
@@ -86,9 +77,8 @@ void world::add_component(class entity&                       entity,
     entity.flag.set(system::flags.at(component_type));
     for (auto& system : systems)
     {
-        auto& sys = *system.second;
-        if ((sys.flag & entity.flag ^ sys.flag).none())
-            sys.register_entity(entity);
+        if ((system.second->flag & entity.flag ^ system.second->flag).none())
+            system.second->register_entity(entity);
     }
 }
 void world::remove_component(class entity&   entity,
@@ -97,11 +87,8 @@ void world::remove_component(class entity&   entity,
     component_managers.at(component_type)->remove_component(entity);
     for (auto& system : systems)
     {
-        auto& sys = *system.second;
-        if (sys.flag.test(system::flags.at(component_type)))
-        {
-            sys.deregister_entity(entity);
-        }
+        if (system.second->flag.test(system::flags.at(component_type)))
+            system.second->deregister_entity(entity);
     }
 }
 

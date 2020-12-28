@@ -2,7 +2,6 @@
 #pragma once
 #include "__common.hpp"
 #include "component.hpp"
-#include "system.hpp"
 
 #include <typeindex>
 #include <typeinfo>
@@ -12,7 +11,7 @@
 namespace p201
 {
 
-using id_t = size_t;
+using id_t = std::size_t;
 
 /**
  * @brief Entities are an id, flag, and type they shouldn't have shit else.

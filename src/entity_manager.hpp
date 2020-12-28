@@ -15,13 +15,14 @@ public:
     std::unordered_map<id_t, std::unique_ptr<entity>> entities;
 
 protected:
-    size_t __entityc = 0;
+    std::size_t __entityc = 0;
 
 public:
     entity_manager()  = default;
     ~entity_manager() = default;
-    entity& new_entity(class world&);
-    void    delete_entity(id_t);
+    entity&     new_entity(class world&);
+    void        delete_entity(id_t);
+    std::size_t entityc() const;
 };
 
 } // namespace p201

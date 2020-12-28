@@ -1,7 +1,15 @@
 
 #pragma once
 
-// #define P201_DEBUG
+#if defined(P201_DEBUG)
+#    if defined(NDEBUG)
+#        undef NDEBUG
+#    endif
+#else
+#    if !defined(NDEBUG)
+#        define NDEBUG
+#    endif
+#endif
 
 #if defined(__cplusplus)
 #    if !defined(P201_CPP_VER)
