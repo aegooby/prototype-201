@@ -29,6 +29,8 @@ public:
     class mouse&    mouse;
     /** @brief Used for loading and saving entities to XML. */
     xml_serializer serializer;
+    /** @brief Used for loading sprites. */
+    sprite::manager sprite_manager;
 
 protected:
     entity_manager entity_manager;

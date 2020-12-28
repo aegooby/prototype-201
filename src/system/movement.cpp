@@ -13,12 +13,11 @@ namespace systems
     void movement::start() { }
     void movement::update()
     {
-        for (auto& entity : __registered_entities)
+        for (auto& ref_pair : __registered_entities)
         {
-            auto& transform =
-                entity.second.get().component<components::transform>();
-            auto& movement =
-                entity.second.get().component<components::movement>();
+            auto& entity    = ref_pair.second.get();
+            auto& transform = entity.component<components::transform>();
+            auto& movement  = entity.component<components::movement>();
             if (movement.velocity.norm() < movement.max_speed)
                 movement.velocity += movement.accel;
             transform.position += movement.velocity;

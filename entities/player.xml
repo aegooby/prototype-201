@@ -37,5 +37,8 @@
         <component>
             <flag>5</flag>
         </component>
+        <component>
+            <flag>6</flag>
+        </component>
     </components>
 </entity>

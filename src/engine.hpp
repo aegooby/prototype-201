@@ -54,6 +54,7 @@ inline engine::engine(const std::string& title)
 {
     window.start();
     for (auto& system : world.systems) system.second->start();
+    world.sprite_manager.load();
 
     world.serializer.directory = "entities";
     world.serializer.load_entity(world.new_entity(), "player");

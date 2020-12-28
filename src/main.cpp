@@ -4,16 +4,8 @@
 
 int main(int argc, char** argv)
 {
-    try
-    {
-        p201::engine engine = p201::engine("prototype 201");
-        engine.start();
-    }
-    catch (std::exception& exception)
-    {
-        std::cout << exception.what() << std::endl;
-        return 1;
-    }
+    p201::engine engine = p201::engine("prototype 201");
+    engine.start();
 
     return 0;
 }

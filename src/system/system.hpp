@@ -29,6 +29,7 @@ public:
         { typeid(components::movement), component::flag::movement },
         { typeid(components::collision), component::flag::collision },
         { typeid(components::input), component::flag::input },
+        { typeid(components::animation), component::flag::animation },
     };
     /** @brief The flag bitset associated with this system instance. */
     std::bitset<component::flag_bits> flag;

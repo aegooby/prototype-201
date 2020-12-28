@@ -81,8 +81,7 @@ namespace systems
             throw sdl_error("Failed to create rendering system");
         if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
             throw sdl_error("Failed to load SDL Image libraries");
-        sprite_manager.link(__sdl_renderer);
-        sprite_manager.load();
+        world.sprite_manager.link(__sdl_renderer);
     }
     void render::stop()
     {
@@ -125,7 +124,8 @@ namespace systems
             // If a texture hasn't been loaded, use the still at the start
             // of the flipbook.
             if (!render.texture)
-                render.texture = sprite_manager.default_sprite(render.family);
+                render.texture =
+                    world.sprite_manager.default_sprite(render.family);
 
             render_sprite(render.texture, &render.rect);
         }

@@ -15,6 +15,22 @@ namespace p201
 namespace systems
 {
     void animation::start() { }
-    void animation::update() { }
+    void animation::update()
+    {
+        for (auto& ref_pair : __registered_entities)
+        {
+            auto& entity    = ref_pair.second.get();
+            auto& animation = entity.component<components::animation>();
+            auto& render    = entity.component<components::render>();
+
+            auto& flipbook =
+                world.sprite_manager.flipbook(render.family, animation.name);
+
+            std::size_t delay = 1.0f / animation.fps * global::game_fps;
+            ++animation.frame %= delay;
+            if (!animation.frame) ++animation.index %= flipbook.frames();
+            render.texture = flipbook.at(animation.index);
+        }
+    }
 } // namespace systems
 } // namespace p201

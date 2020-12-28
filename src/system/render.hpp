@@ -19,9 +19,8 @@ namespace systems
         using __base = system;
 
     protected:
-        sprite::manager sprite_manager;
-        SDL_Renderer*   __sdl_renderer = nullptr;
-        matrix_3        iso_matrix;
+        SDL_Renderer* __sdl_renderer = nullptr;
+        matrix_3      iso_matrix;
 
         void iso_tile(const vector_3&, std::size_t, std::size_t, std::int16_t*,
                       std::int16_t*);
@@ -30,7 +29,7 @@ namespace systems
         void render_sprite(SDL_Texture*, SDL_FRect*);
 
     public:
-        render(class world& world) : __base(world), sprite_manager("sprites")
+        render(class world& world) : __base(world)
         {
             flag.set(component::flag::render);
             flag.set(component::flag::transform);

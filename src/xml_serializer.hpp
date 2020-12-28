@@ -73,6 +73,13 @@ public:
                     (void)input;
                     break;
                 }
+                case component::flag::animation:
+                {
+                    auto& animation =
+                        entity.add_component<components::animation>();
+                    (void)animation;
+                    break;
+                }
                 default:
                     break;
             }
@@ -117,6 +124,10 @@ public:
                     break;
                 }
                 case component::flag::input:
+                {
+                    break;
+                }
+                case component::flag::animation:
                 {
                     break;
                 }

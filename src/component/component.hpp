@@ -27,7 +27,7 @@ struct component
         movement  = 3,
         collision = 4,
         input     = 5,
-        animation = 5,
+        animation = 6,
     };
 
     static constexpr std::size_t flag_bits = 32;
@@ -53,9 +53,9 @@ namespace components
         using __base = component;
 
         /** @brief Family of flipbooks associated with this component. */
-        std::string family;
+        std::string family = "unknown";
         /** @brief Floating point rect that textures are rendered onto. */
-        SDL_FRect rect;
+        SDL_FRect rect = { .x = 0.0f, .y = 0.0f, .w = 0.0f, .h = 0.0f };
         /** @brief Texture rendered onto rect. */
         SDL_Texture* texture = nullptr;
 
@@ -108,8 +108,10 @@ namespace components
     {
         using __base = component;
 
-        std::size_t frame;
-        std::size_t fps;
+        std::string name  = "default";
+        std::size_t frame = 0;
+        std::size_t index = 0;
+        float       fps   = 20.0f;
         bool        interrupt;
         bool        loop;
 

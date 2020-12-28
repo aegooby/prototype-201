@@ -22,10 +22,10 @@ namespace systems
         (void)mouse;
         // TODO:
         static const float speed = 5.0f;
-        for (auto& entity : __registered_entities)
+        for (auto& ref_pair : __registered_entities)
         {
-            auto& movement =
-                entity.second.get().component<components::movement>();
+            auto& entity   = ref_pair.second.get();
+            auto& movement = entity.component<components::movement>();
 
             // Down
             if (keyboard.down(keycode::S))
