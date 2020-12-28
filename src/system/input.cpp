@@ -21,7 +21,7 @@ namespace systems
         auto& mouse    = world.mouse;
         (void)mouse;
         // TODO:
-        static const float speed = 10.0f;
+        static const float speed = 5.0f;
         for (auto& entity : __registered_entities)
         {
             auto& movement =

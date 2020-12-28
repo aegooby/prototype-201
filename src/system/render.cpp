@@ -62,20 +62,13 @@ namespace systems
         // TODO: element [2, 3] might be wrong
         iso_matrix << 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f;
         iso_matrix /= sqrt_2;
-    }
-    void render::start(class window& window)
-    {
-        if (!(__sdl_renderer = SDL_CreateRenderer(
-                  window.sdl_window(), -1,
-                  SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)))
+        if (!(__sdl_renderer = SDL_CreateRenderer(world.window.sdl_window(), -1,
+                                                  SDL_RENDERER_PRESENTVSYNC)))
             throw sdl_error("Failed to create rendering system");
         if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
             throw sdl_error("Failed to load SDL Image libraries");
-    }
-    void render::load()
-    {
-        sprite_manager.new_flipbook(sprite::unknown, "sprites/unknown");
-        sprite_manager.new_flipbook(sprite::player, "sprites/player");
+        sprite_manager.link(__sdl_renderer);
+        sprite_manager.load();
     }
     void render::stop()
     {
@@ -89,17 +82,8 @@ namespace systems
 
     void render::render_sprite(SDL_Texture* texture, SDL_FRect* rect)
     {
-        // SDL_Point center = { rect->x + (rect->w / 2), rect->y + (rect->h / 2)
-        // };
         if (SDL_RenderCopyF(__sdl_renderer, texture, NULL, rect))
             throw sdl_error("Failed to render texture");
-        // SDL_SetRenderDrawColor(__sdl_renderer, 0, 255, 0, 255);
-        // SDL_Rect center_rect = { center.x - 2, center.y - 2, 4, 4 };
-        // SDL_RenderFillRect(__sdl_renderer, &center_rect);
-    }
-    void render::render_flipbook(sprite::flipbook& flipbook, SDL_FRect* rect)
-    {
-        for (auto& texture : flipbook.textures) render_sprite(texture, rect);
     }
 
     void render::render_frame()
@@ -110,22 +94,27 @@ namespace systems
             throw sdl_error("Failed to clear renderer");
 
         // TODO: this is laggy as fuck
-        debug(render_grid(__sdl_renderer, 100, 200));
+        // debug(render_grid(__sdl_renderer, 100, 200));
 
         // Render all the registered entities one by one
-        for (auto& entity : __registered_entities)
+        for (auto& ref_pair : __registered_entities)
         {
-            auto& render = entity.second.get().component<components::render>();
-            auto& transform =
-                entity.second.get().component<components::transform>();
+            auto&       entity    = ref_pair.second.get();
+            auto&       render    = entity.component<components::render>();
+            const auto& transform = entity.component<components::transform>();
 
             const vector_3 iso_position = iso_matrix * transform.position;
 
             render.rect.x = iso_position.x() - render.rect.w / 2;
             render.rect.y = iso_position.y() - render.rect.h / 2;
 
-            auto& flipbook = sprite_manager.flipbook(render.type);
-            render_flipbook(flipbook, &render.rect);
+            // If a texture hasn't been loaded, use the still at the start
+            // of the flipbook.
+            if (!render.texture)
+                render.texture =
+                    sprite_manager.flipbook(render.family, "default").at(0);
+
+            render_sprite(render.texture, &render.rect);
         }
 
         SDL_RenderPresent(__sdl_renderer);

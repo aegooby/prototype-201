@@ -22,7 +22,8 @@ public:
     /** @brief Table of systems (type of system is the key). */
     std::unordered_map<std::type_index, std::unique_ptr<system>> systems;
     /** @brief Handles events and forwards them to the relevant systems. */
-    event_bus event_bus;
+    event_bus     event_bus;
+    class window& window;
     /** @brief State storage for inputs. */
     class keyboard& keyboard;
     class mouse&    mouse;
@@ -36,7 +37,8 @@ protected:
     std::unique_ptr<system>& __system(std::type_index);
 
 public:
-    world(class keyboard&, class mouse&);
+    world(class window&, class keyboard&, class mouse&);
+    ~world() = default;
     entity& new_entity();
     void    delete_entity(id_t);
     template<typename system_type>

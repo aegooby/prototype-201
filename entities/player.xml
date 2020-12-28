@@ -4,7 +4,7 @@
     <components>
         <component>
             <flag>1</flag>
-            <type>1</type>
+            <family>player</family>
             <rect>
                 <w>140</w>
                 <h>132</h>

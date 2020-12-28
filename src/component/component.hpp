@@ -27,7 +27,7 @@ struct component
         movement  = 3,
         collision = 4,
         input     = 5,
-        audio     = 6,
+        animation = 5,
     };
 
     static constexpr std::size_t flag_bits = 32;
@@ -52,9 +52,12 @@ namespace components
     {
         using __base = component;
 
-        sprite::type type;
+        /** @brief Family of flipbooks associated with this component. */
+        std::string family;
         /** @brief Floating point rect that textures are rendered onto. */
         SDL_FRect rect;
+        /** @brief Texture rendered onto rect. */
+        SDL_Texture* texture = nullptr;
 
         render(class entity& entity) : __base(entity) { }
         virtual ~render() = default;
@@ -99,6 +102,19 @@ namespace components
 
         input(class entity& entity) : __base(entity) { }
         virtual ~input() = default;
+    };
+
+    struct animation : public component
+    {
+        using __base = component;
+
+        std::size_t frame;
+        std::size_t fps;
+        bool        interrupt;
+        bool        loop;
+
+        animation(class entity& entity) : __base(entity) { }
+        virtual ~animation() = default;
     };
 } // namespace components
 } // namespace p201

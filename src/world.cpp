@@ -14,8 +14,8 @@ std::unique_ptr<system>& world::__system(std::type_index system_type)
 {
     return systems.at(system_type);
 }
-world::world(class keyboard& keyboard, class mouse& mouse)
-    : event_bus(*this), keyboard(keyboard), mouse(mouse)
+world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
+    : event_bus(*this), window(window), keyboard(keyboard), mouse(mouse)
 {
     component_managers.emplace(typeid(components::render),
                                std::make_unique<managers::render>());

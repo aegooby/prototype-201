@@ -50,12 +50,10 @@ inline engine::engine(const std::string& title)
     : window(title),
       keyboard(window.keyboard),
       mouse(window.mouse),
-      world(keyboard, mouse)
+      world(window, keyboard, mouse)
 {
     window.start();
     for (auto& system : world.systems) system.second->start();
-    world.system<systems::render>().start(window);
-    world.system<systems::render>().load();
 
     world.serializer.directory = "entities";
     world.serializer.load_entity(world.new_entity(), "player");

@@ -18,66 +18,78 @@ namespace sprite
      *        commit suicide like a disgraced Japanese office worker but this
      *        is here for sprite loading until I find a better way.
      */
-    enum type
-    {
-        unknown = 0,
-        player  = 1,
-    };
     struct flipbook
     {
         /** @brief Textures in the flipbook (sequential). */
         std::vector<SDL_Texture*> textures;
-        /** @brief Whether the animation in this flipbook can be interrupted. */
-        bool interupt = false;
-        /** @brief Whether or not to loop the animation. */
-        bool loop = false;
-        /** @brief Frame rate of animation. */
-        size_t fps = 60;
 
         flipbook() = default;
         ~flipbook()
         {
             for (auto& texture : textures) SDL_DestroyTexture(texture);
         }
-
         std::size_t frames() const
         {
             return textures.size();
+        }
+        SDL_Texture* const& at(std::size_t i) const
+        {
+            return textures.at(i);
+        }
+        SDL_Texture*& at(std::size_t i)
+        {
+            return textures.at(i);
         }
     };
     class manager
     {
     protected:
-        std::unordered_map<sprite::type, flipbook> flipbooks;
+        using flipbook_family = std::unordered_map<std::string, flipbook>;
+        std::unordered_map<std::string, flipbook_family> families;
+        std::filesystem::path                            main_path;
 
-        SDL_Renderer*& sdl_renderer;
+        SDL_Renderer* renderer = nullptr;
 
-    public:
-        manager(SDL_Renderer*& renderer) : sdl_renderer(renderer) { }
-        ~manager()
+        void new_flipbook(const std::filesystem::path& path)
         {
-            flipbooks.clear();
-        }
-
-        flipbook& new_flipbook(sprite::type type, const std::string& directory)
-        {
-            flipbooks.emplace(std::make_pair(type, sprite::flipbook()));
-            auto& flipbook = flipbooks.at(type);
-            for (auto& entry : std::filesystem::directory_iterator(directory))
+            if (!std::filesystem::is_directory(path)) return;
+            const auto& name   = path.filename();
+            const auto& family = path.parent_path().filename();
+            families.try_emplace(family, flipbook_family());
+            families.at(family).emplace(name, sprite::flipbook());
+            auto& flipbook = families.at(family).at(name);
+            for (auto& entry : std::filesystem::directory_iterator(path))
             {
                 const auto& path_str = entry.path().string();
-                auto texture = IMG_LoadTexture(sdl_renderer, path_str.c_str());
+                auto texture = IMG_LoadTexture(renderer, path_str.c_str());
                 if (texture) flipbook.textures.emplace_back(texture);
             }
-            return flipbook;
         }
-        flipbook& flipbook(sprite::type type)
+        void delete_flipbook(const std::string& family, const std::string& name)
         {
-            return flipbooks.at(type);
+            families.at(family).erase(name);
         }
-        void delete_flipbook(sprite::type type)
+
+    public:
+        manager(const std::string& main_path) : main_path(main_path) { }
+        ~manager() = default;
+        void link(SDL_Renderer* renderer)
         {
-            flipbooks.erase(type);
+            this->renderer = renderer;
+        }
+        void load()
+        {
+            for (auto& family : std::filesystem::directory_iterator(main_path))
+            {
+                const auto& path = family.path();
+                if (!std::filesystem::is_directory(path)) continue;
+                for (auto& name : std::filesystem::directory_iterator(path))
+                    new_flipbook(name.path());
+            }
+        }
+        flipbook& flipbook(std::string family, std::string name)
+        {
+            return families.at(family).at(name);
         }
 
         // Preventing copying and moving

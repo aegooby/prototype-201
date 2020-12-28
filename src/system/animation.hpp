@@ -13,45 +13,38 @@ namespace p201
 {
 namespace systems
 {
-    class render : public system
+    class animation : public system
     {
     public:
         using __base = system;
 
     protected:
-        sprite::manager sprite_manager;
         SDL_Renderer*   __sdl_renderer = nullptr;
         matrix_3        iso_matrix;
+        sprite::manager sprite_manager;
 
         void render_sprite(SDL_Texture*, SDL_FRect*);
+        void render_flipbook(sprite::flipbook&, SDL_FRect*);
         void render_grid(SDL_Renderer*, std::size_t, std::uint8_t);
         void iso_tile(const vector_3&, SDL_FRect&, std::int16_t*,
                       std::int16_t*);
 
     public:
-        render(class world& world) : __base(world), sprite_manager("sprites")
+        animation(class world& world)
+            : __base(world), sprite_manager(__sdl_renderer)
         {
             flag.set(component::flag::render);
-            flag.set(component::flag::transform);
+            flag.set(component::flag::animation);
         }
-        virtual ~render()
-        {
-            stop();
-        }
-        virtual void  start() override;
-        void          stop();
-        SDL_Renderer* sdl_renderer()
-        {
-            return __sdl_renderer;
-        }
-        virtual void update() override { }
-        void         render_frame();
+        virtual ~animation() = default;
+        virtual void start() override;
+        virtual void update() override;
 
         //	Preventing copying and moving
-        render(const render&) = delete;
-        render(render&&)      = delete;
-        render& operator=(const render&) = delete;
-        render& operator=(render&&) = delete;
+        animation(const animation&) = delete;
+        animation(animation&&)      = delete;
+        animation& operator=(const animation&) = delete;
+        animation& operator=(animation&&) = delete;
     };
 } // namespace systems
 } // namespace p201
