@@ -31,7 +31,7 @@ public:
     void remove_component(entity&);
 };
 
-inline component_manager::~component_manager() { }
+inline component_manager::~component_manager() = default;
 
 template<typename component_type>
 class component_manager_template : public component_manager

@@ -21,7 +21,7 @@ namespace systems
         auto& mouse    = world.mouse;
         (void)mouse;
         // TODO:
-        static const float speed = 5.0f;
+        static const float speed = 3.0f;
         for (auto& ref_pair : __registered_entities)
         {
             auto& entity   = ref_pair.second.get();
@@ -54,11 +54,13 @@ namespace systems
             // Right
             if (keyboard.down(keycode::D))
             {
+                world.event_bus.publish<animation_event>(entity, "walk-right");
                 movement.accel.x() += speed / sqrt_2;
                 movement.accel.y() += speed / sqrt_2;
             }
             if (keyboard.up(keycode::D))
             {
+                world.event_bus.publish<animation_event>(entity, "default");
                 movement.accel.x() -= speed / sqrt_2;
                 movement.accel.y() -= speed / sqrt_2;
             }

@@ -58,10 +58,15 @@ namespace sprite
             families.try_emplace(family, flipbook_family());
             families.at(family).emplace(name, sprite::flipbook());
             auto& flipbook = families.at(family).at(name);
+
+            std::vector<std::string> sprite_paths;
             for (auto& entry : std::filesystem::directory_iterator(path))
+                sprite_paths.emplace_back(entry.path().string());
+
+            std::sort(sprite_paths.begin(), sprite_paths.end());
+            for (auto& sprite_path : sprite_paths)
             {
-                const auto& path_str = entry.path().string();
-                auto texture = IMG_LoadTexture(renderer, path_str.c_str());
+                auto texture = IMG_LoadTexture(renderer, sprite_path.c_str());
                 if (texture) flipbook.textures.emplace_back(texture);
             }
         }

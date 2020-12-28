@@ -2,6 +2,7 @@
 #pragma once
 #include "../__common.hpp"
 #include "../entity.hpp"
+#include "../event.hpp"
 #include "../exception.hpp"
 #include "../sprite.hpp"
 #include "../window.hpp"
@@ -28,6 +29,8 @@ namespace systems
         virtual ~animation() = default;
         virtual void start() override;
         virtual void update() override;
+
+        void on_animation_event(animation_event&);
 
         //	Preventing copying and moving
         animation(const animation&) = delete;
