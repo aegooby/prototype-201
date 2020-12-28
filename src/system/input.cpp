@@ -27,6 +27,10 @@ namespace systems
             auto& entity   = ref_pair.second.get();
             auto& movement = entity.component<components::movement>();
 
+            auto animation = [&entity, this](const std::string& name) {
+                world.event_bus.publish<animation_event>(entity, name);
+            };
+
             // Down
             if (keyboard.down(keycode::S))
             {
@@ -54,13 +58,19 @@ namespace systems
             // Right
             if (keyboard.down(keycode::D))
             {
-                world.event_bus.publish<animation_event>(entity, "walk-right");
+                if (!keyboard.scan(keycode::A))
+                    animation("walk-right");
+                else
+                    animation("default");
                 movement.accel.x() += speed / sqrt_2;
                 movement.accel.y() += speed / sqrt_2;
             }
             if (keyboard.up(keycode::D))
             {
-                world.event_bus.publish<animation_event>(entity, "default");
+                if (!keyboard.scan(keycode::A))
+                    animation("default");
+                else
+                    animation("walk-left");
                 movement.accel.x() -= speed / sqrt_2;
                 movement.accel.y() -= speed / sqrt_2;
             }
@@ -68,11 +78,19 @@ namespace systems
             // Left
             if (keyboard.down(keycode::A))
             {
+                if (!keyboard.scan(keycode::D))
+                    animation("walk-left");
+                else
+                    animation("default");
                 movement.accel.x() -= speed / sqrt_2;
                 movement.accel.y() -= speed / sqrt_2;
             }
             if (keyboard.up(keycode::A))
             {
+                if (!keyboard.scan(keycode::D))
+                    animation("default");
+                else
+                    animation("walk-right");
                 movement.accel.x() += speed / sqrt_2;
                 movement.accel.y() += speed / sqrt_2;
             }
