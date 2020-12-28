@@ -20,7 +20,7 @@ private:
     vector_3    _position; // top left x & y pos
 
     std::unique_ptr<quadtree>                                nodes[4];
-    std::unordered_map<id_t, std::reference_wrapper<entity>> node_entities;
+    std::unordered_map<std::string, std::reference_wrapper<entity>> node_entities;
 
 public:
     quadtree(std::string id, size_t max_depth, size_t max_objects, size_t width,
@@ -34,6 +34,8 @@ public:
     bool        border_control(vector_3 entity_position);
     std::string add_entity(entity& entity);
     // called when adding/moving entities, places entity in correct node
+    
+    void remove_entity(entity& entity, std::string node_id);
 };
 
 } // namespace p201

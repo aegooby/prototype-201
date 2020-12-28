@@ -50,8 +50,7 @@ void quadtree::add_nodes()
 
 std::string quadtree::add_entity(entity& entity)
 {
-    vector_3& entity_position =
-        entity.component<components::transform>().position;
+    vector_3& entity_position = entity.component<components::transform>().position;
 
     if ((_position(0) <= entity_position(0)) &&
         (entity_position(0) <= _position(0) + _width) &&
@@ -61,7 +60,7 @@ std::string quadtree::add_entity(entity& entity)
 
         if (nodes[0] == nullptr && addable())
         {
-            node_entities.emplace(entity.id, entity);
+            node_entities.emplace(_id, entity);
             return _id;
         } // return the id of smallest node
 
@@ -124,6 +123,33 @@ bool quadtree::addable()
     else
     {
         return false; // create subnodes and add entity at a subnode
+    }
+}
+
+
+void quadtree::remove_entity(entity& entity, std::string node_id) {
+    if (node_id.size() == 0) {
+        for (auto& node_pair : node_entities){
+            if (node_pair.second.get().id == entity.id) {
+                node_entities.erase(node_pair.first);
+            }
+        }
+    }
+    
+    else if (node_id[0] == '0') {
+        nodes[0]->remove_entity(entity, node_id.erase(0,1)) ;
+    }
+    
+    else if (node_id[0] == '1') {
+        nodes[1]->remove_entity(entity, node_id.erase(0,1)) ;
+    }
+    
+    else if (node_id[0] == '2') {
+        nodes[2]->remove_entity(entity, node_id.erase(0,1)) ;
+    }
+    
+    else {
+        nodes[3]->remove_entity(entity, node_id.erase(0,1)) ;
     }
 }
 
