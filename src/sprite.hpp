@@ -87,9 +87,13 @@ namespace sprite
                     new_flipbook(name.path());
             }
         }
-        flipbook& flipbook(std::string family, std::string name)
+        flipbook& flipbook(const std::string& family, const std::string& name)
         {
             return families.at(family).at(name);
+        }
+        SDL_Texture* default_sprite(const std::string& family)
+        {
+            return flipbook(family, "default").at(0);
         }
 
         // Preventing copying and moving

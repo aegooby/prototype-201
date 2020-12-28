@@ -19,19 +19,8 @@ namespace systems
         using __base = system;
 
     protected:
-        SDL_Renderer*   __sdl_renderer = nullptr;
-        matrix_3        iso_matrix;
-        sprite::manager sprite_manager;
-
-        void render_sprite(SDL_Texture*, SDL_FRect*);
-        void render_flipbook(sprite::flipbook&, SDL_FRect*);
-        void render_grid(SDL_Renderer*, std::size_t, std::uint8_t);
-        void iso_tile(const vector_3&, SDL_FRect&, std::int16_t*,
-                      std::int16_t*);
-
     public:
-        animation(class world& world)
-            : __base(world), sprite_manager(__sdl_renderer)
+        animation(class world& world) : __base(world)
         {
             flag.set(component::flag::render);
             flag.set(component::flag::animation);

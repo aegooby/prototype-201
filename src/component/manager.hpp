@@ -70,5 +70,10 @@ namespace managers
     public:
         virtual ~input() = default;
     };
+    class animation : public component_manager_template<components::animation>
+    {
+    public:
+        virtual ~animation() = default;
+    };
 } // namespace managers
 } // namespace p201

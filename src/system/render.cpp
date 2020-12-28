@@ -15,13 +15,13 @@ namespace p201
 namespace systems
 {
     // TODO: this is a temporary function
-    void render::iso_tile(const vector_3& vec, SDL_FRect& rect,
+    void render::iso_tile(const vector_3& vec, std::size_t w, std::size_t h,
                           std::int16_t* vx, std::int16_t* vy)
     {
         vector_3 iso_vec    = iso_matrix * vec;
-        vector_3 iso_vec_p1 = iso_matrix * vector_3(rect.w, 0.0f, 0.0f);
-        vector_3 iso_vec_p2 = iso_matrix * vector_3(rect.w, rect.h, 0.0f);
-        vector_3 iso_vec_p3 = iso_matrix * vector_3(0.0f, rect.h, 0.0f);
+        vector_3 iso_vec_p1 = iso_matrix * vector_3(w, 0.0f, 0.0f);
+        vector_3 iso_vec_p2 = iso_matrix * vector_3(w, h, 0.0f);
+        vector_3 iso_vec_p3 = iso_matrix * vector_3(0.0f, h, 0.0f);
 
         vx[0] = iso_vec.x();
         vy[0] = iso_vec.y();
@@ -35,8 +35,22 @@ namespace systems
         vx[3] = iso_vec.x() + iso_vec_p3.x();
         vy[3] = iso_vec.y() + iso_vec_p3.y();
     }
-    void render::render_grid(SDL_Renderer* renderer, std::size_t size,
-                             std::uint8_t alpha)
+    void render::render_grid_tile(SDL_Renderer* renderer, std::size_t size,
+                                  std::uint8_t alpha)
+    {
+        std::int16_t vx[4];
+        std::int16_t vy[4];
+        for (ssize_t x = -1100; x < 1000; x += size)
+        {
+            for (ssize_t y = 0; y < 2000; y += size)
+            {
+                iso_tile(vector_3(x, y, 0.0f), size, size, vx, vy);
+                polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, alpha);
+            }
+        }
+    }
+    void render::render_grid_line(SDL_Renderer* renderer, std::size_t size,
+                                  std::uint8_t alpha)
     {
         static const std::size_t tile_y = (float(size) / sqrt_2);
         static const std::size_t tile_x = (float(size) * sqrt_2);
@@ -45,15 +59,15 @@ namespace systems
         for (ssize_t i = 0; i < 2 * window::height; i += tile_y)
         {
             float y = float(i);
-            aalineRGBA(renderer, 0, y, vec.x(), vec.y() + y, 200, 200, 200,
-                       alpha);
+            lineRGBA(renderer, 0, y, vec.x(), vec.y() + y, 200, 200, 200,
+                     alpha);
         }
         vec = iso_matrix * vector_3(0.0f, window::height * 3, 0.0f);
         for (ssize_t i = -window::width; i < window::width; i += tile_x)
         {
             float x = float(i);
-            aalineRGBA(renderer, x, 0, vec.x() + x, vec.y(), 200, 200, 200,
-                       alpha);
+            lineRGBA(renderer, x, 0, vec.x() + x, vec.y(), 200, 200, 200,
+                     alpha);
         }
     }
 
@@ -94,7 +108,7 @@ namespace systems
             throw sdl_error("Failed to clear renderer");
 
         // TODO: this is laggy as fuck
-        // debug(render_grid(__sdl_renderer, 100, 200));
+        debug(render_grid_tile(__sdl_renderer, 100, 200));
 
         // Render all the registered entities one by one
         for (auto& ref_pair : __registered_entities)
@@ -111,8 +125,7 @@ namespace systems
             // If a texture hasn't been loaded, use the still at the start
             // of the flipbook.
             if (!render.texture)
-                render.texture =
-                    sprite_manager.flipbook(render.family, "default").at(0);
+                render.texture = sprite_manager.default_sprite(render.family);
 
             render_sprite(render.texture, &render.rect);
         }
