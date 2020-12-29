@@ -6,6 +6,7 @@
 #include "entity_manager.hpp"
 #include "system.hpp"
 #include "util.hpp"
+#include "quadtree.hpp"
 
 namespace p201
 {
