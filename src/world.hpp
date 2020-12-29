@@ -7,6 +7,7 @@
 #include "event.hpp"
 #include "event_bus.hpp"
 #include "serialize.hpp"
+#include "quadtree.hpp"
 
 #include <typeindex>
 #include <unordered_map>
@@ -35,6 +36,9 @@ public:
     sprite::manager sprite_manager;
     /** @brief Used to apply camera transform. */
     camera camera;
+    
+    class quadtree quadtree;
+    //this is a quadtree
 
 protected:
     entity_manager entity_manager;

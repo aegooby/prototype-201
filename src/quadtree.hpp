@@ -15,14 +15,14 @@ private:
     std::string _id;
     size_t      _max_depth;
     size_t      _max_objects;
-    size_t      _width;
-    size_t      _height;
-    vector_3    _position; // top left x & y pos
-
-    std::unique_ptr<quadtree>                                nodes[4];
-    std::unordered_map<std::string, std::reference_wrapper<entity>> node_entities;
 
 public:
+    size_t      _width;
+    size_t      _height;
+    vector_3                                                        _position;
+    std::unique_ptr<quadtree>                                       nodes[4];
+    std::unordered_map<std::string, std::reference_wrapper<entity>> node_entities;
+    
     quadtree(std::string id, size_t max_depth, size_t max_objects, size_t width,
              size_t height, vector_3 position);
     // at beginning, call with id = ""
@@ -30,8 +30,8 @@ public:
     ~quadtree() = default;
     
     bool addable();
-    bool border_control(vector_3 entity_position);
-    bool in_node(vector_3 entity_position, vector_3 node_position, size_t width, size_t height);
+    bool border_control(vector_3& entity_position);
+    bool in_node(vector_3& entity_position, vector_3& node_position, size_t width, size_t height);
     
     void add_nodes();
     void add_entity(entity& entity, std::vector<std::string> node_ids);

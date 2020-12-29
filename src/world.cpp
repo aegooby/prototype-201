@@ -6,7 +6,6 @@
 #include "entity_manager.hpp"
 #include "system.hpp"
 #include "util.hpp"
-#include "quadtree.hpp"
 
 namespace p201
 {
@@ -20,7 +19,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       window(window),
       keyboard(keyboard),
       mouse(mouse),
-      sprite_manager("sprites")
+      sprite_manager("sprites"),
+      quadtree("", 3, 1, 500, 500, vector_3(0,0,0))
 {
     component_managers.emplace(typeid(components::render),
                                std::make_unique<managers::render>());

@@ -8,6 +8,7 @@
 #include "../linalg.hpp"
 #include "../util.hpp"
 #include "../window.hpp"
+#include "../quadtree.hpp"
 #include "../world.hpp"
 
 namespace p201
@@ -104,7 +105,8 @@ void render::render_frame()
         throw sdl_error("Failed to clear renderer");
 
     // TODO: this is laggy as fuck
-    debug(render_grid_tile(__sdl_renderer, 100, 200));
+    //debug(render_grid_tile(__sdl_renderer, 100, 200));
+    quad_render(world.quadtree);
 
     // Render all the registered entities one by one
     for (auto& ref_pair : __registered_entities)
@@ -136,5 +138,17 @@ void render::render_frame()
 
     SDL_RenderPresent(__sdl_renderer);
 }
+
+void render::quad_render(quadtree& quadtree) {
+    if (quadtree.nodes[0]==nullptr) {
+        render_grid_tile(__sdl_renderer, quadtree._width, quadtree._height);
+    }
+    else {
+        for (int i = 0; i < 4; i++){
+            quad_render(*(quadtree.nodes[i]));
+        }
+    }
+}
+
 } // namespace systems
 } // namespace p201

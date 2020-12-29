@@ -6,6 +6,7 @@
 #include "../sprite.hpp"
 #include "../window.hpp"
 #include "system.hpp"
+#include "../quadtree.hpp"
 
 #include <unordered_map>
 
@@ -46,6 +47,7 @@ public:
     }
     virtual void update() override { }
     void         render_frame();
+    void         quad_render(quadtree& quadtree);
 
     //	Preventing copying and moving
     render(const render&) = delete;

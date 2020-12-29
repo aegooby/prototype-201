@@ -49,7 +49,7 @@ void quadtree::add_nodes()
 }
 
 
-bool quadtree::border_control(vector_3 entity_position)
+bool quadtree::border_control(vector_3& entity_position)
 {
     if ((entity_position(0) == _position(0) &&
          _position(1) - _height <= entity_position(1) &&
@@ -83,7 +83,7 @@ bool quadtree::addable()
 }
 
 
-bool quadtree::in_node(vector_3 entity_position, vector_3 node_position, size_t width, size_t height) {
+bool quadtree::in_node(vector_3& entity_position, vector_3& node_position, size_t width, size_t height) {
     if ((node_position(0) <= entity_position(0)) &&
     (entity_position(0) <= node_position(0) + width) &&
     (node_position(1) - height <= entity_position(1)) &&
@@ -131,6 +131,9 @@ std::vector<std::string> quadtree::curr_locate(entity& entity)
         }
     }
     else {
+        if (nodes[0] == nullptr) {
+            add_nodes();
+        }
         for (int i = 0; i < 4; i++)
         {
             if (nodes[i]->in_node(entity_position, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
@@ -196,17 +199,6 @@ void quadtree::add_entity(entity& entity, std::vector<std::string> node_ids)
 
 }
 
-void quadtree::quad_render() {
-    if (nodes[0] == nullptr) {
-        //render::render_grid_tile(world.systems[systems::render]->__sdl_renderer, _width, _height);
-    }
-    else {
-        for(int i = 0; i < 4; i++) {
-            nodes[i]->quad_render();
-        }
-    }
-}
-
 void quadtree::update(entity& entity) {
 
     std::vector<std::string> new_nodes = new_locate(entity);
@@ -216,9 +208,6 @@ void quadtree::update(entity& entity) {
         remove_entity(entity, curr_nodes);
         add_entity(entity, new_nodes);
     }
-
-    quad_render();
-
 
 }
 

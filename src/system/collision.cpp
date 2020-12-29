@@ -21,6 +21,7 @@ void collision::update()
         auto& collision = entity.component<components::collision>();
         (void)transform;
         (void)collision;
+        world.quadtree.update(entity);
         
     }
 }
