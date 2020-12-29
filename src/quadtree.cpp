@@ -4,6 +4,7 @@
 #include "entity.hpp"
 #include "linalg.hpp"
 
+
 namespace p201
 {
 quadtree::quadtree(std::string id, size_t max_depth, size_t max_objects,
@@ -194,6 +195,17 @@ void quadtree::add_entity(entity& entity, std::vector<std::string> node_ids)
         node.node_entities.emplace(_id, entity);
     }
     
+}
+
+void quadtree::quad_render() {
+    if (nodes[0] == nullptr) {
+        //render::render_grid_tile();
+    }
+    else {
+        for(int i = 0; i < 4; i++) {
+            nodes[i]->quad_render();
+        }
+    }
 }
 
 void quadtree::update(entity& entity) {

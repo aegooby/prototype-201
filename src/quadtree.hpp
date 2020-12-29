@@ -42,6 +42,8 @@ public:
     std::vector<std::string> new_locate(entity& entity); // returns all node_id that should have entity
     quadtree& get_node(std::string node_id); // returns node when given node_id
     
+    void quad_render();
+    
 };
 
 } // namespace p201
