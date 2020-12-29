@@ -4,7 +4,6 @@
 #include "entity.hpp"
 #include "linalg.hpp"
 
-
 namespace p201
 {
 quadtree::quadtree(std::string id, size_t max_depth, size_t max_objects,
@@ -101,29 +100,29 @@ quadtree& quadtree::get_node(std::string node_id) {
     if (node_id.size() == 0) {
         return *this;
     }
-    
+
     else if (node_id[0] == '0') {
         return nodes[0]->get_node(node_id.erase(0,1));
     }
-    
+
     else if (node_id[0] == '1') {
         return nodes[1]->get_node(node_id.erase(0,1));
     }
-    
+
     else if (node_id[0] == '2') {
         return nodes[2]->get_node(node_id.erase(0,1));
     }
     else {
         return nodes[3]->get_node(node_id.erase(0,1));
     }
-    
+
 }
 
 std::vector<std::string> quadtree::curr_locate(entity& entity)
 {
     vector_3& entity_position = entity.component<components::transform>().position;
     std::vector<std::string> node_vec;
-    
+
     if (in_node(entity_position, _position, _width, _height)) {
         for (auto& node_pair : node_entities){
             if (node_pair.second.get().id == entity.id) {
@@ -139,7 +138,7 @@ std::vector<std::string> quadtree::curr_locate(entity& entity)
                 std::vector<std::string> temp = nodes[i]->curr_locate(entity);
                 node_vec.insert(node_vec.end(), temp.begin(), temp.end());
             }
-            
+
         }
     }
     return node_vec;
@@ -149,7 +148,7 @@ std::vector<std::string> quadtree::new_locate(entity& entity)
 {
     vector_3& entity_position = entity.component<components::transform>().position;
     std::vector<std::string> node_vec;
-    
+
     if (in_node(entity_position, _position, _width, _height)) {
         if (nodes[0] == nullptr && addable())
         {
@@ -166,11 +165,11 @@ std::vector<std::string> quadtree::new_locate(entity& entity)
                     std::vector<std::string> temp = nodes[i]->new_locate(entity);
                     node_vec.insert(node_vec.end(), temp.begin(), temp.end());
                 }
-                
+
             }
         }
     }
-    
+
     return node_vec;
 }
 
@@ -178,14 +177,14 @@ std::vector<std::string> quadtree::new_locate(entity& entity)
 void quadtree::remove_entity(entity& entity, std::vector<std::string> node_ids) {
     for (std::string id : node_ids) {
         quadtree& node = get_node(id);
-        
+
         for (auto& node_pair : node.node_entities){
             if (node_pair.second.get().id == entity.id) {
                 node.node_entities.erase(node_pair.first);
             }
         }
     }
-    
+
 }
 
 void quadtree::add_entity(entity& entity, std::vector<std::string> node_ids)
@@ -194,12 +193,12 @@ void quadtree::add_entity(entity& entity, std::vector<std::string> node_ids)
         quadtree& node = get_node(id);
         node.node_entities.emplace(_id, entity);
     }
-    
+
 }
 
 void quadtree::quad_render() {
     if (nodes[0] == nullptr) {
-        //render::render_grid_tile();
+        //render::render_grid_tile(world.systems[systems::render]->__sdl_renderer, _width, _height);
     }
     else {
         for(int i = 0; i < 4; i++) {
@@ -209,16 +208,18 @@ void quadtree::quad_render() {
 }
 
 void quadtree::update(entity& entity) {
-    
+
     std::vector<std::string> new_nodes = new_locate(entity);
     std::vector<std::string> curr_nodes = curr_locate(entity);
-    
+
     if (new_nodes != curr_nodes){
         remove_entity(entity, curr_nodes);
         add_entity(entity, new_nodes);
     }
-    
-    
+
+    quad_render();
+
+
 }
 
 } // namespace p201

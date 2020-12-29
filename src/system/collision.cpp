@@ -1,5 +1,6 @@
 
 #include "collision.hpp"
+#include "../quadtree.hpp"
 
 #include "../__common.hpp"
 #include "../entity_manager.hpp"
