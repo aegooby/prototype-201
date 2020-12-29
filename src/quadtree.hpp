@@ -28,14 +28,20 @@ public:
     // at beginning, call with id = ""
 
     ~quadtree() = default;
-    void add_nodes();
-    bool addable();
-
-    bool        border_control(vector_3 entity_position);
-    std::string add_entity(entity& entity);
-    // called when adding/moving entities, places entity in correct node
     
-    void remove_entity(entity& entity, std::string node_id);
+    bool addable();
+    bool border_control(vector_3 entity_position);
+    bool in_node(vector_3 entity_position, vector_3 node_position, size_t width, size_t height);
+    
+    void add_nodes();
+    void add_entity(entity& entity, std::vector<std::string> node_ids);
+    void remove_entity(entity& entity, std::vector<std::string> node_ids);
+    
+    void update(entity& entity);
+    std::vector<std::string> curr_locate(entity& entity); // returns all node_id that currently has entity
+    std::vector<std::string> new_locate(entity& entity); // returns all node_id that should have entity
+    quadtree& get_node(std::string node_id); // returns node when given node_id
+    
 };
 
 } // namespace p201

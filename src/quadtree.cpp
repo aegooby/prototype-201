@@ -48,50 +48,6 @@ void quadtree::add_nodes()
                  _position(1) - half_height_down, 0));
 }
 
-std::string quadtree::add_entity(entity& entity)
-{
-    vector_3& entity_position = entity.component<components::transform>().position;
-
-    if ((_position(0) <= entity_position(0)) &&
-        (entity_position(0) <= _position(0) + _width) &&
-        (_position(1) - _height <= entity_position(1)) &&
-        (entity_position(1) <= _position(1)))
-    {
-
-        if (nodes[0] == nullptr && addable())
-        {
-            node_entities.emplace(_id, entity);
-            return _id;
-        } // return the id of smallest node
-
-        else
-        {
-            if (nodes[0] == nullptr) { add_nodes(); }
-
-            int TSA_agent = -1; // if entity is at border, makes sure it gets
-                                // added to all required subnodes
-            for (int i = 0; i < 4; i++)
-            {
-                std::string check = nodes[i]->add_entity(entity);
-                if (nodes[i]->border_control(entity_position))
-                {
-                    check     = "-1";
-                    TSA_agent = i;
-                }
-                if (i == 3 && TSA_agent != -1)
-                {
-                    check = std::to_string(TSA_agent);
-                }
-                if (check != "-1") { return check; }
-            }
-        }
-    }
-
-    return "-1";
-    // only time this function returns "-1" is during recursive call, raise
-    // error if it returns "-1" as a whole, that means quadtree generation or
-    // entity position vector is wrong
-}
 
 bool quadtree::border_control(vector_3 entity_position)
 {
@@ -122,35 +78,136 @@ bool quadtree::addable()
     }
     else
     {
-        return false; // create subnodes and add entity at a subnode
+    return false; // create subnodes and add entity at a subnode }
     }
 }
 
 
-void quadtree::remove_entity(entity& entity, std::string node_id) {
+bool quadtree::in_node(vector_3 entity_position, vector_3 node_position, size_t width, size_t height) {
+    if ((node_position(0) <= entity_position(0)) &&
+    (entity_position(0) <= node_position(0) + width) &&
+    (node_position(1) - height <= entity_position(1)) &&
+    (entity_position(1) <= node_position(1)))
+    {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+quadtree& quadtree::get_node(std::string node_id) {
     if (node_id.size() == 0) {
+        return *this;
+    }
+    
+    else if (node_id[0] == '0') {
+        return nodes[0]->get_node(node_id.erase(0,1));
+    }
+    
+    else if (node_id[0] == '1') {
+        return nodes[1]->get_node(node_id.erase(0,1));
+    }
+    
+    else if (node_id[0] == '2') {
+        return nodes[2]->get_node(node_id.erase(0,1));
+    }
+    else {
+        return nodes[3]->get_node(node_id.erase(0,1));
+    }
+    
+}
+
+std::vector<std::string> quadtree::curr_locate(entity& entity)
+{
+    vector_3& entity_position = entity.component<components::transform>().position;
+    std::vector<std::string> node_vec;
+    
+    if (in_node(entity_position, _position, _width, _height)) {
         for (auto& node_pair : node_entities){
             if (node_pair.second.get().id == entity.id) {
-                node_entities.erase(node_pair.first);
+                node_vec.emplace_back(_id);
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < 4; i++)
+        {
+            if (nodes[i]->in_node(entity_position, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
+            {
+                std::vector<std::string> temp = nodes[i]->curr_locate(entity);
+                node_vec.insert(node_vec.end(), temp.begin(), temp.end());
+            }
+            
+        }
+    }
+    return node_vec;
+}
+
+std::vector<std::string> quadtree::new_locate(entity& entity)
+{
+    vector_3& entity_position = entity.component<components::transform>().position;
+    std::vector<std::string> node_vec;
+    
+    if (in_node(entity_position, _position, _width, _height)) {
+        if (nodes[0] == nullptr && addable())
+        {
+            node_vec.emplace_back(_id);
+        }
+
+        else
+        {
+            if (nodes[0] == nullptr) { add_nodes(); }
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (nodes[i]->in_node(entity_position, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height)) {
+                    std::vector<std::string> temp = nodes[i]->new_locate(entity);
+                    node_vec.insert(node_vec.end(), temp.begin(), temp.end());
+                }
+                
             }
         }
     }
     
-    else if (node_id[0] == '0') {
-        nodes[0]->remove_entity(entity, node_id.erase(0,1)) ;
+    return node_vec;
+}
+
+
+void quadtree::remove_entity(entity& entity, std::vector<std::string> node_ids) {
+    for (std::string id : node_ids) {
+        quadtree& node = get_node(id);
+        
+        for (auto& node_pair : node.node_entities){
+            if (node_pair.second.get().id == entity.id) {
+                node.node_entities.erase(node_pair.first);
+            }
+        }
     }
     
-    else if (node_id[0] == '1') {
-        nodes[1]->remove_entity(entity, node_id.erase(0,1)) ;
+}
+
+void quadtree::add_entity(entity& entity, std::vector<std::string> node_ids)
+{
+    for (std::string id : node_ids) {
+        quadtree& node = get_node(id);
+        node.node_entities.emplace(_id, entity);
     }
     
-    else if (node_id[0] == '2') {
-        nodes[2]->remove_entity(entity, node_id.erase(0,1)) ;
+}
+
+void quadtree::update(entity& entity) {
+    
+    std::vector<std::string> new_nodes = new_locate(entity);
+    std::vector<std::string> curr_nodes = curr_locate(entity);
+    
+    if (new_nodes != curr_nodes){
+        remove_entity(entity, curr_nodes);
+        add_entity(entity, new_nodes);
     }
     
-    else {
-        nodes[3]->remove_entity(entity, node_id.erase(0,1)) ;
-    }
+    
 }
 
 } // namespace p201
+// RIP TSA_agent, 27/12/2020 - 29/12/2020
