@@ -33,6 +33,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                                std::make_unique<managers::input>());
     component_managers.emplace(typeid(components::animation),
                                std::make_unique<managers::animation>());
+    component_managers.emplace(typeid(components::camera),
+                               std::make_unique<managers::camera>());
 
     systems.emplace(typeid(systems::render),
                     std::make_unique<systems::render>(*this));
@@ -44,18 +46,17 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                     std::make_unique<systems::input>(*this));
     systems.emplace(typeid(systems::animation),
                     std::make_unique<systems::animation>(*this));
+    systems.emplace(typeid(systems::camera),
+                    std::make_unique<systems::camera>(*this));
 }
 
 entity& world::new_entity()
 {
-    debug(std::cout << "new entity(id: " << entity_manager.entityc() << ")");
-    debug(std::cout << std::endl);
     return entity_manager.new_entity(*this);
 }
 void world::delete_entity(id_t id)
 {
     auto& entity = *entity_manager.entities.at(id);
-    debug(std::cout << "delete entity(id: " << id << ")" << std::endl);
     for (auto& manager : component_managers)
         manager.second->remove_component(entity);
     for (auto& system : systems) system.second->deregister_entity(entity);
@@ -69,12 +70,12 @@ world::component(class entity& entity, std::type_index component_type)
 }
 void world::add_component(class entity&                       entity,
                           std::unique_ptr<struct component>&& component,
-                          std::type_index                     component_type)
+                          std::type_index component_type, std::size_t flag)
 {
     using ptr_t = std::unique_ptr<struct component>;
     component_managers.at(component_type)
         ->add_component(entity, std::forward<ptr_t>(component));
-    entity.flag.set(system::flags.at(component_type));
+    entity.flag.set(flag);
     for (auto& system : systems)
     {
         if ((system.second->flag & entity.flag ^ system.second->flag).none())
@@ -82,12 +83,12 @@ void world::add_component(class entity&                       entity,
     }
 }
 void world::remove_component(class entity&   entity,
-                             std::type_index component_type)
+                             std::type_index component_type, std::size_t flag)
 {
     component_managers.at(component_type)->remove_component(entity);
     for (auto& system : systems)
     {
-        if (system.second->flag.test(system::flags.at(component_type)))
+        if (system.second->flag.test(flag))
             system.second->deregister_entity(entity);
     }
 }

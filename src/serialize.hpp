@@ -10,14 +10,15 @@
 
 namespace p201
 {
-
-class xml_serializer
+namespace serialize
+{
+class xml
 {
 public:
     std::filesystem::path directory;
 
-    xml_serializer()  = default;
-    ~xml_serializer() = default;
+    xml()  = default;
+    ~xml() = default;
     void load_entity(class entity& entity, const std::string& name)
     {
         std::filesystem::path filepath = (directory / name).concat(".xml");
@@ -27,11 +28,10 @@ public:
         for (auto& component_pair : ptree.get_child("entity.components"))
         {
             const auto& component = component_pair.second;
-            const auto& flag =
-                component::flag(component.get<std::size_t>("flag"));
+            const auto& flag      = component.get<std::size_t>("flag");
             switch (flag)
             {
-                case component::flag::render:
+                case components::render::flag:
                 {
                     auto& render  = entity.add_component<components::render>();
                     render.family = component.get<std::string>("family");
@@ -39,7 +39,7 @@ public:
                     render.rect.h = component.get<std::size_t>("rect.h");
                     break;
                 }
-                case component::flag::transform:
+                case components::transform::flag:
                 {
                     auto& transform =
                         entity.add_component<components::transform>();
@@ -48,7 +48,7 @@ public:
                     transform.position.z() = component.get<float>("position.z");
                     break;
                 }
-                case component::flag::movement:
+                case components::movement::flag:
                 {
                     auto& movement =
                         entity.add_component<components::movement>();
@@ -60,24 +60,30 @@ public:
                     movement.accel.z()    = component.get<float>("accel.z");
                     break;
                 }
-                case component::flag::collision:
+                case components::collision::flag:
                 {
                     auto& collision =
                         entity.add_component<components::collision>();
                     (void)collision;
                     break;
                 }
-                case component::flag::input:
+                case components::input::flag:
                 {
                     auto& input = entity.add_component<components::input>();
                     (void)input;
                     break;
                 }
-                case component::flag::animation:
+                case components::animation::flag:
                 {
                     auto& animation =
                         entity.add_component<components::animation>();
-                    (void)animation;
+                    animation.fps = component.get<float>("fps");
+                    break;
+                }
+                case components::camera::flag:
+                {
+                    auto& camera = entity.add_component<components::camera>();
+                    (void)camera;
                     break;
                 }
                 default:
@@ -99,7 +105,7 @@ public:
             component.add("flag", i);
             switch (i)
             {
-                case component::flag::render:
+                case components::render::flag:
                 {
                     auto& render = entity.component<components::render>();
                     component.add("family", render.family);
@@ -107,7 +113,7 @@ public:
                     component.add("rect.h", render.rect.h);
                     break;
                 }
-                case component::flag::transform:
+                case components::transform::flag:
                 {
                     auto& transform = entity.component<components::transform>();
                     component.add("position.x", transform.position.x());
@@ -115,19 +121,25 @@ public:
                     component.add("position.z", transform.position.z());
                     break;
                 }
-                case component::flag::movement:
+                case components::movement::flag:
                 {
                     break;
                 }
-                case component::flag::collision:
+                case components::collision::flag:
                 {
                     break;
                 }
-                case component::flag::input:
+                case components::input::flag:
                 {
                     break;
                 }
-                case component::flag::animation:
+                case components::animation::flag:
+                {
+                    auto& animation = entity.component<components::animation>();
+                    component.add("fps", animation.fps);
+                    break;
+                }
+                case components::camera::flag:
                 {
                     break;
                 }
@@ -139,5 +151,5 @@ public:
         boost::property_tree::write_xml(filepath.string(), ptree);
     }
 };
-
+} // namespace serialize
 } // namespace p201

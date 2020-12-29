@@ -6,6 +6,7 @@
 #include "../sprite.hpp"
 
 #include <string>
+#include <typeindex>
 #include <vector>
 
 namespace p201
@@ -19,17 +20,7 @@ namespace p201
  */
 struct component
 {
-    enum flag
-    {
-        unknown   = 0,
-        render    = 1,
-        transform = 2,
-        movement  = 3,
-        collision = 4,
-        input     = 5,
-        animation = 6,
-    };
-
+    static constexpr std::size_t flag      = 0;
     static constexpr std::size_t flag_bits = 32;
 
     class entity& entity;
@@ -48,76 +39,101 @@ inline component::~component() = default;
 
 namespace components
 {
-    struct render : public component
-    {
-        using __base = component;
+struct render : public component
+{
+    using __base = component;
 
-        /** @brief Family of flipbooks associated with this component. */
-        std::string family = "unknown";
-        /** @brief Floating point rect that textures are rendered onto. */
-        SDL_FRect rect = { .x = 0.0f, .y = 0.0f, .w = 0.0f, .h = 0.0f };
-        /** @brief Texture rendered onto rect. */
-        SDL_Texture* texture = nullptr;
+    static constexpr std::size_t flag = 1;
 
-        render(class entity& entity) : __base(entity) { }
-        virtual ~render() = default;
-    };
+    bool visible = true;
+    /** @brief Family of flipbooks associated with this component. */
+    std::string family = "unknown";
+    /** @brief Floating point rect that textures are rendered onto. */
+    SDL_FRect rect = { .x = 0.0f, .y = 0.0f, .w = 0.0f, .h = 0.0f };
+    /** @brief Texture rendered onto rect. */
+    SDL_Texture* texture = nullptr;
 
-    struct transform : public component
-    {
-        using __base = component;
+    render(class entity& entity) : __base(entity) { }
+    virtual ~render() = default;
+};
 
-        vector_3 position;
+struct transform : public component
+{
+    using __base = component;
 
-        transform(class entity& entity) : __base(entity) { }
-        virtual ~transform() = default;
-    };
+    static constexpr std::size_t flag = 2;
 
-    struct movement : public component
-    {
-        using __base = component;
+    /** @brief Game coordinate position (not isometric position). */
+    vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
 
-        vector_3       velocity;
-        vector_3       accel;
-        std::bitset<4> facing;
-        float          max_speed = 10.0f;
-        float          friction  = 0.6f;
+    transform(class entity& entity) : __base(entity) { }
+    virtual ~transform() = default;
+};
 
-        movement(class entity& entity) : __base(entity) { }
-        virtual ~movement() = default;
-    };
+struct movement : public component
+{
+    using __base = component;
 
-    struct collision : public component
-    {
-        using __base = component;
+    static constexpr std::size_t flag = 3;
 
-        circle hitbox;
+    vector_3 velocity  = vector_3(0.0f, 0.0f, 0.0f);
+    vector_3 accel     = vector_3(0.0f, 0.0f, 0.0f);
+    float    max_speed = 10.0f;
+    float    friction  = 0.6f;
 
-        collision(class entity& entity) : __base(entity) { }
-        virtual ~collision() = default;
-    };
+    movement(class entity& entity) : __base(entity) { }
+    virtual ~movement() = default;
+};
 
-    struct input : public component
-    {
-        using __base = component;
+struct collision : public component
+{
+    using __base = component;
 
-        input(class entity& entity) : __base(entity) { }
-        virtual ~input() = default;
-    };
+    static constexpr std::size_t flag = 4;
 
-    struct animation : public component
-    {
-        using __base = component;
+    circle hitbox;
 
-        std::string name  = "default";
-        std::size_t frame = 0;
-        std::size_t index = 0;
-        float       fps   = 20.0f;
-        bool        interrupt;
-        bool        loop;
+    collision(class entity& entity) : __base(entity) { }
+    virtual ~collision() = default;
+};
 
-        animation(class entity& entity) : __base(entity) { }
-        virtual ~animation() = default;
-    };
+struct input : public component
+{
+    using __base = component;
+
+    static constexpr std::size_t flag = 5;
+
+    input(class entity& entity) : __base(entity) { }
+    virtual ~input() = default;
+};
+
+struct animation : public component
+{
+    using __base = component;
+
+    static constexpr std::size_t flag = 6;
+
+    std::string name      = "default";
+    std::size_t frame     = 0;
+    std::size_t index     = 0;
+    float       fps       = 0.0f;
+    bool        interrupt = false;
+    bool        loop      = true;
+
+    animation(class entity& entity) : __base(entity) { }
+    virtual ~animation() = default;
+};
+
+struct camera : public component
+{
+    using __base = component;
+
+    static constexpr std::size_t flag = 7;
+
+    std::size_t priority = 0;
+
+    camera(class entity& entity) : __base(entity) { }
+    virtual ~camera() = default;
+};
 } // namespace components
 } // namespace p201

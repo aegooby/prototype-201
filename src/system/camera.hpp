@@ -7,33 +7,35 @@
 #include "../window.hpp"
 #include "system.hpp"
 
+#include <unordered_map>
+
 namespace p201
 {
 namespace systems
 {
-class animation : public system
+class camera : public system
 {
 public:
     using __base = system;
 
 protected:
 public:
-    animation(class world& world) : __base(world)
+    camera(class world& world) : __base(world)
     {
         flag.set(components::render::flag);
-        flag.set(components::animation::flag);
+        flag.set(components::camera::flag);
     }
-    virtual ~animation() = default;
+    virtual ~camera() = default;
     virtual void start() override;
     virtual void update() override;
 
     void on_animation_event(events::animation&);
 
     //	Preventing copying and moving
-    animation(const animation&) = delete;
-    animation(animation&&)      = delete;
-    animation& operator=(const animation&) = delete;
-    animation& operator=(animation&&) = delete;
+    camera(const camera&) = delete;
+    camera(camera&&)      = delete;
+    camera& operator=(const camera&) = delete;
+    camera& operator=(camera&&) = delete;
 };
 } // namespace systems
 } // namespace p201
