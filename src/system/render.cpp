@@ -121,10 +121,18 @@ void render::render_frame()
 
         // If a texture hasn't been loaded, use the still at the start
         // of the flipbook.
-        if (!render.texture)
+        if (!render.texture && render.visible)
             render.texture = world.sprite_manager.default_sprite(render.family);
-
-        render_sprite(render.texture, &render.rect);
+        if (world.camera.active)
+        {
+            vector_2  shift = world.camera.shift(window::width, window::height);
+            SDL_FRect rect_shift = render.rect;
+            rect_shift.x += shift.x();
+            rect_shift.y += shift.y();
+            render_sprite(render.texture, &rect_shift);
+        }
+        else if (render.visible)
+            render_sprite(render.texture, &render.rect);
     }
 
     SDL_RenderPresent(__sdl_renderer);

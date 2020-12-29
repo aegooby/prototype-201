@@ -20,7 +20,8 @@ void camera::update()
     {
         auto&       entity = ref_pair.second.get();
         const auto& render = entity.component<components::render>();
-        (void)render;
+        if (!world.camera.active) world.camera.active = true;
+        world.camera.center = util::center(render.rect);
     }
 }
 } // namespace systems

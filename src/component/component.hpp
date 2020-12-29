@@ -45,6 +45,7 @@ struct render : public component
 
     static constexpr std::size_t flag = 1;
 
+    bool visible = true;
     /** @brief Family of flipbooks associated with this component. */
     std::string family = "unknown";
     /** @brief Floating point rect that textures are rendered onto. */
@@ -63,7 +64,7 @@ struct transform : public component
     static constexpr std::size_t flag = 2;
 
     /** @brief Game coordinate position (not isometric position). */
-    vector_3 position;
+    vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
 
     transform(class entity& entity) : __base(entity) { }
     virtual ~transform() = default;
@@ -75,11 +76,10 @@ struct movement : public component
 
     static constexpr std::size_t flag = 3;
 
-    vector_3       velocity;
-    vector_3       accel;
-    std::bitset<4> facing;
-    float          max_speed = 10.0f;
-    float          friction  = 0.6f;
+    vector_3 velocity  = vector_3(0.0f, 0.0f, 0.0f);
+    vector_3 accel     = vector_3(0.0f, 0.0f, 0.0f);
+    float    max_speed = 10.0f;
+    float    friction  = 0.6f;
 
     movement(class entity& entity) : __base(entity) { }
     virtual ~movement() = default;
@@ -113,12 +113,12 @@ struct animation : public component
 
     static constexpr std::size_t flag = 6;
 
-    std::string name  = "default";
-    std::size_t frame = 0;
-    std::size_t index = 0;
-    float       fps   = 0.0f;
-    bool        interrupt;
-    bool        loop;
+    std::string name      = "default";
+    std::size_t frame     = 0;
+    std::size_t index     = 0;
+    float       fps       = 0.0f;
+    bool        interrupt = false;
+    bool        loop      = true;
 
     animation(class entity& entity) : __base(entity) { }
     virtual ~animation() = default;

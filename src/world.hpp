@@ -1,6 +1,7 @@
 
 #pragma once
 #include "__common.hpp"
+#include "camera.hpp"
 #include "component.hpp"
 #include "entity_manager.hpp"
 #include "event.hpp"
@@ -24,18 +25,20 @@ public:
     /** @brief Handles events and forwards them to the relevant systems. */
     event_bus     event_bus;
     class window& window;
-    /** @brief State storage for inputs. */
+    /** @brief State storage for keyboard inputs. */
     class keyboard& keyboard;
-    class mouse&    mouse;
+    /** @brief State storage for mouse inputs. */
+    class mouse& mouse;
     /** @brief Used for loading and saving entities to XML. */
     serialize::xml serializer;
     /** @brief Used for loading sprites. */
     sprite::manager sprite_manager;
+    /** @brief Used to apply camera transform. */
+    camera camera;
 
 protected:
     entity_manager entity_manager;
 
-protected:
     std::unique_ptr<system>& __system(std::type_index);
 
 public:
