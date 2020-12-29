@@ -9,8 +9,9 @@ namespace p201
 class camera
 {
 public:
-    bool     active = false;
-    vector_2 center = vector_2(0.0f, 0.0f);
+    bool     active   = false;
+    vector_2 center   = vector_2(0.0f, 0.0f);
+    vector_2 velocity = vector_2(0.0f, 0.0f);
 
     camera()  = default;
     ~camera() = default;
