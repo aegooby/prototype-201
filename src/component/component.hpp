@@ -112,7 +112,7 @@ namespace components
         std::string name  = "default";
         std::size_t frame = 0;
         std::size_t index = 0;
-        float       fps   = 20.0f;
+        float       fps   = 0.0f;
         bool        interrupt;
         bool        loop;
 

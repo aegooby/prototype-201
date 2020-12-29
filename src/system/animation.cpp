@@ -29,6 +29,7 @@ namespace systems
             auto& flipbook =
                 world.sprite_manager.flipbook(render.family, animation.name);
 
+            if (!animation.fps) continue;
             std::size_t delay = 1.0f / animation.fps * global::game_fps;
             ++animation.frame %= delay;
             if (!animation.frame) ++animation.index %= flipbook.frames();

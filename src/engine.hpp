@@ -8,7 +8,7 @@
 #include "system.hpp"
 #include "window.hpp"
 #include "world.hpp"
-#include "xml_serializer.hpp"
+#include "serialize.hpp"
 
 #include <chrono>
 #include <thread>

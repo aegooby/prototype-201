@@ -5,7 +5,7 @@
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "event_bus.hpp"
-#include "xml_serializer.hpp"
+#include "serialize.hpp"
 
 #include <typeindex>
 #include <unordered_map>
@@ -28,7 +28,7 @@ public:
     class keyboard& keyboard;
     class mouse&    mouse;
     /** @brief Used for loading and saving entities to XML. */
-    xml_serializer serializer;
+    serialize::xml serializer;
     /** @brief Used for loading sprites. */
     sprite::manager sprite_manager;
 
