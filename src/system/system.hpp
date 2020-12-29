@@ -21,16 +21,6 @@ namespace p201
 class system
 {
 public:
-    using flag_map_t = std::unordered_map<std::type_index, component::flag>;
-    /** @brief Conversion table between component types and flags. */
-    inline static const flag_map_t flags = {
-        { typeid(components::render), component::flag::render },
-        { typeid(components::transform), component::flag::transform },
-        { typeid(components::movement), component::flag::movement },
-        { typeid(components::collision), component::flag::collision },
-        { typeid(components::input), component::flag::input },
-        { typeid(components::animation), component::flag::animation },
-    };
     /** @brief The flag bitset associated with this system instance. */
     std::bitset<component::flag_bits> flag;
 

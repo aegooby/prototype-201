@@ -45,35 +45,40 @@ public:
 namespace managers
 {
 
-    class render : public component_manager_template<components::render>
-    {
-    public:
-        virtual ~render() = default;
-    };
-    class transform : public component_manager_template<components::transform>
-    {
-    public:
-        virtual ~transform() = default;
-    };
-    class movement : public component_manager_template<components::movement>
-    {
-    public:
-        virtual ~movement() = default;
-    };
-    class collision : public component_manager_template<components::collision>
-    {
-    public:
-        virtual ~collision() = default;
-    };
-    class input : public component_manager_template<components::input>
-    {
-    public:
-        virtual ~input() = default;
-    };
-    class animation : public component_manager_template<components::animation>
-    {
-    public:
-        virtual ~animation() = default;
-    };
+class render : public component_manager_template<components::render>
+{
+public:
+    virtual ~render() = default;
+};
+class transform : public component_manager_template<components::transform>
+{
+public:
+    virtual ~transform() = default;
+};
+class movement : public component_manager_template<components::movement>
+{
+public:
+    virtual ~movement() = default;
+};
+class collision : public component_manager_template<components::collision>
+{
+public:
+    virtual ~collision() = default;
+};
+class input : public component_manager_template<components::input>
+{
+public:
+    virtual ~input() = default;
+};
+class animation : public component_manager_template<components::animation>
+{
+public:
+    virtual ~animation() = default;
+};
+class camera : public component_manager_template<components::camera>
+{
+public:
+    virtual ~camera() = default;
+};
 } // namespace managers
 } // namespace p201

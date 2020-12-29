@@ -23,8 +23,9 @@ class entity
 protected:
     class world&                world;
     std::unique_ptr<component>& __component(std::type_index);
-    void __add_component(std::unique_ptr<struct component>&&, std::type_index);
-    void __remove_component(std::type_index);
+    void __add_component(std::unique_ptr<struct component>&&, std::type_index,
+                         std::size_t);
+    void __remove_component(std::type_index, std::size_t);
 
 public:
     std::bitset<component::flag_bits> flag;
@@ -42,13 +43,13 @@ public:
     component_type& add_component()
     {
         __add_component(std::make_unique<component_type>(*this),
-                        typeid(component_type));
+                        typeid(component_type), component_type::flag);
         return component<component_type>();
     }
     template<typename component_type>
     void remove_component()
     {
-        __remove_component(typeid(component_type));
+        __remove_component(typeid(component_type), component_type::flag);
     }
     bool operator==(const entity&);
 

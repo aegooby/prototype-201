@@ -41,5 +41,8 @@
             <flag>6</flag>
             <fps>25.0</fps>
         </component>
+        <component>
+            <flag>7</flag>
+        </component>
     </components>
 </entity>

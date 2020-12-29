@@ -10,17 +10,17 @@ namespace p201
 {
 namespace systems
 {
-    void collision::start() { }
-    void collision::update()
+void collision::start() { }
+void collision::update()
+{
+    for (auto& ref_pair : __registered_entities)
     {
-        for (auto& ref_pair : __registered_entities)
-        {
-            auto& entity    = ref_pair.second.get();
-            auto& transform = entity.component<components::transform>();
-            auto& collision = entity.component<components::collision>();
-            (void)transform;
-            (void)collision;
-        }
+        auto& entity    = ref_pair.second.get();
+        auto& transform = entity.component<components::transform>();
+        auto& collision = entity.component<components::collision>();
+        (void)transform;
+        (void)collision;
     }
+}
 } // namespace systems
 } // namespace p201

@@ -5,10 +5,10 @@
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "input.hpp"
+#include "serialize.hpp"
 #include "system.hpp"
 #include "window.hpp"
 #include "world.hpp"
-#include "serialize.hpp"
 
 #include <chrono>
 #include <thread>
@@ -32,7 +32,7 @@ protected:
     bool window_close_key() const;
 
 public:
-    engine(const std::string&);
+    engine();
     ~engine() = default;
     void start();
     void stop();
@@ -46,8 +46,8 @@ public:
     engine& operator=(engine&&) = delete;
 };
 
-inline engine::engine(const std::string& title)
-    : window(title),
+inline engine::engine()
+    : window("Prototype 201"),
       keyboard(window.keyboard),
       mouse(window.mouse),
       world(window, keyboard, mouse)

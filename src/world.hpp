@@ -51,8 +51,8 @@ public:
     std::unique_ptr<struct component>& component(class entity&,
                                                  std::type_index);
     void add_component(class entity&, std::unique_ptr<struct component>&&,
-                       std::type_index);
-    void remove_component(class entity&, std::type_index);
+                       std::type_index, std::size_t);
+    void remove_component(class entity&, std::type_index, std::size_t);
 };
 
 } // namespace p201
