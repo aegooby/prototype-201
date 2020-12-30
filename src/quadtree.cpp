@@ -18,7 +18,6 @@ quadtree::quadtree(std::string id, size_t max_depth, size_t max_objects,
 
     nodes[0] = nullptr; // means this quadtree has no nodes
 
-    // width,height = 480, 360
 }
 
 void quadtree::add_nodes()
@@ -31,20 +30,20 @@ void quadtree::add_nodes()
     nodes[0] = std::make_unique<quadtree>(
         _id + "0", _max_depth - 1, _max_objects, half_width_up,
         half_height_down,
-        vector_3(_position(0), _position(1) + half_height_down, 0));
+        vector_3(_position(0) + _width, _position(1) + half_height_down, 0));
 
     nodes[1] = std::make_unique<quadtree>(
         _id + "1", _max_depth - 1, _max_objects, half_width_down,
-        half_height_down, vector_3(_position(0), _position(1), 0));
+        half_height_down, vector_3(_position(0)+_width, _position(1), 0));
 
     nodes[2] = std::make_unique<quadtree>(
         _id + "2", _max_depth - 1, _max_objects, half_width_down,
         half_height_up,
-        vector_3(_position(0) - half_width_down, _position(1), 0));
+        vector_3(_position(0) + half_width_down, _position(1), 0));
 
     nodes[3] = std::make_unique<quadtree>(
         _id + "3", _max_depth - 1, _max_objects, half_width_up, half_height_up,
-        vector_3(_position(0) - half_width_down,
+        vector_3(_position(0) + half_width_down,
                  _position(1) + half_height_down, 0));
 }
 
@@ -52,15 +51,15 @@ void quadtree::add_nodes()
 bool quadtree::border_control(vector_3& entity_position)
 {
     if ((entity_position(0) == _position(0) &&
-         _position(1) - _height <= entity_position(1) &&
-         entity_position(1) <= _position(1)) ||
+         entity_position(1) <= _position(1)  &&
+         entity_position(1) <= _position(1) + _height) ||
         (entity_position(0) == _position(0) + _width &&
-         _position(1) - _height <= entity_position(1) &&
-         entity_position(1) <= _position(1)) ||
+         _position(1) <= entity_position(1) &&
+         entity_position(1) <= _position(1) + _height) ||
         (entity_position(1) == _position(1) &&
          _position(0) <= entity_position(0) &&
          entity_position(0) <= _position(0) + _width) ||
-        (entity_position(1) == _position(1) - _height &&
+        (entity_position(1) == _position(1) + _height &&
          _position(0) <= entity_position(0) &&
          entity_position(0) <= _position(0) + _width))
     {
@@ -83,17 +82,17 @@ bool quadtree::addable()
 }
 
 
-bool quadtree::in_node(vector_3& entity_position, vector_3& node_position, size_t width, size_t height) {
-    if ((node_position(1) <= entity_position(1)) &&
-    (entity_position(1) <= node_position(1) + height) &&
-    (node_position(0) - width <= entity_position(0)) &&
-    (entity_position(0) <= node_position(0)))
+bool quadtree::in_node(entity& entity, vector_3& node_position, size_t width, size_t height) {
+    vector_3& entity_position = entity.component<components::transform>().position;
+    if ((node_position(0) <= entity_position(0)) &&
+    (entity_position(0) <= node_position(0) + width) &&
+    (node_position(1) <= entity_position(1)) &&
+    (entity_position(1) <= node_position(1) + height))
     {
-        std::cout << "ENTITY IS IN NODE " + _id << std::endl;
+        std::cout << "ENTITY " << entity.id << " IS IN NODE " + _id << std::endl;
         return true;
     }
     else {
-        std::cout << "AN ENTITY IS NOT IN NODE " + _id << std::endl;
         return false;
     }
 }
@@ -122,10 +121,9 @@ quadtree& quadtree::get_node(std::string node_id) {
 
 std::vector<std::string> quadtree::curr_locate(entity& entity)
 {
-    vector_3& entity_position = entity.component<components::transform>().position;
     std::vector<std::string> node_vec;
 
-    if (in_node(entity_position, _position, _width, _height)) {
+    if (in_node(entity, _position, _width, _height)) {
         for (auto& node_pair : node_entities){
             if (node_pair.second.get().id == entity.id) {
                 node_vec.emplace_back(_id);
@@ -136,7 +134,7 @@ std::vector<std::string> quadtree::curr_locate(entity& entity)
         if (nodes[0] != nullptr) {
             for (int i = 0; i < 4; i++)
             {
-                if (nodes[i]->in_node(entity_position, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
+                if (nodes[i]->in_node(entity, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
                 {
                     std::vector<std::string> temp = nodes[i]->curr_locate(entity);
                     node_vec.insert(node_vec.end(), temp.begin(), temp.end());
@@ -151,10 +149,9 @@ std::vector<std::string> quadtree::curr_locate(entity& entity)
 
 std::vector<std::string> quadtree::new_locate(entity& entity)
 {
-    vector_3& entity_position = entity.component<components::transform>().position;
     std::vector<std::string> node_vec;
 
-    if (in_node(entity_position, _position, _width, _height)) {
+    if (in_node(entity, _position, _width, _height)) {
         if (nodes[0] == nullptr && addable())
         {
             node_vec.emplace_back(_id);
@@ -162,11 +159,10 @@ std::vector<std::string> quadtree::new_locate(entity& entity)
 
         else
         {
-            if (nodes[0] == nullptr) { add_nodes(); }
-
+            if (nodes[0] == nullptr && node_entities.size() >= _max_objects) { add_nodes(); }
             for (int i = 0; i < 4; i++)
             {
-                if (nodes[i]->in_node(entity_position, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height)) {
+                if (nodes[i]->in_node(entity, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height)) {
                     std::vector<std::string> temp = nodes[i]->new_locate(entity);
                     node_vec.insert(node_vec.end(), temp.begin(), temp.end());
                 }

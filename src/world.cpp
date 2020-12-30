@@ -20,7 +20,7 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       keyboard(keyboard),
       mouse(mouse),
       sprite_manager("sprites"),
-      quadtree("", 6, 2, 500, 500, vector_3(100,1000,0))
+      quadtree("", 3, 1, 500, 500, vector_3(100,1000,0))
 {
     component_managers.emplace(typeid(components::render),
                                std::make_unique<managers::render>());
