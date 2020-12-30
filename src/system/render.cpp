@@ -35,8 +35,8 @@ void render::transform_tile(const vector_3& vec, std::size_t w, std::size_t h,
     vx[3] = iso_vec.x() + iso_vec_p3.x();
     vy[3] = iso_vec.y() + iso_vec_p3.y();
 }
-void render::render_grid_tile(SDL_Renderer* renderer, std::size_t size,
-                              std::uint8_t alpha)
+void render::render_grid(SDL_Renderer* renderer, std::size_t size,
+                         std::uint8_t alpha)
 {
     std::int16_t vx[4];
     std::int16_t vy[4];
@@ -45,27 +45,9 @@ void render::render_grid_tile(SDL_Renderer* renderer, std::size_t size,
         for (ssize_t y = 0; y < 2000; y += size)
         {
             transform_tile(vector_3(x, y, 0.0f), size, size, vx, vy);
+            camera_transform(vx, vy);
             polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, alpha);
         }
-    }
-}
-void render::render_grid_line(SDL_Renderer* renderer, std::size_t size,
-                              std::uint8_t alpha)
-{
-    static const std::size_t tile_y = (float(size) / sqrt_2);
-    static const std::size_t tile_x = (float(size) * sqrt_2);
-
-    vector_3 vec = iso_matrix * vector_3(window::width * 3, 0.0f, 0.0f);
-    for (ssize_t i = 0; i < 2 * window::height; i += tile_y)
-    {
-        float y = float(i);
-        lineRGBA(renderer, 0, y, vec.x(), vec.y() + y, 200, 200, 200, alpha);
-    }
-    vec = iso_matrix * vector_3(0.0f, window::height * 3, 0.0f);
-    for (ssize_t i = -window::width; i < window::width; i += tile_x)
-    {
-        float x = float(i);
-        lineRGBA(renderer, x, 0, vec.x() + x, vec.y(), 200, 200, 200, alpha);
     }
 }
 
@@ -76,14 +58,7 @@ void render::node_render(std::size_t width, std::size_t height,
     std::int16_t vy[4];
 
     transform_tile(position, width, height, vx, vy);
-
-    vector_2 shift = world.camera.shift(window::width, window::height);
-    for (std::size_t i = 0; i < 4; ++i)
-    {
-        vx[i] += shift.x();
-        vy[i] += shift.y();
-    }
-
+    camera_transform(vx, vy);
     polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 200);
 };
 
@@ -97,12 +72,24 @@ void render::quad_render(const quadtree& quadtree)
 
 SDL_FRect render::camera_transform(const SDL_FRect& rect)
 {
+    if (!world.camera.active)
+        throw std::runtime_error("Camera transform with inactive camera");
     vector_2  shift      = world.camera.shift(window::width, window::height);
     SDL_FRect rect_shift = rect;
     rect_shift.x += shift.x();
     rect_shift.y += shift.y();
 
     return rect_shift;
+}
+void render::camera_transform(std::int16_t* vx, std::int16_t* vy)
+{
+    if (!world.camera.active) return;
+    vector_2 shift = world.camera.shift(window::width, window::height);
+    for (std::size_t i = 0; i < 4; ++i)
+    {
+        vx[i] += shift.x();
+        vy[i] += shift.y();
+    }
 }
 
 void render::start()
@@ -141,7 +128,7 @@ void render::render_frame()
         throw sdl_error("Failed to clear renderer");
 
     // TODO: this is laggy as fuck
-    // debug(render_grid_tile(__sdl_renderer, 100, 200));
+    // debug(render_grid(__sdl_renderer, 100, 200));
     debug(quad_render(world.quadtree));
 
     // Render all the registered entities one by one
