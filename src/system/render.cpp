@@ -51,7 +51,7 @@ void render::render_grid(SDL_Renderer* renderer, std::size_t size,
     }
 }
 
-void render::node_render(std::size_t width, std::size_t height,
+void render::render_node(std::size_t width, std::size_t height,
                          const vector_3& position)
 {
     std::int16_t vx[4];
@@ -62,12 +62,12 @@ void render::node_render(std::size_t width, std::size_t height,
     polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 200);
 };
 
-void render::quad_render(const quadtree& quadtree)
+void render::render_quadtree(const quadtree& quadtree)
 {
     if (quadtree.nodes[0] == nullptr)
-        node_render(quadtree._width, quadtree._height, quadtree._position);
+        render_node(quadtree._width, quadtree._height, quadtree._position);
     else
-        for (int i = 0; i < 4; ++i) quad_render(*(quadtree.nodes[i]));
+        for (int i = 0; i < 4; ++i) render_quadtree(*(quadtree.nodes[i]));
 }
 
 SDL_FRect render::camera_transform(const SDL_FRect& rect)
@@ -129,7 +129,7 @@ void render::render_frame()
 
     // TODO: this is laggy as fuck
     // debug(render_grid(__sdl_renderer, 100, 200));
-    debug(quad_render(world.quadtree));
+    debug(render_quadtree(world.quadtree));
 
     // Render all the registered entities one by one
     for (auto& ref_pair : __registered_entities)
