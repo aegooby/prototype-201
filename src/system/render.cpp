@@ -6,9 +6,9 @@
 #include "../entity_manager.hpp"
 #include "../event.hpp"
 #include "../linalg.hpp"
+#include "../quadtree.hpp"
 #include "../util.hpp"
 #include "../window.hpp"
-#include "../quadtree.hpp"
 #include "../world.hpp"
 
 namespace p201
@@ -69,6 +69,42 @@ void render::render_grid_line(SDL_Renderer* renderer, std::size_t size,
     }
 }
 
+void render::node_render(std::size_t width, std::size_t height,
+                         const vector_3& position)
+{
+    std::int16_t vx[4];
+    std::int16_t vy[4];
+
+    transform_tile(position, width, height, vx, vy);
+
+    vector_2 shift = world.camera.shift(window::width, window::height);
+    for (std::size_t i = 0; i < 4; ++i)
+    {
+        vx[i] += shift.x();
+        vy[i] += shift.y();
+    }
+
+    polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 200);
+};
+
+void render::quad_render(const quadtree& quadtree)
+{
+    if (quadtree.nodes[0] == nullptr)
+        node_render(quadtree._width, quadtree._height, quadtree._position);
+    else
+        for (int i = 0; i < 4; ++i) quad_render(*(quadtree.nodes[i]));
+}
+
+SDL_FRect render::camera_transform(const SDL_FRect& rect)
+{
+    vector_2  shift      = world.camera.shift(window::width, window::height);
+    SDL_FRect rect_shift = rect;
+    rect_shift.x += shift.x();
+    rect_shift.y += shift.y();
+
+    return rect_shift;
+}
+
 void render::start()
 {
     // TODO: element [2, 3] might be wrong
@@ -105,8 +141,8 @@ void render::render_frame()
         throw sdl_error("Failed to clear renderer");
 
     // TODO: this is laggy as fuck
-    //debug(render_grid_tile(__sdl_renderer, 100, 200));
-    quad_render(world.quadtree);
+    // debug(render_grid_tile(__sdl_renderer, 100, 200));
+    debug(quad_render(world.quadtree));
 
     // Render all the registered entities one by one
     for (auto& ref_pair : __registered_entities)
@@ -126,10 +162,7 @@ void render::render_frame()
             render.texture = world.sprite_manager.default_sprite(render.family);
         if (world.camera.active)
         {
-            vector_2  shift = world.camera.shift(window::width, window::height);
-            SDL_FRect rect_shift = render.rect;
-            rect_shift.x += shift.x();
-            rect_shift.y += shift.y();
+            SDL_FRect rect_shift = camera_transform(render.rect);
             render_sprite(render.texture, &rect_shift);
         }
         else if (render.visible)
@@ -137,25 +170,6 @@ void render::render_frame()
     }
 
     SDL_RenderPresent(__sdl_renderer);
-}
-
-void render::node_render(std::size_t width, std::size_t height, vector_3 position) {
-    std::int16_t vx[4];
-    std::int16_t vy[4];
-    
-    transform_tile(position, width, height, vx, vy);
-    polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 200);
-};
-
-void render::quad_render(quadtree& quadtree) {
-    if (quadtree.nodes[0]==nullptr) {
-        node_render(quadtree._width, quadtree._height, quadtree._position);
-    }
-    else {
-        for (int i = 0; i < 4; i++){
-            quad_render(*(quadtree.nodes[i]));
-        }
-    }
 }
 
 } // namespace systems

@@ -3,10 +3,10 @@
 #include "../__common.hpp"
 #include "../entity.hpp"
 #include "../exception.hpp"
+#include "../quadtree.hpp"
 #include "../sprite.hpp"
 #include "../window.hpp"
 #include "system.hpp"
-#include "../quadtree.hpp"
 
 #include <unordered_map>
 
@@ -29,6 +29,11 @@ protected:
     void render_grid_line(SDL_Renderer*, std::size_t, std::uint8_t);
     void render_sprite(SDL_Texture*, SDL_FRect*);
 
+    void quad_render(const quadtree&);
+    void node_render(std::size_t, std::size_t, const vector_3&);
+
+    SDL_FRect camera_transform(const SDL_FRect&);
+
 public:
     render(class world& world) : __base(world)
     {
@@ -47,8 +52,6 @@ public:
     }
     virtual void update() override { }
     void         render_frame();
-    void         quad_render(quadtree& quadtree);
-    void         node_render(std::size_t width, std::size_t height, vector_3 position);
 
     //	Preventing copying and moving
     render(const render&) = delete;
