@@ -20,7 +20,7 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       keyboard(keyboard),
       mouse(mouse),
       sprite_manager("sprites"),
-      quadtree("", 6, 2, 500, 500, vector_3(100,1000,0))
+      quadtree(0, 0, vector_2(0, 0), 0, 0)
 {
     component_managers.emplace(typeid(components::render),
                                std::make_unique<managers::render>());
@@ -55,7 +55,7 @@ entity& world::new_entity()
 {
     return entity_manager.new_entity(*this);
 }
-void world::delete_entity(id_t id)
+void world::delete_entity(std::size_t id)
 {
     auto& entity = *entity_manager.entities.at(id);
     for (auto& manager : component_managers)
@@ -92,6 +92,10 @@ void world::remove_component(class entity&   entity,
         if (system.second->flag.test(flag))
             system.second->deregister_entity(entity);
     }
+}
+entity& world::entity(std::size_t id)
+{
+    return *entity_manager.entities.at(id);
 }
 
 } // namespace p201

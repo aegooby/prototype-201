@@ -20,7 +20,7 @@ public:
     std::vector<std::unique_ptr<component>> components;
 
 protected:
-    std::unordered_map<id_t, index_t> __entity_map;
+    std::unordered_map<std::size_t, index_t> __entity_map;
 
 public:
     virtual ~component_manager();

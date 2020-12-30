@@ -1,10 +1,10 @@
 
 #include "collision.hpp"
-#include "../quadtree.hpp"
 
 #include "../__common.hpp"
 #include "../entity_manager.hpp"
 #include "../event.hpp"
+#include "../quadtree.hpp"
 #include "../world.hpp"
 
 namespace p201
@@ -21,8 +21,7 @@ void collision::update()
         auto& collision = entity.component<components::collision>();
         (void)transform;
         (void)collision;
-        world.quadtree.update(entity);
-        
+        // world.quadtree.update(entity);
     }
 }
 } // namespace systems

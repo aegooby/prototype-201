@@ -15,7 +15,7 @@ entity& entity_manager::new_entity(class world& world)
     ++__entityc;
     return *entities.at(__entityc_temp);
 }
-void entity_manager::delete_entity(id_t id)
+void entity_manager::delete_entity(std::size_t id)
 {
     entities.erase(id);
 }

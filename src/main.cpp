@@ -4,8 +4,9 @@
 
 int main(int argc, char** argv)
 {
-    p201::engine engine;
-    engine.start();
+    std::cout << sizeof(p201::vector_2) << std::endl;
+    // p201::engine engine;
+    // engine.start();
 
     return 0;
 }

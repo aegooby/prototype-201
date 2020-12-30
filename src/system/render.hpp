@@ -23,6 +23,7 @@ protected:
     SDL_Renderer* __sdl_renderer = nullptr;
     matrix_3      iso_matrix;
 
+private:
     void transform_tile(const vector_3&, std::size_t, std::size_t,
                         std::int16_t*, std::int16_t*);
     void render_grid(SDL_Renderer*, std::size_t, std::uint8_t);

@@ -64,10 +64,10 @@ void render::render_node(std::size_t width, std::size_t height,
 
 void render::render_quadtree(const quadtree& quadtree)
 {
-    if (quadtree.nodes[0] == nullptr)
-        render_node(quadtree._width, quadtree._height, quadtree._position);
-    else
-        for (int i = 0; i < 4; ++i) render_quadtree(*(quadtree.nodes[i]));
+    // if (quadtree.nodes[0] == nullptr)
+    //     render_node(quadtree._width, quadtree._height, quadtree._position);
+    // else
+    //     for (int i = 0; i < 4; ++i) render_quadtree(*(quadtree.nodes[i]));
 }
 
 SDL_FRect render::camera_transform(const SDL_FRect& rect)

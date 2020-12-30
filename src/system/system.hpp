@@ -25,7 +25,7 @@ public:
     std::bitset<component::flag_bits> flag;
 
 protected:
-    std::unordered_map<id_t, std::reference_wrapper<entity>>
+    std::unordered_map<std::size_t, std::reference_wrapper<entity>>
                  __registered_entities;
     class world& world;
 
