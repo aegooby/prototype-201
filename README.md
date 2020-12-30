@@ -1,12 +1,7 @@
 # Prototype 201
-## Dependencies
- * Boost 1.75.0
- * Eigen 3.3.9
- * SDL2 2.0.14
- * SDL2 Image 2.0.5
- * SDL2 Mixer 2.0.4
- * SDL2 TTF 2.0.15
- * SDL2 GFX 1.0.4
+[![](https://img.shields.io/badge/Boost-1.75.0-brightgreen)](https://www.boost.org/)
+[![](https://img.shields.io/badge/Eigen-3.3.9-brightgreen)](http://eigen.tuxfamily.org/)
+[![](https://img.shields.io/badge/SDL2-2.0.14-brightgreen)](https://www.libsdl.org/)
 
 ## Mechanics
 ### Isometric rendering
