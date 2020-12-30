@@ -25,14 +25,14 @@ protected:
 
     void transform_tile(const vector_3&, std::size_t, std::size_t,
                         std::int16_t*, std::int16_t*);
-    void render_grid_tile(SDL_Renderer*, std::size_t, std::uint8_t);
-    void render_grid_line(SDL_Renderer*, std::size_t, std::uint8_t);
+    void render_grid(SDL_Renderer*, std::size_t, std::uint8_t);
     void render_sprite(SDL_Texture*, SDL_FRect*);
 
-    void quad_render(const quadtree&);
-    void node_render(std::size_t, std::size_t, const vector_3&);
+    void render_node(std::size_t, std::size_t, const vector_3&);
+    void render_quadtree(const quadtree&);
 
     SDL_FRect camera_transform(const SDL_FRect&);
+    void      camera_transform(std::int16_t*, std::int16_t*);
 
 public:
     render(class world& world) : __base(world)
