@@ -31,7 +31,7 @@ void quadtree::add_nodes()
     nodes[0] = std::make_unique<quadtree>(
         _id + "0", _max_depth - 1, _max_objects, half_width_up,
         half_height_down,
-        vector_3(_position(0) + half_width_down, _position(1), 0));
+        vector_3(_position(0), _position(1) + half_height_down, 0));
 
     nodes[1] = std::make_unique<quadtree>(
         _id + "1", _max_depth - 1, _max_objects, half_width_down,
@@ -40,12 +40,12 @@ void quadtree::add_nodes()
     nodes[2] = std::make_unique<quadtree>(
         _id + "2", _max_depth - 1, _max_objects, half_width_down,
         half_height_up,
-        vector_3(_position(0), _position(1) - half_height_down, 0));
+        vector_3(_position(0) - half_width_down, _position(1), 0));
 
     nodes[3] = std::make_unique<quadtree>(
         _id + "3", _max_depth - 1, _max_objects, half_width_up, half_height_up,
-        vector_3(_position(0) + half_width_down,
-                 _position(1) - half_height_down, 0));
+        vector_3(_position(0) - half_width_down,
+                 _position(1) + half_height_down, 0));
 }
 
 
@@ -84,14 +84,16 @@ bool quadtree::addable()
 
 
 bool quadtree::in_node(vector_3& entity_position, vector_3& node_position, size_t width, size_t height) {
-    if ((node_position(0) <= entity_position(0)) &&
-    (entity_position(0) <= node_position(0) + width) &&
-    (node_position(1) - height <= entity_position(1)) &&
-    (entity_position(1) <= node_position(1)))
+    if ((node_position(1) <= entity_position(1)) &&
+    (entity_position(1) <= node_position(1) + height) &&
+    (node_position(0) - width <= entity_position(0)) &&
+    (entity_position(0) <= node_position(0)))
     {
+        std::cout << "ENTITY IS IN NODE " + _id << std::endl;
         return true;
     }
     else {
+        std::cout << "AN ENTITY IS NOT IN NODE " + _id << std::endl;
         return false;
     }
 }
@@ -131,18 +133,18 @@ std::vector<std::string> quadtree::curr_locate(entity& entity)
         }
     }
     else {
-        if (nodes[0] == nullptr) {
-            add_nodes();
-        }
-        for (int i = 0; i < 4; i++)
-        {
-            if (nodes[i]->in_node(entity_position, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
+        if (nodes[0] != nullptr) {
+            for (int i = 0; i < 4; i++)
             {
-                std::vector<std::string> temp = nodes[i]->curr_locate(entity);
-                node_vec.insert(node_vec.end(), temp.begin(), temp.end());
-            }
+                if (nodes[i]->in_node(entity_position, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
+                {
+                    std::vector<std::string> temp = nodes[i]->curr_locate(entity);
+                    node_vec.insert(node_vec.end(), temp.begin(), temp.end());
+                }
 
+            }
         }
+        
     }
     return node_vec;
 }

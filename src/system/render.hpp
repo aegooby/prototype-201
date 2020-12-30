@@ -48,6 +48,7 @@ public:
     virtual void update() override { }
     void         render_frame();
     void         quad_render(quadtree& quadtree);
+    void         node_render(std::size_t width, std::size_t height, vector_3 position);
 
     //	Preventing copying and moving
     render(const render&) = delete;

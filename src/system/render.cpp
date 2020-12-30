@@ -139,9 +139,17 @@ void render::render_frame()
     SDL_RenderPresent(__sdl_renderer);
 }
 
+void render::node_render(std::size_t width, std::size_t height, vector_3 position) {
+    std::int16_t vx[4];
+    std::int16_t vy[4];
+    
+    transform_tile(position, width, height, vx, vy);
+    polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 200);
+};
+
 void render::quad_render(quadtree& quadtree) {
     if (quadtree.nodes[0]==nullptr) {
-        render_grid_tile(__sdl_renderer, quadtree._width, quadtree._height);
+        node_render(quadtree._width, quadtree._height, quadtree._position);
     }
     else {
         for (int i = 0; i < 4; i++){
