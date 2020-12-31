@@ -1,3 +1,3 @@
 
 #!/bin/sh
-cmake -G Xcode -B build
+cmake -G Xcode -B xcode
