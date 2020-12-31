@@ -5,7 +5,7 @@
 
 #include <bitset>
 #include <typeindex>
-#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace p201
@@ -25,9 +25,9 @@ public:
     std::bitset<component::flag_bits> flag;
 
 protected:
-    std::unordered_map<std::size_t, std::reference_wrapper<entity>>
-                 __registered_entities;
     class world& world;
+    /** @brief Entities that are registered for this system. */
+    std::unordered_set<std::size_t> __registered_entities;
 
 public:
     system(class world& world) : world(world) { }

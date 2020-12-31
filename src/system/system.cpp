@@ -10,8 +10,8 @@ namespace p201
 
 void system::register_entity(class entity& entity)
 {
-    if (!__registered_entities.count(entity.id))
-        __registered_entities.emplace(entity.id, entity);
+    if (!__registered_entities.contains(entity.id))
+        __registered_entities.emplace(entity.id);
 }
 void system::deregister_entity(class entity& entity)
 {

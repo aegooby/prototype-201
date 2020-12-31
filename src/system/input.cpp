@@ -21,9 +21,9 @@ void input::update()
     auto& mouse    = world.mouse;
     (void)mouse;
     static const float speed = 3.0f;
-    for (auto& ref_pair : __registered_entities)
+    for (auto& id : __registered_entities)
     {
-        auto& entity   = ref_pair.second.get();
+        auto& entity   = world.entity(id);
         auto& movement = entity.component<components::movement>();
 
         auto animation = [&entity, this](const std::string& name) {

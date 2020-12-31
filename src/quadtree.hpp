@@ -5,119 +5,140 @@
 #include "linalg.hpp"
 
 #include <array>
-#include <functional>
-#include <span>
-#include <unordered_map>
+#include <list>
+#include <unordered_set>
+#include <variant>
 
 namespace p201
 {
 
-class bounding_box
+class box
 {
-private:
-    const float __x, __y, __w, __h;
-
 public:
-    bounding_box(float x, float y, float w, float h)
-        : __x(x), __y(y), __w(w), __h(h)
-    {
-    }
-    ~bounding_box() = default;
+    float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
 
-    float left() const
+    box() = default;
+    box(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) { }
+    ~box() = default;
+
+    box top_left() const
     {
-        return __x;
+        return box(x, y, w / 2.0f, h / 2.0f);
     }
-    float right() const
+    box top_right() const
     {
-        return __x + __w;
+        return box(x + w / 2.0f, y, w / 2.0f, h / 2.0f);
     }
-    float top() const
+    box bottom_left() const
     {
-        return __y;
+        return box(x, y + h / 2.0f, w / 2.0f, h / 2.0f);
     }
-    float bottom() const
+    box bottom_right() const
     {
-        return __y + __h;
+        return box(x + w / 2.0f, y + h / 2.0f, w / 2.0f, h / 2.0f);
     }
 };
 
 struct node
 {
-    /**
-     * @brief Index of the first child if the node is a branch,
-     *        or the first entity if the node is a leaf.
-     */
-    std::size_t index;
-    /** @brief Will be -1 if the node is not a leaf. */
-    std::int8_t count;
-    /** @brief Bounds for the node. */
-    bounding_box bounds;
+    using children_t      = std::array<node, 4>;
+    using entities_t      = std::vector<std::size_t>;
+    using children_list_t = std::list<children_t>;
+    using entities_list_t = std::list<entities_t>;
 
-    node(std::size_t index, std::int8_t count, bounding_box bounds)
-        : index(index), count(count), bounds(bounds)
-    {
-    }
+    std::variant<children_list_t::iterator, entities_list_t::iterator> data;
+
+    bool leaf = true;
+    box  bounds;
+
+    node()  = default;
     ~node() = default;
 
-    bool leaf() const
+    std::size_t count() const
     {
-        return index > -1;
+        if (!leaf) throw std::runtime_error("Called count() on non-leaf");
+        return std::get<entities_list_t::iterator>(data)->size();
     }
-    std::span<node, 4> children(std::vector<node>& nodes)
+    children_list_t::iterator& children_iter()
     {
-        if (leaf()) throw std::runtime_error("Node is a leaf");
-        return std::span(nodes.data() + index, 4);
+        if (leaf) throw std::runtime_error("Called children() on leaf");
+        return std::get<children_list_t::iterator>(data);
     }
-    std::span<std::size_t, 4> entities(std::vector<std::size_t>& entities)
+    entities_list_t::iterator& entities_iter()
     {
-        if (!leaf()) throw std::runtime_error("Node is not a leaf");
-        return std::span(entities.data() + index, 4);
+        if (!leaf) throw std::runtime_error("Called entities() on non-leaf");
+        return std::get<entities_list_t::iterator>(data);
+    }
+    const children_list_t::iterator& children_iter() const
+    {
+        if (leaf) throw std::runtime_error("Called children() on leaf");
+        return std::get<children_list_t::iterator>(data);
+    }
+    const entities_list_t::iterator& entities_iter() const
+    {
+        if (!leaf) throw std::runtime_error("Called entities() on non-leaf");
+        return std::get<entities_list_t::iterator>(data);
+    }
+    std::array<node, 4>& children()
+    {
+        if (leaf) throw std::runtime_error("Called children() on leaf");
+        return *children_iter();
+    }
+    std::vector<std::size_t>& entities()
+    {
+        if (!leaf) throw std::runtime_error("Called entities() on non-leaf");
+        return *entities_iter();
+    }
+    const std::array<node, 4>& children() const
+    {
+        if (leaf) throw std::runtime_error("Called children() on leaf");
+        return *children_iter();
+    }
+    const std::vector<std::size_t>& entities() const
+    {
+        if (!leaf) throw std::runtime_error("Called entities() on non-leaf");
+        return *entities_iter();
     }
 };
 
 class quadtree
 {
 protected:
-    std::vector<node> __nodes;
+    class world& world;
+    /** @brief The first node (index 0) is always the root. */
+    std::list<std::array<node, 4>> __nodes;
     /** @brief Entities stored by id. */
-    std::vector<std::size_t> __entities;
+    std::list<std::vector<std::size_t>> __entities;
     /** @brief Maximum number of subdivisions. */
-    std::size_t max_depth;
+    std::size_t max_depth = 0;
     /** @brief Maximum number of objects that can be stored in a node. */
     std::size_t threshold;
 
 private:
-    void split(std::size_t node_index)
-    {
-        auto entities = __nodes.at(node_index).entities(__entities);
-        __nodes.at(node_index).index = __nodes.size();
-        for (auto& entity : entities) { nodes.emplace_back() }
-        // nodes.emplace_back(node(..., -1))
-    }
-    void insert(std::size_t);
+    bool is_in(std::size_t, const box&);
+    void insert(std::size_t, node&, std::size_t);
+    void remove(std::size_t, node&);
 
 public:
-    quadtree(std::size_t max_depth, std::size_t threshold,
-             const vector_2& origin, float width, float height)
-        : max_depth(max_depth),
-          threshold(threshold),
-          origin(origin),
-          width(width),
-          height(height)
-    {
-    }
+    node root;
+
+    quadtree(class world& world) : world(world) { }
     ~quadtree() = default;
 
-    void  update();
-    node& root()
+    void start(std::size_t max_depth, std::size_t threshold, const box& bounds)
     {
-        return __nodes.at(0);
+        this->max_depth = max_depth;
+        this->threshold = threshold;
+        root.bounds     = bounds;
+        __entities.emplace_back();
+        root.data = --__entities.end();
     }
-    const node& root() const
-    {
-        return __nodes.at(0);
-    }
+    void update() { }
+    void split(node& node);
+    void insert(std::size_t);
+    void remove(std::size_t);
+    void insert(std::unordered_set<std::size_t>&);
+    void remove(std::unordered_set<std::size_t>&);
 };
 
 } // namespace p201

@@ -25,12 +25,6 @@ public:
         center.y() = y;
     }
     ~circle() = default;
-    // static bool check_collision(const circle& hitbox_a, const circle&
-    // hitbox_b)
-    // {
-    //     return distance(hitbox_a.center, hitbox_b.center) <
-    //            (hitbox_a.radius + hitbox_b.radius);
-    // }
     inline __attribute__((always_inline)) float top() const
     {
         return center.y() + radius;

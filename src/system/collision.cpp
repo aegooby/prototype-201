@@ -11,17 +11,21 @@ namespace p201
 {
 namespace systems
 {
-void collision::start() { }
+void collision::start()
+{
+    world.quadtree.start(5, 1, box(0.0f, 0.0f, 500.0f, 500.0f));
+}
 void collision::update()
 {
-    for (auto& ref_pair : __registered_entities)
+    world.quadtree.remove(__registered_entities);
+    world.quadtree.insert(__registered_entities);
+    for (auto& id : __registered_entities)
     {
-        auto& entity    = ref_pair.second.get();
+        auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
         auto& collision = entity.component<components::collision>();
         (void)transform;
         (void)collision;
-        // world.quadtree.update(entity);
     }
 }
 } // namespace systems

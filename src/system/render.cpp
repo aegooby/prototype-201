@@ -15,10 +15,10 @@ namespace p201
 {
 namespace systems
 {
-void render::transform_tile(const vector_3& vec, std::size_t w, std::size_t h,
+void render::transform_tile(float x, float y, float w, float h,
                             std::int16_t* vx, std::int16_t* vy)
 {
-    const vector_3 iso_vec    = iso_matrix * vec;
+    const vector_3 iso_vec    = iso_matrix * vector_3(x, y, 0.0f);
     const vector_3 iso_vec_p1 = iso_matrix * vector_3(w, 0.0f, 0.0f);
     const vector_3 iso_vec_p2 = iso_matrix * vector_3(w, h, 0.0f);
     const vector_3 iso_vec_p3 = iso_matrix * vector_3(0.0f, h, 0.0f);
@@ -44,30 +44,29 @@ void render::render_grid(SDL_Renderer* renderer, std::size_t size,
     {
         for (ssize_t y = 0; y < 2000; y += size)
         {
-            transform_tile(vector_3(x, y, 0.0f), size, size, vx, vy);
+            transform_tile(x, y, size, size, vx, vy);
             camera_transform(vx, vy);
             polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, alpha);
         }
     }
 }
 
-void render::render_node(std::size_t width, std::size_t height,
-                         const vector_3& position)
+void render::render_node(const node& node, std::int16_t* vx, std::int16_t* vy)
 {
-    std::int16_t vx[4];
-    std::int16_t vy[4];
-
-    transform_tile(position, width, height, vx, vy);
+    auto& bounds = node.bounds;
+    transform_tile(bounds.x, bounds.y, bounds.w, bounds.h, vx, vy);
     camera_transform(vx, vy);
     polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 200);
+
+    if (!node.leaf)
+        for (auto& child : node.children()) render_node(child, vx, vy);
 };
 
 void render::render_quadtree(const quadtree& quadtree)
 {
-    // if (quadtree.nodes[0] == nullptr)
-    //     render_node(quadtree._width, quadtree._height, quadtree._position);
-    // else
-    //     for (int i = 0; i < 4; ++i) render_quadtree(*(quadtree.nodes[i]));
+    std::int16_t vx[4];
+    std::int16_t vy[4];
+    render_node(quadtree.root, vx, vy);
 }
 
 SDL_FRect render::camera_transform(const SDL_FRect& rect)
@@ -127,14 +126,13 @@ void render::render_frame()
     if (SDL_RenderClear(__sdl_renderer))
         throw sdl_error("Failed to clear renderer");
 
-    // TODO: this is laggy as fuck
     // debug(render_grid(__sdl_renderer, 100, 200));
     debug(render_quadtree(world.quadtree));
 
     // Render all the registered entities one by one
-    for (auto& ref_pair : __registered_entities)
+    for (auto& id : __registered_entities)
     {
-        auto&       entity    = ref_pair.second.get();
+        auto&       entity    = world.entity(id);
         auto&       render    = entity.component<components::render>();
         const auto& transform = entity.component<components::transform>();
 

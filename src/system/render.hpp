@@ -24,13 +24,12 @@ protected:
     matrix_3      iso_matrix;
 
 private:
-    void transform_tile(const vector_3&, std::size_t, std::size_t,
-                        std::int16_t*, std::int16_t*);
+    void transform_tile(float x, float y, float w, float h, std::int16_t* vx,
+                        std::int16_t* vy);
     void render_grid(SDL_Renderer*, std::size_t, std::uint8_t);
     void render_sprite(SDL_Texture*, SDL_FRect*);
 
-    void render_node(std::size_t, std::size_t, const vector_3&);
-    void render_quadtree(const quadtree&);
+    void render_node(const node&, std::int16_t*, std::int16_t*);
 
     SDL_FRect camera_transform(const SDL_FRect&);
     void      camera_transform(std::int16_t*, std::int16_t*);
@@ -45,6 +44,9 @@ public:
     {
         stop();
     }
+
+    void render_quadtree(const quadtree&);
+
     virtual void  start() override;
     void          stop();
     SDL_Renderer* sdl_renderer()
