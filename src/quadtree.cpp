@@ -84,8 +84,8 @@ bool quadtree::addable()
 
 bool quadtree::in_node(entity& entity, vector_3& node_position, size_t width, size_t height) {
     vector_3& entity_position = entity.component<components::transform>().position;
-    if ((node_position(0) <= entity_position(0)) &&
-    (entity_position(0) <= node_position(0) + width) &&
+    if ((node_position(0)- width <= entity_position(0)) &&
+    (entity_position(0) <= node_position(0)) &&
     (node_position(1) <= entity_position(1)) &&
     (entity_position(1) <= node_position(1) + height))
     {
@@ -130,20 +130,20 @@ std::vector<std::string> quadtree::curr_locate(entity& entity)
             }
         }
     }
-    else {
-        if (nodes[0] != nullptr) {
-            for (int i = 0; i < 4; i++)
-            {
-                if (nodes[i]->in_node(entity, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
-                {
-                    std::vector<std::string> temp = nodes[i]->curr_locate(entity);
-                    node_vec.insert(node_vec.end(), temp.begin(), temp.end());
-                }
 
+    if (nodes[0] != nullptr) {
+        for (int i = 0; i < 4; i++)
+        {
+            if (nodes[i]->in_node(entity, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
+            {
+                std::vector<std::string> temp = nodes[i]->curr_locate(entity);
+                node_vec.insert(node_vec.end(), temp.begin(), temp.end());
             }
+
         }
-        
     }
+        
+    
     return node_vec;
 }
 
