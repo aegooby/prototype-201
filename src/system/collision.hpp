@@ -24,6 +24,11 @@ public:
     virtual void start() override;
     virtual void update() override;
     bool hitbox_check(entity& entity1, entity& entity2);
+    bool circle_check(hitbox& hitbox1, hitbox& hitbox2);
+    bool square_check(hitbox& hitbox1, hitbox& hitbox2);
+    bool hybrid_check(hitbox& circle_hit, hitbox& square_hit);
+    float distance(vector_3 point1, vector_3 point2);
+    
 };
 } // namespace systems
 } // namespace p201
