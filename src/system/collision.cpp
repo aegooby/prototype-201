@@ -15,6 +15,12 @@ void collision::start()
 {
     world.quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
 }
+
+void collision::check()
+{
+    
+}
+
 void collision::update()
 {
     world.quadtree.remove(__registered_entities);

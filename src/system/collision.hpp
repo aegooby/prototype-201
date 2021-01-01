@@ -23,6 +23,7 @@ public:
     virtual ~collision() = default;
     virtual void start() override;
     virtual void update() override;
+    bool hitbox_check(entity& entity1, entity& entity2);
 };
 } // namespace systems
 } // namespace p201
