@@ -104,7 +104,19 @@ void quadtree::remove(std::size_t id)
 {
     remove(id, root);
 }
-
+void quadtree::leaves(node& node, std::list<std::vector<std::size_t>>& list)
+{
+    if (node.leaf && node.count() > 1)
+        list.emplace_back(node.entities());
+    else
+        for (auto& child : node.children()) leaves(child, list);
+}
+std::list<std::vector<std::size_t>> quadtree::leaves()
+{
+    std::list<std::vector<std::size_t>> list;
+    leaves(root, list);
+    return list;
+}
 void quadtree::insert(std::unordered_set<std::size_t>& entities)
 {
     for (auto& id : entities) insert(id);
