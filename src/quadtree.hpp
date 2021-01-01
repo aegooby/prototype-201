@@ -139,7 +139,6 @@ public:
         __entities.emplace_back();
         root.data = --__entities.end();
     }
-    void update() { }
     void split(node& node);
     void insert(std::size_t);
     void remove(std::size_t);

@@ -62,15 +62,13 @@ void render::render_node(const node& node, std::int16_t* vx, std::int16_t* vy)
 };
 void render::render_hitbox(const std::unique_ptr<hitbox>& hitbox)
 {
-    const vector_2 shift = world.camera.shift(window::width, window::height);
-    auto           ptr   = hitbox.get();
-    vector_3       iso_center = iso_matrix * hitbox->center;
+    auto ptr = hitbox.get();
     if (typeid(*ptr) == typeid(hitboxes::circle))
     {
-        auto& circle = *dynamic_cast<hitboxes::circle*>(ptr);
-        ellipseRGBA(__sdl_renderer, iso_center.x() + shift.x(),
-                    iso_center.y() + shift.y(), circle.radius,
-                    circle.radius / 2.0f, 200, 0, 0, 200);
+        auto&    circle     = *dynamic_cast<hitboxes::circle*>(ptr);
+        vector_3 iso_center = camera_transform(iso_matrix * circle.center);
+        ellipseRGBA(__sdl_renderer, iso_center.x(), iso_center.y(),
+                    circle.radius, circle.radius / 2.0f, 200, 0, 0, 200);
     }
     if (typeid(*ptr) == typeid(hitboxes::square))
     {
@@ -92,6 +90,11 @@ void render::render_quadtree(const quadtree& quadtree)
     render_node(quadtree.root, vx, vy);
 }
 
+vector_3 render::camera_transform(const vector_3& vector)
+{
+    const vector_2 shift = world.camera.shift(window::width, window::height);
+    return vector_3(vector.x() + shift.x(), vector.y() + shift.y(), vector.z());
+}
 SDL_FRect render::camera_transform(const SDL_FRect& rect)
 {
     const vector_2 shift = world.camera.shift(window::width, window::height);
