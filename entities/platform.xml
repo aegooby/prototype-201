@@ -11,14 +11,14 @@
             </rect>
             <displacement>
                 <x>0.5</x>
-                <y>0.5</y>
+                <y>0.45</y>
             </displacement>
         </component>
         <component>
             <flag>2</flag>
             <position>
-                <x>110.0</x>
-                <y>110.0</y>
+                <x>260.0</x>
+                <y>260.0</y>
                 <z>0.0</z>
             </position>
         </component>
@@ -26,8 +26,8 @@
             <flag>4</flag>
             <hitbox>
                 <flag>2</flag>
-                <width>200.0</width>
-                <height>200.0</height>
+                <width>150.0</width>
+                <height>150.0</height>
             </hitbox>
         </component>
     </components>

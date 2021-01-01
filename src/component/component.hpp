@@ -45,6 +45,7 @@ struct render : public component
 
     static constexpr std::size_t flag = 1;
 
+    /** @brief Whether or not to display the sprite on rendering. */
     bool visible = true;
     /** @brief Family of flipbooks associated with this component. */
     std::string family = "unknown";

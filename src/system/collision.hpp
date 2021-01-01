@@ -25,12 +25,12 @@ public:
     virtual void start() override;
     virtual void update() override;
 
-    bool hitbox_check(entity& entity1, entity& entity2);
-    bool circle_check(hitbox& hitbox1, hitbox& hitbox2);
-    bool square_check(hitbox& hitbox1, hitbox& hitbox2);
-    bool hybrid_check(hitbox& circle_hit, hitbox& square_hit);
+    bool  hitbox_check(std::unique_ptr<hitbox>& __a,
+                       std::unique_ptr<hitbox>& __b);
+    bool  circle_check(hitboxes::circle& hitbox1, hitboxes::circle& hitbox2);
+    bool  square_check(hitboxes::square& hitbox1, hitboxes::square& hitbox2);
+    bool  hybrid_check(hitboxes::circle&, hitboxes::square&);
     float distance(vector_3 point1, vector_3 point2);
-    
 };
 } // namespace systems
 } // namespace p201
