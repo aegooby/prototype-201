@@ -26,10 +26,11 @@ protected:
 private:
     void transform_tile(float x, float y, float w, float h, std::int16_t* vx,
                         std::int16_t* vy);
-    void render_grid(SDL_Renderer*, std::size_t, std::uint8_t);
+    void render_grid(SDL_Renderer*, std::size_t);
     void render_sprite(SDL_Texture*, SDL_FRect*);
 
     void render_node(const node&, std::int16_t*, std::int16_t*);
+    void render_hitbox(const hitbox&);
 
     SDL_FRect camera_transform(const SDL_FRect&);
     void      camera_transform(std::int16_t*, std::int16_t*);

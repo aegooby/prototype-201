@@ -35,8 +35,7 @@ void render::transform_tile(float x, float y, float w, float h,
     vx[3] = iso_vec.x() + iso_vec_p3.x();
     vy[3] = iso_vec.y() + iso_vec_p3.y();
 }
-void render::render_grid(SDL_Renderer* renderer, std::size_t size,
-                         std::uint8_t alpha)
+void render::render_grid(SDL_Renderer* renderer, std::size_t size)
 {
     std::int16_t vx[4];
     std::int16_t vy[4];
@@ -46,7 +45,7 @@ void render::render_grid(SDL_Renderer* renderer, std::size_t size,
         {
             transform_tile(x, y, size, size, vx, vy);
             camera_transform(vx, vy);
-            polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, alpha);
+            polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 255);
         }
     }
 }
@@ -56,11 +55,27 @@ void render::render_node(const node& node, std::int16_t* vx, std::int16_t* vy)
     auto& bounds = node.bounds;
     transform_tile(bounds.x, bounds.y, bounds.w, bounds.h, vx, vy);
     camera_transform(vx, vy);
-    polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 200);
+    polygonRGBA(__sdl_renderer, vx, vy, 4, 0, 200, 0, 255);
 
     if (!node.leaf)
         for (auto& child : node.children()) render_node(child, vx, vy);
 };
+void render::render_hitbox(const hitbox& hitbox)
+{
+    vector_3 iso_center = iso_matrix * hitbox.center;
+    if (world.camera.active)
+    {
+        vector_2 shift = world.camera.shift(window::width, window::height);
+        ellipseRGBA(__sdl_renderer, iso_center.x() + shift.x(),
+                    iso_center.y() + shift.y(), hitbox.radius,
+                    hitbox.radius / 2.0f, 200, 0, 0, 200);
+    }
+    else
+    {
+        ellipseRGBA(__sdl_renderer, iso_center.x(), iso_center.y(),
+                    hitbox.radius, hitbox.radius / 2.0f, 200, 0, 0, 200);
+    }
+}
 
 void render::render_quadtree(const quadtree& quadtree)
 {
@@ -126,8 +141,11 @@ void render::render_frame()
     if (SDL_RenderClear(__sdl_renderer))
         throw sdl_error("Failed to clear renderer");
 
-    // debug(render_grid(__sdl_renderer, 100, 200));
-    debug(render_quadtree(world.quadtree));
+    if (world.keyboard.modifier(modifier::ALT))
+    {
+        // debug(render_grid(__sdl_renderer, 100, 200));
+        debug(render_quadtree(world.quadtree));
+    }
 
     // Render all the registered entities one by one
     for (auto& id : __registered_entities)
@@ -138,8 +156,17 @@ void render::render_frame()
 
         const vector_3 iso_position = iso_matrix * transform.position;
 
-        render.rect.x = iso_position.x() - render.rect.w / 2;
-        render.rect.y = iso_position.y() - render.rect.h / 2;
+        render.rect.x =
+            iso_position.x() - render.rect.w * render.displacement.x();
+        render.rect.y =
+            iso_position.y() - render.rect.h * render.displacement.y();
+
+        if (entity.flag.test(components::collision::flag) &&
+            world.keyboard.modifier(modifier::ALT))
+        {
+            auto& hitbox = entity.component<components::collision>().hitbox;
+            render_hitbox(hitbox);
+        }
 
         // If a texture hasn't been loaded, use the still at the start
         // of the flipbook.

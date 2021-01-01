@@ -13,7 +13,7 @@ namespace systems
 {
 void collision::start()
 {
-    world.quadtree.start(4, 1, box(0.0f, 0.0f, 500.0f, 500.0f));
+    world.quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
 }
 void collision::update()
 {
@@ -24,8 +24,9 @@ void collision::update()
         auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
         auto& collision = entity.component<components::collision>();
-        (void)transform;
-        (void)collision;
+
+        collision.hitbox.center.x() = transform.position.x();
+        collision.hitbox.center.y() = transform.position.y();
     }
 }
 } // namespace systems

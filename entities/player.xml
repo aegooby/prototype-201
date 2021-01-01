@@ -9,6 +9,10 @@
                 <w>140</w>
                 <h>132</h>
             </rect>
+            <displacement>
+                <x>0.5</x>
+                <y>0.875</y>
+            </displacement>
         </component>
         <component>
             <flag>2</flag>
@@ -33,6 +37,9 @@
         </component>
         <component>
             <flag>4</flag>
+            <hitbox>
+                <radius>30.0</radius>
+            </hitbox>
         </component>
         <component>
             <flag>5</flag>

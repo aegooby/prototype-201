@@ -35,8 +35,12 @@ public:
                 {
                     auto& render  = entity.add_component<components::render>();
                     render.family = component.get<std::string>("family");
-                    render.rect.w = component.get<std::size_t>("rect.w");
-                    render.rect.h = component.get<std::size_t>("rect.h");
+                    render.rect.w = component.get<float>("rect.w");
+                    render.rect.h = component.get<float>("rect.h");
+                    render.displacement.x() =
+                        component.get<float>("displacement.x");
+                    render.displacement.y() =
+                        component.get<float>("displacement.y");
                     break;
                 }
                 case components::transform::flag:
@@ -64,7 +68,8 @@ public:
                 {
                     auto& collision =
                         entity.add_component<components::collision>();
-                    (void)collision;
+                    collision.hitbox.radius =
+                        component.get<float>("hitbox.radius");
                     break;
                 }
                 case components::input::flag:
@@ -111,6 +116,8 @@ public:
                     component.add("family", render.family);
                     component.add("rect.w", render.rect.w);
                     component.add("rect.h", render.rect.h);
+                    component.add("displacement.x", render.displacement.x());
+                    component.add("displacement.y", render.displacement.y());
                     break;
                 }
                 case components::transform::flag:
@@ -127,6 +134,8 @@ public:
                 }
                 case components::collision::flag:
                 {
+                    auto& collision = entity.component<components::collision>();
+                    component.add("hitbox.radius", collision.hitbox.radius);
                     break;
                 }
                 case components::input::flag:
