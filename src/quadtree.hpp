@@ -123,6 +123,7 @@ private:
     bool is_in(std::size_t, const box&);
     void insert(std::size_t, node&, std::size_t);
     void remove(std::size_t, node&);
+    void leaves(node& node, std::list<std::vector<std::size_t>>&);
 
 public:
     node root;
@@ -144,6 +145,7 @@ public:
     void remove(std::size_t);
     void insert(std::unordered_set<std::size_t>&);
     void remove(std::unordered_set<std::size_t>&);
+    std::list<std::vector<std::size_t>> leaves();
 };
 
 } // namespace p201

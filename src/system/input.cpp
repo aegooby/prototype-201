@@ -60,14 +60,14 @@ void input::update()
             if (!keyboard.scan(keycode::A))
                 animation("walk-right");
             else
-                animation("default");
+                animation("stand-right");
             movement.accel.x() += speed / sqrt_2;
             movement.accel.y() += speed / sqrt_2;
         }
         if (keyboard.up(keycode::D))
         {
             if (!keyboard.scan(keycode::A))
-                animation("default");
+                animation("stand-right");
             else
                 animation("walk-left");
             movement.accel.x() -= speed / sqrt_2;
@@ -80,14 +80,14 @@ void input::update()
             if (!keyboard.scan(keycode::D))
                 animation("walk-left");
             else
-                animation("default");
+                animation("stand-left");
             movement.accel.x() -= speed / sqrt_2;
             movement.accel.y() -= speed / sqrt_2;
         }
         if (keyboard.up(keycode::A))
         {
             if (!keyboard.scan(keycode::D))
-                animation("default");
+                animation("stand-left");
             else
                 animation("walk-right");
             movement.accel.x() += speed / sqrt_2;
