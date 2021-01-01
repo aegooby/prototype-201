@@ -18,9 +18,8 @@ void camera::update()
 {
     for (auto& id : __registered_entities)
     {
-        auto&       entity = world.entity(id);
-        const auto& render = entity.component<components::render>();
-        if (!world.camera.active) world.camera.active = true;
+        auto&       entity  = world.entity(id);
+        const auto& render  = entity.component<components::render>();
         world.camera.center = util::center(render.rect);
     }
 }

@@ -65,10 +65,21 @@ struct transform : public component
 
     static constexpr std::size_t flag = 2;
 
+    enum
+    {
+        north = 0,
+        south = 1,
+        east  = 2,
+        west  = 3,
+    };
+
     /** @brief Game coordinate position (not isometric position). */
     vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
-    /** @brief Direction the entity is facing (not always used). */
-    std::bitset<2> direction;
+    /**
+     * @brief Direction the entity is facing (not always used).
+     *        Bits are (0, 1, 2, 3) -> (north, south, east, west)
+     */
+    std::bitset<4> direction;
 
     transform(class entity& entity) : __base(entity) { }
     virtual ~transform() = default;
@@ -95,7 +106,7 @@ struct collision : public component
 
     static constexpr std::size_t flag = 4;
 
-    hitbox hitbox;
+    std::unique_ptr<hitbox> hitbox = nullptr;
 
     collision(class entity& entity) : __base(entity) { }
     virtual ~collision() = default;

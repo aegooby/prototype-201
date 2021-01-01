@@ -16,10 +16,7 @@ void collision::start()
     world.quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
 }
 
-void collision::check()
-{
-    
-}
+void collision::check() { }
 
 void collision::update()
 {
@@ -31,8 +28,8 @@ void collision::update()
         auto& transform = entity.component<components::transform>();
         auto& collision = entity.component<components::collision>();
 
-        collision.hitbox.center.x() = transform.position.x();
-        collision.hitbox.center.y() = transform.position.y();
+        collision.hitbox->center.x() = transform.position.x();
+        collision.hitbox->center.y() = transform.position.y();
     }
 }
 } // namespace systems

@@ -21,9 +21,10 @@ public:
         flag.set(components::collision::flag);
     }
     virtual ~collision() = default;
+    void         check();
     virtual void start() override;
     virtual void update() override;
-    bool hitbox_check(entity& entity1, entity& entity2);
+    bool         hitbox_check(entity& entity1, entity& entity2);
 };
 } // namespace systems
 } // namespace p201

@@ -38,6 +38,7 @@
         <component>
             <flag>4</flag>
             <hitbox>
+                <flag>1</flag>
                 <radius>30.0</radius>
             </hitbox>
         </component>

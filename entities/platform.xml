@@ -25,7 +25,9 @@
         <component>
             <flag>4</flag>
             <hitbox>
-                <radius>70.0</radius>
+                <flag>2</flag>
+                <width>50.0</width>
+                <height>50.0</height>
             </hitbox>
         </component>
     </components>

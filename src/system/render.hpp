@@ -30,7 +30,7 @@ private:
     void render_sprite(SDL_Texture*, SDL_FRect*);
 
     void render_node(const node&, std::int16_t*, std::int16_t*);
-    void render_hitbox(const hitbox&);
+    void render_hitbox(const std::unique_ptr<hitbox>&);
 
     SDL_FRect camera_transform(const SDL_FRect&);
     void      camera_transform(std::int16_t*, std::int16_t*);
