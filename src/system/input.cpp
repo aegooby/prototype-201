@@ -93,9 +93,6 @@ void input::update()
             movement.accel.x() += speed / sqrt_2;
             movement.accel.y() += speed / sqrt_2;
         }
-
-        // Jump
-        if (keyboard.down(keycode::SPACE)) movement.velocity.z() += 50.0f;
     }
 }
 } // namespace systems
