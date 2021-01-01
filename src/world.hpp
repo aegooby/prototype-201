@@ -6,8 +6,8 @@
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "event_bus.hpp"
-#include "serialize.hpp"
 #include "quadtree.hpp"
+#include "serialize.hpp"
 
 #include <typeindex>
 #include <unordered_map>
@@ -36,9 +36,9 @@ public:
     sprite::manager sprite_manager;
     /** @brief Used to apply camera transform. */
     camera camera;
-    
+
     class quadtree quadtree;
-    //this is a quadtree
+    // this is a quadtree
 
 protected:
     entity_manager entity_manager;
@@ -49,7 +49,7 @@ public:
     world(class window&, class keyboard&, class mouse&);
     ~world() = default;
     entity& new_entity();
-    void    delete_entity(id_t);
+    void    delete_entity(std::size_t);
     template<typename system_type>
     system_type& system()
     {
@@ -57,9 +57,10 @@ public:
     }
     std::unique_ptr<struct component>& component(class entity&,
                                                  std::type_index);
-    void add_component(class entity&, std::unique_ptr<struct component>&&,
-                       std::type_index, std::size_t);
-    void remove_component(class entity&, std::type_index, std::size_t);
+    void    add_component(class entity&, std::unique_ptr<struct component>&&,
+                          std::type_index, std::size_t);
+    void    remove_component(class entity&, std::type_index, std::size_t);
+    entity& entity(std::size_t id);
 };
 
 } // namespace p201

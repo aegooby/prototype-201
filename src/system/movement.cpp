@@ -13,9 +13,9 @@ namespace systems
 void movement::start() { }
 void movement::update()
 {
-    for (auto& ref_pair : __registered_entities)
+    for (auto& id : __registered_entities)
     {
-        auto& entity    = ref_pair.second.get();
+        auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
         auto& movement  = entity.component<components::movement>();
         if (movement.velocity.norm() < movement.max_speed)

@@ -11,8 +11,6 @@
 namespace p201
 {
 
-using id_t = std::size_t;
-
 /**
  * @brief Entities are an id, flag, and type they shouldn't have shit else.
  *        They don't actually store components they just forward them to the
@@ -29,9 +27,9 @@ protected:
 
 public:
     std::bitset<component::flag_bits> flag;
-    const id_t                        id;
+    const std::size_t                        id;
 
-    entity(const id_t, class world&);
+    entity(const std::size_t, class world&);
     virtual ~entity() = default;
     template<typename component_type>
     component_type& component()

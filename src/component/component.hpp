@@ -52,6 +52,8 @@ struct render : public component
     SDL_FRect rect = { .x = 0.0f, .y = 0.0f, .w = 0.0f, .h = 0.0f };
     /** @brief Texture rendered onto rect. */
     SDL_Texture* texture = nullptr;
+    /** @brief The displacement factor of the sprite from its center point. */
+    vector_2 displacement;
 
     render(class entity& entity) : __base(entity) { }
     virtual ~render() = default;
@@ -91,7 +93,7 @@ struct collision : public component
 
     static constexpr std::size_t flag = 4;
 
-    circle hitbox;
+    hitbox hitbox;
 
     collision(class entity& entity) : __base(entity) { }
     virtual ~collision() = default;

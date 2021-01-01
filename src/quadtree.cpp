@@ -3,210 +3,115 @@
 #include "__common.hpp"
 #include "entity.hpp"
 #include "linalg.hpp"
+#include "world.hpp"
+
+#include <algorithm>
 
 namespace p201
 {
-quadtree::quadtree(std::string id, size_t max_depth, size_t max_objects,
-                   size_t width, size_t height, vector_3 position)
+bool quadtree::is_in(std::size_t id, const box& box)
 {
-    _id          = _id + id;
-    _max_depth   = max_depth;
-    _max_objects = max_objects;
-    _width       = width;
-    _height      = height;
-    _position    = position;
-
-    nodes[0] = nullptr; // means this quadtree has no nodes
-
+    auto& entity   = world.entity(id);
+    auto& position = entity.component<components::transform>().position;
+    return box.x <= position.x() && position.x() <= box.x + box.w &&
+           box.y <= position.y() && position.y() <= box.y + box.h;
 }
-
-void quadtree::add_nodes()
+void quadtree::insert(std::size_t id, node& node, std::size_t depth)
 {
-    size_t half_width_up    = (_width + 1) / 2;
-    size_t half_height_up   = (_height + 1) / 2;
-    size_t half_width_down  = _width / 2;
-    size_t half_height_down = _height / 2;
-
-    nodes[0] = std::make_unique<quadtree>(
-        _id + "0", _max_depth - 1, _max_objects, half_width_up,
-        half_height_down,
-        vector_3(_position(0) + _width, _position(1) + half_height_down, 0));
-
-    nodes[1] = std::make_unique<quadtree>(
-        _id + "1", _max_depth - 1, _max_objects, half_width_down,
-        half_height_down, vector_3(_position(0)+_width, _position(1), 0));
-
-    nodes[2] = std::make_unique<quadtree>(
-        _id + "2", _max_depth - 1, _max_objects, half_width_down,
-        half_height_up,
-        vector_3(_position(0) + half_width_down, _position(1), 0));
-
-    nodes[3] = std::make_unique<quadtree>(
-        _id + "3", _max_depth - 1, _max_objects, half_width_up, half_height_up,
-        vector_3(_position(0) + half_width_down,
-                 _position(1) + half_height_down, 0));
-}
-
-
-bool quadtree::border_control(vector_3& entity_position)
-{
-    if ((entity_position(0) == _position(0) &&
-         entity_position(1) <= _position(1)  &&
-         entity_position(1) <= _position(1) + _height) ||
-        (entity_position(0) == _position(0) + _width &&
-         _position(1) <= entity_position(1) &&
-         entity_position(1) <= _position(1) + _height) ||
-        (entity_position(1) == _position(1) &&
-         _position(0) <= entity_position(0) &&
-         entity_position(0) <= _position(0) + _width) ||
-        (entity_position(1) == _position(1) + _height &&
-         _position(0) <= entity_position(0) &&
-         entity_position(0) <= _position(0) + _width))
+    if (!is_in(id, node.bounds)) return;
+    if (node.leaf)
     {
-
-        return true;
-    }
-    return false;
-}
-
-bool quadtree::addable()
-{
-    if (node_entities.size() < _max_objects || _max_depth == 0)
-    {
-        return true; // add entity at current node
+        if (depth < max_depth && node.count() + 1 > threshold)
+        {
+            split(node);
+            insert(id, node, depth);
+        }
+        else
+            node.entities().emplace_back(id);
     }
     else
     {
-    return false; // create subnodes and add entity at a subnode }
+        for (auto& child : node.children())
+            if (is_in(id, child.bounds)) insert(id, child, depth + 1);
     }
 }
-
-
-bool quadtree::in_node(entity& entity, vector_3& node_position, size_t width, size_t height) {
-    vector_3& entity_position = entity.component<components::transform>().position;
-    if ((node_position(0)- width <= entity_position(0)) &&
-    (entity_position(0) <= node_position(0)) &&
-    (node_position(1) <= entity_position(1)) &&
-    (entity_position(1) <= node_position(1) + height))
+void quadtree::remove(std::size_t id, node& node)
+{
+    if (node.leaf)
     {
-        std::cout << "ENTITY " << entity.id << " IS IN NODE " + _id << std::endl;
-        return true;
+        auto& entities = node.entities();
+        std::erase(entities, id);
     }
-    else {
-        return false;
-    }
-}
-
-quadtree& quadtree::get_node(std::string node_id) {
-    if (node_id.size() == 0) {
-        return *this;
-    }
-
-    else if (node_id[0] == '0') {
-        return nodes[0]->get_node(node_id.erase(0,1));
-    }
-
-    else if (node_id[0] == '1') {
-        return nodes[1]->get_node(node_id.erase(0,1));
-    }
-
-    else if (node_id[0] == '2') {
-        return nodes[2]->get_node(node_id.erase(0,1));
-    }
-    else {
-        return nodes[3]->get_node(node_id.erase(0,1));
-    }
-
-}
-
-std::vector<std::string> quadtree::curr_locate(entity& entity)
-{
-    std::vector<std::string> node_vec;
-
-    if (in_node(entity, _position, _width, _height)) {
-        for (auto& node_pair : node_entities){
-            if (node_pair.second.get().id == entity.id) {
-                node_vec.emplace_back(_id);
-            }
-        }
-    }
-
-    if (nodes[0] != nullptr) {
-        for (int i = 0; i < 4; i++)
+    else
+    {
+        std::size_t total = 0;
+        for (auto& child : node.children())
         {
-            if (nodes[i]->in_node(entity, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height))
+            remove(id, child);
+            total += child.count();
+        }
+        if (total < threshold)
+        {
+            auto& entities = __entities.emplace_back();
+            for (auto& child : node.children())
             {
-                std::vector<std::string> temp = nodes[i]->curr_locate(entity);
-                node_vec.insert(node_vec.end(), temp.begin(), temp.end());
+                assert(child.leaf);
+                for (auto& entity : child.entities())
+                    entities.emplace_back(entity);
             }
-
+            __nodes.erase(node.children_iter());
+            node.leaf = true;
+            node.data = --__entities.end();
         }
     }
-        
-    
-    return node_vec;
 }
-
-std::vector<std::string> quadtree::new_locate(entity& entity)
+void quadtree::split(node& node)
 {
-    std::vector<std::string> node_vec;
+    assert(node.leaf);
+    // Add new set of 4 nodes
+    auto& children = __nodes.emplace_back();
 
-    if (in_node(entity, _position, _width, _height)) {
-        if (nodes[0] == nullptr && addable())
-        {
-            node_vec.emplace_back(_id);
-        }
+    // Set up bounds for children
+    children.at(0).bounds = node.bounds.top_left();
+    children.at(1).bounds = node.bounds.top_right();
+    children.at(2).bounds = node.bounds.bottom_left();
+    children.at(3).bounds = node.bounds.bottom_right();
 
-        else
-        {
-            if (nodes[0] == nullptr && node_entities.size() >= _max_objects) { add_nodes(); }
-            for (int i = 0; i < 4; i++)
-            {
-                if (nodes[i]->in_node(entity, nodes[i]->_position, nodes[i]->_width, nodes[i]->_height)) {
-                    std::vector<std::string> temp = nodes[i]->new_locate(entity);
-                    node_vec.insert(node_vec.end(), temp.begin(), temp.end());
-                }
+    auto& entities = node.entities();
 
-            }
-        }
+    // Place entity ids into child nodes based on bounds
+    for (auto& child : children)
+    {
+        __entities.emplace_back();
+        child.data = --__entities.end();
+        for (auto& id : entities)
+            if (is_in(id, child.bounds)) child.entities().emplace_back(id);
     }
 
-    return node_vec;
+    // Remove double counted entity ids
+    __entities.erase(node.entities_iter());
+
+    // Reset parent node
+    node.leaf = false;
+    node.data = --__nodes.end();
 }
 
-
-void quadtree::remove_entity(entity& entity, std::vector<std::string> node_ids) {
-    for (std::string id : node_ids) {
-        quadtree& node = get_node(id);
-
-        for (auto& node_pair : node.node_entities){
-            if (node_pair.second.get().id == entity.id) {
-                node.node_entities.erase(node_pair.first);
-            }
-        }
-    }
-
-}
-
-void quadtree::add_entity(entity& entity, std::vector<std::string> node_ids)
+void quadtree::insert(std::size_t id)
 {
-    for (std::string id : node_ids) {
-        quadtree& node = get_node(id);
-        node.node_entities.emplace(_id, entity);
-    }
-
+    insert(id, root, 1);
+}
+void quadtree::remove(std::size_t id)
+{
+    remove(id, root);
 }
 
-void quadtree::update(entity& entity) {
-
-    std::vector<std::string> new_nodes = new_locate(entity);
-    std::vector<std::string> curr_nodes = curr_locate(entity);
-
-    if (new_nodes != curr_nodes){
-        remove_entity(entity, curr_nodes);
-        add_entity(entity, new_nodes);
-    }
-
+void quadtree::insert(std::unordered_set<std::size_t>& entities)
+{
+    for (auto& id : entities) insert(id);
+}
+void quadtree::remove(std::unordered_set<std::size_t>& entities)
+{
+    for (auto& id : entities) remove(id);
 }
 
 } // namespace p201

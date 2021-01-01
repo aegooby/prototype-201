@@ -4,22 +4,29 @@
     <components>
         <component>
             <flag>1</flag>
-            <family>unknown</family>
+            <family>platform</family>
             <rect>
-                <w>200</w>
-                <h>200</h>
+                <w>184</w>
+                <h>117</h>
             </rect>
+            <displacement>
+                <x>0.5</x>
+                <y>0.7</y>
+            </displacement>
         </component>
         <component>
             <flag>2</flag>
             <position>
-                <x>150.0</x>
-                <y>600.0</y>
+                <x>110.0</x>
+                <y>110.0</y>
                 <z>0.0</z>
             </position>
         </component>
         <component>
             <flag>4</flag>
+            <hitbox>
+                <radius>70.0</radius>
+            </hitbox>
         </component>
     </components>
 </entity>

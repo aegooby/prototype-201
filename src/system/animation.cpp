@@ -20,9 +20,9 @@ void animation::start()
 }
 void animation::update()
 {
-    for (auto& ref_pair : __registered_entities)
+    for (auto& id : __registered_entities)
     {
-        auto& entity    = ref_pair.second.get();
+        auto& entity    = world.entity(id);
         auto& animation = entity.component<components::animation>();
         auto& render    = entity.component<components::render>();
 

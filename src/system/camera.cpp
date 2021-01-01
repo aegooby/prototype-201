@@ -16,9 +16,9 @@ namespace systems
 void camera::start() { }
 void camera::update()
 {
-    for (auto& ref_pair : __registered_entities)
+    for (auto& id : __registered_entities)
     {
-        auto&       entity = ref_pair.second.get();
+        auto&       entity = world.entity(id);
         const auto& render = entity.component<components::render>();
         if (!world.camera.active) world.camera.active = true;
         world.camera.center = util::center(render.rect);
