@@ -13,7 +13,7 @@ namespace systems
 {
 void collision::start()
 {
-    world.quadtree.start(5, 1, box(0.0f, 0.0f, 500.0f, 500.0f));
+    world.quadtree.start(4, 1, box(0.0f, 0.0f, 500.0f, 500.0f));
 }
 void collision::update()
 {

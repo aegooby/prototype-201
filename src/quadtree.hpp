@@ -56,8 +56,13 @@ struct node
 
     std::size_t count() const
     {
-        if (!leaf) throw std::runtime_error("Called count() on non-leaf");
-        return std::get<entities_list_t::iterator>(data)->size();
+        if (!leaf)
+        {
+            std::size_t total = 0;
+            for (const auto& child : children()) total += child.count();
+            return total;
+        }
+        return entities().size();
     }
     children_list_t::iterator& children_iter()
     {

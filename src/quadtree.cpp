@@ -24,7 +24,7 @@ void quadtree::insert(std::size_t id, node& node, std::size_t depth)
         if (depth < max_depth && node.count() + 1 > threshold)
         {
             split(node);
-            insert(id, node, depth + 1);
+            insert(id, node, depth);
         }
         else
             node.entities().emplace_back(id);
@@ -48,7 +48,6 @@ void quadtree::remove(std::size_t id, node& node)
         for (auto& child : node.children())
         {
             remove(id, child);
-            assert(child.leaf);
             total += child.count();
         }
         if (total < threshold)
