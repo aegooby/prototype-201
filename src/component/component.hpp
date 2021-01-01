@@ -67,6 +67,8 @@ struct transform : public component
 
     /** @brief Game coordinate position (not isometric position). */
     vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
+    /** @brief Direction the entity is facing (not always used). */
+    // std::bitset<2>
 
     transform(class entity& entity) : __base(entity) { }
     virtual ~transform() = default;
