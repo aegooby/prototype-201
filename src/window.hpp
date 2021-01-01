@@ -33,7 +33,6 @@ public:
     {
         if (SDL_Init(SDL_INIT_EVERYTHING))
             throw sdl_error("Failed to initialize SDL");
-        // TODO: should we work with SDL_WINDOW_ALLOW_HIGHDPI?
         if (!(__sdl_window =
                   SDL_CreateWindow(__title.c_str(), SDL_WINDOWPOS_CENTERED,
                                    SDL_WINDOWPOS_CENTERED, width, height, 0x0)))

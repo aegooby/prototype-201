@@ -9,10 +9,10 @@
                 <w>140</w>
                 <h>132</h>
             </rect>
-            <displacement>
+            <offset>
                 <x>0.5</x>
                 <y>0.875</y>
-            </displacement>
+            </offset>
         </component>
         <component>
             <flag>2</flag>

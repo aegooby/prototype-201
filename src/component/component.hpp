@@ -54,7 +54,7 @@ struct render : public component
     /** @brief Texture rendered onto rect. */
     SDL_Texture* texture = nullptr;
     /** @brief The displacement factor of the sprite from its center point. */
-    vector_2 displacement;
+    vector_2 offset;
 
     render(class entity& entity) : __base(entity) { }
     virtual ~render() = default;

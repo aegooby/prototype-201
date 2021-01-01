@@ -150,7 +150,6 @@ void render::render_frame()
 
     if (world.keyboard.modifier(modifier::ALT))
     {
-        // debug(render_grid(__sdl_renderer, 100, 200));
         debug(render_quadtree(world.quadtree));
     }
 
@@ -163,16 +162,14 @@ void render::render_frame()
 
         const vector_3 iso_position = iso_matrix * transform.position;
 
-        render.rect.x =
-            iso_position.x() - render.rect.w * render.displacement.x();
-        render.rect.y =
-            iso_position.y() - render.rect.h * render.displacement.y();
+        render.rect.x = iso_position.x() - render.rect.w * render.offset.x();
+        render.rect.y = iso_position.y() - render.rect.h * render.offset.y();
 
         if (entity.flag.test(components::collision::flag) &&
             world.keyboard.modifier(modifier::ALT))
         {
             auto& hitbox = entity.component<components::collision>().hitbox;
-            render_hitbox(hitbox);
+            debug(render_hitbox(hitbox));
         }
 
         if (render.visible)

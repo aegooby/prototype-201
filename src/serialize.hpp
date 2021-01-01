@@ -37,10 +37,10 @@ public:
                     render.family = component.get<std::string>("family");
                     render.rect.w = component.get<float>("rect.w");
                     render.rect.h = component.get<float>("rect.h");
-                    render.displacement.x() =
-                        component.get<float>("displacement.x");
-                    render.displacement.y() =
-                        component.get<float>("displacement.y");
+                    render.offset.x() =
+                        component.get<float>("offset.x");
+                    render.offset.y() =
+                        component.get<float>("offset.y");
                     break;
                 }
                 case components::transform::flag:
@@ -142,8 +142,8 @@ public:
                     component.add("family", render.family);
                     component.add("rect.w", render.rect.w);
                     component.add("rect.h", render.rect.h);
-                    component.add("displacement.x", render.displacement.x());
-                    component.add("displacement.y", render.displacement.y());
+                    component.add("offset.x", render.offset.x());
+                    component.add("offset.y", render.offset.y());
                     break;
                 }
                 case components::transform::flag:

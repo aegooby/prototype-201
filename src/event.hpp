@@ -7,8 +7,6 @@
 #include <typeindex>
 #include <unordered_map>
 
-// TODO: add event blockers
-
 namespace p201
 {
 
