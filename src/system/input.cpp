@@ -23,8 +23,9 @@ void input::update()
     static const float speed = 3.0f;
     for (auto& id : __registered_entities)
     {
-        auto& entity   = world.entity(id);
-        auto& movement = entity.component<components::movement>();
+        auto& entity    = world.entity(id);
+        auto& movement  = entity.component<components::movement>();
+        auto& transform = entity.component<components::transform>();
 
         auto animation = [&entity, this](const std::string& name) {
             world.event_bus.publish<events::animation>(entity, name);
@@ -33,6 +34,8 @@ void input::update()
         // Down
         if (keyboard.down(keycode::S))
         {
+            transform.direction.set(components::transform::south);
+            transform.direction.reset(components::transform::north);
             movement.accel.x() -= speed / sqrt_2;
             movement.accel.y() += speed / sqrt_2;
         }
@@ -45,6 +48,8 @@ void input::update()
         // Up
         if (keyboard.down(keycode::W))
         {
+            transform.direction.set(components::transform::north);
+            transform.direction.reset(components::transform::south);
             movement.accel.x() += speed / sqrt_2;
             movement.accel.y() -= speed / sqrt_2;
         }
@@ -57,6 +62,8 @@ void input::update()
         // Right
         if (keyboard.down(keycode::D))
         {
+            transform.direction.set(components::transform::east);
+            transform.direction.reset(components::transform::west);
             if (!keyboard.scan(keycode::A))
                 animation("walk-right");
             else
@@ -66,6 +73,8 @@ void input::update()
         }
         if (keyboard.up(keycode::D))
         {
+            transform.direction.set(components::transform::west);
+            transform.direction.reset(components::transform::east);
             if (!keyboard.scan(keycode::A))
                 animation("stand-right");
             else

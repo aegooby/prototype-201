@@ -68,8 +68,34 @@ public:
                 {
                     auto& collision =
                         entity.add_component<components::collision>();
-                    collision.hitbox.radius =
-                        component.get<float>("hitbox.radius");
+                    auto flag = component.get<std::size_t>("hitbox.flag");
+                    switch (flag)
+                    {
+                        case hitboxes::circle::flag:
+                        {
+                            collision.hitbox =
+                                std::make_unique<hitboxes::circle>();
+                            auto circle = dynamic_cast<hitboxes::circle*>(
+                                collision.hitbox.get());
+                            circle->radius =
+                                component.get<float>("hitbox.radius");
+                            break;
+                        }
+                        case hitboxes::square::flag:
+                        {
+                            collision.hitbox =
+                                std::make_unique<hitboxes::square>();
+                            auto square = dynamic_cast<hitboxes::square*>(
+                                collision.hitbox.get());
+                            square->width =
+                                component.get<float>("hitbox.width");
+                            square->height =
+                                component.get<float>("hitbox.height");
+                            break;
+                        }
+                        default:
+                            break;
+                    }
                     break;
                 }
                 case components::input::flag:
@@ -135,7 +161,20 @@ public:
                 case components::collision::flag:
                 {
                     auto& collision = entity.component<components::collision>();
-                    component.add("hitbox.radius", collision.hitbox.radius);
+                    auto  ptr       = collision.hitbox.get();
+                    if (typeid(*ptr) == typeid(hitboxes::circle))
+                    {
+                        auto& circle = *dynamic_cast<hitboxes::circle*>(ptr);
+                        component.add("hitbox.flag", circle.flag);
+                        component.add("hitbox.radius", circle.radius);
+                    }
+                    if (typeid(*ptr) == typeid(hitboxes::square))
+                    {
+                        auto& square = *dynamic_cast<hitboxes::square*>(ptr);
+                        component.add("hitbox.flag", square.flag);
+                        component.add("hitbox.width", square.width);
+                        component.add("hitbox.height", square.height);
+                    }
                     break;
                 }
                 case components::input::flag:

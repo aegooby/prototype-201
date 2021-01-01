@@ -60,20 +60,30 @@ void render::render_node(const node& node, std::int16_t* vx, std::int16_t* vy)
     if (!node.leaf)
         for (auto& child : node.children()) render_node(child, vx, vy);
 };
-void render::render_hitbox(const hitbox& hitbox)
+void render::render_hitbox(const std::unique_ptr<hitbox>& hitbox)
 {
-    vector_3 iso_center = iso_matrix * hitbox.center;
-    if (world.camera.active)
+    const vector_2 shift = world.camera.shift(window::width, window::height);
+    auto           ptr   = hitbox.get();
+    if (typeid(*ptr) == typeid(hitboxes::circle))
     {
-        vector_2 shift = world.camera.shift(window::width, window::height);
+        auto&    circle     = *dynamic_cast<hitboxes::circle*>(ptr);
+        vector_3 iso_center = iso_matrix * circle.center;
         ellipseRGBA(__sdl_renderer, iso_center.x() + shift.x(),
-                    iso_center.y() + shift.y(), hitbox.radius,
-                    hitbox.radius / 2.0f, 200, 0, 0, 200);
+                    iso_center.y() + shift.y(), circle.radius,
+                    circle.radius / 2.0f, 200, 0, 0, 200);
     }
-    else
+    if (typeid(*ptr) == typeid(hitboxes::square))
     {
-        ellipseRGBA(__sdl_renderer, iso_center.x(), iso_center.y(),
-                    hitbox.radius, hitbox.radius / 2.0f, 200, 0, 0, 200);
+        auto&    square = *dynamic_cast<hitboxes::square*>(ptr);
+        vector_3 iso_corner =
+            iso_matrix * vector_3(square.left(), square.top(), 0.0f);
+        std::int16_t vx[4];
+        std::int16_t vy[4];
+
+        transform_tile(iso_corner.x(), iso_corner.y(), square.width,
+                       square.height, vx, vy);
+        camera_transform(vx, vy);
+        polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 0, 0, 255);
     }
 }
 
@@ -86,8 +96,6 @@ void render::render_quadtree(const quadtree& quadtree)
 
 SDL_FRect render::camera_transform(const SDL_FRect& rect)
 {
-    if (!world.camera.active)
-        throw std::runtime_error("Camera transform with inactive camera");
     vector_2  shift      = world.camera.shift(window::width, window::height);
     SDL_FRect rect_shift = rect;
     rect_shift.x += shift.x();
@@ -97,7 +105,6 @@ SDL_FRect render::camera_transform(const SDL_FRect& rect)
 }
 void render::camera_transform(std::int16_t* vx, std::int16_t* vy)
 {
-    if (!world.camera.active) return;
     vector_2 shift = world.camera.shift(window::width, window::height);
     for (std::size_t i = 0; i < 4; ++i)
     {
@@ -172,13 +179,11 @@ void render::render_frame()
         // of the flipbook.
         if (!render.texture && render.visible)
             render.texture = world.sprite_manager.default_sprite(render.family);
-        if (world.camera.active)
-        {
-            SDL_FRect rect_shift = camera_transform(render.rect);
-            render_sprite(render.texture, &rect_shift);
-        }
-        else if (render.visible)
-            render_sprite(render.texture, &render.rect);
+        SDL_FRect rect_shift = camera_transform(render.rect);
+        render_sprite(render.texture, &rect_shift);
+        auto shift = world.camera.shift(window::width, window::height);
+        filledCircleRGBA(__sdl_renderer, iso_position.x() + shift.x(),
+                         iso_position.y() + shift.y(), 2, 200, 200, 0, 255);
     }
 
     SDL_RenderPresent(__sdl_renderer);

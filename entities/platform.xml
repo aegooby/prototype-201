@@ -6,12 +6,12 @@
             <flag>1</flag>
             <family>platform</family>
             <rect>
-                <w>184</w>
-                <h>117</h>
+                <w>190</w>
+                <h>120</h>
             </rect>
             <displacement>
                 <x>0.5</x>
-                <y>0.7</y>
+                <y>0.5</y>
             </displacement>
         </component>
         <component>
@@ -25,7 +25,9 @@
         <component>
             <flag>4</flag>
             <hitbox>
-                <radius>70.0</radius>
+                <flag>2</flag>
+                <width>200.0</width>
+                <height>200.0</height>
             </hitbox>
         </component>
     </components>

@@ -17,6 +17,7 @@ public:
     {
         flag.set(components::input::flag);
         flag.set(components::movement::flag);
+        flag.set(components::transform::flag);
     }
     virtual ~input() = default;
     virtual void start() override;

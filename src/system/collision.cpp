@@ -16,6 +16,7 @@ void collision::start()
     world.quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
 }
 
+
 bool collision::hitbox_check(entity& entity1, entity& entity2)
 {
     hitbox1 = entity1.hitbox;
@@ -77,6 +78,7 @@ bool collision::square_check(hitbox& hitbox1, hitbox& hitbox2) {
     
 }
 
+
 void collision::update()
 {
     world.quadtree.remove(__registered_entities);
@@ -87,8 +89,8 @@ void collision::update()
         auto& transform = entity.component<components::transform>();
         auto& collision = entity.component<components::collision>();
 
-        collision.hitbox.center.x() = transform.position.x();
-        collision.hitbox.center.y() = transform.position.y();
+        collision.hitbox->center.x() = transform.position.x();
+        collision.hitbox->center.y() = transform.position.y();
     }
 }
 } // namespace systems
