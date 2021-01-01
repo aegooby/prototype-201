@@ -41,6 +41,7 @@ CMakeFiles/
 
 # Build
 build/
+xcode/
 .vs/
 .cache/
 prototype201.dir/
