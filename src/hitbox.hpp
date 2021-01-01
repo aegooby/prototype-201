@@ -12,13 +12,15 @@ struct hitbox
     vector_3 center = vector_3(0.0f, 0.0f, 0.0f);
 
     hitbox()          = default;
-    virtual ~hitbox() = default;
+    virtual ~hitbox() = 0;
 
-    virtual float top() const;
-    virtual float bottom() const;
-    virtual float right() const;
-    virtual float left() const;
+    virtual float top() const    = 0;
+    virtual float bottom() const = 0;
+    virtual float right() const  = 0;
+    virtual float left() const   = 0;
 };
+
+inline hitbox::~hitbox() = default;
 
 namespace hitboxes
 {
@@ -58,12 +60,12 @@ struct square : hitbox
 
     float top() const
     {
-        return center.y() + height / 2.0f;
+        return center.y() - height / 2.0f;
     }
 
     float bottom() const
     {
-        return center.y() - height / 2.0f;
+        return center.y() + height / 2.0f;
     }
 
     float right() const
