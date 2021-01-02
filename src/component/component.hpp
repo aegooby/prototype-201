@@ -177,6 +177,8 @@ struct hud : public component
     float hp_percent = 0.0f;
 
     static constexpr std::size_t flag = 9;
+    hud(class entity& entity) : __base(entity) { }
+    virtual ~hud() = default;
 };
 
 struct healthbar : public component

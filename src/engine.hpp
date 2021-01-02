@@ -57,7 +57,6 @@ public:
 
         world.serializer.directory = "entities";
         world.serializer.load_entity(world.new_entity(), "player");
-        world.serializer.load_entity(world.new_entity(), "healthbar");
         world.serializer.load_entity(world.new_entity(), "platform");
     }
     ~engine() = default;

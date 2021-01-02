@@ -80,5 +80,10 @@ class camera : public component_manager_template<components::camera>
 public:
     virtual ~camera() = default;
 };
+class health : public component_manager_template<components::health>
+{
+public:
+    virtual ~health() = default;
+};
 } // namespace managers
 } // namespace p201

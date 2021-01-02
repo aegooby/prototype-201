@@ -31,6 +31,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                                std::make_unique<managers::animation>());
     component_managers.emplace(typeid(components::camera),
                                std::make_unique<managers::camera>());
+    component_managers.emplace(typeid(components::health),
+                               std::make_unique<managers::health>());
 
     systems.emplace(typeid(systems::render),
                     std::make_unique<systems::render>(*this));
