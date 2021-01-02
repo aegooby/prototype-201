@@ -53,6 +53,8 @@ struct render : public component
     std::string family = "unknown";
     /** @brief Floating point rect that textures are rendered onto. */
     SDL_FRect rect = { .x = 0.0f, .y = 0.0f, .w = 0.0f, .h = 0.0f };
+    /** @brief Portion of source rectangle to be rendered. */
+    SDL_Rect srcrect = { .x = 0, .y = 0, .w = 0, .h = 0 };
     /** @brief Texture rendered onto rect. */
     SDL_Texture* texture = nullptr;
     /** @brief The displacement factor of the sprite from its center point. */
@@ -168,13 +170,20 @@ struct health : public component
     virtual ~health() = default;
 };
 
+struct hud : public component
+{
+    using __base = component;
+
+    float hp_percent = 0.0f;
+
+    static constexpr std::size_t flag = 9;
+};
+
 struct healthbar : public component
 {
     using __base = component;
 
-    static constexpr std::size_t flag = 9;
-
-    float percent = 0.0f;
+    static constexpr std::size_t flag = 10;
 
     healthbar(class entity& entity) : __base(entity) { }
     virtual ~healthbar() = default;

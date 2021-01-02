@@ -38,6 +38,8 @@ public:
                     render.iso    = component.get<bool>("iso");
                     render.rect.w = component.get<float>("rect.w");
                     render.rect.h = component.get<float>("rect.h");
+                    render.srcrect.w  = render.rect.w;
+                    render.srcrect.h  = render.rect.h;
                     render.offset.x() = component.get<float>("offset.x");
                     render.offset.y() = component.get<float>("offset.y");
                     break;
@@ -114,6 +116,18 @@ public:
                 {
                     auto& camera = entity.add_component<components::camera>();
                     camera.focus = component.get<bool>("focus");
+                    break;
+                }
+                case components::health::flag:
+                {
+                    auto& health = entity.add_component<components::health>();
+                    (void)health;
+                    break;
+                }
+                case components::hud::flag:
+                {
+                    auto& hud = entity.add_component<components::hud>();
+                    (void)hud;
                     break;
                 }
                 default:

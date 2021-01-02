@@ -19,15 +19,19 @@ namespace p201
 class entity
 {
 protected:
-    class world&                world;
+    /*** CONTEXT OBJECTS ***/
+    class world& world;
+    /*** HELPER FUNCTIONS ***/
     std::unique_ptr<component>& __component(std::type_index);
     void __add_component(std::unique_ptr<struct component>&&, std::type_index,
                          std::size_t);
     void __remove_component(std::type_index, std::size_t);
 
 public:
+    /** @brief Stores flag for all entities in the component. */
     std::bitset<component::flag_bits> flag;
-    const std::size_t                        id;
+    /** @brief Used to access entity in the manager. */
+    const std::size_t id;
 
     entity(const std::size_t, class world&);
     virtual ~entity() = default;

@@ -36,10 +36,6 @@ private:
     void render_node(const node&, std::int16_t*, std::int16_t*);
     void render_hitbox(const std::unique_ptr<hitbox>&);
 
-    vector_3  camera_transform(const vector_3&);
-    SDL_FRect camera_transform(const SDL_FRect&);
-    void      camera_transform(std::int16_t*, std::int16_t*);
-
 public:
     render(class world& world) : __base(world), sprite_manager("sprites")
     {

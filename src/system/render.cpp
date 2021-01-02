@@ -154,7 +154,7 @@ void render::update()
             render.rect = this->camera.transform(render.rect);
         }
         if (render.visible)
-            render_sprite(render.texture, nullptr, &render.rect);
+            render_sprite(render.texture, &render.srcrect, &render.rect);
     }
 }
 void render::display()
