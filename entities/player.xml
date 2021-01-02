@@ -5,6 +5,7 @@
         <component>
             <flag>1</flag>
             <family>player</family>
+            <iso>true</iso>
             <rect>
                 <w>140</w>
                 <h>132</h>
@@ -51,9 +52,12 @@
         </component>
         <component>
             <flag>7</flag>
+            <focus>true</focus>
         </component>
         <component>
             <flag>8</flag>
+            <hp>100.0</hp>
+            <max_hp>100.0</max_hp>
         </component>
     </components>
 </entity>

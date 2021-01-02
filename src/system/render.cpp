@@ -45,7 +45,7 @@ void render::render_grid(SDL_Renderer* renderer, std::size_t size)
         for (ssize_t y = 0; y < 2000; y += size)
         {
             transform_tile(x, y, size, size, vx, vy);
-            camera_transform(vx, vy);
+            camera.transform(vx, vy);
             polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 255);
         }
     }
@@ -55,7 +55,7 @@ void render::render_node(const node& node, std::int16_t* vx, std::int16_t* vy)
 {
     auto& bounds = node.bounds;
     transform_tile(bounds.x, bounds.y, bounds.w, bounds.h, vx, vy);
-    camera_transform(vx, vy);
+    camera.transform(vx, vy);
     polygonRGBA(__sdl_renderer, vx, vy, 4, 0, 200, 0, 255);
 
     if (!node.leaf)
@@ -67,7 +67,7 @@ void render::render_hitbox(const std::unique_ptr<hitbox>& hitbox)
     if (typeid(*ptr) == typeid(hitboxes::circle))
     {
         auto&    circle     = *dynamic_cast<hitboxes::circle*>(ptr);
-        vector_3 iso_center = camera_transform(iso_matrix * circle.center);
+        vector_3 iso_center = camera.transform(iso_matrix * circle.center);
         ellipseRGBA(__sdl_renderer, iso_center.x(), iso_center.y(),
                     circle.radius, circle.radius / 2.0f, 200, 0, 0, 200);
     }
@@ -79,7 +79,7 @@ void render::render_hitbox(const std::unique_ptr<hitbox>& hitbox)
 
         transform_tile(square.left(), square.top(), square.width, square.height,
                        vx, vy);
-        camera_transform(vx, vy);
+        camera.transform(vx, vy);
         polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 0, 0, 255);
     }
 }
@@ -89,30 +89,6 @@ void render::render_quadtree(const quadtree& quadtree)
     std::int16_t vx[4];
     std::int16_t vy[4];
     render_node(quadtree.root, vx, vy);
-}
-
-vector_3 render::camera_transform(const vector_3& vector)
-{
-    const vector_2 shift = world.camera.shift(window::width, window::height);
-    return vector_3(vector.x() + shift.x(), vector.y() + shift.y(), vector.z());
-}
-SDL_FRect render::camera_transform(const SDL_FRect& rect)
-{
-    const vector_2 shift = world.camera.shift(window::width, window::height);
-    SDL_FRect      rect_shift = rect;
-    rect_shift.x += shift.x();
-    rect_shift.y += shift.y();
-
-    return rect_shift;
-}
-void render::camera_transform(std::int16_t* vx, std::int16_t* vy)
-{
-    const vector_2 shift = world.camera.shift(window::width, window::height);
-    for (std::size_t i = 0; i < 4; ++i)
-    {
-        vx[i] += shift.x();
-        vy[i] += shift.y();
-    }
 }
 
 void render::start()
@@ -129,17 +105,14 @@ void render::start()
 }
 void render::stop()
 {
-    if (__sdl_renderer)
-    {
-        SDL_DestroyRenderer(__sdl_renderer);
-        __sdl_renderer = nullptr;
-    }
+    SDL_DestroyRenderer(__sdl_renderer);
+    __sdl_renderer = nullptr;
     IMG_Quit();
 }
 
-void render::render_sprite(SDL_Texture* texture, SDL_FRect* rect)
+void render::render_sprite(SDL_Texture* texture, SDL_Rect* src, SDL_FRect* rect)
 {
-    if (SDL_RenderCopyF(__sdl_renderer, texture, NULL, rect))
+    if (SDL_RenderCopyF(__sdl_renderer, texture, src, rect))
         throw sdl_error("Failed to render texture");
 }
 
@@ -151,9 +124,7 @@ void render::update()
         throw sdl_error("Failed to clear renderer");
 
     if (world.keyboard.modifier(modifier::ALT))
-    {
         debug(render_quadtree(world.system<systems::collision>().quadtree));
-    }
 
     // Render all the registered entities one by one
     for (auto& id : __registered_entities)
@@ -162,11 +133,6 @@ void render::update()
         auto&       render    = entity.component<components::render>();
         const auto& transform = entity.component<components::transform>();
 
-        const vector_3 iso_position = iso_matrix * transform.position;
-
-        render.rect.x = iso_position.x() - render.rect.w * render.offset.x();
-        render.rect.y = iso_position.y() - render.rect.h * render.offset.y();
-
         if (entity.flag.test(components::collision::flag) &&
             world.keyboard.modifier(modifier::ALT))
         {
@@ -174,13 +140,21 @@ void render::update()
             debug(render_hitbox(hitbox));
         }
 
-        if (render.visible)
+        const vector_3 screen_position =
+            render.iso ? iso_matrix * transform.position : transform.position;
+
+        render.rect.x = screen_position.x() - render.rect.w * render.offset.x();
+        render.rect.y = screen_position.y() - render.rect.h * render.offset.y();
+        if (!render.texture)
+            render.texture = sprite_manager.default_sprite(render.family);
+        if (entity.flag.test(components::camera::flag))
         {
-            if (!render.texture)
-                render.texture = sprite_manager.default_sprite(render.family);
-            SDL_FRect rect_shift = camera_transform(render.rect);
-            render_sprite(render.texture, &rect_shift);
+            auto& camera = entity.component<components::camera>();
+            if (camera.focus) this->camera.center = util::center(render.rect);
+            render.rect = this->camera.transform(render.rect);
         }
+        if (render.visible)
+            render_sprite(render.texture, nullptr, &render.rect);
     }
 }
 void render::display()

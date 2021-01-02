@@ -32,8 +32,6 @@ public:
     event_bus event_bus;
     /** @brief Used for loading and saving entities to XML. */
     serialize::xml serializer;
-    /** @brief Used to apply camera transform. */
-    camera camera;
 
 protected:
     using cmptr_t = std::unique_ptr<component_manager>;

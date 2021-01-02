@@ -35,12 +35,11 @@ public:
                 {
                     auto& render  = entity.add_component<components::render>();
                     render.family = component.get<std::string>("family");
+                    render.iso    = component.get<bool>("iso");
                     render.rect.w = component.get<float>("rect.w");
                     render.rect.h = component.get<float>("rect.h");
-                    render.offset.x() =
-                        component.get<float>("offset.x");
-                    render.offset.y() =
-                        component.get<float>("offset.y");
+                    render.offset.x() = component.get<float>("offset.x");
+                    render.offset.y() = component.get<float>("offset.y");
                     break;
                 }
                 case components::transform::flag:
@@ -114,7 +113,7 @@ public:
                 case components::camera::flag:
                 {
                     auto& camera = entity.add_component<components::camera>();
-                    (void)camera;
+                    camera.focus = component.get<bool>("focus");
                     break;
                 }
                 default:
@@ -140,6 +139,7 @@ public:
                 {
                     auto& render = entity.component<components::render>();
                     component.add("family", render.family);
+                    component.add("iso", render.iso);
                     component.add("rect.w", render.rect.w);
                     component.add("rect.h", render.rect.h);
                     component.add("offset.x", render.offset.x());
@@ -189,6 +189,8 @@ public:
                 }
                 case components::camera::flag:
                 {
+                    auto& camera = entity.component<components::camera>();
+                    component.add("focus", camera.focus);
                     break;
                 }
                 default:

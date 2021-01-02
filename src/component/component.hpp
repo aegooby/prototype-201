@@ -47,6 +47,8 @@ struct render : public component
 
     /** @brief Whether or not to display the sprite on rendering. */
     bool visible = true;
+    /** @brief Whether to transform the rendering to isometric. */
+    bool iso = true;
     /** @brief Family of flipbooks associated with this component. */
     std::string family = "unknown";
     /** @brief Floating point rect that textures are rendered onto. */
@@ -66,6 +68,7 @@ struct transform : public component
 
     static constexpr std::size_t flag = 2;
 
+    /** @brief Used in direction bitset. */
     enum
     {
         north = 0,
@@ -76,10 +79,7 @@ struct transform : public component
 
     /** @brief Game coordinate position (not isometric position). */
     vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
-    /**
-     * @brief Direction the entity is facing (not always used).
-     *        Bits are (0, 1, 2, 3) -> (north, south, east, west)
-     */
+    /** @brief Direction the entity is facing (not always used). */
     std::bitset<4> direction;
 
     transform(class entity& entity) : __base(entity) { }
@@ -146,7 +146,8 @@ struct camera : public component
 
     static constexpr std::size_t flag = 7;
 
-    std::size_t priority = 0;
+    bool     focus = false;
+    vector_2 shift = vector_2(0.0f, 0.0f);
 
     camera(class entity& entity) : __base(entity) { }
     virtual ~camera() = default;
@@ -165,6 +166,18 @@ struct health : public component
 
     health(class entity& entity) : __base(entity) { }
     virtual ~health() = default;
+};
+
+struct healthbar : public component
+{
+    using __base = component;
+
+    static constexpr std::size_t flag = 9;
+
+    float percent = 0.0f;
+
+    healthbar(class entity& entity) : __base(entity) { }
+    virtual ~healthbar() = default;
 };
 } // namespace components
 } // namespace p201

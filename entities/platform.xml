@@ -5,6 +5,7 @@
         <component>
             <flag>1</flag>
             <family>platform</family>
+            <iso>true</iso>
             <rect>
                 <w>190</w>
                 <h>120</h>
@@ -29,6 +30,10 @@
                 <width>150.0</width>
                 <height>150.0</height>
             </hitbox>
+        </component>
+        <component>
+            <flag>7</flag>
+            <focus>false</focus>
         </component>
     </components>
 </entity>

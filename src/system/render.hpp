@@ -1,6 +1,7 @@
 
 #pragma once
 #include "../__common.hpp"
+#include "../camera.hpp"
 #include "../entity.hpp"
 #include "../exception.hpp"
 #include "../quadtree.hpp"
@@ -24,12 +25,13 @@ public:
 protected:
     SDL_Renderer* __sdl_renderer = nullptr;
     matrix_3      iso_matrix;
+    camera        camera;
 
 private:
-    void transform_tile(float x, float y, float w, float h, std::int16_t* vx,
-                        std::int16_t* vy);
+    void transform_tile(float, float, float, float, std::int16_t*,
+                        std::int16_t*);
     void render_grid(SDL_Renderer*, std::size_t);
-    void render_sprite(SDL_Texture*, SDL_FRect*);
+    void render_sprite(SDL_Texture*, SDL_Rect*, SDL_FRect*);
 
     void render_node(const node&, std::int16_t*, std::int16_t*);
     void render_hitbox(const std::unique_ptr<hitbox>&);
