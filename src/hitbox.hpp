@@ -12,15 +12,14 @@ struct hitbox
     vector_3 center = vector_3(0.0f, 0.0f, 0.0f);
 
     hitbox()          = default;
-    virtual ~hitbox() = 0;
+    virtual ~hitbox() = default;
 
-    virtual float top() const    = 0;
-    virtual float bottom() const = 0;
-    virtual float right() const  = 0;
-    virtual float left() const   = 0;
+    virtual float top() const {}
+    virtual float bottom() const {}
+    virtual float right() const {}
+    virtual float left() const {}
 };
 
-inline hitbox::~hitbox() = default;
 
 namespace hitboxes
 {
@@ -31,19 +30,19 @@ struct circle : hitbox
     float radius = 0.0f;
 
     virtual ~circle() = default;
-    float top() const
-    {
-        return center.y() + radius;
-    }
-    float bottom() const
+    virtual float top() const
     {
         return center.y() - radius;
     }
-    float right() const
+    virtual float bottom() const
+    {
+        return center.y() + radius;
+    }
+    virtual float right() const
     {
         return center.x() + radius;
     }
-    float left() const
+    virtual float left() const
     {
         return center.x() - radius;
     }
@@ -51,6 +50,7 @@ struct circle : hitbox
 
 struct square : hitbox
 {
+
     static constexpr std::size_t flag = 2;
 
     float width  = 0.0f;
@@ -58,22 +58,22 @@ struct square : hitbox
 
     virtual ~square() = default;
 
-    float top() const
+    virtual float top() const
     {
         return center.y() - height / 2.0f;
     }
 
-    float bottom() const
+    virtual float bottom() const
     {
         return center.y() + height / 2.0f;
     }
 
-    float right() const
+    virtual float right() const
     {
         return center.x() + width / 2.0f;
     }
 
-    float left() const
+    virtual float left() const
     {
         return center.x() - width / 2.0f;
     }

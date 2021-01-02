@@ -171,6 +171,7 @@ void render::update()
     hb_main.rect.x = hb_main.position.x();
     hb_main.rect.y = hb_main.position.y();
     render_sprite(hb_main.texture, &hb_main.srcrect, &hb_main.rect);
+    
 }
 void render::display()
 {

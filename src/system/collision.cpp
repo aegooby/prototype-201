@@ -62,8 +62,8 @@ bool  collision::point_in_square(vector_3 circle_center, hitboxes::square& hitbo
 {
     return (hitbox2.left() <= circle_center(0) &&
             hitbox2.right() >= circle_center(0) &&
-            hitbox2.top() >= circle_center(1) &&
-            hitbox2.bottom() <= circle_center(1));
+            hitbox2.top() <= circle_center(1) &&
+            hitbox2.bottom() >= circle_center(1));
 }
 
 bool  collision::intersectCircle(hitboxes::circle& hitbox1, vector_3 point1, vector_3 point2)

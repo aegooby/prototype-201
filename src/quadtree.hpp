@@ -20,7 +20,7 @@ public:
     box() = default;
     box(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) { }
     ~box() = default;
-
+    
     box top_left() const
     {
         return box(x, y, w / 2.0f, h / 2.0f);
