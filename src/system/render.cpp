@@ -101,14 +101,14 @@ void render::start()
     sprite_manager.link(__sdl_renderer);
     sprite_manager.load();
 
+    // TODO: this is messy
     auto& hb_main    = world.hud.healthbar.main;
     hb_main.texture  = sprite_manager.flipbook("healthbar", "main").at(0);
     hb_main.position = vector_2(30.0f, 25.0f);
+    hb_main.width    = 300.0f;
+    hb_main.height   = 30.0f;
     hb_main.rect     = { .x = 0.0f, .y = 0.0f, .w = 300.0f, .h = 30.0f };
     hb_main.srcrect  = { .x = 0, .y = 0, .w = 300, .h = 30 };
-
-    // hb_main.rect.w *= 0.3f;
-    // hb_main.srcrect.w *= 0.3f;
 }
 void render::stop()
 {

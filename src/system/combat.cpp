@@ -20,7 +20,14 @@ void combat::update()
     for (auto& id : __registered_entities)
     {
         auto& entity = world.entity(id);
-        (void)entity;
+        auto& health = entity.component<components::health>();
+        if (entity.flag.test(components::hud::flag))
+        {
+            const auto hpfactor = health.hp / health.max_hp;
+            auto&      hb_main  = world.hud.healthbar.main;
+            hb_main.rect.w      = hb_main.width * hpfactor;
+            hb_main.srcrect.w   = hb_main.width * hpfactor;
+        }
     }
 }
 } // namespace systems
