@@ -12,9 +12,11 @@ namespace p201
 bool quadtree::is_in(std::size_t id, const box& box)
 {
     auto& entity   = world.entity(id);
-    auto& position = entity.component<components::transform>().position;
-    return box.x <= position.x() && position.x() <= box.x + box.w &&
-           box.y <= position.y() && position.y() <= box.y + box.h;
+    auto& hitbox = entity.component<components::collision>().hitbox;
+    return (hitbox->right() <= box.x + box.w &&
+            hitbox->left() >= box.x &&
+            hitbox->top() >= box.y &&
+            hitbox->bottom() <= box.y + box.h);
 }
 void quadtree::insert(std::size_t id, node& node, std::size_t depth)
 {

@@ -32,7 +32,9 @@ public:
                        std::unique_ptr<hitbox>& __b);
     bool  circle_check(hitboxes::circle& hitbox1, hitboxes::circle& hitbox2);
     bool  square_check(hitboxes::square& hitbox1, hitboxes::square& hitbox2);
-    bool  hybrid_check(hitboxes::circle&, hitboxes::square&);
+    bool  hybrid_check(hitboxes::circle& hitbox1, hitboxes::square& hitbox2);
+    bool  point_in_square(vector_3 circle_center, hitboxes::square& hitbox2);
+    bool  intersectCircle(hitboxes::circle& hitbox1, vector_3 point1, vector_3 point2);
     float distance(vector_3 point1, vector_3 point2);
 };
 } // namespace systems

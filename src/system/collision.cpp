@@ -58,10 +58,35 @@ float collision::distance(vector_3 point1, vector_3 point2)
                 pow((point1(1) + point2(1)), 2));
 }
 
+bool  collision::point_in_square(vector_3 circle_center, hitboxes::square& hitbox2)
+{
+    return (hitbox2.left() <= circle_center(0) &&
+            hitbox2.right() >= circle_center(0) &&
+            hitbox2.top() >= circle_center(1) &&
+            hitbox2.bottom() <= circle_center(1));
+}
+
+bool  collision::intersectCircle(hitboxes::circle& hitbox1, vector_3 point1, vector_3 point2)
+{
+    float dist = (abs((point2(0)-point1(0))*(point1(1)-hitbox1.center(1)) - (point1(0)-hitbox1.center(0))*(point2(1)-point1(1)))/(distance(point1, point2)));
+    
+    return dist < hitbox1.radius;
+}
+
 bool collision::hybrid_check(hitboxes::circle& circle, hitboxes::square& square)
 {
-    // TODO: temp
-    return false;
+    if (point_in_square(circle.center, square)) { return true; }
+    else {
+        vector_3 bot_left = vector_3(square.left(), square.bottom(), 0);
+        vector_3 bot_right = vector_3(square.right(), square.bottom(), 0);
+        vector_3 top_left = vector_3(square.left(), square.top(), 0);
+        vector_3 top_right = vector_3(square.right(), square.top(), 0);
+        
+        return (intersectCircle(circle, bot_left, bot_right) ||
+                intersectCircle(circle, bot_right, top_right) ||
+                intersectCircle(circle, top_right, top_left) ||
+                intersectCircle(circle, top_left, bot_left));
+    }
 }
 
 bool collision::circle_check(hitboxes::circle& __a, hitboxes::circle& __b)
