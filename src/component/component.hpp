@@ -54,7 +54,7 @@ struct render : public component
     /** @brief Texture rendered onto rect. */
     SDL_Texture* texture = nullptr;
     /** @brief The displacement factor of the sprite from its center point. */
-    vector_2 offset;
+    vector_2 offset = vector_2(0.0f, 0.0f);
 
     render(class entity& entity) : __base(entity) { }
     virtual ~render() = default;
@@ -150,6 +150,21 @@ struct camera : public component
 
     camera(class entity& entity) : __base(entity) { }
     virtual ~camera() = default;
+};
+
+struct health : public component
+{
+    using __base = component;
+
+    static constexpr std::size_t flag = 8;
+
+    float hp         = 0.0f;
+    float max_hp     = 0.0f;
+    float shield     = 0.0f;
+    float max_shield = 0.0f;
+
+    health(class entity& entity) : __base(entity) { }
+    virtual ~health() = default;
 };
 } // namespace components
 } // namespace p201

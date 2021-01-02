@@ -118,9 +118,9 @@ void render::start()
 {
     iso_matrix << 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f;
     iso_matrix /= sqrt_2;
-    if (!(__sdl_renderer = SDL_CreateRenderer(world.window.sdl_window(), -1,
-                                              SDL_RENDERER_PRESENTVSYNC)))
-        throw sdl_error("Failed to create rendering system");
+    std::uint32_t flags = global::vsync ? SDL_RENDERER_PRESENTVSYNC : 0;
+    __sdl_renderer = SDL_CreateRenderer(world.window.sdl_window(), -1, flags);
+    if (!__sdl_renderer) throw sdl_error("Failed to create rendering system");
     if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
         throw sdl_error("Failed to load SDL Image libraries");
     world.sprite_manager.link(__sdl_renderer);
@@ -172,16 +172,11 @@ void render::render_frame()
             debug(render_hitbox(hitbox));
         }
 
-        if (render.visible)
-        {
-            // If a texture hasn't been loaded, use the still at the start
-            // of the flipbook.
-            if (!render.texture)
-                render.texture =
-                    world.sprite_manager.default_sprite(render.family);
-            SDL_FRect rect_shift = camera_transform(render.rect);
-            render_sprite(render.texture, &rect_shift);
-        }
+        if (!render.visible) continue;
+        if (!render.texture)
+            render.texture = world.sprite_manager.default_sprite(render.family);
+        SDL_FRect rect_shift = camera_transform(render.rect);
+        render_sprite(render.texture, &rect_shift);
     }
 
     SDL_RenderPresent(__sdl_renderer);

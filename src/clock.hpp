@@ -56,7 +56,7 @@ public:
                 std::to_string(date->tm_sec) + " UTC");
     }
 
-    //	Preventing copying and moving
+    // Preventing copying and moving
     clock(const clock&) = delete;
     clock(clock&&)      = delete;
     clock& operator=(const clock&) = delete;

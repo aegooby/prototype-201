@@ -7,7 +7,8 @@ namespace p201
 
 namespace global
 {
-    static constexpr std::size_t game_fps = 60;
+static constexpr std::size_t game_fps = 60;
+static constexpr bool        vsync    = true;
 } // namespace global
 
 class window;

@@ -13,7 +13,8 @@ template<std::size_t size, typename... types>
 bool multi_test(const std::array<bool, size>& array, types... args)
 {
     bool result = true;
-    for (auto& code : { args... }) result = result && array.at(std::size_t(code));
+    for (auto& code : { args... })
+        result = result && array.at(std::size_t(code));
     return result;
 }
 template<std::size_t size, typename... types>
@@ -31,7 +32,7 @@ public:
     input(window& window_context) : window_context(window_context) { }
     ~input() = default;
 
-    //	Preventing copying and moving
+    // Preventing copying and moving
     input(const input&) = delete;
     input(input&&)      = delete;
     input& operator=(const input&) = delete;
@@ -121,7 +122,7 @@ public:
         modifier_set(bool(__mod == KMOD_NONE), modifier::NONE);
     }
 
-    //	Preventing copying and moving
+    // Preventing copying and moving
     keyboard(const keyboard&) = delete;
     keyboard(keyboard&&)      = delete;
     keyboard& operator=(const keyboard&) = delete;
@@ -224,7 +225,7 @@ public:
         __movement.y() = float(dy);
     }
 
-    //	Preventing copying and moving
+    // Preventing copying and moving
     mouse(const mouse&) = delete;
     mouse(mouse&&)      = delete;
     mouse& operator=(const mouse&) = delete;

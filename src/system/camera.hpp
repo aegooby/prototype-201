@@ -31,7 +31,7 @@ public:
 
     void on_animation_event(events::animation&);
 
-    //	Preventing copying and moving
+    // Preventing copying and moving
     camera(const camera&) = delete;
     camera(camera&&)      = delete;
     camera& operator=(const camera&) = delete;

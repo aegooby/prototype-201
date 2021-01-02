@@ -58,7 +58,7 @@ public:
     virtual void update() override { }
     void         render_frame();
 
-    //	Preventing copying and moving
+    // Preventing copying and moving
     render(const render&) = delete;
     render(render&&)      = delete;
     render& operator=(const render&) = delete;
