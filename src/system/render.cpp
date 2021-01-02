@@ -93,8 +93,6 @@ void render::render_quadtree(const quadtree& quadtree)
 
 void render::start()
 {
-    iso_matrix << 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f;
-    iso_matrix /= sqrt_2;
     std::uint32_t flags = global::vsync ? SDL_RENDERER_PRESENTVSYNC : 0;
     __sdl_renderer = SDL_CreateRenderer(world.window.sdl_window(), -1, flags);
     if (!__sdl_renderer) throw sdl_error("Failed to create rendering system");
@@ -105,12 +103,12 @@ void render::start()
 
     auto& hb_main    = world.hud.healthbar.main;
     hb_main.texture  = sprite_manager.flipbook("healthbar", "main").at(0);
-    hb_main.position = vector_2(30.0f, 30.0f);
+    hb_main.position = vector_2(30.0f, 25.0f);
     hb_main.rect     = { .x = 0.0f, .y = 0.0f, .w = 300.0f, .h = 30.0f };
     hb_main.srcrect  = { .x = 0, .y = 0, .w = 300, .h = 30 };
 
-    hb_main.rect.w *= 0.3f;
-    hb_main.srcrect.w *= 0.3f;
+    // hb_main.rect.w *= 0.3f;
+    // hb_main.srcrect.w *= 0.3f;
 }
 void render::stop()
 {

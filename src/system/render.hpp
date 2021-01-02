@@ -11,6 +11,8 @@
 
 #include <unordered_map>
 
+#define P201_ISO_MATRIX 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f
+
 namespace p201
 {
 namespace systems
@@ -23,9 +25,9 @@ public:
     sprite::manager sprite_manager;
 
 protected:
-    SDL_Renderer* __sdl_renderer = nullptr;
-    matrix_3      iso_matrix;
-    camera        camera;
+    SDL_Renderer*  __sdl_renderer = nullptr;
+    const matrix_3 iso_matrix;
+    camera         camera;
 
 private:
     void transform_tile(float, float, float, float, std::int16_t*,
@@ -37,7 +39,10 @@ private:
     void render_hitbox(const std::unique_ptr<hitbox>&);
 
 public:
-    render(class world& world) : __base(world), sprite_manager("sprites")
+    render(class world& world)
+        : __base(world),
+          sprite_manager("sprites"),
+          iso_matrix((matrix_3() << P201_ISO_MATRIX).finished() / sqrt_2)
     {
         flag.set(components::render::flag);
         flag.set(components::transform::flag);
