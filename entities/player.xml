@@ -59,5 +59,8 @@
             <hp>100.0</hp>
             <max_hp>100.0</max_hp>
         </component>
+        <component>
+            <flag>9</flag>
+        </component>
     </components>
 </entity>

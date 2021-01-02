@@ -174,21 +174,10 @@ struct hud : public component
 {
     using __base = component;
 
-    float hp_percent = 0.0f;
-
     static constexpr std::size_t flag = 9;
+
     hud(class entity& entity) : __base(entity) { }
     virtual ~hud() = default;
-};
-
-struct healthbar : public component
-{
-    using __base = component;
-
-    static constexpr std::size_t flag = 10;
-
-    healthbar(class entity& entity) : __base(entity) { }
-    virtual ~healthbar() = default;
 };
 } // namespace components
 } // namespace p201

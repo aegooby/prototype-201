@@ -125,6 +125,12 @@ public:
                     health.max_hp = component.get<float>("max_hp");
                     break;
                 }
+                case components::hud::flag:
+                {
+                    auto& hud = entity.add_component<components::hud>();
+                    (void)hud;
+                    break;
+                }
                 default:
                     break;
             }

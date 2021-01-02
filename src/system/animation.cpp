@@ -4,7 +4,6 @@
 
 #include "../__common.hpp"
 #include "../entity.hpp"
-#include "../entity_manager.hpp"
 #include "../event.hpp"
 #include "../util.hpp"
 #include "../window.hpp"
