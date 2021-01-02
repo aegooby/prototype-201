@@ -120,14 +120,9 @@ public:
                 }
                 case components::health::flag:
                 {
-                    auto& health = entity.add_component<components::health>();
-                    (void)health;
-                    break;
-                }
-                case components::hud::flag:
-                {
-                    auto& hud = entity.add_component<components::hud>();
-                    (void)hud;
+                    auto& health  = entity.add_component<components::health>();
+                    health.hp     = component.get<float>("hp");
+                    health.max_hp = component.get<float>("max_hp");
                     break;
                 }
                 default:
@@ -205,6 +200,13 @@ public:
                 {
                     auto& camera = entity.component<components::camera>();
                     component.add("focus", camera.focus);
+                    break;
+                }
+                case components::health::flag:
+                {
+                    auto& health = entity.component<components::health>();
+                    component.add("hp", health.hp);
+                    component.add("max_hp", health.max_hp);
                     break;
                 }
                 default:

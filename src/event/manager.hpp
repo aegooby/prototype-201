@@ -1,6 +1,6 @@
 
 #pragma once
-#include "__common.hpp"
+#include "../__common.hpp"
 #include "event.hpp"
 
 /**
@@ -10,7 +10,8 @@
 
 namespace p201
 {
-
+namespace events
+{
 class function_handler
 {
 protected:
@@ -50,7 +51,7 @@ public:
     virtual ~function_handler_template() = default;
 };
 
-class event_bus
+class manager
 {
 public:
     using list_t = std::list<std::unique_ptr<function_handler>>;
@@ -60,8 +61,8 @@ protected:
     class world&                                                 world;
 
 public:
-    event_bus(class world& world) : world(world) { }
-    ~event_bus() = default;
+    manager(class world& world) : world(world) { }
+    ~manager() = default;
     template<typename event_type, typename... types>
     void publish(types&&... args)
     {
@@ -87,5 +88,6 @@ public:
         handlers->emplace_back(std::make_unique<fht_t>(system, function));
     }
 };
+} // namespace events
 
 } // namespace p201

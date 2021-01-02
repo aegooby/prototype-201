@@ -5,8 +5,8 @@
 #include "component.hpp"
 #include "entity_manager.hpp"
 #include "event.hpp"
-#include "event_bus.hpp"
 #include "serialize.hpp"
+#include "ui.hpp"
 
 #include <typeindex>
 #include <unordered_map>
@@ -29,9 +29,11 @@ public:
     /** @brief Table of systems (type of system is the key). */
     std::unordered_map<std::type_index, std::unique_ptr<system>> systems;
     /** @brief Handles events and forwards them to the relevant systems. */
-    event_bus event_bus;
+    events::manager event_manager;
     /** @brief Used for loading and saving entities to XML. */
     serialize::xml serializer;
+    /** @brief Read the name idiot. */
+    ui::hud hud;
 
 protected:
     using cmptr_t = std::unique_ptr<component_manager>;

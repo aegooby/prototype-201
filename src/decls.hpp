@@ -21,7 +21,6 @@ class entity;
 // Components
 struct component;
 
-class event_bus;
 class world;
 class system;
 class entity_manager;

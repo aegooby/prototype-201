@@ -17,7 +17,7 @@ namespace systems
 {
 void animation::start()
 {
-    world.event_bus.subscribe(*this, &animation::on_animation_event);
+    world.event_manager.subscribe(*this, &animation::on_animation_event);
 }
 void animation::update()
 {

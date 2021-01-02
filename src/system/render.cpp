@@ -102,6 +102,15 @@ void render::start()
         throw sdl_error("Failed to load SDL Image libraries");
     sprite_manager.link(__sdl_renderer);
     sprite_manager.load();
+
+    auto& hb_main    = world.hud.healthbar.main;
+    hb_main.texture  = sprite_manager.flipbook("healthbar", "main").at(0);
+    hb_main.position = vector_2(30.0f, 30.0f);
+    hb_main.rect     = { .x = 0.0f, .y = 0.0f, .w = 300.0f, .h = 30.0f };
+    hb_main.srcrect  = { .x = 0, .y = 0, .w = 300, .h = 30 };
+
+    hb_main.rect.w *= 0.3f;
+    hb_main.srcrect.w *= 0.3f;
 }
 void render::stop()
 {
@@ -126,7 +135,7 @@ void render::update()
     if (world.keyboard.modifier(modifier::ALT))
         debug(render_quadtree(world.system<systems::collision>().quadtree));
 
-    // Render all the registered entities one by one
+    /* Render all the registered entities one by one. */
     for (auto& id : __registered_entities)
     {
         auto&       entity    = world.entity(id);
@@ -156,6 +165,12 @@ void render::update()
         if (render.visible)
             render_sprite(render.texture, &render.srcrect, &render.rect);
     }
+
+    /* Render the HUD. */
+    auto& hb_main  = world.hud.healthbar.main;
+    hb_main.rect.x = hb_main.position.x();
+    hb_main.rect.y = hb_main.position.y();
+    render_sprite(hb_main.texture, &hb_main.srcrect, &hb_main.rect);
 }
 void render::display()
 {

@@ -4,7 +4,6 @@
 #include "../__common.hpp"
 #include "../entity.hpp"
 #include "../event.hpp"
-#include "../event_bus.hpp"
 #include "../input.hpp"
 #include "../linalg.hpp"
 #include "../world.hpp"
@@ -28,7 +27,7 @@ void input::update()
         auto& transform = entity.component<components::transform>();
 
         auto animation = [&entity, this](const std::string& name) {
-            world.event_bus.publish<events::animation>(entity, name);
+            world.event_manager.publish<events::animation>(entity, name);
         };
 
         // Down
