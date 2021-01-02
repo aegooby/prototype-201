@@ -6,7 +6,6 @@
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "event_bus.hpp"
-#include "quadtree.hpp"
 #include "serialize.hpp"
 
 #include <typeindex>
@@ -18,30 +17,31 @@ namespace p201
 class world
 {
 public:
-    using cmptr_t = std::unique_ptr<component_manager>;
-    /** @brief Table of component managers (type of component is the key). */
-    std::unordered_map<std::type_index, cmptr_t> component_managers;
-    /** @brief Table of systems (type of system is the key). */
-    std::unordered_map<std::type_index, std::unique_ptr<system>> systems;
-    /** @brief Handles events and forwards them to the relevant systems. */
-    event_bus     event_bus;
+    /*** CONTEXT OBJECTS ***/
+    /** @brief Contains SDL window and window data. */
     class window& window;
     /** @brief State storage for keyboard inputs. */
     class keyboard& keyboard;
     /** @brief State storage for mouse inputs. */
     class mouse& mouse;
+
+    /*** GLOBAL OBJECTS ***/
+    /** @brief Table of systems (type of system is the key). */
+    std::unordered_map<std::type_index, std::unique_ptr<system>> systems;
+    /** @brief Handles events and forwards them to the relevant systems. */
+    event_bus event_bus;
     /** @brief Used for loading and saving entities to XML. */
     serialize::xml serializer;
-    /** @brief Used for loading sprites. */
-    sprite::manager sprite_manager;
     /** @brief Used to apply camera transform. */
     camera camera;
 
-    class quadtree quadtree;
-    // this is a quadtree
-
 protected:
+    using cmptr_t = std::unique_ptr<component_manager>;
+    /*** INTERNAL OBJECTS ***/
+    /** @brief It's in the name retard. */
     entity_manager entity_manager;
+    /** @brief Table of component managers (type of component is the key). */
+    std::unordered_map<std::type_index, cmptr_t> component_managers;
 
     std::unique_ptr<system>& __system(std::type_index);
 

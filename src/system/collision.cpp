@@ -4,7 +4,6 @@
 #include "../__common.hpp"
 #include "../entity_manager.hpp"
 #include "../event.hpp"
-#include "../quadtree.hpp"
 #include "../world.hpp"
 
 namespace p201
@@ -13,7 +12,7 @@ namespace systems
 {
 void collision::start()
 {
-    world.quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
+    quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
 }
 
 bool collision::hitbox_check(std::unique_ptr<hitbox>& __a,
@@ -79,8 +78,8 @@ bool collision::square_check(hitboxes::square& __a, hitboxes::square& __b)
 
 void collision::update()
 {
-    world.quadtree.remove(__registered_entities);
-    world.quadtree.insert(__registered_entities);
+    quadtree.remove(__registered_entities);
+    quadtree.insert(__registered_entities);
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);

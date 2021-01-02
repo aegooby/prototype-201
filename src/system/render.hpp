@@ -19,6 +19,8 @@ class render : public system
 public:
     using __base = system;
 
+    sprite::manager sprite_manager;
+
 protected:
     SDL_Renderer* __sdl_renderer = nullptr;
     matrix_3      iso_matrix;
@@ -37,7 +39,7 @@ private:
     void      camera_transform(std::int16_t*, std::int16_t*);
 
 public:
-    render(class world& world) : __base(world)
+    render(class world& world) : __base(world), sprite_manager("sprites")
     {
         flag.set(components::render::flag);
         flag.set(components::transform::flag);
@@ -55,8 +57,8 @@ public:
     {
         return __sdl_renderer;
     }
-    virtual void update() override { }
-    void         render_frame();
+    virtual void update() override;
+    void         display();
 
     // Preventing copying and moving
     render(const render&) = delete;

@@ -51,7 +51,6 @@ public:
     {
         window.start();
         for (auto& system : world.systems) system.second->start();
-        world.sprite_manager.load();
 
         SDL_initFramerate(&fps_manager);
         SDL_setFramerate(&fps_manager, global::game_fps);
@@ -119,7 +118,7 @@ public:
             /* Render a frame */
             if (render_ready)
             {
-                render();
+                display();
                 if (window_close_key()) stop();
 
                 /* Every time a frame is rendered successfully */
@@ -133,9 +132,9 @@ public:
     {
         __running = false;
     }
-    void render()
+    void display()
     {
-        world.system<systems::render>().render_frame();
+        world.system<systems::render>().display();
     }
     void update()
     {

@@ -9,6 +9,7 @@
 #include "../util.hpp"
 #include "../window.hpp"
 #include "../world.hpp"
+#include "render.hpp"
 
 namespace p201
 {
@@ -20,14 +21,14 @@ void animation::start()
 }
 void animation::update()
 {
+    auto& sprite_manager = world.system<systems::render>().sprite_manager;
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);
         auto& animation = entity.component<components::animation>();
         auto& render    = entity.component<components::render>();
 
-        auto& flipbook =
-            world.sprite_manager.flipbook(render.family, animation.name);
+        auto& flipbook = sprite_manager.flipbook(render.family, animation.name);
 
         if (!animation.fps) continue;
         std::size_t delay = 1.0f / animation.fps * global::game_fps;

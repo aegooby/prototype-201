@@ -4,6 +4,7 @@
 #include "../component.hpp"
 #include "../entity.hpp"
 #include "../hitbox.hpp"
+#include "../quadtree.hpp"
 #include "system.hpp"
 
 namespace p201
@@ -15,7 +16,9 @@ class collision : public system
 public:
     using __base = system;
 
-    collision(class world& world) : __base(world)
+    quadtree quadtree;
+
+    collision(class world& world) : __base(world), quadtree(world)
     {
         flag.set(components::transform::flag);
         flag.set(components::collision::flag);

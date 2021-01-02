@@ -10,6 +10,7 @@
 #include "../util.hpp"
 #include "../window.hpp"
 #include "../world.hpp"
+#include "collision.hpp"
 
 namespace p201
 {
@@ -123,7 +124,8 @@ void render::start()
     if (!__sdl_renderer) throw sdl_error("Failed to create rendering system");
     if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
         throw sdl_error("Failed to load SDL Image libraries");
-    world.sprite_manager.link(__sdl_renderer);
+    sprite_manager.link(__sdl_renderer);
+    sprite_manager.load();
 }
 void render::stop()
 {
@@ -141,7 +143,7 @@ void render::render_sprite(SDL_Texture* texture, SDL_FRect* rect)
         throw sdl_error("Failed to render texture");
 }
 
-void render::render_frame()
+void render::update()
 {
     if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 0, 255))
         throw sdl_error("Failed to set draw color");
@@ -150,7 +152,7 @@ void render::render_frame()
 
     if (world.keyboard.modifier(modifier::ALT))
     {
-        debug(render_quadtree(world.quadtree));
+        debug(render_quadtree(world.system<systems::collision>().quadtree));
     }
 
     // Render all the registered entities one by one
@@ -172,13 +174,17 @@ void render::render_frame()
             debug(render_hitbox(hitbox));
         }
 
-        if (!render.visible) continue;
-        if (!render.texture)
-            render.texture = world.sprite_manager.default_sprite(render.family);
-        SDL_FRect rect_shift = camera_transform(render.rect);
-        render_sprite(render.texture, &rect_shift);
+        if (render.visible)
+        {
+            if (!render.texture)
+                render.texture = sprite_manager.default_sprite(render.family);
+            SDL_FRect rect_shift = camera_transform(render.rect);
+            render_sprite(render.texture, &rect_shift);
+        }
     }
-
+}
+void render::display()
+{
     SDL_RenderPresent(__sdl_renderer);
 }
 
