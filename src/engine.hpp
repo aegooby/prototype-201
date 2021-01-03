@@ -29,7 +29,7 @@ protected:
     const float fps              = 60.0f;
     const float __time_per_frame = 1.0f / fps;
 
-protected:
+    /** @brief Checks for CMD-W or CTRL-W to close the window. */
     bool window_close_key() const
     {
 #if defined(P201_OS_MACOS)
@@ -119,6 +119,47 @@ public:
 
                 /* Every time a frame is rendered successfully */
                 __frame_count++;
+            }
+            else
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+    void start_other()
+    {
+        if (__running) return;
+        __running = true;
+
+        const float __dt      = 1.0f / fps;
+        float       time_prev = clock.time_s();
+
+        while (__running)
+        {
+            bool render_ready = false;
+
+            /* Set time for "this iteration" */
+            float time_next  = clock.time_s();
+            float time_frame = time_next - time_prev;
+            time_prev        = time_next;
+
+            /* This all made sense to me at some point */
+
+            while (time_frame > 0.0f)
+            {
+                if (window.closed()) __running = false;
+
+                float __delta = std::min(time_frame, __dt);
+                std::cout << "__dt: " << __dt << std::endl;
+                std::cout << "time_frame: " << time_frame << std::endl;
+                update(__dt);
+
+                time_frame -= __delta;
+                render_ready = true;
+            }
+            /* Render a frame */
+            if (render_ready)
+            {
+                display();
+                if (window_close_key()) stop();
             }
             else
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));

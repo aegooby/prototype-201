@@ -22,7 +22,7 @@ void movement::update(float dt)
             movement.velocity += movement.accel * dt;
         transform.position += movement.velocity * dt;
 
-        movement.velocity *= movement.friction / dt;
+        movement.velocity *= movement.friction;
         if (movement.velocity.norm() < 1.0f)
             movement.velocity << 0.0f, 0.0f, 0.0f;
     }
