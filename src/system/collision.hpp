@@ -34,8 +34,7 @@ public:
     static bool square_check(const hitboxes::square&, const hitboxes::square&);
     static bool hybrid_check(const hitboxes::circle&, const hitboxes::square&);
     static bool point_in_square(const vector_3&, const hitboxes::square&);
-    static bool intersect_circle(const hitboxes::circle&, const vector_3&,
-                                 const vector_3&);
+    
 };
 } // namespace systems
 } // namespace p201

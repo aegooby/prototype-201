@@ -59,32 +59,24 @@ bool collision::point_in_square(const vector_3&         point,
             square.top() <= point.y() && square.bottom() >= point.y());
 }
 
-bool collision::intersect_circle(const hitboxes::circle& cirlce,
-                                 const vector_3& __a, const vector_3& __b)
-{
-    float dist = (abs((__b.x() - __a.x()) * (__a.y() - cirlce.center.y()) -
-                      (__a.x() - cirlce.center.x()) * (__b.y() - __a.y())) /
-                  (distance(__a, __b)));
-
-    return dist < cirlce.radius;
-}
-
 bool collision::hybrid_check(const hitboxes::circle& circle,
                              const hitboxes::square& square)
 {
-    if (point_in_square(circle.center, square)) { return true; }
-    else
-    {
-        vector_3 bot_left  = vector_3(square.left(), square.bottom(), 0);
-        vector_3 bot_right = vector_3(square.right(), square.bottom(), 0);
-        vector_3 top_left  = vector_3(square.left(), square.top(), 0);
-        vector_3 top_right = vector_3(square.right(), square.top(), 0);
+    float circleDistance_x = abs(circle.center(0) - square.center(0));
+    float circleDistance_y = abs(circle.center(1) - square.center(1));
 
-        return (intersect_circle(circle, bot_left, bot_right) ||
-                intersect_circle(circle, bot_right, top_right) ||
-                intersect_circle(circle, top_right, top_left) ||
-                intersect_circle(circle, top_left, bot_left));
-    }
+    if (circleDistance_x > (square.width/2 + circle.radius)) { return false; }
+    if (circleDistance_y > (square.height/2 + circle.radius)) { return false; }
+
+    if (circleDistance_x <= (square.width/2)) { return true; }
+    if (circleDistance_y <= (square.height/2)) { return true; }
+
+    float cornerDistance_sq = pow((circleDistance_x - square.width/2),2) +
+                         pow((circleDistance_y - square.height/2),2);
+
+    return (cornerDistance_sq <= (pow(circle.radius,2)));
+    
+    
 }
 
 bool collision::circle_check(const hitboxes::circle& __a,
@@ -97,8 +89,8 @@ bool collision::square_check(const hitboxes::square& __a,
                              const hitboxes::square& __b)
 {
 
-    return ((__a.left() < __b.right()) && (__a.right() > __b.left()) &&
-            (__a.bottom() < __b.top()) && (__a.top() > __b.bottom()));
+    return ((__a.left() <= __b.right()) && (__a.right() >= __b.left()) &&
+            (__a.bottom() >= __b.top()) && (__a.top() <= __b.bottom()));
 }
 
 void collision::update(float dt)
