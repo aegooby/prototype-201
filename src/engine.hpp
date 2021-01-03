@@ -20,6 +20,7 @@ class engine
 {
 public:
     static constexpr float dt_factor = 60.0f;
+    static constexpr float dt        = 1.0f / dt_factor;
     static constexpr bool  vsync     = true;
 
 protected:
@@ -29,9 +30,8 @@ protected:
     clock     clock;
     world     world;
 
-    bool        __running = false;
-    const float fps       = 60.0f;
-    const float __dt      = 1.0f / dt_factor;
+    bool  __running = false;
+    float fps       = 60.0f;
 
     /** @brief Checks for CMD-W or CTRL-W to close the window. */
     bool window_close_key() const
@@ -78,11 +78,11 @@ public:
             time_prev = time_next;
             accumulator += time_frame;
 
-            while (accumulator >= __dt)
+            while (accumulator >= dt)
             {
                 if (window.closed()) __running = false;
-                update(__dt);
-                accumulator -= __dt;
+                update(dt);
+                accumulator -= dt;
                 idle = false;
             }
             if (!idle)
