@@ -28,14 +28,14 @@ public:
     virtual void start() override;
     virtual void update() override;
 
-    static bool  hitbox_check(std::unique_ptr<hitbox>& __a,
-                       std::unique_ptr<hitbox>& __b);
-    static bool  circle_check(hitboxes::circle& hitbox1, hitboxes::circle& hitbox2);
-    static bool  square_check(hitboxes::square& hitbox1, hitboxes::square& hitbox2);
-    static bool  hybrid_check(hitboxes::circle& hitbox1, hitboxes::square& hitbox2);
-    static bool  point_in_square(vector_3 circle_center, hitboxes::square& hitbox2);
-    static bool  intersectCircle(hitboxes::circle& hitbox1, vector_3 point1, vector_3 point2);
-    static float distance(vector_3 point1, vector_3 point2);
+    static bool hitbox_check(const std::unique_ptr<hitbox>&,
+                             const std::unique_ptr<hitbox>&);
+    static bool circle_check(const hitboxes::circle&, const hitboxes::circle&);
+    static bool square_check(const hitboxes::square&, const hitboxes::square&);
+    static bool hybrid_check(const hitboxes::circle&, const hitboxes::square&);
+    static bool point_in_square(const vector_3&, const hitboxes::square&);
+    static bool intersect_circle(const hitboxes::circle&, const vector_3&,
+                                 const vector_3&);
 };
 } // namespace systems
 } // namespace p201

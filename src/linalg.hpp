@@ -26,4 +26,9 @@ static const float sqrt_2 = std::sqrt(2.0f);
 static const float sqrt_3 = std::sqrt(3.0f);
 static const float sqrt_6 = std::sqrt(6.0f);
 
+inline float distance(const vector_3& __a, const vector_3& __b)
+{
+    return std::hypot(__a.x() - __b.x(), __a.y() - __b.y(), __a.z() - __b.z());
+}
+
 } // namespace p201

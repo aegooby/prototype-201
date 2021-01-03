@@ -15,8 +15,8 @@ void collision::start()
     quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
 }
 
-bool collision::hitbox_check(std::unique_ptr<hitbox>& __a,
-                             std::unique_ptr<hitbox>& __b)
+bool collision::hitbox_check(const std::unique_ptr<hitbox>& __a,
+                             const std::unique_ptr<hitbox>& __b)
 {
     auto __ptr_a = __a.get();
     auto __ptr_b = __b.get();
@@ -52,49 +52,49 @@ bool collision::hitbox_check(std::unique_ptr<hitbox>& __a,
     throw std::runtime_error("Unknown hitbox types");
 }
 
-float collision::distance(vector_3 point1, vector_3 point2)
+bool collision::point_in_square(const vector_3&         point,
+                                const hitboxes::square& square)
 {
-    return sqrt(pow((point1(0) + point2(0)), 2) +
-                pow((point1(1) + point2(1)), 2));
+    return (square.left() <= point.x() && square.right() >= point.x() &&
+            square.top() <= point.y() && square.bottom() >= point.y());
 }
 
-bool  collision::point_in_square(vector_3 circle_center, hitboxes::square& hitbox2)
+bool collision::intersect_circle(const hitboxes::circle& cirlce,
+                                 const vector_3& __a, const vector_3& __b)
 {
-    return (hitbox2.left() <= circle_center(0) &&
-            hitbox2.right() >= circle_center(0) &&
-            hitbox2.top() <= circle_center(1) &&
-            hitbox2.bottom() >= circle_center(1));
+    float dist = (abs((__b.x() - __a.x()) * (__a.y() - cirlce.center.y()) -
+                      (__a.x() - cirlce.center.x()) * (__b.y() - __a.y())) /
+                  (distance(__a, __b)));
+
+    return dist < cirlce.radius;
 }
 
-bool  collision::intersectCircle(hitboxes::circle& hitbox1, vector_3 point1, vector_3 point2)
-{
-    float dist = (abs((point2(0)-point1(0))*(point1(1)-hitbox1.center(1)) - (point1(0)-hitbox1.center(0))*(point2(1)-point1(1)))/(distance(point1, point2)));
-    
-    return dist < hitbox1.radius;
-}
-
-bool collision::hybrid_check(hitboxes::circle& circle, hitboxes::square& square)
+bool collision::hybrid_check(const hitboxes::circle& circle,
+                             const hitboxes::square& square)
 {
     if (point_in_square(circle.center, square)) { return true; }
-    else {
-        vector_3 bot_left = vector_3(square.left(), square.bottom(), 0);
+    else
+    {
+        vector_3 bot_left  = vector_3(square.left(), square.bottom(), 0);
         vector_3 bot_right = vector_3(square.right(), square.bottom(), 0);
-        vector_3 top_left = vector_3(square.left(), square.top(), 0);
+        vector_3 top_left  = vector_3(square.left(), square.top(), 0);
         vector_3 top_right = vector_3(square.right(), square.top(), 0);
-        
-        return (intersectCircle(circle, bot_left, bot_right) ||
-                intersectCircle(circle, bot_right, top_right) ||
-                intersectCircle(circle, top_right, top_left) ||
-                intersectCircle(circle, top_left, bot_left));
+
+        return (intersect_circle(circle, bot_left, bot_right) ||
+                intersect_circle(circle, bot_right, top_right) ||
+                intersect_circle(circle, top_right, top_left) ||
+                intersect_circle(circle, top_left, bot_left));
     }
 }
 
-bool collision::circle_check(hitboxes::circle& __a, hitboxes::circle& __b)
+bool collision::circle_check(const hitboxes::circle& __a,
+                             const hitboxes::circle& __b)
 {
     return (__a.radius + __b.radius > distance(__a.center, __b.center));
 }
 
-bool collision::square_check(hitboxes::square& __a, hitboxes::square& __b)
+bool collision::square_check(const hitboxes::square& __a,
+                             const hitboxes::square& __b)
 {
 
     return ((__a.left() < __b.right()) && (__a.right() > __b.left()) &&

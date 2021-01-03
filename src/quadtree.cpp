@@ -3,8 +3,8 @@
 #include "__common.hpp"
 #include "entity.hpp"
 #include "linalg.hpp"
-#include "world.hpp"
 #include "system.hpp"
+#include "world.hpp"
 
 #include <algorithm>
 
@@ -12,19 +12,16 @@ namespace p201
 {
 bool quadtree::is_in(std::size_t id, const box& box)
 {
-    auto& entity   = world.entity(id);
-    auto& ent_hitbox = entity.component<components::collision>().hitbox;
-    
-    
-    std::unique_ptr<hitbox> ptr = std::make_unique<hitboxes::square>();
-    auto square_ptr = ptr.get();
-    auto& node_square = *dynamic_cast<hitboxes::square*>(square_ptr);
-    
-    node_square.width = box.w;
-    node_square.height = box.h;
-    node_square.center = vector_3((box.x+box.w)/2,(box.y+box.h)/2,0);
-    
-    return systems::collision::hitbox_check(ent_hitbox, ptr);
+    auto& entity = world.entity(id);
+    auto& hitbox = entity.component<components::collision>().hitbox;
+
+    std::unique_ptr<struct hitbox> ptr = std::make_unique<hitboxes::square>();
+    auto& node = *dynamic_cast<hitboxes::square*>(ptr.get());
+
+    node.width  = box.w;
+    node.height = box.h;
+    node.center = vector_3(box.x + box.w / 2.0f, box.y + box.h / 2.0f, 0.0f);
+    return systems::collision::hitbox_check(hitbox, ptr);
 }
 void quadtree::insert(std::size_t id, node& node, std::size_t depth)
 {
