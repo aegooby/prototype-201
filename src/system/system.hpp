@@ -35,7 +35,7 @@ public:
     /** @brief All the needed system initialization. */
     virtual void start() = 0;
     /** @brief Called periodically to update registered entities. */
-    virtual void update() = 0;
+    virtual void update(float dt) = 0;
     virtual void register_entity(class entity&);
     virtual void deregister_entity(class entity&);
 

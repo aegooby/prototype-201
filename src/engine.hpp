@@ -10,7 +10,6 @@
 #include "window.hpp"
 #include "world.hpp"
 
-#include <SDL2_framerate.h>
 #include <chrono>
 #include <thread>
 
@@ -27,8 +26,8 @@ protected:
     world     world;
 
     bool        __running        = false;
-    const float __time_per_frame = 1.0f / float(global::game_fps);
-    FPSmanager  fps_manager;
+    const float fps              = 60.0f;
+    const float __time_per_frame = 1.0f / fps;
 
 protected:
     bool window_close_key() const
@@ -51,9 +50,6 @@ public:
     {
         window.start();
         for (auto& system : world.systems) system.second->start();
-
-        SDL_initFramerate(&fps_manager);
-        SDL_setFramerate(&fps_manager, global::game_fps);
 
         world.serializer.directory = "entities";
         world.serializer.load_entity(world.new_entity(), "player");
@@ -107,7 +103,7 @@ public:
                 /* All non-graphical processing */
                 if (window.closed()) __running = false;
 
-                update();
+                update(__time_per_frame * global::fpsfactor);
 
                 /* One frame has been rendered, so subtract */
                 time_unprocessed -= __time_per_frame;
@@ -136,10 +132,10 @@ public:
     {
         world.system<systems::render>().display();
     }
-    void update()
+    void update(float dt)
     {
         window.update();
-        for (auto& system : world.systems) system.second->update();
+        for (auto& system : world.systems) system.second->update(dt);
     }
 
     // Preventing copying and moving

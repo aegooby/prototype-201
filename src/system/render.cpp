@@ -123,7 +123,7 @@ void render::render_sprite(SDL_Texture* texture, SDL_Rect* src, SDL_FRect* rect)
         throw sdl_error("Failed to render texture");
 }
 
-void render::update()
+void render::update(float dt)
 {
     if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 0, 255))
         throw sdl_error("Failed to set draw color");
@@ -169,7 +169,6 @@ void render::update()
     hb_main.rect.x = hb_main.position.x();
     hb_main.rect.y = hb_main.position.y();
     render_sprite(hb_main.texture, &hb_main.srcrect, &hb_main.rect);
-    
 }
 void render::display()
 {

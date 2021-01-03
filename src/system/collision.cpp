@@ -101,7 +101,7 @@ bool collision::square_check(const hitboxes::square& __a,
             (__a.bottom() < __b.top()) && (__a.top() > __b.bottom()));
 }
 
-void collision::update()
+void collision::update(float dt)
 {
     quadtree.remove(__registered_entities);
     quadtree.insert(__registered_entities);

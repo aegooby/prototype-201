@@ -26,7 +26,7 @@ public:
     virtual ~collision() = default;
     void         check();
     virtual void start() override;
-    virtual void update() override;
+    virtual void update(float dt) override;
 
     static bool hitbox_check(const std::unique_ptr<hitbox>&,
                              const std::unique_ptr<hitbox>&);

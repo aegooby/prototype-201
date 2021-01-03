@@ -21,7 +21,7 @@ public:
     }
     virtual ~input() = default;
     virtual void start() override;
-    virtual void update() override;
+    virtual void update(float dt) override;
 };
 } // namespace systems
 } // namespace p201

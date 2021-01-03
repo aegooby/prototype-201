@@ -54,13 +54,9 @@ public:
 
     void render_quadtree(const quadtree&);
 
-    virtual void  start() override;
-    void          stop();
-    SDL_Renderer* sdl_renderer()
-    {
-        return __sdl_renderer;
-    }
-    virtual void update() override;
+    virtual void start() override;
+    void         stop();
+    virtual void update(float dt) override;
     void         display();
 
     // Preventing copying and moving

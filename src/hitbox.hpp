@@ -31,19 +31,19 @@ struct circle : hitbox
     float radius = 0.0f;
 
     virtual ~circle() = default;
-    virtual float top() const
+    virtual float top() const override
     {
         return center.y() - radius;
     }
-    virtual float bottom() const
+    virtual float bottom() const override
     {
         return center.y() + radius;
     }
-    virtual float right() const
+    virtual float right() const override
     {
         return center.x() + radius;
     }
-    virtual float left() const
+    virtual float left() const override
     {
         return center.x() - radius;
     }
@@ -59,22 +59,22 @@ struct square : hitbox
 
     virtual ~square() = default;
 
-    virtual float top() const
+    virtual float top() const override
     {
         return center.y() - height / 2.0f;
     }
 
-    virtual float bottom() const
+    virtual float bottom() const override
     {
         return center.y() + height / 2.0f;
     }
 
-    virtual float right() const
+    virtual float right() const override
     {
         return center.x() + width / 2.0f;
     }
 
-    virtual float left() const
+    virtual float left() const override
     {
         return center.x() - width / 2.0f;
     }

@@ -11,7 +11,7 @@ namespace p201
 namespace systems
 {
 void movement::start() { }
-void movement::update()
+void movement::update(float dt)
 {
     for (auto& id : __registered_entities)
     {
@@ -19,9 +19,10 @@ void movement::update()
         auto& transform = entity.component<components::transform>();
         auto& movement  = entity.component<components::movement>();
         if (movement.velocity.norm() < movement.max_speed)
-            movement.velocity += movement.accel;
-        transform.position += movement.velocity;
-        movement.velocity *= movement.friction;
+            movement.velocity += movement.accel * dt;
+        transform.position += movement.velocity * dt;
+
+        movement.velocity *= movement.friction / dt;
         if (movement.velocity.norm() < 1.0f)
             movement.velocity << 0.0f, 0.0f, 0.0f;
     }

@@ -14,7 +14,7 @@ namespace p201
 namespace systems
 {
 void input::start() { }
-void input::update()
+void input::update(float dt)
 {
     auto& keyboard = world.keyboard;
     auto& mouse    = world.mouse;

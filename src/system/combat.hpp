@@ -24,7 +24,7 @@ public:
     }
     virtual ~combat() = default;
     virtual void start() override;
-    virtual void update() override;
+    virtual void update(float dt) override;
 
     // Preventing copying and moving
     combat(const combat&) = delete;

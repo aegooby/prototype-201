@@ -15,7 +15,7 @@ namespace p201
 namespace systems
 {
 void combat::start() { }
-void combat::update()
+void combat::update(float dt)
 {
     for (auto& id : __registered_entities)
     {

@@ -25,7 +25,7 @@ public:
     }
     virtual ~animation() = default;
     virtual void start() override;
-    virtual void update() override;
+    virtual void update(float dt) override;
 
     void on_animation_event(events::animation&);
 

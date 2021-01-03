@@ -18,7 +18,7 @@ void animation::start()
 {
     world.event_manager.subscribe(*this, &animation::on_animation_event);
 }
-void animation::update()
+void animation::update(float dt)
 {
     auto& sprite_manager = world.system<systems::render>().sprite_manager;
     for (auto& id : __registered_entities)
@@ -29,11 +29,13 @@ void animation::update()
 
         auto& flipbook = sprite_manager.flipbook(render.family, animation.name);
 
-        if (!animation.fps) continue;
-        std::size_t delay = 1.0f / animation.fps * global::game_fps;
-        ++animation.frame %= delay;
-        if (!animation.frame) ++animation.index %= flipbook.frames();
-        render.texture = flipbook.at(animation.index);
+        if (animation.fps)
+        {
+            std::size_t delay = 1.0f / animation.fps * global::fpsfactor / dt;
+            ++animation.frame %= delay;
+            if (!animation.frame) ++animation.index %= flipbook.frames();
+            render.texture = flipbook.at(animation.index);
+        }
     }
 }
 void animation::on_animation_event(events::animation& event)
