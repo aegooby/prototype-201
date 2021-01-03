@@ -79,6 +79,8 @@ struct transform : public component
         west  = 3,
     };
 
+    /** @brief Previous coordinate used to interpolate in updates. */
+    vector_3 lerp = vector_3(0.0f, 0.0f, 0.0f);
     /** @brief Game coordinate position (not isometric position). */
     vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
     /** @brief Direction the entity is facing (not always used). */
@@ -96,8 +98,9 @@ struct movement : public component
 
     vector_3 velocity  = vector_3(0.0f, 0.0f, 0.0f);
     vector_3 accel     = vector_3(0.0f, 0.0f, 0.0f);
-    float    max_speed = 10.0f;
-    float    friction  = 0.6f;
+    float    max_speed = 0.0f;
+    float    friction  = 0.0f;
+    float    mass      = 0.0f;
 
     movement(class entity& entity) : __base(entity) { }
     virtual ~movement() = default;

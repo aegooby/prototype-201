@@ -7,7 +7,7 @@ namespace p201
 
 namespace global
 {
-static constexpr float fpsfactor = 60.0f;
+static constexpr float dt_factor = 60.0f;
 static constexpr bool  vsync     = true;
 } // namespace global
 

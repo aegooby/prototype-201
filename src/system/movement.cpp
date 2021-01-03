@@ -18,11 +18,16 @@ void movement::update(float dt)
         auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
         auto& movement  = entity.component<components::movement>();
-        if (movement.velocity.norm() < movement.max_speed)
-            movement.velocity += movement.accel * dt;
-        transform.position += movement.velocity * dt;
 
+        movement.velocity += movement.accel * dt;
+        if (movement.velocity.norm() > movement.max_speed)
+        {
+            movement.velocity.normalize();
+            movement.velocity *= movement.max_speed;
+        }
+        transform.position += movement.velocity * dt;
         movement.velocity *= movement.friction;
+
         if (movement.velocity.norm() < 1.0f)
             movement.velocity << 0.0f, 0.0f, 0.0f;
     }

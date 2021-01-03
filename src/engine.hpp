@@ -25,9 +25,9 @@ protected:
     clock     clock;
     world     world;
 
-    bool        __running        = false;
-    const float fps              = 60.0f;
-    const float __time_per_frame = 1.0f / fps;
+    bool        __running = false;
+    const float fps       = 60.0f;
+    const float __dt      = 1.0f / global::dt_factor;
 
     /** @brief Checks for CMD-W or CTRL-W to close the window. */
     bool window_close_key() const
@@ -61,102 +61,27 @@ public:
         if (__running) return;
         __running = true;
 
-        float time_last_it     = clock.time_s();
-        float time_unprocessed = 0;
-
-        int32_t     __frame_count      = 0;
-        float       __frame_time       = 0;
-        const float __frame_rate_check = 1.0f;
+        double time_prev   = clock.time_s();
+        double accumulator = 0.0;
 
         while (__running)
         {
-            bool render_ready = false;
+            bool idle = true;
 
-            /* Set time for "this iteration" */
-            float time_next_it     = clock.time_s();
-            float time_taken_frame = time_next_it - time_last_it;
+            double time_next  = clock.time_s();
+            double time_frame = time_next - time_prev;
 
-            time_last_it = time_next_it;
+            time_prev = time_next;
+            accumulator += time_frame;
 
-            /* To count the time that has passed from one iteration to the next
-             */
-            time_unprocessed += time_taken_frame;
-            __frame_time += time_taken_frame;
-
-            /* Check frame rate */
-            if (__frame_time >= __frame_rate_check)
-            {
-                __frame_time  = 0;
-                __frame_count = 0;
-            }
-
-            /*
-             * Process anything that has happened in the last one or more frames
-             * This avoids input lag and gives the engine a chance to catch up
-             * on input/logic before trying to render
-             */
-
-            /* This all made sense to me at some point */
-
-            while (time_unprocessed >= __time_per_frame)
-            {
-                /* All non-graphical processing */
-                if (window.closed()) __running = false;
-
-                update(__time_per_frame * global::fpsfactor);
-
-                /* One frame has been rendered, so subtract */
-                time_unprocessed -= __time_per_frame;
-
-                /* Once this loop is done, we will be ready to render */
-                render_ready = true;
-            }
-            /* Render a frame */
-            if (render_ready)
-            {
-                display();
-                if (window_close_key()) stop();
-
-                /* Every time a frame is rendered successfully */
-                __frame_count++;
-            }
-            else
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        }
-    }
-    void start_other()
-    {
-        if (__running) return;
-        __running = true;
-
-        const float __dt      = 1.0f / fps;
-        float       time_prev = clock.time_s();
-
-        while (__running)
-        {
-            bool render_ready = false;
-
-            /* Set time for "this iteration" */
-            float time_next  = clock.time_s();
-            float time_frame = time_next - time_prev;
-            time_prev        = time_next;
-
-            /* This all made sense to me at some point */
-
-            while (time_frame > 0.0f)
+            while (accumulator >= __dt)
             {
                 if (window.closed()) __running = false;
-
-                float __delta = std::min(time_frame, __dt);
-                std::cout << "__dt: " << __dt << std::endl;
-                std::cout << "time_frame: " << time_frame << std::endl;
                 update(__dt);
-
-                time_frame -= __delta;
-                render_ready = true;
+                accumulator -= __dt;
+                idle = false;
             }
-            /* Render a frame */
-            if (render_ready)
+            if (!idle)
             {
                 display();
                 if (window_close_key()) stop();

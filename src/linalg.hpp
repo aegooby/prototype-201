@@ -31,4 +31,14 @@ inline float distance(const vector_3& __a, const vector_3& __b)
     return std::hypot(__a.x() - __b.x(), __a.y() - __b.y(), __a.z() - __b.z());
 }
 
+template<int n>
+inline std::string to_string(const vector<n>& vector)
+{
+    std::string str = "(";
+    for (std::size_t i = 0; i < n - 1; ++i)
+        str += std::to_string(vector[i]) + ", ";
+    str += std::to_string(vector[n - 1]) + ")";
+    return str;
+}
+
 } // namespace p201

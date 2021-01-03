@@ -63,6 +63,9 @@ public:
                     movement.accel.x()    = component.get<float>("accel.x");
                     movement.accel.y()    = component.get<float>("accel.y");
                     movement.accel.z()    = component.get<float>("accel.z");
+                    movement.max_speed    = component.get<float>("max_speed");
+                    movement.friction     = component.get<float>("friction");
+                    movement.mass         = component.get<float>("mass");
                     break;
                 }
                 case components::collision::flag:

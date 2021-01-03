@@ -19,12 +19,14 @@ void input::update(float dt)
     auto& keyboard = world.keyboard;
     auto& mouse    = world.mouse;
     (void)mouse;
-    static const float speed = 3.0f;
+    const float force = 1000.0f;
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);
         auto& movement  = entity.component<components::movement>();
         auto& transform = entity.component<components::transform>();
+
+        const float accel = force / movement.mass;
 
         auto animation = [&entity, this](const std::string& name) {
             world.event_manager.publish<events::animation>(entity, name);
@@ -35,13 +37,13 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
-            movement.accel.x() -= speed / sqrt_2;
-            movement.accel.y() += speed / sqrt_2;
+            movement.accel.x() -= accel / sqrt_2;
+            movement.accel.y() += accel / sqrt_2;
         }
         if (keyboard.up(keycode::S))
         {
-            movement.accel.x() += speed / sqrt_2;
-            movement.accel.y() -= speed / sqrt_2;
+            movement.accel.x() += accel / sqrt_2;
+            movement.accel.y() -= accel / sqrt_2;
         }
 
         // Up
@@ -49,13 +51,13 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
-            movement.accel.x() += speed / sqrt_2;
-            movement.accel.y() -= speed / sqrt_2;
+            movement.accel.x() += accel / sqrt_2;
+            movement.accel.y() -= accel / sqrt_2;
         }
         if (keyboard.up(keycode::W))
         {
-            movement.accel.x() -= speed / sqrt_2;
-            movement.accel.y() += speed / sqrt_2;
+            movement.accel.x() -= accel / sqrt_2;
+            movement.accel.y() += accel / sqrt_2;
         }
 
         // Right
@@ -67,8 +69,8 @@ void input::update(float dt)
                 animation("walk-right");
             else
                 animation("stand-right");
-            movement.accel.x() += speed / sqrt_2;
-            movement.accel.y() += speed / sqrt_2;
+            movement.accel.x() += accel / sqrt_2;
+            movement.accel.y() += accel / sqrt_2;
         }
         if (keyboard.up(keycode::D))
         {
@@ -78,8 +80,8 @@ void input::update(float dt)
                 animation("stand-right");
             else
                 animation("walk-left");
-            movement.accel.x() -= speed / sqrt_2;
-            movement.accel.y() -= speed / sqrt_2;
+            movement.accel.x() -= accel / sqrt_2;
+            movement.accel.y() -= accel / sqrt_2;
         }
 
         // Left
@@ -89,8 +91,8 @@ void input::update(float dt)
                 animation("walk-left");
             else
                 animation("stand-left");
-            movement.accel.x() -= speed / sqrt_2;
-            movement.accel.y() -= speed / sqrt_2;
+            movement.accel.x() -= accel / sqrt_2;
+            movement.accel.y() -= accel / sqrt_2;
         }
         if (keyboard.up(keycode::A))
         {
@@ -98,8 +100,8 @@ void input::update(float dt)
                 animation("stand-left");
             else
                 animation("walk-right");
-            movement.accel.x() += speed / sqrt_2;
-            movement.accel.y() += speed / sqrt_2;
+            movement.accel.x() += accel / sqrt_2;
+            movement.accel.y() += accel / sqrt_2;
         }
     }
 }

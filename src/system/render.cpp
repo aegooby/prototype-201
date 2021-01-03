@@ -140,13 +140,6 @@ void render::update(float dt)
         auto&       render    = entity.component<components::render>();
         const auto& transform = entity.component<components::transform>();
 
-        if (entity.flag.test(components::collision::flag) &&
-            world.keyboard.modifier(modifier::ALT))
-        {
-            auto& hitbox = entity.component<components::collision>().hitbox;
-            debug(render_hitbox(hitbox));
-        }
-
         const vector_3 screen_position =
             render.iso ? iso_matrix * transform.position : transform.position;
 
@@ -159,6 +152,12 @@ void render::update(float dt)
             auto& camera = entity.component<components::camera>();
             if (camera.focus) this->camera.center = util::center(render.rect);
             render.rect = this->camera.transform(render.rect);
+        }
+        if (entity.flag.test(components::collision::flag) &&
+            world.keyboard.modifier(modifier::ALT))
+        {
+            auto& hitbox = entity.component<components::collision>().hitbox;
+            debug(render_hitbox(hitbox));
         }
         if (render.visible)
             render_sprite(render.texture, &render.srcrect, &render.rect);
