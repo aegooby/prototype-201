@@ -4,13 +4,6 @@
 
 namespace p201
 {
-
-namespace global
-{
-static constexpr float dt_factor = 60.0f;
-static constexpr bool  vsync     = true;
-} // namespace global
-
 class window;
 class mouse;
 class clock;

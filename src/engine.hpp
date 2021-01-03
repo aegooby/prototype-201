@@ -18,6 +18,10 @@ namespace p201
 
 class engine
 {
+public:
+    static constexpr float dt_factor = 60.0f;
+    static constexpr bool  vsync     = true;
+
 protected:
     window    window;
     keyboard& keyboard;
@@ -27,7 +31,7 @@ protected:
 
     bool        __running = false;
     const float fps       = 60.0f;
-    const float __dt      = 1.0f / global::dt_factor;
+    const float __dt      = 1.0f / dt_factor;
 
     /** @brief Checks for CMD-W or CTRL-W to close the window. */
     bool window_close_key() const

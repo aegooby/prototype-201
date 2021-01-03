@@ -3,6 +3,7 @@
 #include "animation.hpp"
 
 #include "../__common.hpp"
+#include "../engine.hpp"
 #include "../entity.hpp"
 #include "../event.hpp"
 #include "../util.hpp"
@@ -31,7 +32,7 @@ void animation::update(float dt)
 
         if (animation.fps)
         {
-            std::size_t delay = 1.0f / animation.fps * global::dt_factor;
+            std::size_t delay = 1.0f / animation.fps * engine::dt_factor;
             ++animation.frame %= delay;
             if (!animation.frame) ++animation.index %= flipbook.frames();
             render.texture = flipbook.at(animation.index);

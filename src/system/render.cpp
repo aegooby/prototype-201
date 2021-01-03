@@ -2,6 +2,7 @@
 #include "render.hpp"
 
 #include "../__common.hpp"
+#include "../engine.hpp"
 #include "../entity.hpp"
 #include "../entity_manager.hpp"
 #include "../event.hpp"
@@ -93,7 +94,7 @@ void render::render_quadtree(const quadtree& quadtree)
 
 void render::start()
 {
-    std::uint32_t flags = global::vsync ? SDL_RENDERER_PRESENTVSYNC : 0;
+    std::uint32_t flags = engine::vsync ? SDL_RENDERER_PRESENTVSYNC : 0;
     __sdl_renderer = SDL_CreateRenderer(world.window.sdl_window(), -1, flags);
     if (!__sdl_renderer) throw sdl_error("Failed to create rendering system");
     if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
