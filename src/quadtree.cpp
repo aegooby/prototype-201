@@ -21,22 +21,11 @@ bool quadtree::is_in(std::size_t id, const box& box)
     node.width  = box.w;
     node.height = box.h;
     node.center = vector_3(box.x + box.w / 2.0f, box.y + box.h / 2.0f, 0.0f);
-    if (box.y == 325) {
-        int i = 0;
-    }
-    if (systems::collision::hitbox_check(hitbox, ptr)) {
-        std::cout << "entity " << entity.id << " is in box with x: " << box.x << " and y: "<< box.y << std::endl;
-        return true;
-    }
-    else {
-        return false;
-    }
+    return systems::collision::hitbox_check(hitbox, ptr);
 }
 void quadtree::insert(std::size_t id, node& node, std::size_t depth)
 {
-    if (!is_in(id, node.bounds)) {
-        return;
-    }
+    if (!is_in(id, node.bounds)) { return; }
     if (node.leaf)
     {
         if (depth < max_depth && node.count() + 1 > threshold)
