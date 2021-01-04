@@ -65,18 +65,19 @@ bool collision::hybrid_check(const hitboxes::circle& circle,
     float circleDistance_x = abs(circle.center(0) - square.center(0));
     float circleDistance_y = abs(circle.center(1) - square.center(1));
 
-    if (circleDistance_x > (square.width/2 + circle.radius)) { return false; }
-    if (circleDistance_y > (square.height/2 + circle.radius)) { return false; }
+    if (circleDistance_x > (square.width / 2 + circle.radius)) { return false; }
+    if (circleDistance_y > (square.height / 2 + circle.radius))
+    {
+        return false;
+    }
 
-    if (circleDistance_x <= (square.width/2)) { return true; }
-    if (circleDistance_y <= (square.height/2)) { return true; }
+    if (circleDistance_x <= (square.width / 2)) { return true; }
+    if (circleDistance_y <= (square.height / 2)) { return true; }
 
-    float cornerDistance_sq = pow((circleDistance_x - square.width/2),2) +
-                         pow((circleDistance_y - square.height/2),2);
+    float cornerDistance_sq = pow((circleDistance_x - square.width / 2), 2) +
+                              pow((circleDistance_y - square.height / 2), 2);
 
-    return (cornerDistance_sq <= (pow(circle.radius,2)));
-    
-    
+    return (cornerDistance_sq <= (pow(circle.radius, 2)));
 }
 
 bool collision::circle_check(const hitboxes::circle& __a,

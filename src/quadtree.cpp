@@ -10,7 +10,7 @@
 
 namespace p201
 {
-bool quadtree::is_in(std::size_t id, const box& box)
+bool quadtree::intersect(std::size_t id, const box& box)
 {
     auto& entity = world.entity(id);
     auto& hitbox = entity.component<components::collision>().hitbox;
@@ -25,7 +25,7 @@ bool quadtree::is_in(std::size_t id, const box& box)
 }
 void quadtree::insert(std::size_t id, node& node, std::size_t depth)
 {
-    if (!is_in(id, node.bounds)) { return; }
+    if (!intersect(id, node.bounds)) { return; }
     if (node.leaf)
     {
         if (depth < max_depth && node.count() + 1 > threshold)
@@ -39,7 +39,7 @@ void quadtree::insert(std::size_t id, node& node, std::size_t depth)
     else
     {
         for (auto& child : node.children())
-            if (is_in(id, child.bounds)) insert(id, child, depth + 1);
+            if (intersect(id, child.bounds)) insert(id, child, depth + 1);
     }
 }
 void quadtree::remove(std::size_t id, node& node)
@@ -92,7 +92,7 @@ void quadtree::split(node& node)
         __entities.emplace_back();
         child.data = --__entities.end();
         for (auto& id : entities)
-            if (is_in(id, child.bounds)) child.entities().emplace_back(id);
+            if (intersect(id, child.bounds)) child.entities().emplace_back(id);
     }
 
     // Remove double counted entity ids
