@@ -2,6 +2,9 @@
 #pragma once
 #include "__common.hpp"
 
+#if defined(Success)
+#    undef Success
+#endif
 #include <Eigen/Dense>
 
 namespace p201

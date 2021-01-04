@@ -5,6 +5,7 @@
 #include "../key.hpp"
 #include "../sprite.hpp"
 
+#include <bitset>
 #include <string>
 #include <typeindex>
 #include <vector>
