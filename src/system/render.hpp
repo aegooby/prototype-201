@@ -27,7 +27,8 @@ public:
 protected:
     SDL_Renderer*  __sdl_renderer = nullptr;
     const matrix_3 iso_matrix;
-    camera         camera;
+    /** @brief How many times do I have to tell you to read the name retard? */
+    camera camera;
 
 private:
     void transform_tile(float, float, float, float, std::int16_t*,

@@ -33,11 +33,13 @@ public:
             {
                 case components::render::flag:
                 {
-                    auto& render  = entity.add_component<components::render>();
-                    render.family = component.get<std::string>("family");
-                    render.iso    = component.get<bool>("iso");
-                    render.rect.w = component.get<float>("rect.w");
-                    render.rect.h = component.get<float>("rect.h");
+                    auto& render   = entity.add_component<components::render>();
+                    render.family  = component.get<std::string>("family");
+                    render.visible = component.get<bool>("visible");
+                    render.iso     = component.get<bool>("iso");
+                    render.camera  = component.get<bool>("camera");
+                    render.rect.w  = component.get<float>("rect.w");
+                    render.rect.h  = component.get<float>("rect.h");
                     render.srcrect.w  = render.rect.w;
                     render.srcrect.h  = render.rect.h;
                     render.offset.x() = component.get<float>("offset.x");
@@ -115,10 +117,11 @@ public:
                     animation.fps = component.get<float>("fps");
                     break;
                 }
-                case components::camera::flag:
+                case components::camera_focus::flag:
                 {
-                    auto& camera = entity.add_component<components::camera>();
-                    camera.focus = component.get<bool>("focus");
+                    auto& camera =
+                        entity.add_component<components::camera_focus>();
+                    (void)camera;
                     break;
                 }
                 case components::health::flag:
@@ -153,71 +156,6 @@ public:
             component.add("flag", i);
             switch (i)
             {
-                case components::render::flag:
-                {
-                    auto& render = entity.component<components::render>();
-                    component.add("family", render.family);
-                    component.add("iso", render.iso);
-                    component.add("rect.w", render.rect.w);
-                    component.add("rect.h", render.rect.h);
-                    component.add("offset.x", render.offset.x());
-                    component.add("offset.y", render.offset.y());
-                    break;
-                }
-                case components::transform::flag:
-                {
-                    auto& transform = entity.component<components::transform>();
-                    component.add("position.x", transform.position.x());
-                    component.add("position.y", transform.position.y());
-                    component.add("position.z", transform.position.z());
-                    break;
-                }
-                case components::movement::flag:
-                {
-                    break;
-                }
-                case components::collision::flag:
-                {
-                    auto& collision = entity.component<components::collision>();
-                    auto  ptr       = collision.hitbox.get();
-                    if (typeid(*ptr) == typeid(hitboxes::circle))
-                    {
-                        auto& circle = *dynamic_cast<hitboxes::circle*>(ptr);
-                        component.add("hitbox.flag", circle.flag);
-                        component.add("hitbox.radius", circle.radius);
-                    }
-                    if (typeid(*ptr) == typeid(hitboxes::square))
-                    {
-                        auto& square = *dynamic_cast<hitboxes::square*>(ptr);
-                        component.add("hitbox.flag", square.flag);
-                        component.add("hitbox.width", square.width);
-                        component.add("hitbox.height", square.height);
-                    }
-                    break;
-                }
-                case components::input::flag:
-                {
-                    break;
-                }
-                case components::animation::flag:
-                {
-                    auto& animation = entity.component<components::animation>();
-                    component.add("fps", animation.fps);
-                    break;
-                }
-                case components::camera::flag:
-                {
-                    auto& camera = entity.component<components::camera>();
-                    component.add("focus", camera.focus);
-                    break;
-                }
-                case components::health::flag:
-                {
-                    auto& health = entity.component<components::health>();
-                    component.add("hp", health.hp);
-                    component.add("max_hp", health.max_hp);
-                    break;
-                }
                 default:
                     break;
             }

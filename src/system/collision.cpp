@@ -13,7 +13,7 @@ namespace systems
 void collision::start()
 {
     quadtree.start(4, 1);
-    quadtree.bounds(100.0f, 100.0f, 600.0f, 600.0f);
+    quadtree.bounds(0.0f, 0.0f, 1500.0f, 1500.0f);
 }
 
 bool collision::hitbox_check(const std::unique_ptr<hitbox>& __a,
@@ -97,25 +97,27 @@ bool collision::square_check(const hitboxes::square& __a,
 
 void collision::quad_check(node& node)
 {
-    if (node.leaf) {
+    if (node.leaf)
+    {
         for (auto& entity : node.entities())
         {
-            /*run a for loop on entities list starting from 1 position after current entity, if they collide, mark it somehow (flag?) and add a checker in for loop in collision::update() so it moves the hitbox only if it should. do the same in movement::update().
-             
-             
+            /*run a for loop on entities list starting from 1 position after
+            current entity, if they collide, mark it somehow (flag?) and add a
+            checker in for loop in collision::update() so it moves the hitbox
+            only if it should. do the same in movement::update().
+
+
             for ()
             {
                 if (hitbox_check())
             }
-             
+
              */
         }
     }
-    else {
-        for (auto& child : node.children())
-        {
-            quad_check(child);
-        }
+    else
+    {
+        for (auto& child : node.children()) { quad_check(child); }
     }
 }
 
@@ -127,8 +129,6 @@ void collision::quad_check(class quadtree& quadtree)
 void collision::update(float dt)
 {
     quadtree.remove(__registered_entities);
-    quadtree.insert(__registered_entities);
-    quad_check(quadtree);
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);
@@ -137,7 +137,11 @@ void collision::update(float dt)
 
         collision.hitbox->center.x() = transform.position.x();
         collision.hitbox->center.y() = transform.position.y();
+        if (entity.flag.test(components::camera_focus::flag))
+            quadtree.re_center(transform.position);
     }
+    quadtree.insert(__registered_entities);
+    quad_check(quadtree);
 }
 } // namespace systems
 } // namespace p201

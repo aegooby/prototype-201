@@ -5,7 +5,9 @@
         <component>
             <flag>1</flag>
             <family>player</family>
+            <visible>true</visible>
             <iso>true</iso>
+            <camera>true</camera>
             <rect>
                 <w>140</w>
                 <h>132</h>
@@ -56,7 +58,6 @@
         </component>
         <component>
             <flag>7</flag>
-            <focus>true</focus>
         </component>
         <component>
             <flag>8</flag>

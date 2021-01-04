@@ -49,6 +49,8 @@ struct render : public component
     bool visible = true;
     /** @brief Whether to transform the rendering to isometric. */
     bool iso = true;
+    /** @brief Whether to camera transform the sprite. */
+    bool camera = true;
     /** @brief Family of flipbooks associated with this component. */
     std::string family = "unknown";
     /** @brief Floating point rect that textures are rendered onto. */
@@ -147,17 +149,14 @@ struct animation : public component
     virtual ~animation() = default;
 };
 
-struct camera : public component
+struct camera_focus : public component
 {
     using __base = component;
 
     static constexpr std::size_t flag = 7;
 
-    bool     focus = false;
-    vector_2 shift = vector_2(0.0f, 0.0f);
-
-    camera(class entity& entity) : __base(entity) { }
-    virtual ~camera() = default;
+    camera_focus(class entity& entity) : __base(entity) { }
+    virtual ~camera_focus() = default;
 };
 
 struct health : public component

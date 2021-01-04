@@ -150,12 +150,19 @@ public:
             throw std::runtime_error("Reset bounds on non-empty quadtree");
         root.bounds = box(x, y, w, h);
     }
+    void re_center(const vector_3& center)
+    {
+        if (!root.leaf)
+            throw std::runtime_error("Reset bounds on non-empty quadtree");
+        root.bounds.x = center.x() - root.bounds.w / 2.0f;
+        root.bounds.y = center.y() - root.bounds.h / 2.0f;
+    }
     void split(node& node);
     void insert(std::size_t);
     void remove(std::size_t);
     void insert(std::unordered_set<std::size_t>&);
     void remove(std::unordered_set<std::size_t>&);
-    
+
     std::list<std::vector<std::size_t>> leaves();
 };
 

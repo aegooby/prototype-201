@@ -124,7 +124,8 @@ void render::render_sprite(SDL_Texture* texture, SDL_Rect* src, SDL_FRect* rect)
         throw sdl_error("Failed to render texture");
 }
 
-void render::update(float dt)
+void render::update(float dt) { }
+void render::display()
 {
     if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 0, 255))
         throw sdl_error("Failed to set draw color");
@@ -148,12 +149,9 @@ void render::update(float dt)
         render.rect.y = screen_position.y() - render.rect.h * render.offset.y();
         if (!render.texture)
             render.texture = sprite_manager.default_sprite(render.family);
-        if (entity.flag.test(components::camera::flag))
-        {
-            auto& camera = entity.component<components::camera>();
-            if (camera.focus) this->camera.center = util::center(render.rect);
-            render.rect = this->camera.transform(render.rect);
-        }
+        if (entity.flag.test(components::camera_focus::flag))
+            camera.center = util::center(render.rect);
+        if (render.camera) render.rect = camera.transform(render.rect);
         if (entity.flag.test(components::collision::flag) &&
             world.keyboard.modifier(modifier::ALT))
         {
@@ -169,9 +167,7 @@ void render::update(float dt)
     hb_main.rect.x = hb_main.position.x();
     hb_main.rect.y = hb_main.position.y();
     render_sprite(hb_main.texture, &hb_main.srcrect, &hb_main.rect);
-}
-void render::display()
-{
+
     SDL_RenderPresent(__sdl_renderer);
 }
 

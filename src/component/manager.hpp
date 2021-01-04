@@ -44,14 +44,14 @@ public:
 
 namespace managers
 {
-using render    = component_manager_template<components::render>;
-using transform = component_manager_template<components::transform>;
-using movement  = component_manager_template<components::movement>;
-using collision = component_manager_template<components::collision>;
-using input     = component_manager_template<components::input>;
-using animation = component_manager_template<components::animation>;
-using camera    = component_manager_template<components::camera>;
-using health    = component_manager_template<components::health>;
-using hud       = component_manager_template<components::hud>;
+using render       = component_manager_template<components::render>;
+using transform    = component_manager_template<components::transform>;
+using movement     = component_manager_template<components::movement>;
+using collision    = component_manager_template<components::collision>;
+using input        = component_manager_template<components::input>;
+using animation    = component_manager_template<components::animation>;
+using camera_focus = component_manager_template<components::camera_focus>;
+using health       = component_manager_template<components::health>;
+using hud          = component_manager_template<components::hud>;
 } // namespace managers
 } // namespace p201
