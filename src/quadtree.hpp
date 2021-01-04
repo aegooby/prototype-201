@@ -155,6 +155,7 @@ public:
     void remove(std::size_t);
     void insert(std::unordered_set<std::size_t>&);
     void remove(std::unordered_set<std::size_t>&);
+    
     std::list<std::vector<std::size_t>> leaves();
 };
 

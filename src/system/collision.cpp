@@ -95,10 +95,40 @@ bool collision::square_check(const hitboxes::square& __a,
             (__a.bottom() >= __b.top()) && (__a.top() <= __b.bottom()));
 }
 
+void collision::quad_check(node& node)
+{
+    if (node.leaf) {
+        for (auto& entity : node.entities())
+        {
+            /*run a for loop on entities list starting from 1 position after current entity, if they collide, mark it somehow (flag?) and add a checker in for loop in collision::update() so it moves the hitbox only if it should. do the same in movement::update().
+             
+             
+            for ()
+            {
+                if (hitbox_check())
+            }
+             
+             */
+        }
+    }
+    else {
+        for (auto& child : node.children())
+        {
+            quad_check(child);
+        }
+    }
+}
+
+void collision::quad_check(class quadtree& quadtree)
+{
+    quad_check(quadtree.root);
+}
+
 void collision::update(float dt)
 {
     quadtree.remove(__registered_entities);
     quadtree.insert(__registered_entities);
+    quad_check(quadtree);
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);
