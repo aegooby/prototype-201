@@ -91,7 +91,7 @@ struct transform : public component
     virtual ~transform() = default;
 };
 
-struct movement : public component
+struct physics : public component
 {
     using __base = component;
 
@@ -103,8 +103,8 @@ struct movement : public component
     float    friction  = 0.0f;
     float    mass      = 0.0f;
 
-    movement(class entity& entity) : __base(entity) { }
-    virtual ~movement() = default;
+    physics(class entity& entity) : __base(entity) { }
+    virtual ~physics() = default;
 };
 
 struct collision : public component

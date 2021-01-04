@@ -134,7 +134,6 @@ protected:
     std::array<bool, std::size_t(mousecode::size)> __scan;
     std::array<bool, std::size_t(mousecode::size)> __down;
     std::array<bool, std::size_t(mousecode::size)> __up;
-    // @todo
     /** @brief Movement and position of mouse on screen. */
     vector_2 __position;
     vector_2 __movement;
@@ -202,7 +201,6 @@ public:
     {
         return __position;
     }
-    // @todo
     const vector_2& movement() const
     {
         return __movement;

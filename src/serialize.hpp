@@ -56,19 +56,19 @@ public:
                     transform.lerp         = transform.position;
                     break;
                 }
-                case components::movement::flag:
+                case components::physics::flag:
                 {
-                    auto& movement =
-                        entity.add_component<components::movement>();
-                    movement.velocity.x() = component.get<float>("velocity.x");
-                    movement.velocity.y() = component.get<float>("velocity.y");
-                    movement.velocity.z() = component.get<float>("velocity.z");
-                    movement.accel.x()    = component.get<float>("accel.x");
-                    movement.accel.y()    = component.get<float>("accel.y");
-                    movement.accel.z()    = component.get<float>("accel.z");
-                    movement.max_speed    = component.get<float>("max_speed");
-                    movement.friction     = component.get<float>("friction");
-                    movement.mass         = component.get<float>("mass");
+                    auto& physics =
+                        entity.add_component<components::physics>();
+                    physics.velocity.x() = component.get<float>("velocity.x");
+                    physics.velocity.y() = component.get<float>("velocity.y");
+                    physics.velocity.z() = component.get<float>("velocity.z");
+                    physics.accel.x()    = component.get<float>("accel.x");
+                    physics.accel.y()    = component.get<float>("accel.y");
+                    physics.accel.z()    = component.get<float>("accel.z");
+                    physics.max_speed    = component.get<float>("max_speed");
+                    physics.friction     = component.get<float>("friction");
+                    physics.mass         = component.get<float>("mass");
                     break;
                 }
                 case components::collision::flag:

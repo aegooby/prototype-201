@@ -23,8 +23,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                                std::make_unique<managers::transform>());
     component_managers.emplace(typeid(components::collision),
                                std::make_unique<managers::collision>());
-    component_managers.emplace(typeid(components::movement),
-                               std::make_unique<managers::movement>());
+    component_managers.emplace(typeid(components::physics),
+                               std::make_unique<managers::physics>());
     component_managers.emplace(typeid(components::input),
                                std::make_unique<managers::input>());
     component_managers.emplace(typeid(components::animation),
@@ -38,8 +38,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
 
     systems.emplace(typeid(systems::render),
                     std::make_unique<systems::render>(*this));
-    systems.emplace(typeid(systems::movement),
-                    std::make_unique<systems::movement>(*this));
+    systems.emplace(typeid(systems::physics),
+                    std::make_unique<systems::physics>(*this));
     systems.emplace(typeid(systems::collision),
                     std::make_unique<systems::collision>(*this));
     systems.emplace(typeid(systems::input),

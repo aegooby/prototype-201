@@ -16,7 +16,7 @@ public:
     input(class world& world) : __base(world)
     {
         flag.set(components::input::flag);
-        flag.set(components::movement::flag);
+        flag.set(components::physics::flag);
         flag.set(components::transform::flag);
     }
     virtual ~input() = default;
