@@ -10,6 +10,9 @@
 #include "window.hpp"
 #include "world.hpp"
 
+#include <future>
+#include <thread>
+
 namespace p201
 {
 
@@ -99,15 +102,25 @@ public:
     {
         __running = false;
     }
-    void render(double alpha)
-    {
-        world.system<systems::render>().draw(alpha);
-        world.system<systems::render>().display();
-    }
     void update(float dt)
     {
         window.update();
-        for (auto& system : world.systems) system.second->update(dt);
+        /* @todo Experimental */
+        auto animation = [this](float dt) {
+            world.systems.at(typeid(systems::animation))->update(dt);
+        };
+        auto future = std::async(std::launch::async, animation, dt);
+        for (auto& system : world.systems)
+        {
+            if (system.first != typeid(systems::animation))
+                system.second->update(dt);
+        }
+        future.wait();
+    }
+    void render(float alpha)
+    {
+        world.system<systems::render>().draw(alpha);
+        world.system<systems::render>().display();
     }
 
     engine(const engine&) = delete;
