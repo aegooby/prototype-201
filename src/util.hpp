@@ -35,5 +35,15 @@ inline std::string to_string(const vector<n>& vector)
     str += std::to_string(vector[n - 1]) + ")";
     return str;
 }
+inline std::string to_string(std::thread::id id)
+{
+    std::stringstream str;
+    str << id;
+    return "<thread " + str.str() + ">";
+}
+inline std::string this_thread()
+{
+    return to_string(std::this_thread::get_id());
+}
 } // namespace util
 } // namespace p201

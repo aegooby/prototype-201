@@ -60,6 +60,9 @@ public:
     void start()
     {
         if (__running) return;
+
+        if constexpr (debug)
+            std::cout << util::this_thread() << " starting engine" << std::endl;
         __running = true;
 
         double time_prev   = clock.time_s();
