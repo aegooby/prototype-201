@@ -133,5 +133,8 @@ void quadtree::remove(std::unordered_set<std::size_t>& entities)
     for (auto& id : entities) remove(id);
 }
 
+
+
+
 } // namespace p201
 // RIP TSA_agent, 27/12/2020 - 29/12/2020
