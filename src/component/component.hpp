@@ -124,6 +124,8 @@ struct input : public component
 
     static constexpr std::size_t flag = 5;
 
+    float force = 0.0f;
+
     input(class entity& entity) : __base(entity) { }
     virtual ~input() = default;
 };

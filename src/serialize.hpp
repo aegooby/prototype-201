@@ -105,7 +105,7 @@ public:
                 case components::input::flag:
                 {
                     auto& input = entity.add_component<components::input>();
-                    (void)input;
+                    input.force = component.get<float>("force");
                     break;
                 }
                 case components::animation::flag:

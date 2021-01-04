@@ -131,13 +131,24 @@ public:
     quadtree(class world& world) : world(world) { }
     ~quadtree() = default;
 
-    void start(std::size_t max_depth, std::size_t threshold, const box& bounds)
+    void start(std::size_t max_depth, std::size_t threshold)
     {
         this->max_depth = max_depth;
         this->threshold = threshold;
-        root.bounds     = bounds;
         __entities.emplace_back();
         root.data = --__entities.end();
+    }
+    void bounds(const box& bounds)
+    {
+        if (!root.leaf)
+            throw std::runtime_error("Reset bounds on non-empty quadtree");
+        root.bounds = bounds;
+    }
+    void bounds(float x, float y, float w, float h)
+    {
+        if (!root.leaf)
+            throw std::runtime_error("Reset bounds on non-empty quadtree");
+        root.bounds = box(x, y, w, h);
     }
     void split(node& node);
     void insert(std::size_t);

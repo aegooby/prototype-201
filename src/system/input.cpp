@@ -19,14 +19,14 @@ void input::update(float dt)
     auto& keyboard = world.keyboard;
     auto& mouse    = world.mouse;
     (void)mouse;
-    const float force = 1000.0f;
     for (auto& id : __registered_entities)
     {
-        auto& entity    = world.entity(id);
-        auto& movement  = entity.component<components::movement>();
-        auto& transform = entity.component<components::transform>();
+        auto&       entity    = world.entity(id);
+        auto&       movement  = entity.component<components::movement>();
+        auto&       transform = entity.component<components::transform>();
+        const auto& input     = entity.component<components::input>();
 
-        const float accel = force / movement.mass;
+        const float accel = input.force / movement.mass;
 
         auto animation = [&entity, this](const std::string& name) {
             world.event_manager.publish<events::animation>(entity, name);

@@ -12,7 +12,8 @@ namespace systems
 {
 void collision::start()
 {
-    quadtree.start(4, 1, box(100.0f, 100.0f, 600.0f, 600.0f));
+    quadtree.start(4, 1);
+    quadtree.bounds(100.0f, 100.0f, 600.0f, 600.0f);
 }
 
 bool collision::hitbox_check(const std::unique_ptr<hitbox>& __a,
