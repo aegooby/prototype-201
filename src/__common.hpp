@@ -58,7 +58,7 @@
 #    endif
 #endif
 
-// GNU C++ extensions (__attribute__)
+/* GNU C++ extensions (__attribute__) */
 #if !defined(__GNUC__)
 #    ifndef __attribute__
 #        define __attribute__(...)

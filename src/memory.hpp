@@ -63,8 +63,10 @@ public:
 template<typename type>
 inline type* allocate(type* ptr, std::size_t count, std::align_val_t align)
 {
-    // Allocation and assignment to parameter "ptr" is already done inside
-    // this function, but it returns "ptr" for ease of use.
+    /*
+     * Allocation and assignment to parameter "ptr" is already done inside
+     * this function, but it returns "ptr" for ease of use.
+     */
     return static_cast<type*>(
         __memory_private::allocate(count * sizeof(type), align));
 }
@@ -91,32 +93,40 @@ inline type* allocate(type*& ptr, std::align_val_t align)
 template<typename type, typename... types>
 inline type* construct(type* ptr, types&&... args)
 {
-    // Construction should always be done inside of a RAII container,
-    // and should always be implemented in sequential order.
+    /*
+     * Construction should always be done inside of a RAII container,
+     * and should always be implemented in sequential order.
+     */
 
-    // Conditional static_assert to improve error readibility when
-    // attempting to default-initialize a class with a deleted default
-    // constructor.
+    /*
+     * Conditional static_assert to improve error readibility when
+     * attempting to default-initialize a class with a deleted default
+     * constructor.
+     */
     if constexpr (!sizeof...(args))
         static_assert(std::is_default_constructible_v<type>);
 
-    // Placement-new on selected block of memory.
-    // Type "type" may need to be typecasted if working with nested
-    // containers.
+    /*
+     * Placement-new on selected block of memory.
+     * Type "type" may need to be typecasted if working with nested
+     * containers.
+     */
     new (ptr) type(std::forward<types>(args)...);
     return ptr;
 }
 template<typename type>
 inline void destruct(type* ptr)
 {
-    // Destructs in reverse order, which is why construct() should always
-    // be implemented in sequential order.
+    /*
+     * Destructs in reverse order, which is why construct() should always
+     * be implemented in sequential order.
+     */
     ptr->~type();
 }
 template<typename type>
 inline void deallocate(type*& ptr, std::align_val_t align)
 {
-    // Always call after destruct()
+    /* Always call after destruct() */
     __memory_private::deallocate((void*)const_cast<type*>(ptr), align);
     ptr = nullptr;
 }

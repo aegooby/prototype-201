@@ -53,6 +53,7 @@ public:
                     transform.position.x() = component.get<float>("position.x");
                     transform.position.y() = component.get<float>("position.y");
                     transform.position.z() = component.get<float>("position.z");
+                    transform.lerp         = transform.position;
                     break;
                 }
                 case components::movement::flag:

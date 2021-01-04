@@ -75,10 +75,10 @@ void quadtree::remove(std::size_t id, node& node)
 void quadtree::split(node& node)
 {
     assert(node.leaf);
-    // Add new set of 4 nodes
+    /* Add new set of 4 nodes */
     auto& children = __nodes.emplace_back();
 
-    // Set up bounds for children
+    /* Set up bounds for children */
     children.at(0).bounds = node.bounds.top_left();
     children.at(1).bounds = node.bounds.top_right();
     children.at(2).bounds = node.bounds.bottom_left();
@@ -86,7 +86,7 @@ void quadtree::split(node& node)
 
     auto& entities = node.entities();
 
-    // Place entity ids into child nodes based on bounds
+    /* Place entity ids into child nodes based on bounds */
     for (auto& child : children)
     {
         __entities.emplace_back();
@@ -95,10 +95,10 @@ void quadtree::split(node& node)
             if (intersect(id, child.bounds)) child.entities().emplace_back(id);
     }
 
-    // Remove double counted entity ids
+    /* Remove double counted entity ids */
     __entities.erase(node.entities_iter());
 
-    // Reset parent node
+    /* Reset parent node */
     node.leaf = false;
     node.data = --__nodes.end();
 }
@@ -134,4 +134,4 @@ void quadtree::remove(std::unordered_set<std::size_t>& entities)
 }
 
 } // namespace p201
-// RIP TSA_agent, 27/12/2020 - 29/12/2020
+/* RIP TSA_agent, 27/12/2020 - 29/12/2020 */

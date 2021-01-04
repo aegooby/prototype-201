@@ -101,7 +101,6 @@ public:
         return flipbook(family, "default").at(0);
     }
 
-    // Preventing copying and moving
     manager(const manager&) = delete;
     manager(manager&&)      = delete;
     manager& operator=(const manager&) = delete;

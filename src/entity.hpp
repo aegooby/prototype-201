@@ -55,7 +55,6 @@ public:
     }
     bool operator==(const entity&);
 
-    // Preventing copying and moving
     entity(const entity&) = delete;
     entity(entity&&)      = delete;
     entity& operator=(const entity&) = delete;

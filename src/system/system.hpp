@@ -39,7 +39,6 @@ public:
     virtual void register_entity(class entity&);
     virtual void deregister_entity(class entity&);
 
-    // Preventing copying and moving
     system(const system&) = delete;
     system(system&&)      = delete;
     system& operator=(const system&) = delete;

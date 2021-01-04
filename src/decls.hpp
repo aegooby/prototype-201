@@ -11,7 +11,6 @@ class keyboard;
 class engine;
 class entity;
 
-// Components
 struct component;
 
 class world;

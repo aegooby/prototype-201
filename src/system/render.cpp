@@ -20,10 +20,10 @@ namespace systems
 void render::transform_tile(float x, float y, float w, float h,
                             std::int16_t* vx, std::int16_t* vy)
 {
-    const vector_3 iso_vec    = iso_matrix * vector_3(x, y, 0.0f);
-    const vector_3 iso_vec_p1 = iso_matrix * vector_3(w, 0.0f, 0.0f);
-    const vector_3 iso_vec_p2 = iso_matrix * vector_3(w, h, 0.0f);
-    const vector_3 iso_vec_p3 = iso_matrix * vector_3(0.0f, h, 0.0f);
+    const vector_3 iso_vec    = iso_3 * vector_3(x, y, 0.0f);
+    const vector_3 iso_vec_p1 = iso_3 * vector_3(w, 0.0f, 0.0f);
+    const vector_3 iso_vec_p2 = iso_3 * vector_3(w, h, 0.0f);
+    const vector_3 iso_vec_p3 = iso_3 * vector_3(0.0f, h, 0.0f);
 
     vx[0] = iso_vec.x();
     vy[0] = iso_vec.y();
@@ -68,7 +68,7 @@ void render::render_hitbox(const std::unique_ptr<hitbox>& hitbox)
     if (typeid(*ptr) == typeid(hitboxes::circle))
     {
         auto&    circle     = *dynamic_cast<hitboxes::circle*>(ptr);
-        vector_3 iso_center = camera.transform(iso_matrix * circle.center);
+        vector_3 iso_center = camera.transform(iso_3 * circle.center);
         ellipseRGBA(__sdl_renderer, iso_center.x(), iso_center.y(),
                     circle.radius, circle.radius / 2.0f, 200, 0, 0, 200);
     }
@@ -102,7 +102,7 @@ void render::start()
     sprite_manager.link(__sdl_renderer);
     sprite_manager.load();
 
-    // TODO: this is messy
+    /* @todo This is messy */
     auto& hb_main    = world.hud.healthbar.main;
     hb_main.texture  = sprite_manager.flipbook("healthbar", "main").at(0);
     hb_main.position = vector_2(30.0f, 25.0f);
@@ -125,7 +125,7 @@ void render::render_sprite(SDL_Texture* texture, SDL_Rect* src, SDL_FRect* rect)
 }
 
 void render::update(float dt) { }
-void render::display()
+void render::draw(float alpha)
 {
     if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 0, 255))
         throw sdl_error("Failed to set draw color");
@@ -142,8 +142,10 @@ void render::display()
         auto&       render    = entity.component<components::render>();
         const auto& transform = entity.component<components::transform>();
 
-        const vector_3 screen_position =
-            render.iso ? iso_matrix * transform.position : transform.position;
+        const vector_3 position =
+            transform.position * alpha + transform.lerp * (1.0f - alpha);
+
+        const auto screen_position = render.iso ? iso_3 * position : position;
 
         render.rect.x = screen_position.x() - render.rect.w * render.offset.x();
         render.rect.y = screen_position.y() - render.rect.h * render.offset.y();
@@ -167,7 +169,9 @@ void render::display()
     hb_main.rect.x = hb_main.position.x();
     hb_main.rect.y = hb_main.position.y();
     render_sprite(hb_main.texture, &hb_main.srcrect, &hb_main.rect);
-
+}
+void render::display()
+{
     SDL_RenderPresent(__sdl_renderer);
 }
 

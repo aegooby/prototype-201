@@ -4,6 +4,7 @@
 #include "../__common.hpp"
 #include "../entity_manager.hpp"
 #include "../event.hpp"
+#include "../util.hpp"
 #include "../world.hpp"
 
 namespace p201
@@ -18,6 +19,9 @@ void movement::update(float dt)
         auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
         auto& movement  = entity.component<components::movement>();
+
+        /* Don't delete this or I will fucking slap you. */
+        transform.lerp = transform.position;
 
         movement.velocity += movement.accel * dt;
         if (movement.velocity.norm() > movement.max_speed)

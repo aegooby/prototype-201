@@ -28,7 +28,6 @@ struct component
     component(class entity& entity) : entity(entity) { }
     virtual ~component() = 0;
 
-    // Preventing copying and moving
     component(const component&) = delete;
     component(component&&)      = delete;
     component& operator=(const component&) = delete;

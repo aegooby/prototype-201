@@ -29,7 +29,6 @@ public:
 
     void on_animation_event(events::animation&);
 
-    // Preventing copying and moving
     animation(const animation&) = delete;
     animation(animation&&)      = delete;
     animation& operator=(const animation&) = delete;

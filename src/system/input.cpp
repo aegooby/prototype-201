@@ -32,7 +32,7 @@ void input::update(float dt)
             world.event_manager.publish<events::animation>(entity, name);
         };
 
-        // Down
+        /* Down */
         if (keyboard.down(keycode::S))
         {
             transform.direction.set(components::transform::south);
@@ -46,7 +46,7 @@ void input::update(float dt)
             movement.accel.y() -= accel / sqrt_2;
         }
 
-        // Up
+        /* Up */
         if (keyboard.down(keycode::W))
         {
             transform.direction.set(components::transform::north);
@@ -60,7 +60,7 @@ void input::update(float dt)
             movement.accel.y() += accel / sqrt_2;
         }
 
-        // Right
+        /* Right */
         if (keyboard.down(keycode::D))
         {
             transform.direction.set(components::transform::east);
@@ -84,7 +84,7 @@ void input::update(float dt)
             movement.accel.y() -= accel / sqrt_2;
         }
 
-        // Left
+        /* Left */
         if (keyboard.down(keycode::A))
         {
             if (!keyboard.scan(keycode::D))

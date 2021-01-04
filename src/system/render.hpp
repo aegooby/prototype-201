@@ -11,7 +11,7 @@
 
 #include <unordered_map>
 
-#define P201_ISO_MATRIX 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f
+#define P201_ISO_3 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f
 
 namespace p201
 {
@@ -26,7 +26,7 @@ public:
 
 protected:
     SDL_Renderer*  __sdl_renderer = nullptr;
-    const matrix_3 iso_matrix;
+    const matrix_3 iso_3;
     /** @brief How many times do I have to tell you to read the name retard? */
     camera camera;
 
@@ -43,7 +43,7 @@ public:
     render(class world& world)
         : __base(world),
           sprite_manager("sprites"),
-          iso_matrix((matrix_3() << P201_ISO_MATRIX).finished() / sqrt_2)
+          iso_3((matrix_3() << P201_ISO_3).finished() / sqrt_2)
     {
         flag.set(components::render::flag);
         flag.set(components::transform::flag);
@@ -58,9 +58,9 @@ public:
     virtual void start() override;
     void         stop();
     virtual void update(float dt) override;
+    void         draw(float alpha);
     void         display();
 
-    // Preventing copying and moving
     render(const render&) = delete;
     render(render&&)      = delete;
     render& operator=(const render&) = delete;

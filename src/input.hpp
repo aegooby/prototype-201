@@ -32,7 +32,6 @@ public:
     input(window& window_context) : window_context(window_context) { }
     ~input() = default;
 
-    // Preventing copying and moving
     input(const input&) = delete;
     input(input&&)      = delete;
     input& operator=(const input&) = delete;
@@ -122,7 +121,6 @@ public:
         modifier_set(bool(__mod == KMOD_NONE), modifier::NONE);
     }
 
-    // Preventing copying and moving
     keyboard(const keyboard&) = delete;
     keyboard(keyboard&&)      = delete;
     keyboard& operator=(const keyboard&) = delete;
@@ -225,7 +223,6 @@ public:
         __movement.y() = float(dy);
     }
 
-    // Preventing copying and moving
     mouse(const mouse&) = delete;
     mouse(mouse&&)      = delete;
     mouse& operator=(const mouse&) = delete;

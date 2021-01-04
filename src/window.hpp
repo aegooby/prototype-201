@@ -108,7 +108,6 @@ public:
         }
     }
 
-    // Preventing copying and moving
     window(const window&) = delete;
     window(window&&)      = delete;
     window& operator=(const window&) = delete;
