@@ -115,7 +115,7 @@ void quadtree::leaves(node& node, std::list<std::vector<std::size_t>>& list)
 {
     if (node.leaf && node.count() > 1)
         list.emplace_back(node.entities());
-    else
+    else if (!node.leaf)
         for (auto& child : node.children()) leaves(child, list);
 }
 std::list<std::vector<std::size_t>> quadtree::leaves()
@@ -132,9 +132,6 @@ void quadtree::remove(std::unordered_set<std::size_t>& entities)
 {
     for (auto& id : entities) remove(id);
 }
-
-
-
 
 } // namespace p201
 // RIP TSA_agent, 27/12/2020 - 29/12/2020

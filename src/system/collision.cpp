@@ -102,12 +102,12 @@ void collision::quad_check(class quadtree& quadtree)
         return world.entity(id).component<components::collision>().hitbox;
     };
     std::list<std::vector<std::size_t>> leaves = quadtree.leaves();
-    for (auto& node_entities : leaves)
-    {
-        for (auto& id_i : node_entities)
-            for (auto& id_j : node_entities)
-                if (hitbox_check(hitbox(id_i), hitbox(id_j))) { (void)0; }
-    }
+    // for (auto& node_entities : leaves)
+    // {
+    //     for (auto& id_i : node_entities)
+    //         for (auto& id_j : node_entities)
+    //             if (hitbox_check(hitbox(id_i), hitbox(id_j))) { (void)0; }
+    // }
 }
 
 void collision::update(float dt)
