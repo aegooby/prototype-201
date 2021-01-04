@@ -132,8 +132,11 @@ void render::draw(float alpha)
     if (SDL_RenderClear(__sdl_renderer))
         throw sdl_error("Failed to clear renderer");
 
-    if (world.keyboard.modifier(modifier::ALT))
-        debug(render_quadtree(world.system<systems::collision>().quadtree));
+    if constexpr (debug)
+    {
+        if (world.keyboard.modifier(modifier::ALT))
+            render_quadtree(world.system<systems::collision>().quadtree);
+    }
 
     /* Render all the registered entities one by one. */
     for (auto& id : __registered_entities)
@@ -158,7 +161,7 @@ void render::draw(float alpha)
             world.keyboard.modifier(modifier::ALT))
         {
             auto& hitbox = entity.component<components::collision>().hitbox;
-            debug(render_hitbox(hitbox));
+            if constexpr (debug) render_hitbox(hitbox);
         }
         if (render.visible)
             render_sprite(render.texture, &render.srcrect, &render.rect);

@@ -12,7 +12,7 @@ using t_point = std::chrono::high_resolution_clock::time_point;
 using nanosec = std::chrono::nanoseconds;
 
 template<typename duration_type>
-inline __attribute__((always_inline)) auto nano_cast(duration_type duration)
+inline auto nano_cast(duration_type duration)
 {
     return std::chrono::duration_cast<nanosec>(duration);
 }

@@ -12,14 +12,18 @@
 #endif
 
 #if defined(__cplusplus)
-#    if !defined(P201_CPP_VER)
-#        if __cplusplus <= 201103L
-#            define P201_CPP_VER 11
-#        elif __cplusplus <= 201402L
-#            define P201_CPP_VER 14
-#        elif __cplusplus <= 201703L
-#            define P201_CPP_VER 17
-#        endif
+#    if __cplusplus <= 199711L
+#        define P201_CPP_VER 98
+#    elif __cplusplus <= 201103L
+#        define P201_CPP_VER 11
+#    elif __cplusplus <= 201402L
+#        define P201_CPP_VER 14
+#    elif __cplusplus <= 201703L
+#        define P201_CPP_VER 17
+#    elif __cplusplus <= 202002L
+#        define P201_CPP_VER 20
+#    else
+#        define P201_CPP_VER 0
 #    endif
 #else
 #    error Not C++
@@ -53,16 +57,6 @@
 
 #if defined(__unix__) || defined(P201_OS_MACOS)
 #    include <unistd.h>
-#    if defined(_POSIX_VERSION)
-#        define P201_POSIX_COMPATIBLE
-#    endif
-#endif
-
-/* GNU C++ extensions (__attribute__) */
-#if !defined(__GNUC__)
-#    ifndef __attribute__
-#        define __attribute__(...)
-#    endif
 #endif
 
 #include <SDL.h>
@@ -78,7 +72,7 @@
 #endif
 
 #if defined(P201_CPP_VER)
-#    if P201_CPP_VER > 11
+#    if P201_CPP_VER >= 11
 #        if defined(NULL)
 #            undef NULL
 #        endif
@@ -86,16 +80,12 @@
 #    endif
 #endif
 
-#if !defined(__cpp_aligned_new)
-#    error Operator "new" is not aligned (use C++17)
-#endif
-
 namespace p201
 {
 #if defined(P201_DEBUG)
-static constexpr bool __debug = true;
+static constexpr bool debug = true;
 #else
-static constexpr bool __debug = false;
+static constexpr bool debug = false;
 #endif
 } // namespace p201
 
