@@ -95,33 +95,24 @@ bool collision::square_check(const hitboxes::square& __a,
             (__a.bottom() >= __b.top()) && (__a.top() <= __b.bottom()));
 }
 
-void collision::quad_check(node& node)
-{
-    if (node.leaf) {
-        for (auto& entity : node.entities())
-        {
-            /*run a for loop on entities list starting from 1 position after current entity, if they collide, mark it somehow (flag?) and add a checker in for loop in collision::update() so it moves the hitbox only if it should. do the same in movement::update().
-             
-             
-            for ()
-            {
-                if (hitbox_check())
-            }
-             
-             */
-        }
-    }
-    else {
-        for (auto& child : node.children())
-        {
-            quad_check(child);
-        }
-    }
-}
-
 void collision::quad_check(class quadtree& quadtree)
 {
-    quad_check(quadtree.root);
+    std::list<std::vector<std::size_t>> entity_list = quadtree.leaves();
+    for (auto& node_entities : entity_list)
+    {
+        for (int i = 0; i < node_entities.size(); i++)
+        {
+            for (int j = 0; j < node_entities.size(); j++)
+            {
+                std::size_t id1 = node_entities[i];
+                std::size_t id2 = node_entities[j];
+                if (hitbox_check(world.entity(id1).component<components::collision>().hitbox, world.entity(id2).component<components::collision>().hitbox))
+                {
+                    //send collision event between the two entities
+                }
+            }
+        }
+    }
 }
 
 void collision::update(float dt)

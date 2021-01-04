@@ -35,7 +35,6 @@ public:
     static bool hybrid_check(const hitboxes::circle&, const hitboxes::square&);
     static bool point_in_square(const vector_3&, const hitboxes::square&);
     
-    void quad_check(node& node);
     void quad_check(class quadtree& quadtree);
 };
 } // namespace systems
