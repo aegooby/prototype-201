@@ -33,6 +33,14 @@ public:
     }
     virtual ~animation() = default;
 };
+class collision : public event
+{
+public:
+    class entity& entity;
+
+    collision(class entity& entity) : entity(entity) { }
+    virtual ~collision() = default;
+};
 } // namespace events
 
 } // namespace p201

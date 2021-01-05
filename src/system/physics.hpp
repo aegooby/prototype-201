@@ -3,6 +3,7 @@
 #include "../__common.hpp"
 #include "../component.hpp"
 #include "../entity.hpp"
+#include "../event.hpp"
 #include "system.hpp"
 
 namespace p201
@@ -22,9 +23,11 @@ public:
     virtual ~physics() = default;
     virtual void start() override;
     virtual void update(float dt) override;
-    
+
     std::tuple<vector_3, vector_3> impulse(entity& entity1, entity& entity2);
-    void collision_resolution(std::size_t id);
+    void                           collision_resolution(std::size_t id);
+
+    void on_collision_event(events::collision&);
 };
 } // namespace systems
 } // namespace p201

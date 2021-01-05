@@ -11,7 +11,10 @@ namespace p201
 {
 namespace systems
 {
-void physics::start() { }
+void physics::start()
+{
+    world.event_manager.subscribe(*this, &physics::on_collision_event);
+}
 
 std::tuple<vector_3, vector_3> physics::impulse(entity& entity1,
                                                 entity& entity2)
@@ -72,5 +75,6 @@ void physics::update(float dt)
         }
     }
 }
+void physics::on_collision_event(events::collision& event) { }
 } // namespace systems
 } // namespace p201
