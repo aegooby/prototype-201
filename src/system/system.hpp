@@ -31,11 +31,11 @@ protected:
 
 public:
     system(class world& world) : world(world) { }
-    virtual ~system() = default;
+    virtual ~system() = 0;
     /** @brief All the needed system initialization. */
-    virtual void start() = 0;
+    virtual void start();
     /** @brief Called periodically to update registered entities. */
-    virtual void update(float dt) = 0;
+    virtual void update(float dt);
     virtual void register_entity(class entity&);
     virtual void deregister_entity(class entity&);
 
@@ -44,5 +44,7 @@ public:
     system& operator=(const system&) = delete;
     system& operator=(system&&) = delete;
 };
+
+inline system::~system() = default;
 
 } // namespace p201

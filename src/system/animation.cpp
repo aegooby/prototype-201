@@ -21,6 +21,7 @@ void animation::start()
 }
 void animation::update(float dt)
 {
+    __base::update(dt);
     auto& sprite_manager = world.system<systems::render>().sprite_manager;
     for (auto& id : __registered_entities)
     {

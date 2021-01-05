@@ -3,6 +3,7 @@
 
 #include "../__common.hpp"
 #include "../entity.hpp"
+#include "../util.hpp"
 #include "../world.hpp"
 
 namespace p201
@@ -17,5 +18,8 @@ void system::deregister_entity(class entity& entity)
 {
     __registered_entities.erase(entity.id);
 }
+
+void system::start() { }
+void system::update(float dt) { }
 
 } // namespace p201

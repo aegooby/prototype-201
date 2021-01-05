@@ -112,6 +112,7 @@ void collision::quad_check(class quadtree& quadtree)
 
 void collision::update(float dt)
 {
+    __base::update(dt);
     quadtree.remove(__registered_entities);
     for (auto& id : __registered_entities)
     {

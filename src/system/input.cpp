@@ -16,13 +16,14 @@ namespace systems
 void input::start() { }
 void input::update(float dt)
 {
+    __base::update(dt);
     auto& keyboard = world.keyboard;
     auto& mouse    = world.mouse;
     (void)mouse;
     for (auto& id : __registered_entities)
     {
         auto&       entity    = world.entity(id);
-        auto&       physics  = entity.component<components::physics>();
+        auto&       physics   = entity.component<components::physics>();
         auto&       transform = entity.component<components::transform>();
         const auto& input     = entity.component<components::input>();
 

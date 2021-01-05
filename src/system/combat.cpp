@@ -17,6 +17,7 @@ namespace systems
 void combat::start() { }
 void combat::update(float dt)
 {
+    __base::update(dt);
     for (auto& id : __registered_entities)
     {
         auto& entity = world.entity(id);

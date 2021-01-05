@@ -14,11 +14,12 @@ namespace systems
 void physics::start() { }
 void physics::update(float dt)
 {
+    __base::update(dt);
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
-        auto& physics  = entity.component<components::physics>();
+        auto& physics   = entity.component<components::physics>();
 
         /* Don't delete this or I will fucking slap you. */
         transform.lerp = transform.position;

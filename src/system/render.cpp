@@ -124,7 +124,10 @@ void render::render_sprite(SDL_Texture* texture, SDL_Rect* src, SDL_FRect* rect)
         throw sdl_error("Failed to render texture");
 }
 
-void render::update(float dt) { }
+void render::update(float dt)
+{
+    __base::update(dt);
+}
 void render::draw(float alpha)
 {
     if (SDL_SetRenderDrawColor(__sdl_renderer, 0, 0, 0, 255))
