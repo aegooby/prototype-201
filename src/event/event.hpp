@@ -36,9 +36,10 @@ public:
 class collision : public event
 {
 public:
-    class entity& entity;
+    class entity& entity1;
+    class entity& entity2;
 
-    collision(class entity& entity) : entity(entity) { }
+    collision(class entity& entity1, class entity& entity2) : entity1(entity1), entity2(entity2) { }
     virtual ~collision() = default;
 };
 } // namespace events

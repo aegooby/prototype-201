@@ -27,7 +27,7 @@ public:
     std::tuple<vector_3, vector_3> impulse(entity& entity1, entity& entity2);
     void                           collision_resolution(std::size_t id);
 
-    void on_collision_event(events::collision&);
+    void collision_resolution(entity& entity1, entity& entity2);
 };
 } // namespace systems
 } // namespace p201
