@@ -1,3 +1,3 @@
 
 #!/bin/sh
-make --jobs=5 --directory=build
+make --jobs=8 --directory=build
