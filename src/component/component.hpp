@@ -86,6 +86,7 @@ struct transform : public component
     vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
     /** @brief Direction the entity is facing (not always used). */
     std::bitset<4> direction;
+    bool movement = true;
 
     transform(class entity& entity) : __base(entity) { }
     virtual ~transform() = default;

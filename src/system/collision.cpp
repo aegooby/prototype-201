@@ -106,7 +106,11 @@ void collision::quad_check(class quadtree& quadtree)
     {
         for (auto& id_i : node_entities)
             for (auto& id_j : node_entities)
-                if (hitbox_check(hitbox(id_i), hitbox(id_j))) { (void)0; }
+                if (hitbox_check(hitbox(id_i), hitbox(id_j))) {
+                    //(void)0;
+                    world.entity(id_i).component<components::transform>().movement = false;
+                    world.entity(id_j).component<components::transform>().movement = false;
+                }
     }
 }
 

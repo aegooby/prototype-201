@@ -22,6 +22,9 @@ public:
     virtual ~physics() = default;
     virtual void start() override;
     virtual void update(float dt) override;
+    
+    std::tuple<vector_3, vector_3> impulse(entity& entity1, entity& entity2);
+    void collision_resolution(std::size_t id);
 };
 } // namespace systems
 } // namespace p201
