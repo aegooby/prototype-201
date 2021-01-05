@@ -8,8 +8,8 @@ add_definitions(-march=native -Wall -Wno-deprecated)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DP201_DEBUG")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DP201_DEBUG -Og")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
     set(
@@ -51,13 +51,14 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
 find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(Gperftools REQUIRED)
 
 # Define the include DIRs
 include_directories(
     ${CMAKE_SOURCE_DIR}/headers
     ${CMAKE_SOURCE_DIR}/sources
     ${Boost_INCLUDE_DIRS}
-
+    ${GPERFTOOLS_INCLUDE_DIR}
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2_TTF_INCLIDE_DIRS}
@@ -69,6 +70,7 @@ include_directories(
 target_link_libraries(
     ${PROJECT_NAME}
     Eigen3::Eigen
+    ${GPERFTOOLS_LIBRARIES}
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
