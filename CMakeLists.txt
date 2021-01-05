@@ -27,21 +27,18 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
     )
 endif (CMAKE_BUILD_TYPE STREQUAL "")
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(TBB_DEBUG TRUE)
+endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     add_definitions(-Ofast)
 endif (CMAKE_BUILD_TYPE STREQUAL "Release")
 
 # Load headers
-file(
-    GLOB_RECURSE HEADERS
-    ${CMAKE_SOURCE_DIR}/src/*.hpp
-)
+file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/src/*.hpp)
 
 # Load source files
-file(
-    GLOB_RECURSE SOURCES
-    ${CMAKE_SOURCE_DIR}/src/*.cpp
-)
+file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 # Define the executable
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
@@ -55,14 +52,16 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_ttf.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_mixer.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
-find_package(Boost)
+find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(TBB REQUIRED)
 
 # Define the include DIRs
 include_directories(
     ${CMAKE_SOURCE_DIR}/headers
     ${CMAKE_SOURCE_DIR}/sources
     ${Boost_INCLUDE_DIRS}
+
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2_TTF_INCLIDE_DIRS}
@@ -74,6 +73,7 @@ include_directories(
 target_link_libraries(
     ${PROJECT_NAME}
     Eigen3::Eigen
+    TBB::tbb
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
