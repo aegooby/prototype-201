@@ -2,6 +2,7 @@
 #pragma once
 #include "__common.hpp"
 #include "exception.hpp"
+#include "thread.hpp"
 #include "util.hpp"
 
 #include <filesystem>

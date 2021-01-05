@@ -51,7 +51,6 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
 find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-find_package(TBB REQUIRED)
 
 # Define the include DIRs
 include_directories(
@@ -70,7 +69,6 @@ include_directories(
 target_link_libraries(
     ${PROJECT_NAME}
     Eigen3::Eigen
-    TBB::tbb
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}

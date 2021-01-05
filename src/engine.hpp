@@ -65,7 +65,7 @@ public:
         if (__running) return;
 
         if constexpr (debug)
-            std::cout << thread::this_id() << " starting engine" << std::endl;
+            std::cout << thread::id() << " starting engine" << std::endl;
         __running = true;
 
         double time_prev   = clock.time_s();
