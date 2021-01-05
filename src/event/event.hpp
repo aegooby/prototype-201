@@ -36,10 +36,16 @@ public:
 class collision : public event
 {
 public:
-    class entity& entity1;
-    class entity& entity2;
+    class entity& __a;
+    class entity& __b;
+    vector_3      normal;
+    float         depth;
 
-    collision(class entity& entity1, class entity& entity2) : entity1(entity1), entity2(entity2) { }
+    collision(entity& __a, class entity& __b, const vector_3& normal,
+              float depth)
+        : __a(__a), __b(__b), normal(normal), depth(depth)
+    {
+    }
     virtual ~collision() = default;
 };
 } // namespace events

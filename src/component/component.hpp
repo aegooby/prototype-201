@@ -97,11 +97,11 @@ struct physics : public component
 
     static constexpr std::size_t flag = 3;
 
-    vector_3 velocity  = vector_3(0.0f, 0.0f, 0.0f);
-    vector_3 accel     = vector_3(0.0f, 0.0f, 0.0f);
-    float    max_speed = 0.0f;
-    float    friction  = 0.0f;
-    float    mass      = 0.0f;
+    vector_3 velocity = vector_3(0.0f, 0.0f, 0.0f);
+    vector_3 force    = vector_3(0.0f, 0.0f, 0.0f);
+    float    gravity  = 0.0f;
+    float    mass     = 0.0f;
+    float    bounce   = 0.0f;
 
     physics(class entity& entity) : __base(entity) { }
     virtual ~physics() = default;

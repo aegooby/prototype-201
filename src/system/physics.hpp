@@ -24,10 +24,10 @@ public:
     virtual void start() override;
     virtual void update(float dt) override;
 
-    std::tuple<vector_3, vector_3> impulse(entity& entity1, entity& entity2);
+    std::tuple<vector_3, vector_3> impulse(entity& __a, entity& __b);
     void                           collision_resolution(std::size_t id);
 
-    void collision_resolution(entity& entity1, entity& entity2);
+    void on_collision_event(events::collision&);
 };
 } // namespace systems
 } // namespace p201

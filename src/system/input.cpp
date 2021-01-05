@@ -14,6 +14,7 @@ namespace p201
 namespace systems
 {
 void input::start() { }
+/* @todo This is fucked */
 void input::update(float dt)
 {
     __base::update(dt);
@@ -38,13 +39,13 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
-            physics.accel.x() -= accel / sqrt_2;
-            physics.accel.y() += accel / sqrt_2;
+            // physics.accel.x() -= accel / sqrt_2;
+            // physics.accel.y() += accel / sqrt_2;
         }
         if (keyboard.up(keycode::S))
         {
-            physics.accel.x() += accel / sqrt_2;
-            physics.accel.y() -= accel / sqrt_2;
+            // physics.accel.x() += accel / sqrt_2;
+            // physics.accel.y() -= accel / sqrt_2;
         }
 
         /* Up */
@@ -52,13 +53,13 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
-            physics.accel.x() += accel / sqrt_2;
-            physics.accel.y() -= accel / sqrt_2;
+            // physics.accel.x() += accel / sqrt_2;
+            // physics.accel.y() -= accel / sqrt_2;
         }
         if (keyboard.up(keycode::W))
         {
-            physics.accel.x() -= accel / sqrt_2;
-            physics.accel.y() += accel / sqrt_2;
+            // physics.accel.x() -= accel / sqrt_2;
+            // physics.accel.y() += accel / sqrt_2;
         }
 
         /* Right */
@@ -70,8 +71,8 @@ void input::update(float dt)
                 animation("walk-right");
             else
                 animation("stand-right");
-            physics.accel.x() += accel / sqrt_2;
-            physics.accel.y() += accel / sqrt_2;
+            // physics.accel.x() += accel / sqrt_2;
+            // physics.accel.y() += accel / sqrt_2;
         }
         if (keyboard.up(keycode::D))
         {
@@ -81,8 +82,8 @@ void input::update(float dt)
                 animation("stand-right");
             else
                 animation("walk-left");
-            physics.accel.x() -= accel / sqrt_2;
-            physics.accel.y() -= accel / sqrt_2;
+            // physics.accel.x() -= accel / sqrt_2;
+            // physics.accel.y() -= accel / sqrt_2;
         }
 
         /* Left */
@@ -92,8 +93,8 @@ void input::update(float dt)
                 animation("walk-left");
             else
                 animation("stand-left");
-            physics.accel.x() -= accel / sqrt_2;
-            physics.accel.y() -= accel / sqrt_2;
+            // physics.accel.x() -= accel / sqrt_2;
+            // physics.accel.y() -= accel / sqrt_2;
         }
         if (keyboard.up(keycode::A))
         {
@@ -101,8 +102,8 @@ void input::update(float dt)
                 animation("stand-left");
             else
                 animation("walk-right");
-            physics.accel.x() += accel / sqrt_2;
-            physics.accel.y() += accel / sqrt_2;
+            // physics.accel.x() += accel / sqrt_2;
+            // physics.accel.y() += accel / sqrt_2;
         }
     }
 }

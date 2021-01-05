@@ -58,16 +58,11 @@ public:
                 }
                 case components::physics::flag:
                 {
-                    auto& physics =
-                        entity.add_component<components::physics>();
+                    /* @todo This is fucked */
+                    auto& physics = entity.add_component<components::physics>();
                     physics.velocity.x() = component.get<float>("velocity.x");
                     physics.velocity.y() = component.get<float>("velocity.y");
                     physics.velocity.z() = component.get<float>("velocity.z");
-                    physics.accel.x()    = component.get<float>("accel.x");
-                    physics.accel.y()    = component.get<float>("accel.y");
-                    physics.accel.z()    = component.get<float>("accel.z");
-                    physics.max_speed    = component.get<float>("max_speed");
-                    physics.friction     = component.get<float>("friction");
                     physics.mass         = component.get<float>("mass");
                     break;
                 }

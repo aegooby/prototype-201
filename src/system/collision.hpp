@@ -22,6 +22,7 @@ public:
     {
         flag.set(components::transform::flag);
         flag.set(components::collision::flag);
+        flag.set(components::physics::flag);
     }
     virtual ~collision() = default;
     void         check();
@@ -34,7 +35,12 @@ public:
     static bool square_check(const hitboxes::square&, const hitboxes::square&);
     static bool hybrid_check(const hitboxes::circle&, const hitboxes::square&);
     static bool point_in_square(const vector_3&, const hitboxes::square&);
-    
+
+    void resolve(entity&, entity&);
+    void circle_resolve(entity&, entity&);
+    void square_resolve(entity&, entity&);
+    void hybrid_resolve(entity&, entity&);
+
     void quad_check(class quadtree& quadtree);
 };
 } // namespace systems
