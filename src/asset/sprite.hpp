@@ -1,9 +1,9 @@
 
 #pragma once
-#include "__common.hpp"
-#include "exception.hpp"
-#include "thread.hpp"
-#include "util.hpp"
+#include "../__common.hpp"
+#include "../exception.hpp"
+#include "../thread.hpp"
+#include "../util.hpp"
 
 #include <filesystem>
 #include <unordered_map>
@@ -12,6 +12,8 @@
 namespace p201
 {
 
+namespace assets
+{
 namespace sprite
 {
 /**
@@ -45,9 +47,9 @@ struct flipbook
 class manager
 {
 protected:
-    using flipbook_family = std::unordered_map<std::string, flipbook>;
-    std::unordered_map<std::string, flipbook_family> families;
-    std::filesystem::path                            main_path;
+    using flipbook_family = std::unordered_map<std::string, sprite::flipbook>;
+    std::unordered_map<std::string, flipbook_family> flipbooks;
+    std::filesystem::path                            flipbooks_path;
 
     SDL_Renderer* renderer = nullptr;
 
@@ -56,9 +58,9 @@ protected:
         if (!std::filesystem::is_directory(path)) return;
         const auto& name   = path.filename();
         const auto& family = path.parent_path().filename();
-        families.try_emplace(family, flipbook_family());
-        families.at(family).emplace(name, sprite::flipbook());
-        auto& flipbook = families.at(family).at(name);
+        flipbooks.try_emplace(family, flipbook_family());
+        flipbooks.at(family).emplace(name, sprite::flipbook());
+        auto& flipbook = flipbooks.at(family).at(name);
 
         std::vector<std::string> sprite_paths;
         for (auto& entry : std::filesystem::directory_iterator(path))
@@ -73,11 +75,13 @@ protected:
     }
     void delete_flipbook(const std::string& family, const std::string& name)
     {
-        families.at(family).erase(name);
+        flipbooks.at(family).erase(name);
     }
 
 public:
-    manager(const std::string& main_path) : main_path(main_path) { }
+    manager(const std::string& flipbooks_path) : flipbooks_path(flipbooks_path)
+    {
+    }
     ~manager() = default;
     void link(SDL_Renderer* renderer)
     {
@@ -85,7 +89,7 @@ public:
     }
     void load()
     {
-        for (auto& family : std::filesystem::directory_iterator(main_path))
+        for (auto& family : std::filesystem::directory_iterator(flipbooks_path))
         {
             const auto& path = family.path();
             if (!std::filesystem::is_directory(path)) continue;
@@ -93,10 +97,10 @@ public:
                 new_flipbook(name.path());
         }
     }
-    const flipbook& flipbook(const std::string& family,
-                             const std::string& name) const
+    const sprite::flipbook& flipbook(const std::string& family,
+                                     const std::string& name) const
     {
-        return families.at(family).at(name);
+        return flipbooks.at(family).at(name);
     }
     SDL_Texture* default_sprite(const std::string& family)
     {
@@ -109,5 +113,6 @@ public:
     manager& operator=(manager&&) = delete;
 };
 } // namespace sprite
+} // namespace assets
 
 } // namespace p201

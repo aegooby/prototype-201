@@ -3,7 +3,6 @@
 #include "../__common.hpp"
 #include "../hitbox.hpp"
 #include "../key.hpp"
-#include "../sprite.hpp"
 
 #include <bitset>
 #include <string>

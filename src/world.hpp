@@ -1,6 +1,7 @@
 
 #pragma once
 #include "__common.hpp"
+#include "asset.hpp"
 #include "camera.hpp"
 #include "component.hpp"
 #include "entity_manager.hpp"
@@ -34,6 +35,8 @@ public:
     serialize::xml serializer;
     /** @brief Read the name idiot. */
     ui::hud hud;
+    /** @brief Contains sprites (and one day, sound files). */
+    assets::sprite::manager sprite_manager;
 
 protected:
     using cmptr_t = std::unique_ptr<component_manager>;

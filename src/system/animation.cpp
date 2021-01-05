@@ -1,15 +1,14 @@
 
-
 #include "animation.hpp"
 
 #include "../__common.hpp"
+#include "../asset.hpp"
 #include "../engine.hpp"
 #include "../entity.hpp"
 #include "../event.hpp"
 #include "../util.hpp"
 #include "../window.hpp"
 #include "../world.hpp"
-#include "render.hpp"
 
 namespace p201
 {
@@ -22,7 +21,7 @@ void animation::start()
 void animation::update(float dt)
 {
     __base::update(dt);
-    const auto& sprite_manager = world.system<systems::render>().sprite_manager;
+    const auto& sprite_manager = world.sprite_manager;
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);

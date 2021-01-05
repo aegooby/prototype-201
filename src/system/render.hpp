@@ -5,7 +5,6 @@
 #include "../entity.hpp"
 #include "../exception.hpp"
 #include "../quadtree.hpp"
-#include "../sprite.hpp"
 #include "../window.hpp"
 #include "system.hpp"
 
@@ -21,8 +20,6 @@ class render : public system
 {
 public:
     using __base = system;
-
-    sprite::manager sprite_manager;
 
 protected:
     SDL_Renderer*  __sdl_renderer = nullptr;
@@ -41,9 +38,7 @@ private:
 
 public:
     render(class world& world)
-        : __base(world),
-          sprite_manager("sprites"),
-          iso_3((matrix_3() << P201_ISO_3).finished() / sqrt_2)
+        : __base(world), iso_3((matrix_3() << P201_ISO_3).finished() / sqrt_2)
     {
         flag.set(components::render::flag);
         flag.set(components::transform::flag);

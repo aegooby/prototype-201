@@ -3,7 +3,6 @@
 #include "../__common.hpp"
 #include "../entity.hpp"
 #include "../event.hpp"
-#include "../sprite.hpp"
 #include "../window.hpp"
 #include "system.hpp"
 

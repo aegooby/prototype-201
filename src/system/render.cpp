@@ -99,12 +99,12 @@ void render::start()
     if (!__sdl_renderer) throw sdl_error("Failed to create rendering system");
     if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
         throw sdl_error("Failed to load SDL Image libraries");
-    sprite_manager.link(__sdl_renderer);
-    sprite_manager.load();
+    world.sprite_manager.link(__sdl_renderer);
+    world.sprite_manager.load();
 
     /* @todo This is messy */
     auto& hb_main    = world.hud.healthbar.main;
-    hb_main.texture  = sprite_manager.flipbook("healthbar", "main").at(0);
+    hb_main.texture  = world.sprite_manager.flipbook("healthbar", "main").at(0);
     hb_main.position = vector_2(30.0f, 25.0f);
     hb_main.width    = 300.0f;
     hb_main.height   = 30.0f;
@@ -156,7 +156,7 @@ void render::draw(float alpha)
         render.rect.x = screen_position.x() - render.rect.w * render.offset.x();
         render.rect.y = screen_position.y() - render.rect.h * render.offset.y();
         if (!render.texture)
-            render.texture = sprite_manager.default_sprite(render.family);
+            render.texture = world.sprite_manager.default_sprite(render.family);
         if (entity.flag.test(components::camera_focus::flag))
             camera.center = util::center(render.rect);
         if (render.camera) render.rect = camera.transform(render.rect);
