@@ -22,14 +22,15 @@ void animation::start()
 void animation::update(float dt)
 {
     __base::update(dt);
-    auto& sprite_manager = world.system<systems::render>().sprite_manager;
+    const auto& sprite_manager = world.system<systems::render>().sprite_manager;
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);
         auto& animation = entity.component<components::animation>();
         auto& render    = entity.component<components::render>();
 
-        auto& flipbook = sprite_manager.flipbook(render.family, animation.name);
+        const auto& flipbook =
+            sprite_manager.flipbook(render.family, animation.name);
 
         if (animation.fps)
         {

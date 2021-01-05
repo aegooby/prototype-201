@@ -10,7 +10,6 @@
 #include "window.hpp"
 #include "world.hpp"
 
-#include <future>
 #include <thread>
 
 namespace p201
@@ -105,17 +104,7 @@ public:
     void update(float dt)
     {
         window.update();
-        /* @todo Experimental */
-        auto animation = [this](float dt) {
-            world.systems.at(typeid(systems::animation))->update(dt);
-        };
-        auto future = std::async(std::launch::async, animation, dt);
-        for (auto& system : world.systems)
-        {
-            if (system.first != typeid(systems::animation))
-                system.second->update(dt);
-        }
-        future.wait();
+        for (auto& system : world.systems) system.second->update(dt);
     }
     void render(float alpha)
     {

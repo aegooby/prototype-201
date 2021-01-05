@@ -92,7 +92,8 @@ public:
                 new_flipbook(name.path());
         }
     }
-    flipbook& flipbook(const std::string& family, const std::string& name)
+    const flipbook& flipbook(const std::string& family,
+                             const std::string& name) const
     {
         return families.at(family).at(name);
     }

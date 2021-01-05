@@ -12,7 +12,7 @@ namespace systems
 {
 void collision::start()
 {
-    quadtree.start(4, 1);
+    quadtree.start(6, 1);
     quadtree.bounds(0.0f, 0.0f, 1500.0f, 1500.0f);
 }
 
