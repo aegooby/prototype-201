@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
 project(prototype_201)
 
-add_definitions(-march=native -Wall)
+add_definitions(-march=native -Wall -Wno-deprecated)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -41,6 +41,7 @@ add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
 
 # Dependencies
 set(${PROJECT_NAME}_CMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_image.cmake)
@@ -50,7 +51,7 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
 find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-# find_package(TBB REQUIRED)
+find_package(TBB REQUIRED)
 
 # Define the include DIRs
 include_directories(
@@ -69,7 +70,7 @@ include_directories(
 target_link_libraries(
     ${PROJECT_NAME}
     Eigen3::Eigen
-    # TBB::tbb
+    TBB::tbb
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
