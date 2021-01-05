@@ -7,6 +7,7 @@
 #include "input.hpp"
 #include "serialize.hpp"
 #include "system.hpp"
+#include "thread.hpp"
 #include "window.hpp"
 #include "world.hpp"
 
@@ -64,7 +65,7 @@ public:
         if (__running) return;
 
         if constexpr (debug)
-            std::cout << util::this_thread() << " starting engine" << std::endl;
+            std::cout << thread::this_id() << " starting engine" << std::endl;
         __running = true;
 
         double time_prev   = clock.time_s();

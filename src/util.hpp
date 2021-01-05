@@ -41,9 +41,5 @@ inline std::string to_string(std::thread::id id)
     str << id;
     return "<thread " + str.str() + ">";
 }
-inline std::string this_thread()
-{
-    return to_string(std::this_thread::get_id());
-}
 } // namespace util
 } // namespace p201

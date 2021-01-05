@@ -3,10 +3,8 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
 project(prototype_201)
 
-# Enable warnings
 add_definitions(-march=native -Wall)
 
-# Set C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -14,8 +12,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DP201_DEBUG")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
-# CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
-# differentiation between debug and release builds.
     set(
         CMAKE_BUILD_TYPE
             "Debug"
@@ -54,7 +50,7 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
 find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-find_package(TBB REQUIRED)
+# find_package(TBB REQUIRED)
 
 # Define the include DIRs
 include_directories(
@@ -73,7 +69,7 @@ include_directories(
 target_link_libraries(
     ${PROJECT_NAME}
     Eigen3::Eigen
-    TBB::tbb
+    # TBB::tbb
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
