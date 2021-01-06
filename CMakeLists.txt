@@ -78,6 +78,7 @@ set(CMAKEMODULES_VERSION "1.27")
 set(CMAKEMODULES_PATH ${PHYSX_ROOT_DIR}/../externals/cmakemodules)
 set(PX_OUTPUT_LIB_DIR ${CMAKE_CURRENT_BINARY_DIR}/PhysX)
 set(PX_OUTPUT_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/PhysX)
+set(PHYSX_LIBRARIES PhysX PhysXCommon PhysXFoundation)
 add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
 
 find_package(Boost REQUIRED)
@@ -88,6 +89,7 @@ find_package(Gperftools REQUIRED)
 include_directories(
     ${CMAKE_SOURCE_DIR}/headers
     ${PHYSX_ROOT_DIR}/include
+    ${PHYSX_ROOT_DIR}/../pxshared/include/
     ${Boost_INCLUDE_DIRS}
     ${GPERFTOOLS_INCLUDE_DIR}
     ${SDL2_INCLUDE_DIRS}

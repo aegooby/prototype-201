@@ -4,6 +4,7 @@
 #include "../__common.hpp"
 #include "../entity_manager.hpp"
 #include "../event.hpp"
+#include "../physx.hpp"
 #include "../util.hpp"
 #include "../world.hpp"
 

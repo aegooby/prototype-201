@@ -2,13 +2,11 @@
 #pragma once
 
 #if defined(P201_DEBUG)
-#    if defined(NDEBUG)
-#        undef NDEBUG
-#    endif
+#    define _DEBUG
+#    undef NDEBUG
 #else
-#    if !defined(NDEBUG)
-#        define NDEBUG
-#    endif
+#    define NDEBUG
+#    undef _DEBUG
 #endif
 
 #if defined(__cplusplus)
