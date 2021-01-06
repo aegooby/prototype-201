@@ -285,16 +285,16 @@ void collision::resolve(entity& __a, entity& __b)
 
     if (typeid(*__ptr_a) == typeid(hitboxes::circle) &&
         typeid(*__ptr_b) == typeid(hitboxes::circle))
-        circle_resolve(__a, __b);
+        return circle_resolve(__a, __b);
     if (typeid(*__ptr_a) == typeid(hitboxes::square) &&
         typeid(*__ptr_b) == typeid(hitboxes::square))
-        square_resolve(__a, __b);
+        return square_resolve(__a, __b);
     if (typeid(*__ptr_a) == typeid(hitboxes::square) &&
         typeid(*__ptr_b) == typeid(hitboxes::circle))
-        hybrid_resolve(__a, __b);
+        return hybrid_resolve(__a, __b);
     if (typeid(*__ptr_a) == typeid(hitboxes::circle) &&
         typeid(*__ptr_b) == typeid(hitboxes::square))
-        hybrid_resolve(__b, __a);
+        return hybrid_resolve(__b, __a);
     throw std::runtime_error("Unknown hitbox types");
 }
 

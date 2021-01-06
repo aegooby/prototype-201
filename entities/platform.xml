@@ -26,6 +26,20 @@
             </position>
         </component>
         <component>
+            <flag>3</flag>
+            <velocity>
+                <x>0.0</x>
+                <y>0.0</y>
+                <z>0.0</z>
+            </velocity>
+            <accel>
+                <x>0.0</x>
+                <y>0.0</y>
+                <z>0.0</z>
+            </accel>
+            <mass>0.01</mass>
+        </component>
+        <component>
             <flag>4</flag>
             <hitbox>
                 <flag>2</flag>

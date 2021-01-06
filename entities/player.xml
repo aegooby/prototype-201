@@ -37,8 +37,6 @@
                 <y>0.0</y>
                 <z>0.0</z>
             </accel>
-            <max_speed>800.0</max_speed>
-            <friction>0.5</friction>
             <mass>0.01</mass>
         </component>
         <component>

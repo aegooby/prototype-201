@@ -50,7 +50,6 @@ void physics::on_impulse_event(events::impulse& event)
 void physics::on_collision_event(events::collision& event)
 {
     /** @todo Disabled */
-    return;
     auto& phys_a = event.__a.component<components::physics>();
     auto& phys_b = event.__b.component<components::physics>();
 
