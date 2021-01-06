@@ -133,7 +133,7 @@ void collision::circle_resolve(entity& __a, entity& __b)
     if (v_rel.norm() != 0)
     {
         penistration = rsq - v_rel_magnitude;
-        /* @todo This shit is fucked thanks Randy. */
+        /** @todo This shit is fucked thanks Randy. */
         float normal_value = rsq / v_rel_magnitude;
         normal << normal_value, normal_value, normal_value;
     }

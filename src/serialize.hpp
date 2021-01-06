@@ -58,7 +58,7 @@ public:
                 }
                 case components::physics::flag:
                 {
-                    /* @todo This is fucked */
+                    /** @todo This is fucked */
                     auto& physics = entity.add_component<components::physics>();
                     physics.velocity.x() = component.get<float>("velocity.x");
                     physics.velocity.y() = component.get<float>("velocity.y");

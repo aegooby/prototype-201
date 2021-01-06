@@ -102,7 +102,7 @@ void render::start()
     world.sprite_manager.link(__sdl_renderer);
     world.sprite_manager.load();
 
-    /* @todo This is messy */
+    /** @todo This is messy */
     auto& hb_main    = world.hud.healthbar.main;
     hb_main.texture  = world.sprite_manager.flipbook("healthbar", "main").at(0);
     hb_main.position = vector_2(30.0f, 25.0f);

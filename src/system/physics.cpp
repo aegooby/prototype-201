@@ -16,8 +16,7 @@ void physics::start()
     world.event_manager.subscribe(*this, &physics::on_collision_event);
 }
 
-std::tuple<vector_3, vector_3> physics::impulse(entity& __a,
-                                                entity& __b)
+std::tuple<vector_3, vector_3> physics::impulse(entity& __a, entity& __b)
 {
     // elastic 2d collision
     return std::tuple<vector_3, vector_3>();
@@ -50,6 +49,7 @@ void physics::update(float dt)
 
         /* Don't delete this or I will fucking slap you. */
         transform.lerp = transform.position;
+        /** @todo Add position/velocity updates */
     }
 }
 void physics::on_collision_event(events::collision& event)
@@ -63,8 +63,7 @@ void physics::on_collision_event(events::collision& event)
     float v_normal = v_rel.dot(event.normal);
 
     // Do not resolve if velocities are separating
-    if(v_normal > 0)
-        return;
+    if (v_normal > 0) return;
 
     // Calculate restitution
     float e = std::min(phys_a.bounce, phys_b.bounce);
