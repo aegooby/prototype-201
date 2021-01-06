@@ -13,6 +13,7 @@ namespace systems
 {
 void physics::start()
 {
+    world.event_manager.subscribe(*this, &physics::on_impulse_event);
     world.event_manager.subscribe(*this, &physics::on_collision_event);
 }
 
@@ -31,6 +32,9 @@ void physics::update(float dt)
         /* Integration */
         physics.velocity += (physics.force / physics.mass) * dt;
         transform.position += physics.velocity * dt;
+
+        /** @todo Friction */
+        physics.velocity *= 0.8f;
     }
 }
 
