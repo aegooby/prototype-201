@@ -12,15 +12,6 @@ namespace p201
 {
 bool quadtree::intersect(std::size_t id, const box& box)
 {
-    auto& entity = world.entity(id);
-    auto& hitbox = entity.component<components::collision>().hitbox;
-
-    std::unique_ptr<struct hitbox> ptr = std::make_unique<hitboxes::square>();
-    auto& node = *dynamic_cast<hitboxes::square*>(ptr.get());
-
-    node.width  = box.w;
-    node.height = box.h;
-    node.center = vector_3(box.x + box.w / 2.0f, box.y + box.h / 2.0f, 0.0f);
     return false;
 }
 void quadtree::insert(std::size_t id, node& node, std::size_t depth)

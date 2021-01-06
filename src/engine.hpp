@@ -34,7 +34,7 @@ private:
             physx::PxDefaultPvdSocketTransportCreate(PHYSX_PVD_HOST, 5425, 10);
         pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
         scale      = physx::PxTolerancesScale();
-        physx_main = PxCreatePhysics(PX_PHYSICS_VERSION, *physx_foundation,
+        physx_sdk = PxCreatePhysics(PX_PHYSICS_VERSION, *physx_foundation,
                                      scale, true, pvd);
 
         physx_cooking = PxCreateCooking(PX_PHYSICS_VERSION, *physx_foundation,
@@ -47,7 +47,7 @@ public:
     static constexpr bool   vsync     = true;
 
     static inline physx::PxFoundation* physx_foundation;
-    static inline physx::PxPhysics*    physx_main;
+    static inline physx::PxPhysics*    physx_sdk;
     static inline physx::PxCooking*    physx_cooking;
 
 protected:
@@ -92,7 +92,7 @@ public:
     ~engine()
     {
         physx_cooking->release();
-        physx_main->release();
+        physx_sdk->release();
         physx_foundation->release();
     }
     void start()

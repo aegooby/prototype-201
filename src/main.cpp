@@ -9,7 +9,8 @@ int main(int argc, char** argv)
     p201::engine engine;
     if constexpr (p201::debug)
     {
-        std::cout << "IT'S PROTOTYPE 201 BITCH" << std::endl;
+        std::cout << p201::util::tc::bold << "IT'S PROTOTYPE 201 BITCH"
+                  << p201::util::tc::reset << std::endl;
         std::cout << " * C++ version: "
                   << (P201_CPP_VER ? "C++" + std::to_string(P201_CPP_VER)
                                    : "UNKNOWN")
@@ -20,7 +21,7 @@ int main(int argc, char** argv)
                   << (p201::engine::physx_foundation ? "success" : "failure")
                   << std::endl;
         std::cout << " * PhysX main initializing: "
-                  << (p201::engine::physx_main ? "success" : "failure")
+                  << (p201::engine::physx_sdk ? "success" : "failure")
                   << std::endl;
         std::cout << " * PhysX cooking initializing: "
                   << (p201::engine::physx_cooking ? "success" : "failure")

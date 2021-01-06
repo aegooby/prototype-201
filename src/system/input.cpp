@@ -19,20 +19,13 @@ void input::update(float dt)
 {
     __base::update(dt);
     auto& keyboard = world.keyboard;
-    auto& mouse    = world.mouse;
-    (void)mouse;
     for (auto& id : __registered_entities)
     {
-        auto&       entity    = world.entity(id);
-        auto&       physics   = entity.component<components::physics>();
-        auto&       transform = entity.component<components::transform>();
-        const auto& input     = entity.component<components::input>();
+        auto& entity    = world.entity(id);
+        auto& transform = entity.component<components::transform>();
 
         auto animation = [&entity, this](const std::string& name) {
             world.event_manager.publish<events::animation>(entity, name);
-        };
-        auto impulse = [&entity, this](const vector_3& vec) {
-            world.event_manager.publish<events::impulse>(entity, vec);
         };
 
         /* Down */
@@ -40,13 +33,10 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
-            physics.force.x() += -50.0f;
-            physics.force.y() += 50.0f;
+            /* -, + */
         }
         if (keyboard.up(keycode::S))
-        {
-            physics.force.x() += 50.0f;
-            physics.force.y() += -50.0f;
+        { /* +, - */
         }
 
         /* Up */
@@ -54,13 +44,10 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
-            physics.force.x() += 50.0f;
-            physics.force.y() += -50.0f;
+            /* +, - */
         }
         if (keyboard.up(keycode::W))
-        {
-            physics.force.x() += -50.0f;
-            physics.force.y() += 50.0f;
+        { /* +, - */
         }
 
         /* Right */
@@ -72,8 +59,7 @@ void input::update(float dt)
                 animation("walk-right");
             else
                 animation("stand-right");
-            physics.force.x() += 50.0f;
-            physics.force.y() += 50.0f;
+            /* +, + */
         }
         if (keyboard.up(keycode::D))
         {
@@ -83,8 +69,7 @@ void input::update(float dt)
                 animation("stand-right");
             else
                 animation("walk-left");
-            physics.force.x() -= 50.0f;
-            physics.force.y() -= 50.0f;
+            /* -, - */
         }
 
         /* Left */
@@ -94,8 +79,7 @@ void input::update(float dt)
                 animation("walk-left");
             else
                 animation("stand-left");
-            physics.force.x() -= 50.0f;
-            physics.force.y() -= 50.0f;
+            /* -, - */
         }
         if (keyboard.up(keycode::A))
         {
@@ -103,8 +87,7 @@ void input::update(float dt)
                 animation("stand-left");
             else
                 animation("walk-right");
-            physics.force.x() += 50.0f;
-            physics.force.y() += 50.0f;
+            /* +, + */
         }
     }
 }
