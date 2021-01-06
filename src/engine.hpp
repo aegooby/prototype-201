@@ -20,11 +20,11 @@ namespace p201
 class engine
 {
 private:
-    static inline physx::PxDefaultErrorCallback error;
-    static inline PxAlignedNewCallback          alloc;
-    static inline physx::PxPvd*                 pvd;
-    static inline physx::PxPvdTransport*        transport;
-    static inline physx::PxTolerancesScale      scale;
+    static inline physx_error              error;
+    static inline physx_allocator          alloc;
+    static inline physx::PxPvd*            pvd;
+    static inline physx::PxPvdTransport*   transport;
+    static inline physx::PxTolerancesScale scale;
 
     void physx_init()
     {
@@ -98,9 +98,6 @@ public:
     void start()
     {
         if (__running) return;
-
-        if constexpr (debug)
-            std::cout << thread::id() << " starting engine" << std::endl;
         __running = true;
 
         double time_prev   = clock.time_s();

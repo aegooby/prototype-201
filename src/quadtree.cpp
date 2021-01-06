@@ -21,11 +21,11 @@ bool quadtree::intersect(std::size_t id, const box& box)
     node.width  = box.w;
     node.height = box.h;
     node.center = vector_3(box.x + box.w / 2.0f, box.y + box.h / 2.0f, 0.0f);
-    return systems::collision::hitbox_check(hitbox, ptr);
+    return false;
 }
 void quadtree::insert(std::size_t id, node& node, std::size_t depth)
 {
-    if (!intersect(id, node.bounds)) { return; }
+    if (!intersect(id, node.bounds)) return;
     if (node.leaf)
     {
         if (depth < max_depth && node.count() + 1 > threshold)

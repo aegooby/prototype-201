@@ -2,6 +2,7 @@
 #pragma once
 #include "__common.hpp"
 #include "linalg.hpp"
+#include "termcolor.hpp"
 
 #include <chrono>
 #include <thread>
@@ -10,6 +11,8 @@ namespace p201
 {
 namespace util
 {
+namespace tc = ::termcolor;
+
 inline vector_2 center(const SDL_FRect& rect)
 {
     return vector_2(rect.x + rect.w / 2.0f, rect.y + rect.h / 2.0f);
@@ -38,8 +41,9 @@ inline std::string to_string(const vector<n>& vector)
 inline std::string to_string(std::thread::id id)
 {
     std::stringstream str;
-    str << id;
-    return "<thread " + str.str() + ">";
+    str << tc::colorize << tc::bold << tc::cyan << "<thread " << id << ">"
+        << tc::reset;
+    return str.str();
 }
 } // namespace util
 } // namespace p201
