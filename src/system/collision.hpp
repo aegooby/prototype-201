@@ -27,20 +27,6 @@ public:
     void         check();
     virtual void start() override;
     virtual void update(float dt) override;
-
-    static bool hitbox_check(const std::unique_ptr<hitbox>&,
-                             const std::unique_ptr<hitbox>&);
-    static bool circle_check(const hitboxes::circle&, const hitboxes::circle&);
-    static bool square_check(const hitboxes::square&, const hitboxes::square&);
-    static bool hybrid_check(const hitboxes::circle&, const hitboxes::square&);
-    static bool point_in_square(const vector_3&, const hitboxes::square&);
-
-    void resolve(entity&, entity&);
-    void circle_resolve(entity&, entity&);
-    void square_resolve(entity&, entity&);
-    void hybrid_resolve(entity&, entity&);
-
-    void quad_check(class quadtree& quadtree);
 };
 } // namespace systems
 } // namespace p201
