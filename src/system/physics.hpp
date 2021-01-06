@@ -24,9 +24,9 @@ public:
     virtual void start() override;
     virtual void update(float dt) override;
 
-    std::tuple<vector_3, vector_3> impulse(entity& __a, entity& __b);
-    void                           collision_resolution(std::size_t id);
+    void impulse(components::physics& physics, const vector_3& impulse);
 
+    void on_impulse_event(events::impulse&);
     void on_collision_event(events::collision&);
 };
 } // namespace systems

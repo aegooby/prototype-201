@@ -22,7 +22,6 @@ public:
     {
         flag.set(components::transform::flag);
         flag.set(components::collision::flag);
-        flag.set(components::physics::flag);
     }
     virtual ~collision() = default;
     void         check();

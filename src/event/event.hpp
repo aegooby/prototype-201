@@ -33,13 +33,25 @@ public:
     }
     virtual ~animation() = default;
 };
+class impulse : public event
+{
+public:
+    class entity& entity;
+    vector_3      vector;
+
+    impulse(class entity& entity, const vector_3& vector)
+        : entity(entity), vector(vector)
+    {
+    }
+    virtual ~impulse() = default;
+};
 class collision : public event
 {
 public:
-    class entity& __a;
-    class entity& __b;
-    vector_3      normal;
-    float         depth;
+    entity&  __a;
+    entity&  __b;
+    vector_3 normal;
+    float    depth;
 
     collision(entity& __a, class entity& __b, const vector_3& normal,
               float depth)

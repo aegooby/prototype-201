@@ -160,12 +160,13 @@ void render::draw(float alpha)
         if (entity.flag.test(components::camera_focus::flag))
             camera.center = util::center(render.rect);
         if (render.camera) render.rect = camera.transform(render.rect);
-        if (entity.flag.test(components::collision::flag) &&
-            world.keyboard.modifier(modifier::ALT))
+        if constexpr (debug)
         {
-            auto& hitbox = entity.component<components::collision>().hitbox;
-            if constexpr (debug) render_hitbox(hitbox);
+            if (entity.flag.test(components::collision::flag) &&
+                world.keyboard.modifier(modifier::ALT))
+                render_hitbox(entity.component<components::collision>().hitbox);
         }
+
         if (render.visible)
             render_sprite(render.texture, &render.srcrect, &render.rect);
     }

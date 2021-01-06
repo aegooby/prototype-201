@@ -126,25 +126,24 @@ void collision::circle_resolve(entity& __a, entity& __b)
     vector_3 v_rel = tr_a.position - tr_b.position;
     float    rsq   = std::pow(circle_a.radius + circle_b.radius, 2);
 
-    float    penistration    = 0.0f;
+    float    depth           = 0.0f;
     float    v_rel_magnitude = v_rel.norm();
     vector_3 normal          = vector_3(0.0f, 0.0f, 0.0f);
 
     if (v_rel.norm() != 0)
     {
-        penistration = rsq - v_rel_magnitude;
+        depth = rsq - v_rel_magnitude;
         /** @todo This shit is fucked thanks Randy. */
         float normal_value = rsq / v_rel_magnitude;
         normal << normal_value, normal_value, normal_value;
     }
     else
     {
-        penistration = circle_a.radius;
+        depth = circle_a.radius;
         normal << 1.0f, 0.0f, 0.0f;
     }
 
-    world.event_manager.publish<events::collision>(__a, __b, normal,
-                                                   penistration);
+    world.event_manager.publish<events::collision>(__a, __b, normal, depth);
 }
 
 void collision::square_resolve(entity& __a, entity& __b)
@@ -163,8 +162,8 @@ void collision::square_resolve(entity& __a, entity& __b)
 
     float x_overlap = a_extent_x + b_extent_x - abs(v_rel.x());
 
-    vector_3 normal      = vector_3(1.0f, 1.0f, 1.0f);
-    float    penetration = 0.0f;
+    vector_3 normal = vector_3(1.0f, 1.0f, 1.0f);
+    float    depth  = 0.0f;
 
     // SAT test on x axis
     if (x_overlap > 0)
@@ -178,7 +177,7 @@ void collision::square_resolve(entity& __a, entity& __b)
         // SAT test on y axis
         if (y_overlap > 0)
         {
-            // Find out which axis is axis of least penetration
+            // Find out which axis is axis of least depth
             if (x_overlap > y_overlap)
             {
                 // Point towards B knowing that n points from A to B
@@ -186,7 +185,7 @@ void collision::square_resolve(entity& __a, entity& __b)
                     normal << -1.0f, 0.0f, 0.0f;
                 else
                     normal << 0.0f, 0.0f, 0.0f;
-                penetration = x_overlap;
+                depth = x_overlap;
             }
             else
             {
@@ -195,13 +194,12 @@ void collision::square_resolve(entity& __a, entity& __b)
                     normal << 0.0f, -1.0f, 0.0f;
                 else
                     normal << 0.0f, 1.0f, 0.0f;
-                penetration = y_overlap;
+                depth = y_overlap;
             }
         }
     }
 
-    world.event_manager.publish<events::collision>(__a, __b, normal,
-                                                   penetration);
+    world.event_manager.publish<events::collision>(__a, __b, normal, depth);
 }
 
 void collision::hybrid_resolve(entity& __a, entity& __b)
@@ -253,10 +251,10 @@ void collision::hybrid_resolve(entity& __a, entity& __b)
         }
     }
 
-    vector_3 normal      = v_rel - closest;
-    float    d           = normal.squaredNorm();
-    float    r           = circle.radius;
-    float    penetration = 0.0f;
+    vector_3 normal = v_rel - closest;
+    float    d      = normal.squaredNorm();
+    float    r      = circle.radius;
+    float    depth  = 0.0f;
 
     // Early out of the radius is shorter than distance to closest point and
     // Circle not inside the AABB
@@ -268,17 +266,16 @@ void collision::hybrid_resolve(entity& __a, entity& __b)
     // inside the AABB
     if (inside)
     {
-        normal      = -1.0f * v_rel;
-        penetration = r - d;
+        normal = -1.0f * v_rel;
+        depth  = r - d;
     }
     else
     {
-        normal      = v_rel;
-        penetration = r - d;
+        normal = v_rel;
+        depth  = r - d;
     }
 
-    world.event_manager.publish<events::collision>(__a, __b, normal,
-                                                   penetration);
+    world.event_manager.publish<events::collision>(__a, __b, normal, depth);
 }
 
 void collision::resolve(entity& __a, entity& __b)
