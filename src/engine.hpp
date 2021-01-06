@@ -5,6 +5,7 @@
 #include "entity_manager.hpp"
 #include "event.hpp"
 #include "input.hpp"
+#include "physx.hpp"
 #include "serialize.hpp"
 #include "system.hpp"
 #include "thread.hpp"
@@ -18,10 +19,36 @@ namespace p201
 
 class engine
 {
+private:
+    static inline physx::PxDefaultErrorCallback error;
+    static inline PxAlignedNewCallback          alloc;
+    static inline physx::PxPvd*                 pvd;
+    static inline physx::PxPvdTransport*        transport;
+    static inline physx::PxTolerancesScale      scale;
+
+    void physx_init()
+    {
+        physx_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, alloc, error);
+        pvd              = physx::PxCreatePvd(*physx_foundation);
+        transport =
+            physx::PxDefaultPvdSocketTransportCreate(PHYSX_PVD_HOST, 5425, 10);
+        pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
+        scale      = physx::PxTolerancesScale();
+        physx_main = PxCreatePhysics(PX_PHYSICS_VERSION, *physx_foundation,
+                                     scale, true, pvd);
+
+        physx_cooking = PxCreateCooking(PX_PHYSICS_VERSION, *physx_foundation,
+                                        physx::PxCookingParams(scale));
+    }
+
 public:
     static constexpr float  dt_factor = 60.0f;
     static constexpr double dt        = 1.0 / dt_factor;
     static constexpr bool   vsync     = true;
+
+    static inline physx::PxFoundation* physx_foundation;
+    static inline physx::PxPhysics*    physx_main;
+    static inline physx::PxCooking*    physx_cooking;
 
 protected:
     window    window;
@@ -52,6 +79,9 @@ public:
           mouse(window.mouse),
           world(window, keyboard, mouse)
     {
+        /* Initialize PhysX */
+        physx_init();
+
         window.start();
         for (auto& system : world.systems) system.second->start();
 
@@ -59,7 +89,12 @@ public:
         world.serializer.load_entity(world.new_entity(), "player");
         world.serializer.load_entity(world.new_entity(), "platform");
     }
-    ~engine() = default;
+    ~engine()
+    {
+        physx_cooking->release();
+        physx_main->release();
+        physx_foundation->release();
+    }
     void start()
     {
         if (__running) return;

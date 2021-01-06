@@ -6,6 +6,7 @@
 
 int main(int argc, char** argv)
 {
+    p201::engine engine;
     if constexpr (p201::debug)
     {
         std::cout << "IT'S PROTOTYPE 201 BITCH" << std::endl;
@@ -15,8 +16,16 @@ int main(int argc, char** argv)
                   << std::endl;
         std::cout << " * Working directory: " << std::filesystem::current_path()
                   << std::endl;
+        std::cout << " * PhysX foundation initializing: "
+                  << (p201::engine::physx_foundation ? "success" : "failure")
+                  << std::endl;
+        std::cout << " * PhysX main initializing: "
+                  << (p201::engine::physx_main ? "success" : "failure")
+                  << std::endl;
+        std::cout << " * PhysX cooking initializing: "
+                  << (p201::engine::physx_cooking ? "success" : "failure")
+                  << std::endl;
     }
-    p201::engine engine;
     engine.start();
 
     return 0;
