@@ -22,8 +22,8 @@ class engine
 private:
     static inline physx_error              error;
     static inline physx_allocator          alloc;
-    static inline physx::PxPvd*            pvd;
-    static inline physx::PxPvdTransport*   transport;
+    static inline physx::PxPvd*            pvd       = nullptr;
+    static inline physx::PxPvdTransport*   transport = nullptr;
     static inline physx::PxTolerancesScale scale;
 
     void physx_init()
@@ -33,9 +33,9 @@ private:
         transport =
             physx::PxDefaultPvdSocketTransportCreate(PHYSX_PVD_HOST, 5425, 10);
         pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
-        scale      = physx::PxTolerancesScale();
+        scale     = physx::PxTolerancesScale();
         physx_sdk = PxCreatePhysics(PX_PHYSICS_VERSION, *physx_foundation,
-                                     scale, true, pvd);
+                                    scale, true, pvd);
 
         physx_cooking = PxCreateCooking(PX_PHYSICS_VERSION, *physx_foundation,
                                         physx::PxCookingParams(scale));
@@ -46,9 +46,9 @@ public:
     static constexpr double dt        = 1.0 / dt_factor;
     static constexpr bool   vsync     = true;
 
-    static inline physx::PxFoundation* physx_foundation;
-    static inline physx::PxPhysics*    physx_sdk;
-    static inline physx::PxCooking*    physx_cooking;
+    static inline physx::PxFoundation* physx_foundation = nullptr;
+    static inline physx::PxPhysics*    physx_sdk        = nullptr;
+    static inline physx::PxCooking*    physx_cooking    = nullptr;
 
 protected:
     window    window;

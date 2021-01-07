@@ -5,10 +5,15 @@ project(prototype_201)
 
 add_definitions(-march=native -Wall -Wno-deprecated)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
+### C++20 ###
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+### Flags ###
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DP201_DEBUG -Og")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
@@ -17,39 +22,34 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
             "Debug"
         CACHE STRING
             "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or
-                CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\"
-                \"MinSizeRel\"."
+                CMAKE_C_FLAGS used) \"Debug\", \"Release\"."
         FORCE
     )
 endif (CMAKE_BUILD_TYPE STREQUAL "")
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(TBB_DEBUG TRUE)
-endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    add_definitions(-Ofast)
-endif (CMAKE_BUILD_TYPE STREQUAL "Release")
-
-# Load headers
+### Source files ###
 file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/src/*.hpp)
-
-# Load source files
 file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
-# Define the executable
+### Executable ###
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
 
-# Dependencies
+### CMake modules ###
 set(${PROJECT_NAME}_CMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+### Dependencies ###
+find_package(Boost REQUIRED)
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
+### SDL2 ###
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_image.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_ttf.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_mixer.cmake)
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 
-# PhysX
+### PhysX ###
 if (APPLE)
     set(TARGET_BUILD_PLATFORM "mac")
 endif (APPLE)
@@ -82,35 +82,28 @@ set(PHYSX_LIBRARIES
     PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking)
 add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
 
-find_package(Boost REQUIRED)
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-if (APPLE)
-    find_package(Gperftools REQUIRED)
-    include_directories(${GPERFTOOLS_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} ${GPERFTOOLS_LIBRARIES})
-endif (APPLE)
-
-# Define the include DIRs
-include_directories(${CMAKE_SOURCE_DIR}/headers
-    ${Boost_INCLUDE_DIRS}
+### Include ###
+include_directories(
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2_TTF_INCLIDE_DIRS}
     ${SDL2_MIXER_INCLUDE_DIRS}
     ${SDL2_GFX_INCLIDE_DIRS}
+    ${PHYSX_ROOT_DIR}/include
+    ${PHYSX_ROOT_DIR}/../pxshared/include/
 )
-include_directories(${PHYSX_ROOT_DIR}/include
-    ${PHYSX_ROOT_DIR}/../pxshared/include/)
-# Define the link libraries
+
+### Link ###
 target_link_libraries(
     ${PROJECT_NAME}
-    ${PHYSX_LIBRARIES}
     Eigen3::Eigen
+    Boost::headers
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
     ${SDL2_MIXER_LIBRARIES}
     ${SDL2_GFX_LIBRARIES}
+    ${PHYSX_LIBRARIES}
 )
 
 
