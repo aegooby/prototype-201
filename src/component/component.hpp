@@ -3,6 +3,7 @@
 #include "../__common.hpp"
 #include "../hitbox.hpp"
 #include "../key.hpp"
+#include "../physx.hpp"
 
 #include <bitset>
 #include <memory>
@@ -97,6 +98,8 @@ struct physics : public component
     using __base = component;
 
     static constexpr std::size_t flag = 3;
+
+    px::actor* px = nullptr;
 
     physics(class entity& entity) : __base(entity) { }
     virtual ~physics() = default;

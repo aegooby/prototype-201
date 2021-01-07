@@ -79,7 +79,13 @@ set(CMAKEMODULES_PATH ${PHYSX_ROOT_DIR}/../externals/cmakemodules)
 set(PX_OUTPUT_LIB_DIR ${CMAKE_CURRENT_BINARY_DIR}/PhysX)
 set(PX_OUTPUT_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/PhysX)
 set(PHYSX_LIBRARIES
-    PhysX PhysXCommon PhysXFoundation PhysXExtensions PhysXCooking)
+    PhysX
+    PhysXCommon
+    PhysXFoundation
+    PhysXExtensions
+    PhysXCooking
+    PhysXCharacterKinematic
+)
 add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
 
 ### Include ###

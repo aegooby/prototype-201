@@ -3,6 +3,7 @@
 
 #include "__common.hpp"
 #include "component.hpp"
+#include "engine.hpp"
 #include "entity_manager.hpp"
 #include "system.hpp"
 #include "util.hpp"
@@ -18,9 +19,11 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
     : window(window),
       keyboard(keyboard),
       mouse(mouse),
+      scene(engine::sdk),
       event_manager(*this),
       sprite_manager("sprites")
 {
+
     component_managers.emplace(typeid(components::render),
                                std::make_unique<managers::render>());
     component_managers.emplace(typeid(components::transform),

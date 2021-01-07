@@ -6,6 +6,7 @@
 #include "component.hpp"
 #include "entity_manager.hpp"
 #include "event.hpp"
+#include "physx.hpp"
 #include "serialize.hpp"
 #include "ui.hpp"
 
@@ -25,6 +26,11 @@ public:
     class keyboard& keyboard;
     /** @brief State storage for mouse inputs. */
     class mouse& mouse;
+
+    /*** PHYSX ***/
+    /** @brief Scene used to manage PhysX actors. */
+    /** @todo Might need to be moved */
+    px::scene scene;
 
     /*** GLOBAL OBJECTS ***/
     /** @brief Table of systems (type of system is the key). */

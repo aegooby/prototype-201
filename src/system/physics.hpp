@@ -4,6 +4,7 @@
 #include "../component.hpp"
 #include "../entity.hpp"
 #include "../event.hpp"
+#include "../physx.hpp"
 #include "system.hpp"
 
 namespace p201
@@ -14,6 +15,8 @@ class physics : public system
 {
 public:
     using __base = system;
+
+    physx::PxControllerManager* physx_cm = nullptr;
 
     physics(class world& world) : __base(world)
     {

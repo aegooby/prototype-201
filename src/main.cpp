@@ -17,15 +17,6 @@ int main(int argc, char** argv)
                   << std::endl;
         std::cout << " * Working directory: " << std::filesystem::current_path()
                   << std::endl;
-        std::cout << " * PhysX foundation initializing: "
-                  << (p201::engine::physx_foundation ? "success" : "failure")
-                  << std::endl;
-        std::cout << " * PhysX main initializing: "
-                  << (p201::engine::physx_sdk ? "success" : "failure")
-                  << std::endl;
-        std::cout << " * PhysX cooking initializing: "
-                  << (p201::engine::physx_cooking ? "success" : "failure")
-                  << std::endl;
     }
     engine.start();
 
