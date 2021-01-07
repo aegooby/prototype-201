@@ -86,34 +86,33 @@ find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 if (APPLE)
     find_package(Gperftools REQUIRED)
+    include_directories(${GPERFTOOLS_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${GPERFTOOLS_LIBRARIES})
 endif (APPLE)
 
 # Define the include DIRs
-include_directories(
-    ${CMAKE_SOURCE_DIR}/headers
-    ${PHYSX_ROOT_DIR}/include
-    ${PHYSX_ROOT_DIR}/../pxshared/include/
+include_directories(${CMAKE_SOURCE_DIR}/headers
     ${Boost_INCLUDE_DIRS}
-    ${GPERFTOOLS_INCLUDE_DIR}
     ${SDL2_INCLUDE_DIRS}
     ${SDL2_IMAGE_INCLUDE_DIRS}
     ${SDL2_TTF_INCLIDE_DIRS}
     ${SDL2_MIXER_INCLUDE_DIRS}
     ${SDL2_GFX_INCLIDE_DIRS}
 )
-
+include_directories(${PHYSX_ROOT_DIR}/include
+    ${PHYSX_ROOT_DIR}/../pxshared/include/)
 # Define the link libraries
 target_link_libraries(
     ${PROJECT_NAME}
     ${PHYSX_LIBRARIES}
     Eigen3::Eigen
-    ${GPERFTOOLS_LIBRARIES}
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
     ${SDL2_MIXER_LIBRARIES}
     ${SDL2_GFX_LIBRARIES}
 )
+
 
 # PhysX, Windows only
 if (TARGET_BUILD_PLATFORM STREQUAL "windows")
