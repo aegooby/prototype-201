@@ -84,7 +84,9 @@ add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
 
 find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-find_package(Gperftools REQUIRED)
+if (APPLE)
+    find_package(Gperftools REQUIRED)
+endif (APPLE)
 
 # Define the include DIRs
 include_directories(
