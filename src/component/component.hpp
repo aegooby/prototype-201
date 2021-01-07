@@ -5,6 +5,7 @@
 #include "../key.hpp"
 
 #include <bitset>
+#include <memory>
 #include <string>
 #include <typeindex>
 #include <vector>
