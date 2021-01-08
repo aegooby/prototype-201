@@ -1,7 +1,6 @@
 
 #pragma once
 #include "system/animation.hpp"
-#include "system/collision.hpp"
 #include "system/combat.hpp"
 #include "system/input.hpp"
 #include "system/physics.hpp"

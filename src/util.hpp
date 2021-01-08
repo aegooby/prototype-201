@@ -11,7 +11,6 @@ namespace p201
 {
 namespace util
 {
-namespace tc = ::termcolor;
 
 inline vector_2 center(const SDL_FRect& rect)
 {
@@ -41,8 +40,8 @@ inline std::string to_string(const vector<n>& vector)
 inline std::string to_string(std::thread::id id)
 {
     std::stringstream str;
-    str << tc::colorize << tc::bold << tc::cyan << "<thread " << id << ">"
-        << tc::reset;
+    str << termcolor::colorize << termcolor::bold << termcolor::cyan
+        << "<thread " << id << ">" << termcolor::reset;
     return str.str();
 }
 } // namespace util

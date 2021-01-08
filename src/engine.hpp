@@ -25,7 +25,7 @@ public:
     static constexpr bool   vsync     = true;
 
     /** @todo Might need to be moved */
-    static inline px::sdk sdk;
+    static inline class px::sdk& sdk = px::sdk;
 
 protected:
     window    window;

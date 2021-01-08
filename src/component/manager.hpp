@@ -46,8 +46,8 @@ namespace managers
 {
 using render       = component_manager_template<components::render>;
 using transform    = component_manager_template<components::transform>;
-using physics     = component_manager_template<components::physics>;
-using collision    = component_manager_template<components::collision>;
+using physics      = component_manager_template<components::physics>;
+using character    = component_manager_template<components::character>;
 using input        = component_manager_template<components::input>;
 using animation    = component_manager_template<components::animation>;
 using camera_focus = component_manager_template<components::camera_focus>;

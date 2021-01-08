@@ -7,7 +7,7 @@
 
 #include "PxConfig.h"
 #include "PxPhysicsAPI.h"
-#include "util.hpp"
+#include "termcolor.hpp"
 
 #include <new>
 
@@ -40,23 +40,11 @@ public:
     virtual void reportError(physx::PxErrorCode::Enum code, const char* message,
                              const char* file, int line)
     {
-        std::clog << util::tc::bold << util::tc::cyan << "<PhysX>"
-                  << util::tc::red << " error" << util::tc::reset << "(code "
-                  << std::size_t(code) << "): " << message << std::endl;
+        std::clog << termcolor::bold << termcolor::red << "error "
+                  << termcolor::reset << "(code " << std::size_t(code)
+                  << "): " << message << std::endl;
     }
 };
-inline physx::PxPhysics* create_physics(physx::PxFoundation* foundation,
-                                        physx::PxPvd*        pvd)
-{
-    auto scale = physx::PxTolerancesScale();
-    return PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, scale, true, pvd);
-}
-inline physx::PxCooking* create_cooking(physx::PxFoundation* foundation)
-{
-    auto scale = physx::PxTolerancesScale();
-    return PxCreateCooking(PX_PHYSICS_VERSION, *foundation,
-                           physx::PxCookingParams(scale));
-}
 
 class sdk
 {
@@ -97,8 +85,6 @@ public:
     }
     ~sdk()
     {
-        if (pvd.transport) pvd.transport->release();
-        if (pvd.main) pvd.main->release();
         if (cooking) cooking->release();
         if (main) main->release();
         if (foundation) foundation->release();
@@ -114,7 +100,7 @@ public:
     scene(sdk& sdk) : desc(physx::PxSceneDesc(sdk.main->getTolerancesScale()))
     {
         /** @todo Maybe no gravity? */
-        desc.gravity = physx::PxVec3(0.0f, 0.0f, -9.8f);
+        desc.gravity = physx::PxVec3(0.0f, 0.0f, 0.0f);
         if (!desc.cpuDispatcher)
             desc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
         if (!desc.filterShader)
@@ -131,6 +117,19 @@ public:
         if (main) main->release();
     }
 };
-using actor = physx::PxActor;
+
+using actor       = physx::PxActor;
+using rigid_actor = physx::PxRigidActor;
+using controller  = physx::PxController;
+using vector_2    = physx::PxVec2;
+using vector_3    = physx::PxVec3;
+
+inline rigid_actor* rigid(physx::PxActor* actor)
+{
+    return actor->is<physx::PxRigidActor>()
+               ?: throw std::runtime_error("Bad PhysX cast");
+}
+
+inline class sdk sdk;
 } // namespace px
 } // namespace p201

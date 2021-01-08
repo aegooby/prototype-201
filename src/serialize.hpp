@@ -3,6 +3,7 @@
 #include "__common.hpp"
 #include "component.hpp"
 #include "entity.hpp"
+#include "physx.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -14,10 +15,14 @@ namespace serialize
 {
 class xml
 {
+private:
+    /** @todo This ain't it chief */
+    px::scene& scene;
+
 public:
     std::filesystem::path directory;
 
-    xml()  = default;
+    xml(px::scene& scene) : scene(scene) { }
     ~xml() = default;
     void load_entity(class entity& entity, const std::string& name)
     {
@@ -59,47 +64,25 @@ public:
                 case components::physics::flag:
                 {
                     auto& physics = entity.add_component<components::physics>();
-                    (void)physics;
+                    /** @todo Add switch for box types */
+                    /** @todo Add switch for dynamic/static */
+                    bool  dynamic = component.get<bool>("dynamic");
+                    float sf      = component.get<float>("sf");
+                    float df      = component.get<float>("df");
+                    float e       = component.get<float>("e");
                     break;
                 }
-                case components::collision::flag:
+                case components::character::flag:
                 {
-                    auto& collision =
-                        entity.add_component<components::collision>();
-                    auto flag = component.get<std::size_t>("hitbox.flag");
-                    switch (flag)
-                    {
-                        case hitboxes::circle::flag:
-                        {
-                            collision.hitbox =
-                                std::make_unique<hitboxes::circle>();
-                            auto circle = dynamic_cast<hitboxes::circle*>(
-                                collision.hitbox.get());
-                            circle->radius =
-                                component.get<float>("hitbox.radius");
-                            break;
-                        }
-                        case hitboxes::square::flag:
-                        {
-                            collision.hitbox =
-                                std::make_unique<hitboxes::square>();
-                            auto square = dynamic_cast<hitboxes::square*>(
-                                collision.hitbox.get());
-                            square->width =
-                                component.get<float>("hitbox.width");
-                            square->height =
-                                component.get<float>("hitbox.height");
-                            break;
-                        }
-                        default:
-                            break;
-                    }
+                    auto& character =
+                        entity.add_component<components::character>();
+                    (void)character;
                     break;
                 }
                 case components::input::flag:
                 {
                     auto& input = entity.add_component<components::input>();
-                    input.force = component.get<float>("force");
+                    (void)input;
                     break;
                 }
                 case components::animation::flag:
@@ -132,6 +115,14 @@ public:
                 default:
                     break;
             }
+        }
+        if (entity.flag.test(components::transform::flag) &&
+            entity.flag.test(components::physics::flag))
+        {
+            auto& transform = entity.component<components::transform>();
+            auto& physics   = entity.component<components::physics>();
+            auto  pxt       = physx::PxTransform(convert(transform.position));
+            physics.actor->setGlobalPose(pxt);
         }
     }
     void save_entity(class entity& entity, const std::string& name)

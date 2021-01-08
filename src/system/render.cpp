@@ -11,7 +11,6 @@
 #include "../util.hpp"
 #include "../window.hpp"
 #include "../world.hpp"
-#include "collision.hpp"
 
 namespace p201
 {
@@ -135,12 +134,6 @@ void render::draw(float alpha)
     if (SDL_RenderClear(__sdl_renderer))
         throw sdl_error("Failed to clear renderer");
 
-    if constexpr (debug)
-    {
-        if (world.keyboard.modifier(modifier::ALT))
-            render_quadtree(world.system<systems::collision>().quadtree);
-    }
-
     /* Render all the registered entities one by one. */
     for (auto& id : __registered_entities)
     {
@@ -160,12 +153,6 @@ void render::draw(float alpha)
         if (entity.flag.test(components::camera_focus::flag))
             camera.center = util::center(render.rect);
         if (render.camera) render.rect = camera.transform(render.rect);
-        if constexpr (debug)
-        {
-            if (entity.flag.test(components::collision::flag) &&
-                world.keyboard.modifier(modifier::ALT))
-                render_hitbox(entity.component<components::collision>().hitbox);
-        }
 
         if (render.visible)
             render_sprite(render.texture, &render.srcrect, &render.rect);

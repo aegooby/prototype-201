@@ -21,6 +21,7 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       mouse(mouse),
       scene(engine::sdk),
       event_manager(*this),
+      serializer(scene),
       sprite_manager("sprites")
 {
 
@@ -28,8 +29,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                                std::make_unique<managers::render>());
     component_managers.emplace(typeid(components::transform),
                                std::make_unique<managers::transform>());
-    component_managers.emplace(typeid(components::collision),
-                               std::make_unique<managers::collision>());
+    component_managers.emplace(typeid(components::character),
+                               std::make_unique<managers::character>());
     component_managers.emplace(typeid(components::physics),
                                std::make_unique<managers::physics>());
     component_managers.emplace(typeid(components::input),
@@ -47,8 +48,6 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                     std::make_unique<systems::render>(*this));
     systems.emplace(typeid(systems::physics),
                     std::make_unique<systems::physics>(*this));
-    systems.emplace(typeid(systems::collision),
-                    std::make_unique<systems::collision>(*this));
     systems.emplace(typeid(systems::input),
                     std::make_unique<systems::input>(*this));
     systems.emplace(typeid(systems::animation),

@@ -24,10 +24,14 @@ void physics::update(float dt)
     {
         auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
+        auto& physics   = entity.component<components::physics>();
 
         /* Don't delete this or I will fucking slap you. */
-        transform.lerp = transform.position;
+        transform.lerp     = transform.position;
+        transform.position = convert(physics.actor->getGlobalPose().p);
     }
+    world.scene.main->simulate(dt);
+    world.scene.main->fetchResults(true);
 }
 } // namespace systems
 } // namespace p201

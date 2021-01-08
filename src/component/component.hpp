@@ -99,13 +99,27 @@ struct physics : public component
 
     static constexpr std::size_t flag = 3;
 
-    px::actor* px = nullptr;
+    enum type
+    {
+        capsule = 0,
+        box     = 1,
+        plane   = 2,
+    };
+
+    bool  dynamic;
+    float sf;
+    float df;
+    float e;
+
+    px::rigid_actor* actor = nullptr;
 
     physics(class entity& entity) : __base(entity) { }
     virtual ~physics() = default;
+
+    void init()
 };
 
-struct collision : public component
+struct character : public component
 {
     using __base = component;
 
@@ -113,8 +127,8 @@ struct collision : public component
 
     std::unique_ptr<hitbox> hitbox = nullptr;
 
-    collision(class entity& entity) : __base(entity) { }
-    virtual ~collision() = default;
+    character(class entity& entity) : __base(entity) { }
+    virtual ~character() = default;
 };
 
 struct input : public component
@@ -123,7 +137,7 @@ struct input : public component
 
     static constexpr std::size_t flag = 5;
 
-    float force = 0.0f;
+    px::controller* controller = nullptr;
 
     input(class entity& entity) : __base(entity) { }
     virtual ~input() = default;
