@@ -31,8 +31,13 @@ void physics::update(float dt)
         if (entity.flag.test(components::character::flag))
         {
             auto& character = entity.component<components::character>();
+            float friction  = 12.0f;
+            character.velocity += character.accel * dt;
+            character.controller->move(convert(character.velocity * dt), 0.1f,
+                                       dt, px::PxControllerFilters());
             transform.position =
                 convert(character.controller->getFootPosition());
+            character.velocity -= character.velocity * friction * dt;
         }
         else
             transform.position = convert(physics.actor->getGlobalPose().p);

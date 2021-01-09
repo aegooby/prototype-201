@@ -147,7 +147,7 @@ struct physics : public component
             }
             case box:
             {
-                actor = create(px::PxBoxGeometry(60.0f, 60.0f, 20.0f));
+                actor = create(px::PxBoxGeometry(67.0f, 67.0f, 15.0f));
                 break;
             }
             case plane:
@@ -171,6 +171,8 @@ struct character : public component
     virtual ~character() = default;
 
     px::controller* controller = nullptr;
+    vector_3        accel      = vector_3(0.0f, 0.0f, 0.0f);
+    vector_3        velocity   = vector_3(0.0f, 0.0f, 0.0f);
 
     void init(px::controller_manager& controller_manager, physics& physics)
     {

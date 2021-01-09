@@ -25,21 +25,21 @@ void input::update(float dt)
         auto& transform = entity.component<components::transform>();
         auto& character = entity.component<components::character>();
 
-        auto animation = [&entity, this](const std::string& name) {
-            world.event_manager.publish<events::animation>(entity, name);
-        };
+        auto animation = [&entity, this](const std::string& name)
+        { world.event_manager.publish<events::animation>(entity, name); };
 
         /* Down */
         if (keyboard.down(keycode::S))
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
-            character.controller->move(px::vector_3(-10.0f, 10.0f, 0.0f), 0.5f,
-                                       dt, px::PxControllerFilters());
+            character.accel += vector_3(-5000.0f, 5000.0f, 0.0f);
             /* -, + */
         }
         if (keyboard.up(keycode::S))
-        { /* +, - */
+        {
+            character.accel += vector_3(5000.0f, -5000.0f, 0.0f);
+            /* +, - */
         }
 
         /* Up */
@@ -47,12 +47,13 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
-            character.controller->move(px::vector_3(10.0f, -10.0f, 0.0f), 0.5f,
-                                       dt, px::PxControllerFilters());
+            character.accel += vector_3(5000.0f, -5000.0f, 0.0f);
             /* +, - */
         }
         if (keyboard.up(keycode::W))
-        { /* +, - */
+        {
+            character.accel += vector_3(-5000.0f, 5000.0f, 0.0f);
+            /* -, + */
         }
 
         /* Right */
@@ -64,8 +65,7 @@ void input::update(float dt)
                 animation("walk-right");
             else
                 animation("stand-right");
-            character.controller->move(px::vector_3(10.0f, 10.0f, 0.0f), 0.5f,
-                                       dt, px::PxControllerFilters());
+            character.accel += vector_3(5000.0f, 5000.0f, 0.0f);
             /* +, + */
         }
         if (keyboard.up(keycode::D))
@@ -76,6 +76,7 @@ void input::update(float dt)
                 animation("stand-right");
             else
                 animation("walk-left");
+            character.accel += vector_3(-5000.0f, -5000.0f, 0.0f);
             /* -, - */
         }
 
@@ -86,8 +87,7 @@ void input::update(float dt)
                 animation("walk-left");
             else
                 animation("stand-left");
-            character.controller->move(px::vector_3(-10.0f, -10.0f, 0.0f), 0.5f,
-                                       dt, px::PxControllerFilters());
+            character.accel += vector_3(-5000.0f, -5000.0f, 0.0f);
             /* -, - */
         }
         if (keyboard.up(keycode::A))
@@ -96,6 +96,7 @@ void input::update(float dt)
                 animation("stand-left");
             else
                 animation("walk-right");
+            character.accel += vector_3(5000.0f, 5000.0f, 0.0f);
             /* +, + */
         }
     }
