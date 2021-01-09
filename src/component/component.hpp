@@ -106,17 +106,39 @@ struct physics : public component
         plane   = 2,
     };
 
-    bool  dynamic;
-    float sf;
-    float df;
-    float e;
+    bool  dynamic = true;
+    float sf      = 0.0f;
+    float df      = 0.0f;
+    float e       = 0.0f;
+    float density = 0.0f;
 
     px::rigid_actor* actor = nullptr;
 
     physics(class entity& entity) : __base(entity) { }
     virtual ~physics() = default;
 
-    void init()
+    void init(px::scene& scene)
+    {
+        auto material = px::sdk.main->createMaterial(sf, df, e);
+        if (!material) throw std::runtime_error("Failed to create material");
+        auto transform = physx::PxTransform(physx::PxVec3(0, 0, 0));
+        /** @todo Temporary values */
+        /** @todo Add switch for shape types */
+        auto geometry = physx::PxCapsuleGeometry(1.0f, 1.0f);
+        auto offset   = physx::PxTransform(
+            physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 1, 0)));
+        if (dynamic)
+        {
+            actor = physx::PxCreateDynamic(*px::sdk.main, transform, geometry,
+                                           *material, density, offset);
+        }
+        else
+        {
+            actor = physx::PxCreateStatic(*px::sdk.main, transform, geometry,
+                                          *material, offset);
+        }
+        scene.main->addActor(*actor);
+    }
 };
 
 struct character : public component
@@ -125,10 +147,25 @@ struct character : public component
 
     static constexpr std::size_t flag = 4;
 
-    std::unique_ptr<hitbox> hitbox = nullptr;
-
     character(class entity& entity) : __base(entity) { }
     virtual ~character() = default;
+
+    px::controller* controller = nullptr;
+
+    void init(px::controller_manager& controller_manager, physics& physics)
+    {
+        physx::PxCapsuleControllerDesc desc;
+
+        auto material =
+            px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
+        /** @todo Temporary values */
+        desc.radius     = 1.0f;
+        desc.height     = 1.0f;
+        desc.stepOffset = 0.01f;
+        desc.material   = material;
+
+        controller = controller_manager.main->createController(desc);
+    }
 };
 
 struct input : public component
@@ -136,8 +173,6 @@ struct input : public component
     using __base = component;
 
     static constexpr std::size_t flag = 5;
-
-    px::controller* controller = nullptr;
 
     input(class entity& entity) : __base(entity) { }
     virtual ~input() = default;

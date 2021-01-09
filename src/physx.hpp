@@ -99,7 +99,6 @@ public:
     physx::PxScene* main = nullptr;
     scene(sdk& sdk) : desc(physx::PxSceneDesc(sdk.main->getTolerancesScale()))
     {
-        /** @todo Maybe no gravity? */
         desc.gravity = physx::PxVec3(0.0f, 0.0f, 0.0f);
         if (!desc.cpuDispatcher)
             desc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
@@ -113,6 +112,21 @@ public:
         main->setVisualizationParameter(vparam::eCOLLISION_SHAPES, 1.0f);
     }
     ~scene()
+    {
+        if (main) main->release();
+    }
+};
+
+class controller_manager
+{
+public:
+    physx::PxControllerManager* main = nullptr;
+
+    controller_manager(scene& scene)
+    {
+        main = PxCreateControllerManager(*scene.main);
+    }
+    ~controller_manager()
     {
         if (main) main->release();
     }

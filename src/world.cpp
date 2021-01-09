@@ -20,8 +20,9 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       keyboard(keyboard),
       mouse(mouse),
       scene(engine::sdk),
+      controller_manager(scene),
       event_manager(*this),
-      serializer(scene),
+      serializer(*this),
       sprite_manager("sprites")
 {
 
