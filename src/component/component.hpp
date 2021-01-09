@@ -1,7 +1,6 @@
 
 #pragma once
 #include "../__common.hpp"
-#include "../hitbox.hpp"
 #include "../key.hpp"
 #include "../physx.hpp"
 #include "../util.hpp"
@@ -65,7 +64,7 @@ struct render : public component
     vector_2 offset = vector_2(0.0f, 0.0f);
 
     render(class entity& entity) : __base(entity) { }
-    virtual ~render() = default;
+    virtual ~render() override = default;
 };
 
 struct transform : public component
@@ -91,7 +90,7 @@ struct transform : public component
     std::bitset<4> direction;
 
     transform(class entity& entity) : __base(entity) { }
-    virtual ~transform() = default;
+    virtual ~transform() override = default;
 };
 
 struct physics : public component
@@ -118,7 +117,7 @@ struct physics : public component
     px::rigid_actor* actor = nullptr;
 
     physics(class entity& entity) : __base(entity) { }
-    virtual ~physics() = default;
+    virtual ~physics() override = default;
 
     void init(px::scene& scene)
     {
@@ -168,7 +167,7 @@ struct character : public component
     static constexpr std::size_t flag = 4;
 
     character(class entity& entity) : __base(entity) { }
-    virtual ~character() = default;
+    virtual ~character() override = default;
 
     px::controller* controller = nullptr;
     vector_3        accel      = vector_3(0.0f, 0.0f, 0.0f);
@@ -199,7 +198,7 @@ struct input : public component
     static constexpr std::size_t flag = 5;
 
     input(class entity& entity) : __base(entity) { }
-    virtual ~input() = default;
+    virtual ~input() override = default;
 };
 
 struct animation : public component
@@ -216,7 +215,7 @@ struct animation : public component
     bool        loop      = true;
 
     animation(class entity& entity) : __base(entity) { }
-    virtual ~animation() = default;
+    virtual ~animation() override = default;
 };
 
 struct camera_focus : public component
@@ -226,7 +225,7 @@ struct camera_focus : public component
     static constexpr std::size_t flag = 7;
 
     camera_focus(class entity& entity) : __base(entity) { }
-    virtual ~camera_focus() = default;
+    virtual ~camera_focus() override = default;
 };
 
 struct health : public component
@@ -241,7 +240,7 @@ struct health : public component
     float max_shield = 0.0f;
 
     health(class entity& entity) : __base(entity) { }
-    virtual ~health() = default;
+    virtual ~health() override = default;
 };
 
 struct hud : public component
@@ -251,7 +250,7 @@ struct hud : public component
     static constexpr std::size_t flag = 9;
 
     hud(class entity& entity) : __base(entity) { }
-    virtual ~hud() = default;
+    virtual ~hud() override = default;
 };
 } // namespace components
 } // namespace p201

@@ -22,7 +22,7 @@ public:
         flag.set(components::render::flag);
         flag.set(components::animation::flag);
     }
-    virtual ~animation() = default;
+    virtual ~animation() override = default;
     virtual void start() override;
     virtual void update(float dt) override;
 

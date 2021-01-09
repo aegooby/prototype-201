@@ -34,7 +34,6 @@ private:
     void render_sprite(SDL_Texture*, SDL_Rect*, SDL_FRect*);
 
     void render_node(const node&, std::int16_t*, std::int16_t*);
-    void render_hitbox(const std::unique_ptr<hitbox>&);
 
 public:
     render(class world& world)
@@ -44,7 +43,7 @@ public:
         flag.set(components::render::flag);
         flag.set(components::transform::flag);
     }
-    virtual ~render()
+    virtual ~render() override
     {
         stop();
     }

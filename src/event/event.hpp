@@ -4,6 +4,7 @@
 #include "../linalg.hpp"
 
 #include <list>
+#include <string>
 #include <typeindex>
 #include <unordered_map>
 
@@ -29,37 +30,10 @@ public:
 
     animation(class entity& entity, const std::string& name)
         : entity(entity), name(name)
-    {
-    }
-    virtual ~animation() = default;
+    { }
+    virtual ~animation() override = default;
 };
-class impulse : public event
-{
-public:
-    class entity& entity;
-    vector_3      vector;
 
-    impulse(class entity& entity, const vector_3& vector)
-        : entity(entity), vector(vector)
-    {
-    }
-    virtual ~impulse() = default;
-};
-class collision : public event
-{
-public:
-    entity&  __a;
-    entity&  __b;
-    vector_3 normal;
-    float    depth;
-
-    collision(entity& __a, class entity& __b, const vector_3& normal,
-              float depth)
-        : __a(__a), __b(__b), normal(normal), depth(depth)
-    {
-    }
-    virtual ~collision() = default;
-};
 } // namespace events
 
 } // namespace p201

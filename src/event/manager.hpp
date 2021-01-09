@@ -46,9 +46,8 @@ protected:
 public:
     function_handler_template(system_t& system, function_t function)
         : __system(system), __function(function)
-    {
-    }
-    virtual ~function_handler_template() = default;
+    { }
+    virtual ~function_handler_template() override = default;
 };
 
 class manager

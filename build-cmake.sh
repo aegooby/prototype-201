@@ -1,5 +1,4 @@
 
 #!/bin/sh
-rm -rf compile_commands.json &&
 cmake -B build -Wno-dev &&
-ln -s build/compile_commands.json compile_commands.json
+compdb -p build/ list > compile_commands.json &> /dev/null

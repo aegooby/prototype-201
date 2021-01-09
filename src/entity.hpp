@@ -34,7 +34,7 @@ public:
     const std::size_t id;
 
     entity(const std::size_t, class world&);
-    virtual ~entity() = default;
+    ~entity() = default;
     template<typename component_type>
     component_type& component()
     {

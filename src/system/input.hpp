@@ -19,7 +19,7 @@ public:
         flag.set(components::character::flag);
         flag.set(components::transform::flag);
     }
-    virtual ~input() = default;
+    virtual ~input() override = default;
     virtual void start() override;
     virtual void update(float dt) override;
 };

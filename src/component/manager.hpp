@@ -39,7 +39,7 @@ class component_manager_template : public component_manager
 public:
     using component_t = component_type;
 
-    virtual ~component_manager_template() = default;
+    virtual ~component_manager_template() override = default;
 };
 
 namespace managers

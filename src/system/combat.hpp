@@ -21,7 +21,7 @@ public:
     {
         flag.set(components::health::flag);
     }
-    virtual ~combat() = default;
+    virtual ~combat() override = default;
     virtual void start() override;
     virtual void update(float dt) override;
 

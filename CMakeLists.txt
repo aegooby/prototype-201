@@ -5,7 +5,7 @@ project(prototype_201)
 
 add_definitions(-march=native -Wall -Wno-deprecated)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ### C++20 ###
 set(CMAKE_CXX_STANDARD 20)

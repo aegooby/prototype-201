@@ -24,13 +24,13 @@ using namespace physx;
 class allocator : public PxAllocatorCallback
 {
 public:
-    virtual ~allocator() = default;
+    virtual ~allocator() override = default;
     virtual void* allocate(size_t size, const char* typeName,
-                           const char* filename, int line)
+                           const char* filename, int line) override
     {
         return operator new(size, std::align_val_t(PHYSX_MEM_ALIGN));
     }
-    virtual void deallocate(void* ptr)
+    virtual void deallocate(void* ptr) override
     {
         return operator delete(ptr, std::align_val_t(PHYSX_MEM_ALIGN));
     }
@@ -38,9 +38,9 @@ public:
 class error : public PxErrorCallback
 {
 public:
-    virtual ~error() = default;
+    virtual ~error() override = default;
     virtual void reportError(PxErrorCode::Enum code, const char* message,
-                             const char* file, int line)
+                             const char* file, int line) override
     {
         std::clog << termcolor::bold << termcolor::red << "error "
                   << termcolor::reset << "(code " << std::size_t(code)

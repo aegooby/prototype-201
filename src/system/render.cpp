@@ -61,28 +61,6 @@ void render::render_node(const node& node, std::int16_t* vx, std::int16_t* vy)
     if (!node.leaf)
         for (auto& child : node.children()) render_node(child, vx, vy);
 };
-void render::render_hitbox(const std::unique_ptr<hitbox>& hitbox)
-{
-    auto ptr = hitbox.get();
-    if (typeid(*ptr) == typeid(hitboxes::circle))
-    {
-        auto&    circle     = *dynamic_cast<hitboxes::circle*>(ptr);
-        vector_2 iso_center = camera.transform(iso_23 * circle.center);
-        ellipseRGBA(__sdl_renderer, iso_center.x(), iso_center.y(),
-                    circle.radius, circle.radius / 2.0f, 200, 0, 0, 200);
-    }
-    if (typeid(*ptr) == typeid(hitboxes::square))
-    {
-        auto&        square = *dynamic_cast<hitboxes::square*>(ptr);
-        std::int16_t vx[4];
-        std::int16_t vy[4];
-
-        transform_tile(square.left(), square.top(), square.width, square.height,
-                       vx, vy);
-        camera.transform(vx, vy);
-        polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 0, 0, 255);
-    }
-}
 
 void render::render_quadtree(const quadtree& quadtree)
 {
@@ -93,7 +71,7 @@ void render::render_quadtree(const quadtree& quadtree)
 
 void render::start()
 {
-    std::uint32_t flags = engine::vsync ? SDL_RENDERER_PRESENTVSYNC : 0;
+    std::uint32_t flags = engine::vsync ? SDL_RENDERER_PRESENTVSYNC : 0u;
     __sdl_renderer = SDL_CreateRenderer(world.window.sdl_window(), -1, flags);
     if (!__sdl_renderer) throw sdl_error("Failed to create rendering system");
     if (!IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF))
