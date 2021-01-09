@@ -10,7 +10,7 @@
 
 #include <unordered_map>
 
-#define P201_ISO_3 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f
+#define P201_ISO_23 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f
 
 namespace p201
 {
@@ -22,8 +22,8 @@ public:
     using __base = system;
 
 protected:
-    SDL_Renderer*  __sdl_renderer = nullptr;
-    const matrix_3 iso_3;
+    SDL_Renderer*   __sdl_renderer = nullptr;
+    const matrix_23 iso_23;
     /** @brief How many times do I have to tell you to read the name retard? */
     camera camera;
 
@@ -38,7 +38,8 @@ private:
 
 public:
     render(class world& world)
-        : __base(world), iso_3((matrix_3() << P201_ISO_3).finished() / sqrt_2)
+        : __base(world),
+          iso_23((matrix_23() << P201_ISO_23).finished() / sqrt_2)
     {
         flag.set(components::render::flag);
         flag.set(components::transform::flag);

@@ -54,6 +54,8 @@ void xml::load_entity(class entity& entity, const std::string& name)
                 physics.df      = component.get<float>("df");
                 physics.e       = component.get<float>("e");
                 physics.density = component.get<float>("density");
+                physics.shape   = static_cast<enum components::physics::shape>(
+                    component.get<std::size_t>("shape"));
                 break;
             }
             case components::character::flag:
@@ -111,9 +113,20 @@ void xml::load_entity(class entity& entity, const std::string& name)
             physics.init(world.scene);
         if (entity.flag.test(components::transform::flag))
         {
-            auto& transform   = entity.component<components::transform>();
-            auto px_transform = physx::PxTransform(convert(transform.position));
-            physics.actor->setGlobalPose(px_transform);
+            auto& transform = entity.component<components::transform>();
+            if (entity.flag.test(components::character::flag))
+            {
+                auto& character = entity.component<components::character>();
+                character.controller->setFootPosition(px::vector_3ext(
+                    transform.position.x(), transform.position.y(),
+                    transform.position.z()));
+            }
+            else
+            {
+                auto px_transform =
+                    px::PxTransform(convert(transform.position));
+                physics.actor->setGlobalPose(px_transform);
+            }
         }
     }
 }

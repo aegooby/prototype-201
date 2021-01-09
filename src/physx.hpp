@@ -19,7 +19,9 @@ namespace p201
 
 namespace px
 {
-class allocator : public physx::PxAllocatorCallback
+using namespace physx;
+
+class allocator : public PxAllocatorCallback
 {
 public:
     virtual ~allocator() = default;
@@ -33,11 +35,11 @@ public:
         return operator delete(ptr, std::align_val_t(PHYSX_MEM_ALIGN));
     }
 };
-class error : public physx::PxErrorCallback
+class error : public PxErrorCallback
 {
 public:
     virtual ~error() = default;
-    virtual void reportError(physx::PxErrorCode::Enum code, const char* message,
+    virtual void reportError(PxErrorCode::Enum code, const char* message,
                              const char* file, int line)
     {
         std::clog << termcolor::bold << termcolor::red << "error "
@@ -49,37 +51,36 @@ public:
 class sdk
 {
 private:
-    px::error                error;
-    px::allocator            alloc;
-    physx::PxTolerancesScale scale = physx::PxTolerancesScale();
+    px::error         error;
+    px::allocator     alloc;
+    PxTolerancesScale scale = PxTolerancesScale();
 
 public:
     struct pvd
     {
-        physx::PxPvd*          main      = nullptr;
-        physx::PxPvdTransport* transport = nullptr;
+        PxPvd*          main      = nullptr;
+        PxPvdTransport* transport = nullptr;
     } pvd;
-    physx::PxFoundation* foundation = nullptr;
-    physx::PxPhysics*    main       = nullptr;
-    physx::PxCooking*    cooking    = nullptr;
+    PxFoundation* foundation = nullptr;
+    PxPhysics*    main       = nullptr;
+    PxCooking*    cooking    = nullptr;
 
     sdk()
     {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, alloc, error);
         if (!foundation)
             throw std::runtime_error("Failed to initialize PhysX foundation");
-        pvd.main = physx::PxCreatePvd(*foundation);
+        pvd.main = PxCreatePvd(*foundation);
         if (!pvd.main)
             throw std::runtime_error("Failed to initialize PhysX PVD");
         pvd.transport =
-            physx::PxDefaultPvdSocketTransportCreate(PHYSX_PVD_HOST, 5425, 10);
-        pvd.main->connect(*pvd.transport,
-                          physx::PxPvdInstrumentationFlag::eALL);
+            PxDefaultPvdSocketTransportCreate(PHYSX_PVD_HOST, 5425, 10);
+        pvd.main->connect(*pvd.transport, PxPvdInstrumentationFlag::eALL);
         main = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, scale, true,
                                pvd.main);
         if (!main) throw std::runtime_error("Failed to initialize PhysX SDK");
         cooking = PxCreateCooking(PX_PHYSICS_VERSION, *foundation,
-                                  physx::PxCookingParams(scale));
+                                  PxCookingParams(scale));
         if (!cooking)
             throw std::runtime_error("Failed to initialize PhysX cooking");
     }
@@ -93,21 +94,21 @@ public:
 class scene
 {
 private:
-    physx::PxSceneDesc desc;
+    PxSceneDesc desc;
 
 public:
-    physx::PxScene* main = nullptr;
-    scene(sdk& sdk) : desc(physx::PxSceneDesc(sdk.main->getTolerancesScale()))
+    PxScene* main = nullptr;
+    scene(sdk& sdk) : desc(PxSceneDesc(sdk.main->getTolerancesScale()))
     {
-        desc.gravity = physx::PxVec3(0.0f, 0.0f, 0.0f);
+        desc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
         if (!desc.cpuDispatcher)
-            desc.cpuDispatcher = physx::PxDefaultCpuDispatcherCreate(1);
+            desc.cpuDispatcher = PxDefaultCpuDispatcherCreate(1);
         if (!desc.filterShader)
-            desc.filterShader = physx::PxDefaultSimulationFilterShader;
+            desc.filterShader = PxDefaultSimulationFilterShader;
         main = sdk.main->createScene(desc);
         if (!main) throw std::runtime_error("Failed to initialize PhysX scene");
 
-        using vparam = physx::PxVisualizationParameter;
+        using vparam = PxVisualizationParameter;
         main->setVisualizationParameter(vparam::eSCALE, 1.0f);
         main->setVisualizationParameter(vparam::eCOLLISION_SHAPES, 1.0f);
     }
@@ -120,7 +121,7 @@ public:
 class controller_manager
 {
 public:
-    physx::PxControllerManager* main = nullptr;
+    PxControllerManager* main = nullptr;
 
     controller_manager(scene& scene)
     {
@@ -133,19 +134,14 @@ public:
     }
 };
 
-using actor       = physx::PxActor;
-using rigid_actor = physx::PxRigidActor;
-using controller  = physx::PxController;
-using vector_2    = physx::PxVec2;
-using vector_3    = physx::PxVec3;
-using vector_3ext = physx::PxExtendedVec3;
+using actor       = PxActor;
+using rigid_actor = PxRigidActor;
+using controller  = PxController;
+using vector_2    = PxVec2;
+using vector_3    = PxVec3;
+using vector_3ext = PxExtendedVec3;
 
-inline rigid_actor* rigid(physx::PxActor* actor)
-{
-    return actor->is<physx::PxRigidActor>()
-               ?: throw std::runtime_error("Bad PhysX cast");
-}
-
-inline class sdk sdk;
+inline class sdk  sdk;
+inline const auto z_rotate = PxTransform(PxQuat(PxHalfPi, PxVec3(0, 1, 0)));
 } // namespace px
 } // namespace p201

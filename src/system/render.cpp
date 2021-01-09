@@ -19,10 +19,10 @@ namespace systems
 void render::transform_tile(float x, float y, float w, float h,
                             std::int16_t* vx, std::int16_t* vy)
 {
-    const vector_3 iso_vec    = iso_3 * vector_3(x, y, 0.0f);
-    const vector_3 iso_vec_p1 = iso_3 * vector_3(w, 0.0f, 0.0f);
-    const vector_3 iso_vec_p2 = iso_3 * vector_3(w, h, 0.0f);
-    const vector_3 iso_vec_p3 = iso_3 * vector_3(0.0f, h, 0.0f);
+    const vector_2 iso_vec    = iso_23 * vector_3(x, y, 0.0f);
+    const vector_2 iso_vec_p1 = iso_23 * vector_3(w, 0.0f, 0.0f);
+    const vector_2 iso_vec_p2 = iso_23 * vector_3(w, h, 0.0f);
+    const vector_2 iso_vec_p3 = iso_23 * vector_3(0.0f, h, 0.0f);
 
     vx[0] = iso_vec.x();
     vy[0] = iso_vec.y();
@@ -67,7 +67,7 @@ void render::render_hitbox(const std::unique_ptr<hitbox>& hitbox)
     if (typeid(*ptr) == typeid(hitboxes::circle))
     {
         auto&    circle     = *dynamic_cast<hitboxes::circle*>(ptr);
-        vector_3 iso_center = camera.transform(iso_3 * circle.center);
+        vector_2 iso_center = camera.transform(iso_23 * circle.center);
         ellipseRGBA(__sdl_renderer, iso_center.x(), iso_center.y(),
                     circle.radius, circle.radius / 2.0f, 200, 0, 0, 200);
     }
@@ -144,7 +144,8 @@ void render::draw(float alpha)
         const vector_3 position =
             transform.position * alpha + transform.lerp * (1.0f - alpha);
 
-        const auto screen_position = render.iso ? iso_3 * position : position;
+        const auto screen_position =
+            render.iso ? iso_23 * position : reduce(position);
 
         render.rect.x = screen_position.x() - render.rect.w * render.offset.x();
         render.rect.y = screen_position.y() - render.rect.h * render.offset.y();
@@ -156,6 +157,17 @@ void render::draw(float alpha)
 
         if (render.visible)
             render_sprite(render.texture, &render.srcrect, &render.rect);
+    }
+
+    auto& buffer = world.scene.main->getRenderBuffer();
+    for (std::size_t i = 0; i < buffer.getNbLines(); ++i)
+    {
+        const px::PxDebugLine& line = buffer.getLines()[i];
+
+        auto start = camera.transform(iso_23 * convert(line.pos0));
+        auto end   = camera.transform(iso_23 * convert(line.pos1));
+        lineRGBA(__sdl_renderer, start.x(), start.y(), end.x(), end.y(), 200, 0,
+                 0, 255);
     }
 
     /* Render the HUD. */

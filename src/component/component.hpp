@@ -100,11 +100,12 @@ struct physics : public component
 
     static constexpr std::size_t flag = 3;
 
-    enum type
+    enum shape : std::size_t
     {
-        capsule = 0,
-        box     = 1,
-        plane   = 2,
+        undefined = 0,
+        capsule   = 1,
+        box       = 2,
+        plane     = 3,
     };
 
     bool  dynamic = true;
@@ -112,6 +113,7 @@ struct physics : public component
     float df      = 0.0f;
     float e       = 0.0f;
     float density = 0.0f;
+    shape shape   = undefined;
 
     px::rigid_actor* actor = nullptr;
 
@@ -122,21 +124,38 @@ struct physics : public component
     {
         auto material = px::sdk.main->createMaterial(sf, df, e);
         if (!material) throw std::runtime_error("Failed to create material");
-        auto transform = physx::PxTransform(physx::PxVec3(0, 0, 0));
+        auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
         /** @todo Temporary values */
         /** @todo Add switch for shape types */
-        auto geometry = physx::PxCapsuleGeometry(50.0f, 50.0f);
-        auto offset   = physx::PxTransform(
-            physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 1, 0)));
-        if (dynamic)
+        auto create = [this, &transform,
+                       &material](const auto& geometry) -> px::rigid_actor*
         {
-            actor = physx::PxCreateDynamic(*px::sdk.main, transform, geometry,
-                                           *material, density, offset);
-        }
-        else
+            if (dynamic)
+                return px::PxCreateDynamic(*px::sdk.main, transform, geometry,
+                                           *material,
+                                           density); //, px::z_rotate);
+            else
+                return px::PxCreateStatic(*px::sdk.main, transform, geometry,
+                                          *material); //, px::z_rotate);
+        };
+        switch (shape)
         {
-            actor = physx::PxCreateStatic(*px::sdk.main, transform, geometry,
-                                          *material, offset);
+            case capsule:
+            {
+                actor = create(px::PxCapsuleGeometry(50.0f, 80.0f));
+                break;
+            }
+            case box:
+            {
+                actor = create(px::PxBoxGeometry(60.0f, 60.0f, 20.0f));
+                break;
+            }
+            case plane:
+            {
+                break;
+            }
+            default:
+                break;
         }
         scene.main->addActor(*actor);
     }
@@ -155,16 +174,17 @@ struct character : public component
 
     void init(px::controller_manager& controller_manager, physics& physics)
     {
-        physx::PxCapsuleControllerDesc desc;
+        px::PxCapsuleControllerDesc desc;
 
         auto material =
             px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
         /** @todo Temporary values */
-        desc.radius     = 50.0f;
-        desc.height     = 50.0f;
-        desc.stepOffset = 0.01f;
-        desc.density    = physics.density;
-        desc.material   = material;
+        desc.radius      = 50.0f;
+        desc.height      = 50.0f;
+        desc.stepOffset  = 0.01f;
+        desc.density     = physics.density;
+        desc.material    = material;
+        desc.upDirection = px::vector_3(0, 0, 1);
 
         controller = controller_manager.main->createController(desc);
     }

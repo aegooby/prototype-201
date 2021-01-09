@@ -22,12 +22,12 @@
             <position>
                 <x>260.0</x>
                 <y>260.0</y>
-                <z>0.0</z>
+                <z>50.0</z>
             </position>
         </component>
         <component>
             <flag>3</flag>
-            <type>1</type>
+            <shape>2</shape>
             <dynamic>false</dynamic>
             <sf>0.5</sf>
             <df>0.5</df>

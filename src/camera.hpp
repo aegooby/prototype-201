@@ -20,11 +20,10 @@ public:
     {
         return vector_2(window_width / 2.0f, window_height / 2.0f) - center;
     }
-    vector_3 transform(const vector_3& vector)
+    vector_2 transform(const vector_2& vector)
     {
         const vector_2 shift = this->shift(window::width, window::height);
-        return vector_3(vector.x() + shift.x(), vector.y() + shift.y(),
-                        vector.z());
+        return vector_2(vector.x() + shift.x(), vector.y() + shift.y());
     }
     SDL_FRect transform(const SDL_FRect& rect)
     {

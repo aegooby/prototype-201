@@ -27,7 +27,7 @@
         </component>
         <component>
             <flag>3</flag>
-            <type>0</type>
+            <shape>1</shape>
             <dynamic>true</dynamic>
             <sf>0.5</sf>
             <df>0.5</df>

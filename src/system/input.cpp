@@ -34,8 +34,8 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
-            character.controller->move(px::vector_3(-50.0f, 50.0f, 0.0f), 0.5f,
-                                       dt, physx::PxControllerFilters());
+            character.controller->move(px::vector_3(-10.0f, 10.0f, 0.0f), 0.5f,
+                                       dt, px::PxControllerFilters());
             /* -, + */
         }
         if (keyboard.up(keycode::S))
@@ -47,8 +47,8 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
-            character.controller->move(px::vector_3(50.0f, -50.0f, 0.0f), 0.5f,
-                                       dt, physx::PxControllerFilters());
+            character.controller->move(px::vector_3(10.0f, -10.0f, 0.0f), 0.5f,
+                                       dt, px::PxControllerFilters());
             /* +, - */
         }
         if (keyboard.up(keycode::W))
@@ -64,8 +64,8 @@ void input::update(float dt)
                 animation("walk-right");
             else
                 animation("stand-right");
-            character.controller->move(px::vector_3(50.0f, 50.0f, 0.0f), 0.5f,
-                                       dt, physx::PxControllerFilters());
+            character.controller->move(px::vector_3(10.0f, 10.0f, 0.0f), 0.5f,
+                                       dt, px::PxControllerFilters());
             /* +, + */
         }
         if (keyboard.up(keycode::D))
@@ -86,8 +86,8 @@ void input::update(float dt)
                 animation("walk-left");
             else
                 animation("stand-left");
-            character.controller->move(px::vector_3(-50.0f, -50.0f, 0.0f), 0.5f,
-                                       dt, physx::PxControllerFilters());
+            character.controller->move(px::vector_3(-10.0f, -10.0f, 0.0f), 0.5f,
+                                       dt, px::PxControllerFilters());
             /* -, - */
         }
         if (keyboard.up(keycode::A))

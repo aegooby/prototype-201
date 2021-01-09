@@ -16,7 +16,7 @@ class physics : public system
 public:
     using __base = system;
 
-    physx::PxControllerManager* physx_cm = nullptr;
+    px::PxControllerManager* physx_cm = nullptr;
 
     physics(class world& world) : __base(world)
     {

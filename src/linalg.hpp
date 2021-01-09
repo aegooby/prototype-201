@@ -14,8 +14,9 @@ namespace p201
 namespace eigen = Eigen;
 
 template<std::size_t m, std::size_t n>
-using matrix   = eigen::Matrix<float, m, n>;
-using matrix_3 = matrix<3, 3>;
+using matrix    = eigen::Matrix<float, m, n>;
+using matrix_33 = matrix<3, 3>;
+using matrix_23 = matrix<2, 3>;
 
 template<std::size_t n>
 using vector   = matrix<n, 1>;
@@ -43,5 +44,8 @@ inline px::vector_3 convert(const vector_3& vector)
 {
     return px::vector_3(vector.x(), vector.y(), vector.z());
 }
-
+inline vector_2 reduce(const vector_3& vector)
+{
+    return vector_2(vector.x(), vector.y());
+}
 } // namespace p201
