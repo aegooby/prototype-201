@@ -125,6 +125,7 @@ public:
     controller_manager(scene& scene)
     {
         main = PxCreateControllerManager(*scene.main);
+        main->setOverlapRecoveryModule(true);
     }
     ~controller_manager()
     {
@@ -137,6 +138,7 @@ using rigid_actor = physx::PxRigidActor;
 using controller  = physx::PxController;
 using vector_2    = physx::PxVec2;
 using vector_3    = physx::PxVec3;
+using vector_3ext = physx::PxExtendedVec3;
 
 inline rigid_actor* rigid(physx::PxActor* actor)
 {

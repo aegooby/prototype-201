@@ -27,8 +27,15 @@ void physics::update(float dt)
         auto& physics   = entity.component<components::physics>();
 
         /* Don't delete this or I will fucking slap you. */
-        transform.lerp     = transform.position;
-        transform.position = convert(physics.actor->getGlobalPose().p);
+        transform.lerp = transform.position;
+        if (entity.flag.test(components::character::flag))
+        {
+            auto& character = entity.component<components::character>();
+            transform.position =
+                convert(character.controller->getFootPosition());
+        }
+        else
+            transform.position = convert(physics.actor->getGlobalPose().p);
     }
     world.scene.main->simulate(dt);
     world.scene.main->fetchResults(true);

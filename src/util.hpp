@@ -2,6 +2,7 @@
 #pragma once
 #include "__common.hpp"
 #include "linalg.hpp"
+#include "physx.hpp"
 #include "termcolor.hpp"
 
 #include <chrono>
@@ -35,6 +36,20 @@ inline std::string to_string(const vector<n>& vector)
     for (std::size_t i = 0; i < n - 1; ++i)
         str += std::to_string(vector[i]) + ", ";
     str += std::to_string(vector[n - 1]) + ")";
+    return str;
+}
+inline std::string to_string(const px::vector_3& vector)
+{
+    std::string str = "(" + std::to_string(vector.x);
+    str += ", " + std::to_string(vector.y);
+    str += ", " + std::to_string(vector.y) + ")";
+    return str;
+}
+inline std::string to_string(const px::vector_3ext& vector)
+{
+    std::string str = "(" + std::to_string(vector.x);
+    str += ", " + std::to_string(vector.y);
+    str += ", " + std::to_string(vector.y) + ")";
     return str;
 }
 inline std::string to_string(std::thread::id id)

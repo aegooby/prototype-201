@@ -35,6 +35,10 @@ inline vector_3 convert(const px::vector_3& vector)
 {
     return vector_3(vector.x, vector.y, vector.z);
 }
+inline vector_3 convert(const px::vector_3ext& vector)
+{
+    return vector_3(vector.x, vector.y, vector.z);
+}
 inline px::vector_3 convert(const vector_3& vector)
 {
     return px::vector_3(vector.x(), vector.y(), vector.z());

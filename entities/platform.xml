@@ -34,13 +34,5 @@
             <e>0.1</e>
             <density>0.01</density>
         </component>
-        <component>
-            <flag>4</flag>
-            <hitbox>
-                <flag>2</flag>
-                <width>150.0</width>
-                <height>150.0</height>
-            </hitbox>
-        </component>
     </components>
 </entity>

@@ -23,6 +23,7 @@ void input::update(float dt)
     {
         auto& entity    = world.entity(id);
         auto& transform = entity.component<components::transform>();
+        auto& character = entity.component<components::character>();
 
         auto animation = [&entity, this](const std::string& name) {
             world.event_manager.publish<events::animation>(entity, name);
@@ -33,6 +34,8 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
+            character.controller->move(px::vector_3(-50.0f, 50.0f, 0.0f), 0.5f,
+                                       dt, physx::PxControllerFilters());
             /* -, + */
         }
         if (keyboard.up(keycode::S))
@@ -44,6 +47,8 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
+            character.controller->move(px::vector_3(50.0f, -50.0f, 0.0f), 0.5f,
+                                       dt, physx::PxControllerFilters());
             /* +, - */
         }
         if (keyboard.up(keycode::W))
@@ -59,6 +64,8 @@ void input::update(float dt)
                 animation("walk-right");
             else
                 animation("stand-right");
+            character.controller->move(px::vector_3(50.0f, 50.0f, 0.0f), 0.5f,
+                                       dt, physx::PxControllerFilters());
             /* +, + */
         }
         if (keyboard.up(keycode::D))
@@ -79,6 +86,8 @@ void input::update(float dt)
                 animation("walk-left");
             else
                 animation("stand-left");
+            character.controller->move(px::vector_3(-50.0f, -50.0f, 0.0f), 0.5f,
+                                       dt, physx::PxControllerFilters());
             /* -, - */
         }
         if (keyboard.up(keycode::A))

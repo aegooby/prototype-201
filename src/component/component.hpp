@@ -4,6 +4,7 @@
 #include "../hitbox.hpp"
 #include "../key.hpp"
 #include "../physx.hpp"
+#include "../util.hpp"
 
 #include <bitset>
 #include <memory>
@@ -124,7 +125,7 @@ struct physics : public component
         auto transform = physx::PxTransform(physx::PxVec3(0, 0, 0));
         /** @todo Temporary values */
         /** @todo Add switch for shape types */
-        auto geometry = physx::PxCapsuleGeometry(1.0f, 1.0f);
+        auto geometry = physx::PxCapsuleGeometry(50.0f, 50.0f);
         auto offset   = physx::PxTransform(
             physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 1, 0)));
         if (dynamic)
@@ -159,9 +160,10 @@ struct character : public component
         auto material =
             px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
         /** @todo Temporary values */
-        desc.radius     = 1.0f;
-        desc.height     = 1.0f;
+        desc.radius     = 50.0f;
+        desc.height     = 50.0f;
         desc.stepOffset = 0.01f;
+        desc.density    = physics.density;
         desc.material   = material;
 
         controller = controller_manager.main->createController(desc);
