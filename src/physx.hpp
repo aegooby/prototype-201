@@ -108,9 +108,12 @@ public:
         main = sdk.main->createScene(desc);
         if (!main) throw std::runtime_error("Failed to initialize PhysX scene");
 
-        using vparam = PxVisualizationParameter;
-        main->setVisualizationParameter(vparam::eSCALE, 1.0f);
-        main->setVisualizationParameter(vparam::eCOLLISION_SHAPES, 1.0f);
+        if constexpr (debug)
+        {
+            using vparam = PxVisualizationParameter;
+            main->setVisualizationParameter(vparam::eSCALE, 1.0f);
+            main->setVisualizationParameter(vparam::eCOLLISION_SHAPES, 1.0f);
+        }
     }
     ~scene()
     {

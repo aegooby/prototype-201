@@ -159,15 +159,18 @@ void render::draw(float alpha)
             render_sprite(render.texture, &render.srcrect, &render.rect);
     }
 
-    auto& buffer = world.scene.main->getRenderBuffer();
-    for (std::size_t i = 0; i < buffer.getNbLines(); ++i)
+    if constexpr (debug)
     {
-        const px::PxDebugLine& line = buffer.getLines()[i];
+        auto& buffer = world.scene.main->getRenderBuffer();
+        for (std::size_t i = 0; i < buffer.getNbLines(); ++i)
+        {
+            const px::PxDebugLine& line = buffer.getLines()[i];
 
-        auto start = camera.transform(iso_23 * convert(line.pos0));
-        auto end   = camera.transform(iso_23 * convert(line.pos1));
-        lineRGBA(__sdl_renderer, start.x(), start.y(), end.x(), end.y(), 200, 0,
-                 0, 255);
+            auto start = camera.transform(iso_23 * convert(line.pos0));
+            auto end   = camera.transform(iso_23 * convert(line.pos1));
+            lineRGBA(__sdl_renderer, start.x(), start.y(), end.x(), end.y(),
+                     200, 0, 0, 255);
+        }
     }
 
     /* Render the HUD. */
