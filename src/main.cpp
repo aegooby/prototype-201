@@ -7,6 +7,8 @@
 
 int main(int argc, char** argv)
 {
+    (void)argc;
+    (void)argv;
     p201::engine engine;
     if constexpr (p201::debug)
     {

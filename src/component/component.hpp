@@ -104,7 +104,6 @@ struct physics : public component
         undefined = 0,
         capsule   = 1,
         box       = 2,
-        plane     = 3,
     };
 
     bool  dynamic = true;
@@ -113,6 +112,22 @@ struct physics : public component
     float e       = 0.0f;
     float density = 0.0f;
     shape shape   = undefined;
+    union shape_param
+    {
+        struct
+        {
+            float r;
+            float hh;
+        } capsule;
+        struct
+        {
+            float hx;
+            float hy;
+            float hz;
+        } box;
+        shape_param()  = default;
+        ~shape_param() = default;
+    } shape_params;
 
     px::rigid_actor* actor = nullptr;
 
@@ -131,26 +146,24 @@ struct physics : public component
         {
             if (dynamic)
                 return px::PxCreateDynamic(*px::sdk.main, transform, geometry,
-                                           *material,
-                                           density); //, px::z_rotate);
+                                           *material, density);
             else
                 return px::PxCreateStatic(*px::sdk.main, transform, geometry,
-                                          *material); //, px::z_rotate);
+                                          *material);
         };
         switch (shape)
         {
             case capsule:
             {
-                actor = create(px::PxCapsuleGeometry(50.0f, 80.0f));
+                actor = create(px::PxCapsuleGeometry(shape_params.capsule.r,
+                                                     shape_params.capsule.hh));
                 break;
             }
             case box:
             {
-                actor = create(px::PxBoxGeometry(67.0f, 67.0f, 15.0f));
-                break;
-            }
-            case plane:
-            {
+                actor = create(px::PxBoxGeometry(shape_params.box.hx,
+                                                 shape_params.box.hy,
+                                                 shape_params.box.hz));
                 break;
             }
             default:
@@ -180,8 +193,8 @@ struct character : public component
         auto material =
             px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
         /** @todo Temporary values */
-        desc.radius      = 50.0f;
-        desc.height      = 50.0f;
+        desc.radius      = physics.shape_params.capsule.r;
+        desc.height      = physics.shape_params.capsule.hh;
         desc.stepOffset  = 0.01f;
         desc.density     = physics.density;
         desc.material    = material;

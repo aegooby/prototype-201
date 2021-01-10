@@ -28,6 +28,11 @@
         <component>
             <flag>3</flag>
             <shape>2</shape>
+            <box>
+                <hx>67.0</hx>
+                <hy>67.0</hy>
+                <hz>15.0</hz>
+            </box>
             <dynamic>false</dynamic>
             <sf>0.5</sf>
             <df>0.5</df>

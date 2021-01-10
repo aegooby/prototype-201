@@ -103,7 +103,7 @@ private:
 
 public:
     PxScene* main = nullptr;
-    scene(px::sdk& sdk) : desc(PxSceneDesc(sdk.main->getTolerancesScale()))
+    scene(class sdk& sdk) : desc(PxSceneDesc(sdk.main->getTolerancesScale()))
     {
         desc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
         if (!desc.cpuDispatcher)

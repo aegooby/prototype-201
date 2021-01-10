@@ -56,6 +56,29 @@ void xml::load_entity(class entity& entity, const std::string& name)
                 physics.density = component.get<float>("density");
                 physics.shape   = static_cast<enum components::physics::shape>(
                     component.get<std::size_t>("shape"));
+                switch (physics.shape)
+                {
+                    case components::physics::shape::capsule:
+                    {
+                        physics.shape_params.capsule.r =
+                            component.get<float>("capsule.r");
+                        physics.shape_params.capsule.hh =
+                            component.get<float>("capsule.hh");
+                        break;
+                    }
+                    case components::physics::shape::box:
+                    {
+                        physics.shape_params.box.hx =
+                            component.get<float>("box.hx");
+                        physics.shape_params.box.hy =
+                            component.get<float>("box.hy");
+                        physics.shape_params.box.hz =
+                            component.get<float>("box.hz");
+                        break;
+                    }
+                    default:
+                        break;
+                }
                 break;
             }
             case components::character::flag:

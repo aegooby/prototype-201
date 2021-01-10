@@ -28,6 +28,10 @@
         <component>
             <flag>3</flag>
             <shape>1</shape>
+            <capsule>
+                <r>50.0</r>
+                <hh>80.0</hh>
+            </capsule>
             <dynamic>true</dynamic>
             <sf>0.5</sf>
             <df>0.5</df>
@@ -36,10 +40,6 @@
         </component>
         <component>
             <flag>4</flag>
-            <hitbox>
-                <flag>1</flag>
-                <radius>30.0</radius>
-            </hitbox>
         </component>
         <component>
             <flag>5</flag>
