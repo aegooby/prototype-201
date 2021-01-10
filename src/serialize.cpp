@@ -130,7 +130,6 @@ void xml::load_entity(class entity& entity, const std::string& name)
         {
             auto& character = entity.component<components::character>();
             character.init(world.controller_manager, physics);
-            physics.actor = character.controller->getActor();
         }
         else
             physics.init(world.scene);

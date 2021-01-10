@@ -44,7 +44,7 @@ public:
     template<typename component_type>
     component_type& add_component()
     {
-        __add_component(std::make_unique<component_type>(*this),
+        __add_component(std::make_unique<component_type>(id),
                         typeid(component_type), component_type::flag);
         return component<component_type>();
     }

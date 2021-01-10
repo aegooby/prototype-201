@@ -19,6 +19,8 @@ protected:
 public:
     combat(class world& world) : __base(world)
     {
+        flag.set(components::transform::flag);
+        flag.set(components::physics::flag);
         flag.set(components::health::flag);
     }
     virtual ~combat() override = default;

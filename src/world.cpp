@@ -63,45 +63,46 @@ entity& world::new_entity()
 }
 void world::delete_entity(std::size_t id)
 {
-    auto& entity = *entity_manager.entities.at(id);
     for (auto& manager : component_managers)
-        manager.second->remove_component(entity);
-    for (auto& system : systems) system.second->deregister_entity(entity);
+        manager.second->remove_component(id);
+    for (auto& system : systems) system.second->deregister_entity(id);
     entity_manager.delete_entity(id);
 }
 
-std::unique_ptr<struct component>&
-world::component(class entity& entity, std::type_index component_type)
+entity& world::entity(std::size_t id)
 {
-    return component_managers.at(component_type)->component(entity);
+    return *entity_manager.entities.at(id);
 }
-void world::add_component(class entity&                       entity,
+
+std::unique_ptr<struct component>&
+world::component(std::size_t id, std::type_index component_type)
+{
+    return component_managers.at(component_type)->component(id);
+}
+void world::add_component(std::size_t                         id,
                           std::unique_ptr<struct component>&& component,
                           std::type_index component_type, std::size_t flag)
 {
     using ptr_t = std::unique_ptr<struct component>;
     component_managers.at(component_type)
-        ->add_component(entity, std::forward<ptr_t>(component));
+        ->add_component(id, std::forward<ptr_t>(component));
+    auto& entity = this->entity(id);
     entity.flag.set(flag);
     for (auto& system : systems)
     {
         if ((system.second->flag & entity.flag ^ system.second->flag).none())
-            system.second->register_entity(entity);
+            system.second->register_entity(id);
     }
 }
-void world::remove_component(class entity&   entity,
-                             std::type_index component_type, std::size_t flag)
+void world::remove_component(std::size_t id, std::type_index component_type,
+                             std::size_t flag)
 {
-    component_managers.at(component_type)->remove_component(entity);
+    component_managers.at(component_type)->remove_component(id);
     for (auto& system : systems)
     {
         if (system.second->flag.test(flag))
-            system.second->deregister_entity(entity);
+            system.second->deregister_entity(id);
     }
-}
-entity& world::entity(std::size_t id)
-{
-    return *entity_manager.entities.at(id);
 }
 
 } // namespace p201

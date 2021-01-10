@@ -25,9 +25,9 @@ struct component
     static constexpr std::size_t flag      = 0;
     static constexpr std::size_t flag_bits = 32;
 
-    class entity& entity;
+    std::size_t entity;
 
-    component(class entity& entity) : entity(entity) { }
+    component(std::size_t entity) : entity(entity) { }
     virtual ~component() = 0;
 
     component(const component&) = delete;
@@ -63,7 +63,7 @@ struct render : public component
     /** @brief The displacement factor of the sprite from its center point. */
     vector_2 offset = vector_2(0.0f, 0.0f);
 
-    render(class entity& entity) : __base(entity) { }
+    render(std::size_t entity) : __base(entity) { }
     virtual ~render() override = default;
 };
 
@@ -89,7 +89,7 @@ struct transform : public component
     /** @brief Direction the entity is facing (not always used). */
     std::bitset<4> direction;
 
-    transform(class entity& entity) : __base(entity) { }
+    transform(std::size_t entity) : __base(entity) { }
     virtual ~transform() override = default;
 };
 
@@ -131,7 +131,7 @@ struct physics : public component
 
     px::rigid_actor* actor = nullptr;
 
-    physics(class entity& entity) : __base(entity) { }
+    physics(std::size_t entity) : __base(entity) { }
     virtual ~physics() override = default;
 
     void init(px::scene& scene)
@@ -139,7 +139,7 @@ struct physics : public component
         auto material = px::sdk.main->createMaterial(sf, df, e);
         if (!material) throw std::runtime_error("Failed to create material");
         auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
-        auto create = [this, &transform,
+        auto create    = [this, &transform,
                        &material](const auto& geometry) -> px::rigid_actor*
         {
             if (dynamic)
@@ -168,6 +168,13 @@ struct physics : public component
                 break;
         }
         scene.main->addActor(*actor);
+        link();
+    }
+
+    void link()
+    {
+        assert(actor);
+        actor->userData = &entity;
     }
 };
 
@@ -177,7 +184,7 @@ struct character : public component
 
     static constexpr std::size_t flag = 4;
 
-    character(class entity& entity) : __base(entity) { }
+    character(std::size_t entity) : __base(entity) { }
     virtual ~character() override = default;
 
     px::controller* controller = nullptr;
@@ -198,7 +205,9 @@ struct character : public component
         desc.material    = material;
         desc.upDirection = px::vector_3(0, 0, 1);
 
-        controller = controller_manager.main->createController(desc);
+        controller    = controller_manager.main->createController(desc);
+        physics.actor = controller->getActor();
+        physics.link();
     }
 };
 
@@ -208,7 +217,7 @@ struct input : public component
 
     static constexpr std::size_t flag = 5;
 
-    input(class entity& entity) : __base(entity) { }
+    input(std::size_t entity) : __base(entity) { }
     virtual ~input() override = default;
 };
 
@@ -225,7 +234,7 @@ struct animation : public component
     bool        interrupt = false;
     bool        loop      = true;
 
-    animation(class entity& entity) : __base(entity) { }
+    animation(std::size_t entity) : __base(entity) { }
     virtual ~animation() override = default;
 };
 
@@ -235,7 +244,7 @@ struct camera_focus : public component
 
     static constexpr std::size_t flag = 7;
 
-    camera_focus(class entity& entity) : __base(entity) { }
+    camera_focus(std::size_t entity) : __base(entity) { }
     virtual ~camera_focus() override = default;
 };
 
@@ -250,7 +259,7 @@ struct health : public component
     float shield     = 0.0f;
     float max_shield = 0.0f;
 
-    health(class entity& entity) : __base(entity) { }
+    health(std::size_t entity) : __base(entity) { }
     virtual ~health() override = default;
 };
 
@@ -260,7 +269,7 @@ struct hud : public component
 
     static constexpr std::size_t flag = 9;
 
-    hud(class entity& entity) : __base(entity) { }
+    hud(std::size_t entity) : __base(entity) { }
     virtual ~hud() override = default;
 };
 } // namespace components

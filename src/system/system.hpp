@@ -36,8 +36,8 @@ public:
     virtual void start();
     /** @brief Called periodically to update registered entities. */
     virtual void update(float dt);
-    virtual void register_entity(class entity&);
-    virtual void deregister_entity(class entity&);
+    virtual void register_entity(std::size_t);
+    virtual void deregister_entity(std::size_t);
 
     system(const system&) = delete;
     system(system&&)      = delete;

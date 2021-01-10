@@ -24,11 +24,11 @@ protected:
 
 public:
     virtual ~component_manager();
-    std::unique_ptr<struct component>& component(entity&);
+    std::unique_ptr<struct component>& component(std::size_t);
     /** @brief Registers a component under the specified entity. */
-    void add_component(entity&, std::unique_ptr<struct component>&&);
+    void add_component(std::size_t, std::unique_ptr<struct component>&&);
     /** @brief Removes the component associated with the manager's type. */
-    void remove_component(entity&);
+    void remove_component(std::size_t);
 };
 
 inline component_manager::~component_manager() = default;

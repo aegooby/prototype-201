@@ -9,14 +9,14 @@
 namespace p201
 {
 
-void system::register_entity(class entity& entity)
+void system::register_entity(std::size_t id)
 {
-    if (!__registered_entities.count(entity.id))
-        __registered_entities.emplace(entity.id);
+    if (!__registered_entities.count(id))
+        __registered_entities.emplace(id);
 }
-void system::deregister_entity(class entity& entity)
+void system::deregister_entity(std::size_t id)
 {
-    __registered_entities.erase(entity.id);
+    __registered_entities.erase(id);
 }
 
 void system::start() { }

@@ -65,11 +65,10 @@ public:
     {
         return *static_cast<system_type*>(__system(typeid(system_type)).get());
     }
-    std::unique_ptr<struct component>& component(class entity&,
-                                                 std::type_index);
-    void    add_component(class entity&, std::unique_ptr<struct component>&&,
+    std::unique_ptr<struct component>& component(std::size_t, std::type_index);
+    void    add_component(std::size_t, std::unique_ptr<struct component>&&,
                           std::type_index, std::size_t);
-    void    remove_component(class entity&, std::type_index, std::size_t);
+    void    remove_component(std::size_t, std::type_index, std::size_t);
     entity& entity(std::size_t id);
 };
 
