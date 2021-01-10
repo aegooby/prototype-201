@@ -30,7 +30,7 @@
             <shape>2</shape>
             <box>
                 <hx>67.0</hx>
-                <hy>67.0</hy>
+                <hy>65.0</hy>
                 <hz>15.0</hz>
             </box>
             <dynamic>false</dynamic>
