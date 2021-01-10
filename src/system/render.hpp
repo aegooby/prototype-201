@@ -4,7 +4,6 @@
 #include "../camera.hpp"
 #include "../entity.hpp"
 #include "../exception.hpp"
-#include "../quadtree.hpp"
 #include "../window.hpp"
 #include "system.hpp"
 
@@ -30,10 +29,8 @@ protected:
 private:
     void transform_tile(float, float, float, float, std::int16_t*,
                         std::int16_t*);
-    void render_grid(SDL_Renderer*, std::size_t);
+    void render_grid(std::size_t);
     void render_sprite(SDL_Texture*, SDL_Rect*, SDL_FRect*);
-
-    void render_node(const node&, std::int16_t*, std::int16_t*);
 
 public:
     render(class world& world)
@@ -47,8 +44,6 @@ public:
     {
         stop();
     }
-
-    void render_quadtree(const quadtree&);
 
     virtual void start() override;
     void         stop();

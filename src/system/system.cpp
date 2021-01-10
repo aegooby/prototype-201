@@ -20,6 +20,9 @@ void system::deregister_entity(class entity& entity)
 }
 
 void system::start() { }
-void system::update(float dt) { }
+void system::update(float dt)
+{
+    (void)dt;
+}
 
 } // namespace p201

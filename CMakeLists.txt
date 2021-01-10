@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
 project(prototype_201)
 
-add_definitions(-march=native -Wall -Wno-deprecated)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ### C++20 ###
@@ -14,7 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ### Flags ###
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DP201_DEBUG -Og")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra -Wno-deprecated")
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
     set(

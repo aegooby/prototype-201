@@ -28,6 +28,9 @@ public:
     virtual void* allocate(size_t size, const char* typeName,
                            const char* filename, int line) override
     {
+        (void)typeName;
+        (void)filename;
+        (void)line;
         return operator new(size, std::align_val_t(PHYSX_MEM_ALIGN));
     }
     virtual void deallocate(void* ptr) override
@@ -42,6 +45,8 @@ public:
     virtual void reportError(PxErrorCode::Enum code, const char* message,
                              const char* file, int line) override
     {
+        (void)file;
+        (void)line;
         std::clog << termcolor::bold << termcolor::red << "error "
                   << termcolor::reset << "(code " << std::size_t(code)
                   << "): " << message << std::endl;
@@ -98,7 +103,7 @@ private:
 
 public:
     PxScene* main = nullptr;
-    scene(sdk& sdk) : desc(PxSceneDesc(sdk.main->getTolerancesScale()))
+    scene(px::sdk& sdk) : desc(PxSceneDesc(sdk.main->getTolerancesScale()))
     {
         desc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
         if (!desc.cpuDispatcher)
@@ -144,7 +149,6 @@ using vector_2    = PxVec2;
 using vector_3    = PxVec3;
 using vector_3ext = PxExtendedVec3;
 
-inline class sdk  sdk;
-inline const auto z_rotate = PxTransform(PxQuat(PxHalfPi, PxVec3(0, 1, 0)));
+inline class sdk sdk;
 } // namespace px
 } // namespace p201

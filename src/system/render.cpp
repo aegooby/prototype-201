@@ -7,7 +7,6 @@
 #include "../entity_manager.hpp"
 #include "../event.hpp"
 #include "../linalg.hpp"
-#include "../quadtree.hpp"
 #include "../util.hpp"
 #include "../window.hpp"
 #include "../world.hpp"
@@ -36,7 +35,7 @@ void render::transform_tile(float x, float y, float w, float h,
     vx[3] = iso_vec.x() + iso_vec_p3.x();
     vy[3] = iso_vec.y() + iso_vec_p3.y();
 }
-void render::render_grid(SDL_Renderer* renderer, std::size_t size)
+void render::render_grid(std::size_t size)
 {
     std::int16_t vx[4];
     std::int16_t vy[4];
@@ -49,24 +48,6 @@ void render::render_grid(SDL_Renderer* renderer, std::size_t size)
             polygonRGBA(__sdl_renderer, vx, vy, 4, 200, 200, 200, 255);
         }
     }
-}
-
-void render::render_node(const node& node, std::int16_t* vx, std::int16_t* vy)
-{
-    auto& bounds = node.bounds;
-    transform_tile(bounds.x, bounds.y, bounds.w, bounds.h, vx, vy);
-    camera.transform(vx, vy);
-    polygonRGBA(__sdl_renderer, vx, vy, 4, 0, 200, 0, 255);
-
-    if (!node.leaf)
-        for (auto& child : node.children()) render_node(child, vx, vy);
-};
-
-void render::render_quadtree(const quadtree& quadtree)
-{
-    std::int16_t vx[4];
-    std::int16_t vy[4];
-    render_node(quadtree.root, vx, vy);
 }
 
 void render::start()
