@@ -59,7 +59,7 @@ public:
         window.start();
         for (auto& system : world.systems) system.second->start();
 
-        world.serializer.directory = "entities";
+        world.serializer.directory = "assets/entities";
         world.serializer.load_entity(world.new_entity(), "player");
         world.serializer.load_entity(world.new_entity(), "platform");
     }

@@ -23,7 +23,7 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       controller_manager(scene),
       event_manager(*this),
       serializer(*this),
-      sprite_manager("sprites")
+      sprite_manager("assets/sprites")
 {
 
     component_managers.emplace(typeid(components::render),

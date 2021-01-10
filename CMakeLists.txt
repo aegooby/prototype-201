@@ -34,6 +34,15 @@ file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 ### Executable ###
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
 
+set(source "${CMAKE_SOURCE_DIR}/assets")
+set(destination "${CMAKE_CURRENT_BINARY_DIR}/assets")
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${source} ${destination} 
+    DEPENDS ${destination}
+    COMMENT "symbolic link resources folder from ${source} => ${destination}"
+)
+
 ### CMake modules ###
 set(${PROJECT_NAME}_CMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
