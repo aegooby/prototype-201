@@ -53,6 +53,31 @@ public:
     }
 };
 
+/** @todo Finish */
+class callback : public PxSimulationEventCallback
+{
+private:
+    class world& world;
+
+public:
+    callback(class world& world) : world(world)
+    {
+        /** @todo Placeholder */
+        (void)(this->world);
+    }
+    virtual void onConstraintBreak(PxConstraintInfo* constraints,
+                                   PxU32             count) override;
+    virtual void onWake(PxActor** actors, PxU32 count) override;
+    virtual void onSleep(PxActor** actors, PxU32 count) override;
+    virtual void onContact(const PxContactPairHeader& pairHeader,
+                           const PxContactPair* pairs, PxU32 nbPairs) override;
+    virtual void onTrigger(PxTriggerPair* pairs, PxU32 count) override;
+    virtual void onAdvance(const PxRigidBody* const* bodyBuffer,
+                           const PxTransform*        poseBuffer,
+                           const PxU32               count) override;
+    virtual ~callback() override = default;
+};
+
 class sdk
 {
 private:
@@ -99,17 +124,21 @@ public:
 class scene
 {
 private:
-    PxSceneDesc desc;
+    class callback callback;
+    PxSceneDesc    desc;
 
 public:
     PxScene* main = nullptr;
-    scene(class sdk& sdk) : desc(PxSceneDesc(sdk.main->getTolerancesScale()))
+    scene(class world& world, class sdk& sdk)
+        : callback(world), desc(PxSceneDesc(sdk.main->getTolerancesScale()))
     {
         desc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
         if (!desc.cpuDispatcher)
             desc.cpuDispatcher = PxDefaultCpuDispatcherCreate(1);
         if (!desc.filterShader)
             desc.filterShader = PxDefaultSimulationFilterShader;
+        desc.simulationEventCallback = &callback;
+
         main = sdk.main->createScene(desc);
         if (!main) throw std::runtime_error("Failed to initialize PhysX scene");
 

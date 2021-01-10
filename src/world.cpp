@@ -19,7 +19,7 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
     : window(window),
       keyboard(keyboard),
       mouse(mouse),
-      scene(engine::sdk),
+      scene(*this, engine::sdk),
       controller_manager(scene),
       event_manager(*this),
       serializer(*this),

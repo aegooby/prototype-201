@@ -13,13 +13,6 @@
 
 namespace p201
 {
-/**
- * @brief Components contain data only. There's no reason for a component to
- *        contain anything other than a constructor or destructor. I've broken
- *        that rule though because I'm an idiot. So this is why I have to go
- *        through this shit and add dumb ass documentation because I don't know
- *        what the fuck I'm doing.
- */
 struct component
 {
     static constexpr std::size_t flag      = 0;
