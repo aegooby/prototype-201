@@ -31,8 +31,7 @@ void callback::onContact(const PxContactPairHeader& pairHeader,
 }
 void callback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 {
-    (void)pairs;
-    (void)count;
+    for (std::size_t i = 0; i < count; ++i) (void)pairs[i];
 }
 void callback::onAdvance(const PxRigidBody* const* bodyBuffer,
                          const PxTransform* poseBuffer, const PxU32 count)
