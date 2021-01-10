@@ -139,8 +139,6 @@ struct physics : public component
         auto material = px::sdk.main->createMaterial(sf, df, e);
         if (!material) throw std::runtime_error("Failed to create material");
         auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
-        /** @todo Temporary values */
-        /** @todo Add switch for shape types */
         auto create = [this, &transform,
                        &material](const auto& geometry) -> px::rigid_actor*
         {
@@ -192,9 +190,9 @@ struct character : public component
 
         auto material =
             px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
+        desc.radius = physics.shape_params.capsule.r;
+        desc.height = physics.shape_params.capsule.hh;
         /** @todo Temporary values */
-        desc.radius      = physics.shape_params.capsule.r;
-        desc.height      = physics.shape_params.capsule.hh;
         desc.stepOffset  = 0.01f;
         desc.density     = physics.density;
         desc.material    = material;

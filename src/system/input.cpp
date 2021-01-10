@@ -14,7 +14,6 @@ namespace p201
 namespace systems
 {
 void input::start() { }
-/** @todo This is fucked */
 void input::update(float dt)
 {
     __base::update(dt);

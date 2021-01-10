@@ -24,7 +24,6 @@ public:
     static constexpr double dt        = 1.0 / dt_factor;
     static constexpr bool   vsync     = true;
 
-    /** @todo Might need to be moved */
     static inline class px::sdk& sdk = px::sdk;
 
 protected:
