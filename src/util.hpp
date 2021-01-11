@@ -42,14 +42,14 @@ inline std::string to_string(const px::vector_3& vector)
 {
     std::string str = "(" + std::to_string(vector.x);
     str += ", " + std::to_string(vector.y);
-    str += ", " + std::to_string(vector.y) + ")";
+    str += ", " + std::to_string(vector.z) + ")";
     return str;
 }
 inline std::string to_string(const px::vector_3ext& vector)
 {
     std::string str = "(" + std::to_string(vector.x);
     str += ", " + std::to_string(vector.y);
-    str += ", " + std::to_string(vector.y) + ")";
+    str += ", " + std::to_string(vector.z) + ")";
     return str;
 }
 inline std::string to_string(std::thread::id id)

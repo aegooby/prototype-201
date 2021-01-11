@@ -20,7 +20,6 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       keyboard(keyboard),
       mouse(mouse),
       scene(*this, engine::sdk),
-      controller_manager(scene),
       event_manager(*this),
       serializer(*this),
       sprite_manager("assets/sprites")
@@ -42,6 +41,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                                std::make_unique<managers::camera_focus>());
     component_managers.emplace(typeid(components::health),
                                std::make_unique<managers::health>());
+    component_managers.emplace(typeid(components::attack),
+                               std::make_unique<managers::attack>());
     component_managers.emplace(typeid(components::hud),
                                std::make_unique<managers::hud>());
 

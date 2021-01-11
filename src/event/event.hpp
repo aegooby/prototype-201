@@ -33,7 +33,16 @@ public:
     { }
     virtual ~animation() override = default;
 };
-
+class attack : public event
+{
+public:
+    class entity& attacker;
+    class entity& victim;
+    attack(entity& attacker, entity& victim)
+        : attacker(attacker), victim(victim)
+    { }
+    virtual ~attack() override = default;
+};
 } // namespace events
 
 } // namespace p201

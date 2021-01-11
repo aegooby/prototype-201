@@ -112,6 +112,12 @@ void xml::load_entity(class entity& entity, const std::string& name)
                 health.max_hp = component.get<float>("max_hp");
                 break;
             }
+            case components::attack::flag:
+            {
+                auto& attack = entity.add_component<components::attack>();
+                (void)attack;
+                break;
+            }
             case components::hud::flag:
             {
                 auto& hud = entity.add_component<components::hud>();
@@ -129,7 +135,7 @@ void xml::load_entity(class entity& entity, const std::string& name)
         if (entity.flag.test(components::character::flag))
         {
             auto& character = entity.component<components::character>();
-            character.init(world.controller_manager, physics);
+            character.init(world.scene, physics);
         }
         else
             physics.init(world.scene);
@@ -149,6 +155,12 @@ void xml::load_entity(class entity& entity, const std::string& name)
                     px::PxTransform(convert(transform.position));
                 physics.actor->setGlobalPose(px_transform);
             }
+        }
+        if (entity.flag.test(components::attack::flag))
+        {
+            auto& character = entity.component<components::character>();
+            auto& attack = entity.component<components::attack>();
+            attack.init(world.scene, character);
         }
     }
 }

@@ -60,11 +60,7 @@ private:
     class world& world;
 
 public:
-    callback(class world& world) : world(world)
-    {
-        /** @todo Placeholder */
-        (void)(this->world);
-    }
+    callback(class world& world) : world(world) { }
     virtual void onConstraintBreak(PxConstraintInfo* constraints,
                                    PxU32             count) override;
     virtual void onWake(PxActor** actors, PxU32 count) override;
@@ -128,7 +124,8 @@ private:
     PxSceneDesc    desc;
 
 public:
-    PxScene* main = nullptr;
+    PxScene*             main               = nullptr;
+    PxControllerManager* controller_manager = nullptr;
     scene(class world& world, class sdk& sdk)
         : callback(world), desc(PxSceneDesc(sdk.main->getTolerancesScale()))
     {
@@ -148,31 +145,21 @@ public:
             main->setVisualizationParameter(vparam::eSCALE, 1.0f);
             main->setVisualizationParameter(vparam::eCOLLISION_SHAPES, 1.0f);
         }
+
+        controller_manager = PxCreateControllerManager(*main);
+        controller_manager->setOverlapRecoveryModule(true);
     }
     ~scene()
     {
-        if (main) main->release();
-    }
-};
-
-class controller_manager
-{
-public:
-    PxControllerManager* main = nullptr;
-
-    controller_manager(scene& scene)
-    {
-        main = PxCreateControllerManager(*scene.main);
-        main->setOverlapRecoveryModule(true);
-    }
-    ~controller_manager()
-    {
+        if (controller_manager) controller_manager->release();
         if (main) main->release();
     }
 };
 
 using actor       = PxActor;
 using rigid_actor = PxRigidActor;
+using shape       = PxShape;
+using aggregate   = PxAggregate;
 using controller  = PxController;
 using vector_2    = PxVec2;
 using vector_3    = PxVec3;

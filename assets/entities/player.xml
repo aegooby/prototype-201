@@ -60,5 +60,9 @@
         <component>
             <flag>9</flag>
         </component>
+        <component>
+            <flag>10</flag>
+        </component>
     </components>
 </entity>
+ 

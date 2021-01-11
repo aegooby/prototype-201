@@ -27,6 +27,8 @@ public:
     virtual void start() override;
     virtual void update(float dt) override;
 
+    void on_attack_event(events::attack&);
+
     combat(const combat&) = delete;
     combat(combat&&)      = delete;
     combat& operator=(const combat&) = delete;

@@ -2,6 +2,9 @@
 #include "physx.hpp"
 
 #include "__common.hpp"
+#include "entity.hpp"
+#include "event.hpp"
+#include "world.hpp"
 
 namespace p201
 {
@@ -31,7 +34,12 @@ void callback::onContact(const PxContactPairHeader& pairHeader,
 }
 void callback::onTrigger(PxTriggerPair* pairs, PxU32 count)
 {
-    for (std::size_t i = 0; i < count; ++i) (void)pairs[i];
+    for (std::size_t i = 0; i < count; ++i)
+    {
+        auto& attacker = *(entity*)pairs[i].triggerActor->userData;
+        auto& victim   = *(entity*)pairs[i].otherActor->userData;
+        world.event_manager.publish<events::attack>(attacker, victim);
+    }
 }
 void callback::onAdvance(const PxRigidBody* const* bodyBuffer,
                          const PxTransform* poseBuffer, const PxU32 count)

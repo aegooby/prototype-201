@@ -30,8 +30,6 @@ public:
     /*** PHYSX ***/
     /** @brief Scene used to manage PhysX actors. */
     px::scene scene;
-    /** @brief Manages PhysX character controllers. */
-    px::controller_manager controller_manager;
 
     /*** GLOBAL OBJECTS ***/
     /** @brief Table of systems (type of system is the key). */

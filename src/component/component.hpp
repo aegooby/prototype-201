@@ -161,12 +161,6 @@ struct physics : public component
                 break;
         }
         scene.main->addActor(*actor);
-        link();
-    }
-
-    void link()
-    {
-        assert(actor);
         actor->userData = &entity;
     }
 };
@@ -184,7 +178,7 @@ struct character : public component
     vector_3        accel      = vector_3(0.0f, 0.0f, 0.0f);
     vector_3        velocity   = vector_3(0.0f, 0.0f, 0.0f);
 
-    void init(px::controller_manager& controller_manager, physics& physics)
+    void init(px::scene& scene, physics& physics)
     {
         px::PxCapsuleControllerDesc desc;
 
@@ -198,9 +192,10 @@ struct character : public component
         desc.material    = material;
         desc.upDirection = px::vector_3(0, 0, 1);
 
-        controller    = controller_manager.main->createController(desc);
+        controller    = scene.controller_manager->createController(desc);
         physics.actor = controller->getActor();
-        physics.link();
+        physics.actor->userData = &entity;
+        controller->setUserData(&physics);
     }
 };
 
@@ -256,11 +251,36 @@ struct health : public component
     virtual ~health() override = default;
 };
 
-struct hud : public component
+struct attack : public component
 {
     using __base = component;
 
     static constexpr std::size_t flag = 9;
+
+    px::rigid_actor* actor = nullptr;
+
+    attack(std::size_t entity) : __base(entity) { }
+    virtual ~attack() override = default;
+
+    void init(px::scene& scene, character& character)
+    {
+        auto material = px::sdk.main->createMaterial(0.0f, 0.0f, 0.0f);
+        if (!material) throw std::runtime_error("Failed to create material");
+        auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
+        auto geometry  = px::PxBoxGeometry(100.0f, 100.0f, 100.0f);
+
+        actor = px::PxCreateStatic(*px::sdk.main, transform, geometry,
+                                    *material);
+        scene.main->addActor(*actor);
+        actor->userData = &character;
+    }
+};
+
+struct hud : public component
+{
+    using __base = component;
+
+    static constexpr std::size_t flag = 10;
 
     hud(std::size_t entity) : __base(entity) { }
     virtual ~hud() override = default;

@@ -14,7 +14,10 @@ namespace p201
 {
 namespace systems
 {
-void combat::start() { }
+void combat::start()
+{
+    world.event_manager.subscribe(*this, &combat::on_attack_event);
+}
 void combat::update(float dt)
 {
     __base::update(dt);
@@ -30,6 +33,12 @@ void combat::update(float dt)
             hb_main.srcrect.w   = hb_main.width * hpfactor;
         }
     }
+}
+
+void combat::on_attack_event(events::attack& event)
+{
+    /** @todo Implement */
+    (void)event;
 }
 } // namespace systems
 } // namespace p201

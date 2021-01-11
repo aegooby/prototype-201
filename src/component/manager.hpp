@@ -52,6 +52,7 @@ using input        = component_manager_template<components::input>;
 using animation    = component_manager_template<components::animation>;
 using camera_focus = component_manager_template<components::camera_focus>;
 using health       = component_manager_template<components::health>;
+using attack       = component_manager_template<components::attack>;
 using hud          = component_manager_template<components::hud>;
 } // namespace managers
 } // namespace p201
