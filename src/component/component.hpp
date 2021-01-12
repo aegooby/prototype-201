@@ -269,8 +269,8 @@ struct attack : public component
         auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
         auto geometry  = px::PxBoxGeometry(100.0f, 100.0f, 100.0f);
 
-        actor = px::PxCreateStatic(*px::sdk.main, transform, geometry,
-                                    *material);
+        actor =
+            px::PxCreateStatic(*px::sdk.main, transform, geometry, *material);
         scene.main->addActor(*actor);
         actor->userData = &character;
     }
