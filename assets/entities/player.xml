@@ -20,8 +20,8 @@
         <component>
             <flag>2</flag>
             <position>
-                <x>-100.0</x>
-                <y>0.0</y>
+                <x>-200.0</x>
+                <y>-200.0</y>
                 <z>0.0</z>
             </position>
         </component>

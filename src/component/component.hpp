@@ -267,12 +267,20 @@ struct attack : public component
         auto material = px::sdk.main->createMaterial(0.0f, 0.0f, 0.0f);
         if (!material) throw std::runtime_error("Failed to create material");
         auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
-        auto geometry  = px::PxBoxGeometry(100.0f, 100.0f, 100.0f);
+        /** @todo Temporary values */
+        auto geometry = px::PxBoxGeometry(100.0f, 100.0f, 100.0f);
 
         actor =
             px::PxCreateStatic(*px::sdk.main, transform, geometry, *material);
+
+        px::shape* shape = nullptr;
+        actor->getShapes(&shape, 1);
+        shape->setFlag(px::PxShapeFlag::eSIMULATION_SHAPE, false);
+        shape->setFlag(px::PxShapeFlag::eTRIGGER_SHAPE, true);
         scene.main->addActor(*actor);
         actor->userData = &character;
+
+        /** @todo Add joint */
     }
 };
 
