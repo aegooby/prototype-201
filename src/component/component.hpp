@@ -177,6 +177,8 @@ struct character : public component
     px::controller* controller = nullptr;
     vector_3        accel      = vector_3(0.0f, 0.0f, 0.0f);
     vector_3        velocity   = vector_3(0.0f, 0.0f, 0.0f);
+    float           max_speed  = 0.0f;
+    float           friction   = 0.0f;
 
     void init(px::scene& scene, physics& physics)
     {
@@ -185,7 +187,8 @@ struct character : public component
         auto material =
             px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
         desc.radius = physics.shape_params.capsule.r;
-        desc.height = physics.shape_params.capsule.hh;
+        std::cout << desc.radius << std::endl;
+        desc.height = physics.shape_params.capsule.hh * 2.0f;
         /** @todo Temporary values */
         desc.stepOffset  = 0.01f;
         desc.density     = physics.density;
@@ -264,14 +267,21 @@ struct attack : public component
 
     void init(px::scene& scene, character& character)
     {
+        px::shape*            character_shape = nullptr;
+        px::PxCapsuleGeometry capsule;
+        character.controller->getActor()->getShapes(&character_shape, 1);
+        character_shape->getCapsuleGeometry(capsule);
+
         auto material = px::sdk.main->createMaterial(0.0f, 0.0f, 0.0f);
         if (!material) throw std::runtime_error("Failed to create material");
         auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
         /** @todo Temporary values */
-        auto geometry = px::PxBoxGeometry(100.0f, 100.0f, 100.0f);
+        auto geometry = px::PxBoxGeometry(capsule.radius, capsule.radius,
+                                          capsule.halfHeight + capsule.radius);
+        auto local = px::PxTransform(px::PxVec3(capsule.radius * 2.0f, 0, 0));
 
-        actor =
-            px::PxCreateStatic(*px::sdk.main, transform, geometry, *material);
+        actor = px::PxCreateStatic(*px::sdk.main, transform, geometry,
+                                   *material, local);
 
         px::shape* shape = nullptr;
         actor->getShapes(&shape, 1);
@@ -280,7 +290,7 @@ struct attack : public component
         scene.main->addActor(*actor);
         actor->userData = &character;
 
-        /** @todo Add joint */
+        /** @todo Joint doesn't work - add additional shape? */
     }
 };
 

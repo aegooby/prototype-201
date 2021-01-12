@@ -30,7 +30,8 @@ void combat::update(float dt)
         {
             auto& attack  = entity.component<components::attack>();
             auto& physics = entity.component<components::physics>();
-            attack.actor->setGlobalPose(physics.actor->getGlobalPose());
+            attack.actor->setGlobalPose(
+                px::PxTransform(physics.actor->getGlobalPose().p));
         }
         if (entity.flag.test(components::hud::flag))
         {

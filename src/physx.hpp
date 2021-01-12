@@ -144,6 +144,7 @@ public:
             using vparam = PxVisualizationParameter;
             main->setVisualizationParameter(vparam::eSCALE, 1.0f);
             main->setVisualizationParameter(vparam::eCOLLISION_SHAPES, 1.0f);
+            main->setVisualizationParameter(vparam::eJOINT_LIMITS, 1.0f);
         }
 
         controller_manager = PxCreateControllerManager(*main);

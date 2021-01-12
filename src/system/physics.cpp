@@ -31,19 +31,21 @@ void physics::update(float dt)
         if (entity.flag.test(components::character::flag))
         {
             auto& character = entity.component<components::character>();
-            float friction  = 12.0f;
-            character.velocity += character.accel * dt;
+            // character.velocity += character.accel * dt;
             character.controller->move(convert(character.velocity * dt), 0.1f,
                                        dt, px::PxControllerFilters());
             transform.position =
                 convert(character.controller->getFootPosition());
-            character.velocity -= character.velocity * friction * dt;
+
+            px::shape* shape = nullptr;
+            physics.actor->getShapes(&shape, 1);
+            auto rot = px ::PxTransform(
+                px::PxQuat(px::PxPiDivTwo, px::PxVec3(1, 0, 0)));
+            shape->setLocalPose(rot);
         }
         else
             transform.position = convert(physics.actor->getGlobalPose().p);
     }
-    world.scene.main->simulate(dt);
-    world.scene.main->fetchResults(true);
 }
 } // namespace systems
 } // namespace p201

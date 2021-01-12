@@ -32,12 +32,12 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
-            character.accel += vector_3(-5000.0f, 5000.0f, 0.0f);
+            character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
             /* -, + */
         }
         if (keyboard.up(keycode::S))
         {
-            character.accel += vector_3(5000.0f, -5000.0f, 0.0f);
+            character.velocity += vector_3(400.0f, -400.0f, 0.0f);
             /* +, - */
         }
 
@@ -46,12 +46,12 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
-            character.accel += vector_3(5000.0f, -5000.0f, 0.0f);
+            character.velocity += vector_3(400.0f, -400.0f, 0.0f);
             /* +, - */
         }
         if (keyboard.up(keycode::W))
         {
-            character.accel += vector_3(-5000.0f, 5000.0f, 0.0f);
+            character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
             /* -, + */
         }
 
@@ -64,7 +64,7 @@ void input::update(float dt)
                 animation("walk-right");
             else
                 animation("stand-right");
-            character.accel += vector_3(5000.0f, 5000.0f, 0.0f);
+            character.velocity += vector_3(400.0f, 400.0f, 0.0f);
             /* +, + */
         }
         if (keyboard.up(keycode::D))
@@ -75,7 +75,7 @@ void input::update(float dt)
                 animation("stand-right");
             else
                 animation("walk-left");
-            character.accel += vector_3(-5000.0f, -5000.0f, 0.0f);
+            character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
             /* -, - */
         }
 
@@ -86,7 +86,7 @@ void input::update(float dt)
                 animation("walk-left");
             else
                 animation("stand-left");
-            character.accel += vector_3(-5000.0f, -5000.0f, 0.0f);
+            character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
             /* -, - */
         }
         if (keyboard.up(keycode::A))
@@ -95,7 +95,7 @@ void input::update(float dt)
                 animation("stand-left");
             else
                 animation("walk-right");
-            character.accel += vector_3(5000.0f, 5000.0f, 0.0f);
+            character.velocity += vector_3(400.0f, 400.0f, 0.0f);
             /* +, + */
         }
     }

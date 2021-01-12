@@ -84,7 +84,8 @@ void xml::load_entity(class entity& entity, const std::string& name)
             case components::character::flag:
             {
                 auto& character = entity.add_component<components::character>();
-                (void)character;
+                character.max_speed = component.get<float>("max_speed");
+                character.friction  = component.get<float>("friction");
                 break;
             }
             case components::input::flag:
@@ -159,7 +160,7 @@ void xml::load_entity(class entity& entity, const std::string& name)
         if (entity.flag.test(components::attack::flag))
         {
             auto& character = entity.component<components::character>();
-            auto& attack = entity.component<components::attack>();
+            auto& attack    = entity.component<components::attack>();
             attack.init(world.scene, character);
         }
     }

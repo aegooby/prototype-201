@@ -106,6 +106,8 @@ public:
     {
         window.update();
         for (auto& system : world.systems) system.second->update(dt);
+        world.scene.main->simulate(dt);
+        world.scene.main->fetchResults(true);
     }
     void render(float alpha)
     {
