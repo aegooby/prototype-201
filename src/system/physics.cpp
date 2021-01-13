@@ -27,24 +27,8 @@ void physics::update(float dt)
         auto& physics   = entity.component<components::physics>();
 
         /* Don't delete this or I will fucking slap you. */
-        transform.lerp = transform.position;
-        if (entity.flag.test(components::character::flag))
-        {
-            auto& character = entity.component<components::character>();
-            // character.velocity += character.accel * dt;
-            character.controller->move(convert(character.velocity * dt), 0.1f,
-                                       dt, px::PxControllerFilters());
-            transform.position =
-                convert(character.controller->getFootPosition());
-
-            px::shape* shape = nullptr;
-            physics.actor->getShapes(&shape, 1);
-            auto rot = px ::PxTransform(
-                px::PxQuat(px::PxPiDivTwo, px::PxVec3(1, 0, 0)));
-            shape->setLocalPose(rot);
-        }
-        else
-            transform.position = convert(physics.actor->getGlobalPose().p);
+        transform.lerp     = transform.position;
+        transform.position = convert(physics.actor->getGlobalPose().p);
     }
 }
 } // namespace systems

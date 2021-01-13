@@ -92,19 +92,19 @@ struct physics : public component
 
     static constexpr std::size_t flag = 3;
 
-    enum shape : std::size_t
+    enum shape_type : std::size_t
     {
         undefined = 0,
         capsule   = 1,
         box       = 2,
     };
 
-    bool  dynamic = true;
-    float sf      = 0.0f;
-    float df      = 0.0f;
-    float e       = 0.0f;
-    float density = 0.0f;
-    shape shape   = undefined;
+    bool       dynamic    = true;
+    float      sf         = 0.0f;
+    float      df         = 0.0f;
+    float      e          = 0.0f;
+    float      density    = 0.0f;
+    shape_type shape_type = undefined;
     union shape_param
     {
         struct
@@ -123,6 +123,7 @@ struct physics : public component
     } shape_params;
 
     px::rigid_actor* actor = nullptr;
+    px::shape*       shape = nullptr;
 
     physics(std::size_t entity) : __base(entity) { }
     virtual ~physics() override = default;
@@ -142,7 +143,7 @@ struct physics : public component
                 return px::PxCreateStatic(*px::sdk.main, transform, geometry,
                                           *material);
         };
-        switch (shape)
+        switch (shape_type)
         {
             case capsule:
             {
@@ -162,6 +163,7 @@ struct physics : public component
         }
         scene.main->addActor(*actor);
         actor->userData = &entity;
+        actor->getShapes(&shape, 1);
     }
 };
 
@@ -175,10 +177,12 @@ struct character : public component
     virtual ~character() override = default;
 
     px::controller* controller = nullptr;
-    vector_3        accel      = vector_3(0.0f, 0.0f, 0.0f);
-    vector_3        velocity   = vector_3(0.0f, 0.0f, 0.0f);
-    float           max_speed  = 0.0f;
-    float           friction   = 0.0f;
+    px::shape*      shape      = nullptr;
+
+    vector_3 accel     = vector_3(0.0f, 0.0f, 0.0f);
+    vector_3 velocity  = vector_3(0.0f, 0.0f, 0.0f);
+    float    max_speed = 0.0f;
+    float    friction  = 0.0f;
 
     void init(px::scene& scene, physics& physics)
     {
@@ -187,18 +191,23 @@ struct character : public component
         auto material =
             px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
         desc.radius = physics.shape_params.capsule.r;
-        std::cout << desc.radius << std::endl;
         desc.height = physics.shape_params.capsule.hh * 2.0f;
         /** @todo Temporary values */
         desc.stepOffset  = 0.01f;
         desc.density     = physics.density;
         desc.material    = material;
         desc.upDirection = px::vector_3(0, 0, 1);
+        desc.position    = px::vector_3ext(0, 0, 0);
 
         controller    = scene.controller_manager->createController(desc);
         physics.actor = controller->getActor();
         physics.actor->userData = &entity;
         controller->setUserData(&physics);
+
+        physics.actor->getShapes(&physics.shape, 1);
+        shape = physics.shape;
+
+        physics.shape->setLocalPose(px::transform(px::z_ctrl));
     }
 };
 
@@ -260,37 +269,31 @@ struct attack : public component
 
     static constexpr std::size_t flag = 9;
 
-    px::rigid_actor* actor = nullptr;
+    px::shape* shape = nullptr;
 
     attack(std::size_t entity) : __base(entity) { }
     virtual ~attack() override = default;
 
     void init(px::scene& scene, character& character)
     {
-        px::shape*            character_shape = nullptr;
+        (void)scene;
+        auto actor = character.controller->getActor();
+
         px::PxCapsuleGeometry capsule;
-        character.controller->getActor()->getShapes(&character_shape, 1);
-        character_shape->getCapsuleGeometry(capsule);
+        character.shape->getCapsuleGeometry(capsule);
 
         auto material = px::sdk.main->createMaterial(0.0f, 0.0f, 0.0f);
         if (!material) throw std::runtime_error("Failed to create material");
-        auto transform = px::PxTransform(px::PxVec3(0, 0, 0));
-        /** @todo Temporary values */
         auto geometry = px::PxBoxGeometry(capsule.radius, capsule.radius,
                                           capsule.halfHeight + capsule.radius);
-        auto local = px::PxTransform(px::PxVec3(capsule.radius * 2.0f, 0, 0));
-
-        actor = px::PxCreateStatic(*px::sdk.main, transform, geometry,
-                                   *material, local);
-
-        px::shape* shape = nullptr;
-        actor->getShapes(&shape, 1);
+        shape = px::PxRigidActorExt::createExclusiveShape(*actor, geometry,
+                                                          *material);
         shape->setFlag(px::PxShapeFlag::eSIMULATION_SHAPE, false);
         shape->setFlag(px::PxShapeFlag::eTRIGGER_SHAPE, true);
-        scene.main->addActor(*actor);
-        actor->userData = &character;
 
-        /** @todo Joint doesn't work - add additional shape? */
+        auto position = /*px::coord **/ px::vector_3(100, 0, 0);
+
+        shape->setLocalPose(px::PxTransform(position)); //, px::z_ctrl));
     }
 };
 

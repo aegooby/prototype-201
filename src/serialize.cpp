@@ -54,11 +54,12 @@ void xml::load_entity(class entity& entity, const std::string& name)
                 physics.df      = component.get<float>("df");
                 physics.e       = component.get<float>("e");
                 physics.density = component.get<float>("density");
-                physics.shape   = static_cast<enum components::physics::shape>(
-                    component.get<std::size_t>("shape"));
-                switch (physics.shape)
+                physics.shape_type =
+                    static_cast<enum components::physics::shape_type>(
+                        component.get<std::size_t>("shape"));
+                switch (physics.shape_type)
                 {
-                    case components::physics::shape::capsule:
+                    case components::physics::shape_type::capsule:
                     {
                         physics.shape_params.capsule.r =
                             component.get<float>("capsule.r");
@@ -66,7 +67,7 @@ void xml::load_entity(class entity& entity, const std::string& name)
                             component.get<float>("capsule.hh");
                         break;
                     }
-                    case components::physics::shape::box:
+                    case components::physics::shape_type::box:
                     {
                         physics.shape_params.box.hx =
                             component.get<float>("box.hx");

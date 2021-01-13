@@ -13,6 +13,7 @@
 
 #define PHYSX_PVD_HOST  "localhost"
 #define PHYSX_MEM_ALIGN 16
+#define P201_COORD_33   0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f
 
 namespace p201
 {
@@ -157,15 +158,24 @@ public:
     }
 };
 
-using actor       = PxActor;
-using rigid_actor = PxRigidActor;
-using shape       = PxShape;
-using aggregate   = PxAggregate;
-using controller  = PxController;
-using vector_2    = PxVec2;
-using vector_3    = PxVec3;
-using vector_3ext = PxExtendedVec3;
+using actor         = PxActor;
+using rigid_actor   = PxRigidActor;
+using rigid_dynamic = PxRigidDynamic;
+using rigid_static  = PxRigidStatic;
+using shape         = PxShape;
+using aggregate     = PxAggregate;
+using controller    = PxController;
+using vector_2      = PxVec2;
+using vector_3      = PxVec3;
+using vector_3ext   = PxExtendedVec3;
+using matrix_33     = PxMat33;
+using transform          = PxTransform;
+using quat          = PxQuat;
 
-inline class sdk sdk;
+inline class sdk  sdk;
+inline const quat z_ctrl =
+    PxShortestRotation(px::vector_3(1, 0, 0), px::vector_3(0, 0, 1));
+static float           __coord[9] = { P201_COORD_33 };
+inline const matrix_33 coord      = matrix_33(__coord);
 } // namespace px
 } // namespace p201

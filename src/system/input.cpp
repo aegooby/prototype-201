@@ -69,8 +69,6 @@ void input::update(float dt)
         }
         if (keyboard.up(keycode::D))
         {
-            transform.direction.set(components::transform::west);
-            transform.direction.reset(components::transform::east);
             if (!keyboard.scan(keycode::A))
                 animation("stand-right");
             else
@@ -82,6 +80,8 @@ void input::update(float dt)
         /* Left */
         if (keyboard.down(keycode::A))
         {
+            transform.direction.set(components::transform::west);
+            transform.direction.reset(components::transform::east);
             if (!keyboard.scan(keycode::D))
                 animation("walk-left");
             else

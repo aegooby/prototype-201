@@ -56,6 +56,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
                     std::make_unique<systems::animation>(*this));
     systems.emplace(typeid(systems::combat),
                     std::make_unique<systems::combat>(*this));
+    systems.emplace(typeid(systems::character),
+                    std::make_unique<systems::character>(*this));
 }
 
 entity& world::new_entity()

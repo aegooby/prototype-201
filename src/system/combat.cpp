@@ -8,7 +8,6 @@
 #include "../util.hpp"
 #include "../window.hpp"
 #include "../world.hpp"
-#include "render.hpp"
 
 namespace p201
 {
@@ -30,8 +29,8 @@ void combat::update(float dt)
         {
             auto& attack  = entity.component<components::attack>();
             auto& physics = entity.component<components::physics>();
-            attack.actor->setGlobalPose(
-                px::PxTransform(physics.actor->getGlobalPose().p));
+            (void)attack;
+            (void)physics;
         }
         if (entity.flag.test(components::hud::flag))
         {
@@ -47,6 +46,7 @@ void combat::on_attack_event(events::attack& event)
 {
     /** @todo Implement */
     (void)event;
+    std::cout << "attack event" << std::endl;
 }
 } // namespace systems
 } // namespace p201

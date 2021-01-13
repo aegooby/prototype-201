@@ -22,8 +22,9 @@ public:
 
 protected:
     SDL_Renderer*   __sdl_renderer = nullptr;
-    const matrix_23 iso_23;
-    /** @brief How many times do I have to tell you to read the name retard? */
+    const matrix_23 iso_23 = (matrix_23() << P201_ISO_23).finished() / sqrt_2;
+    /** @brief How many times do I have to tell you
+       to read the name retard? */
     camera camera;
 
 private:
@@ -33,9 +34,7 @@ private:
     void render_sprite(SDL_Texture*, SDL_Rect*, SDL_FRect*);
 
 public:
-    render(class world& world)
-        : __base(world),
-          iso_23((matrix_23() << P201_ISO_23).finished() / sqrt_2)
+    render(class world& world) : __base(world)
     {
         flag.set(components::render::flag);
         flag.set(components::transform::flag);
