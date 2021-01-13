@@ -46,7 +46,6 @@ void combat::on_attack_event(events::attack& event)
 {
     /** @todo Implement */
     (void)event;
-    std::cout << "attack event" << std::endl;
 }
 } // namespace systems
 } // namespace p201
