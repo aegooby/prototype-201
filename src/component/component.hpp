@@ -80,6 +80,7 @@ struct transform : public component
     /** @brief Game coordinate position (not isometric position). */
     vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
     /** @brief Direction the entity is facing (not always used). */
+    /** @todo This is ASS */
     std::bitset<4> direction;
 
     transform(std::size_t entity) : __base(entity) { }

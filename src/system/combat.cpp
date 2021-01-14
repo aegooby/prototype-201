@@ -24,14 +24,7 @@ void combat::update(float dt)
     {
         auto& entity = world.entity(id);
         auto& health = entity.component<components::health>();
-        /** @todo Revise that shit */
-        if (entity.flag.test(components::attack::flag))
-        {
-            auto& attack  = entity.component<components::attack>();
-            auto& physics = entity.component<components::physics>();
-            (void)attack;
-            (void)physics;
-        }
+        /** @todo Add HUD system */
         if (entity.flag.test(components::hud::flag))
         {
             const auto hpfactor = health.hp / health.max_hp;

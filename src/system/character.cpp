@@ -19,8 +19,8 @@ float character::direction_angle(const std::bitset<4>& direction)
         if (direction.test(components::transform::east))
             return px::PxPiDivFour * 0.0f;
         if (direction.test(components::transform::west))
-            return px::PxPiDivFour * 7.0f;
-        return px::PxPiDivFour * 6.0f;
+            return px::PxPiDivFour * 6.0f;
+        return px::PxPiDivFour * 7.0f;
     }
     if (direction.test(components::transform::south))
     {

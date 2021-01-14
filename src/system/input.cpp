@@ -24,7 +24,7 @@ void input::update(float dt)
         auto& transform = entity.component<components::transform>();
         auto& character = entity.component<components::character>();
 
-        auto animation = [&entity, this](const std::string& name)
+        auto animation_event = [&entity, this](const std::string& name)
         { world.event_manager.publish<events::animation>(entity, name); };
 
         /* Down */
@@ -32,13 +32,25 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::south);
             transform.direction.reset(components::transform::north);
-            character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
+            if (!keyboard.scan(keycode::A))
+                transform.direction.reset(components::transform::west);
+            if (!keyboard.scan(keycode::D))
+                transform.direction.reset(components::transform::east);
+
             /* -, + */
+            character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
         }
         if (keyboard.up(keycode::S))
         {
-            character.velocity += vector_3(400.0f, -400.0f, 0.0f);
+            if (keyboard.scan(keycode::A))
+                transform.direction.reset(components::transform::south);
+            if (keyboard.scan(keycode::D))
+                transform.direction.reset(components::transform::south);
+            if (keyboard.scan(keycode::W))
+                transform.direction.reset(components::transform::south);
+
             /* +, - */
+            character.velocity += vector_3(400.0f, -400.0f, 0.0f);
         }
 
         /* Up */
@@ -46,13 +58,25 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::north);
             transform.direction.reset(components::transform::south);
-            character.velocity += vector_3(400.0f, -400.0f, 0.0f);
+            if (!keyboard.scan(keycode::A))
+                transform.direction.reset(components::transform::west);
+            if (!keyboard.scan(keycode::D))
+                transform.direction.reset(components::transform::east);
+
             /* +, - */
+            character.velocity += vector_3(400.0f, -400.0f, 0.0f);
         }
         if (keyboard.up(keycode::W))
         {
-            character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
+            if (keyboard.scan(keycode::A))
+                transform.direction.reset(components::transform::north);
+            if (keyboard.scan(keycode::D))
+                transform.direction.reset(components::transform::north);
+            if (keyboard.scan(keycode::S))
+                transform.direction.reset(components::transform::north);
+
             /* -, + */
+            character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
         }
 
         /* Right */
@@ -60,21 +84,35 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::east);
             transform.direction.reset(components::transform::west);
+            if (!keyboard.scan(keycode::W))
+                transform.direction.reset(components::transform::north);
+            if (!keyboard.scan(keycode::S))
+                transform.direction.reset(components::transform::south);
+
             if (!keyboard.scan(keycode::A))
-                animation("walk-right");
+                animation_event("walk-right");
             else
-                animation("stand-right");
-            character.velocity += vector_3(400.0f, 400.0f, 0.0f);
+                animation_event("stand-right");
+
             /* +, + */
+            character.velocity += vector_3(400.0f, 400.0f, 0.0f);
         }
         if (keyboard.up(keycode::D))
         {
+            if (keyboard.scan(keycode::W))
+                transform.direction.reset(components::transform::east);
+            if (keyboard.scan(keycode::S))
+                transform.direction.reset(components::transform::east);
+            if (keyboard.scan(keycode::A))
+                transform.direction.reset(components::transform::east);
+
             if (!keyboard.scan(keycode::A))
-                animation("stand-right");
+                animation_event("stand-right");
             else
-                animation("walk-left");
-            character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
+                animation_event("walk-left");
+
             /* -, - */
+            character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
         }
 
         /* Left */
@@ -82,22 +120,38 @@ void input::update(float dt)
         {
             transform.direction.set(components::transform::west);
             transform.direction.reset(components::transform::east);
+            if (!keyboard.scan(keycode::W))
+                transform.direction.reset(components::transform::north);
+            if (!keyboard.scan(keycode::S))
+                transform.direction.reset(components::transform::south);
+
             if (!keyboard.scan(keycode::D))
-                animation("walk-left");
+                animation_event("walk-left");
             else
-                animation("stand-left");
-            character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
+                animation_event("stand-left");
+
             /* -, - */
+            character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
         }
         if (keyboard.up(keycode::A))
         {
+            if (keyboard.scan(keycode::W))
+                transform.direction.reset(components::transform::west);
+            if (keyboard.scan(keycode::S))
+                transform.direction.reset(components::transform::west);
+            if (keyboard.scan(keycode::D))
+                transform.direction.reset(components::transform::west);
+
             if (!keyboard.scan(keycode::D))
-                animation("stand-left");
+                animation_event("stand-left");
             else
-                animation("walk-right");
-            character.velocity += vector_3(400.0f, 400.0f, 0.0f);
+                animation_event("walk-right");
+
             /* +, + */
+            character.velocity += vector_3(400.0f, 400.0f, 0.0f);
         }
+
+        std::cout << transform.direction << std::endl;
     }
 }
 } // namespace systems
