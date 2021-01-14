@@ -150,8 +150,6 @@ void input::update(float dt)
             /* +, + */
             character.velocity += vector_3(400.0f, 400.0f, 0.0f);
         }
-
-        std::cout << transform.direction << std::endl;
     }
 }
 } // namespace systems
