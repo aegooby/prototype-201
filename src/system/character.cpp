@@ -12,29 +12,38 @@ namespace p201
 {
 namespace systems
 {
-float character::direction_angle(const std::bitset<4>& direction)
+float character::direction_angle(const components::transform& transform)
 {
-    if (direction.test(components::transform::north))
+    switch (transform.direction)
     {
-        if (direction.test(components::transform::east))
+        case components::transform::north:
+            return px::PxPiDivFour * 7.0f;
+            break;
+        case components::transform::south:
+            return px::PxPiDivFour * 3.0f;
+            break;
+        case components::transform::east:
+            return px::PxPiDivFour * 1.0f;
+            break;
+        case components::transform::west:
+            return px::PxPiDivFour * 5.0f;
+            break;
+        case components::transform::north_east:
             return px::PxPiDivFour * 0.0f;
-        if (direction.test(components::transform::west))
+            break;
+        case components::transform::north_west:
             return px::PxPiDivFour * 6.0f;
-        return px::PxPiDivFour * 7.0f;
-    }
-    if (direction.test(components::transform::south))
-    {
-        if (direction.test(components::transform::east))
+            break;
+        case components::transform::south_east:
             return px::PxPiDivFour * 2.0f;
-        if (direction.test(components::transform::west))
+            break;
+        case components::transform::south_west:
             return px::PxPiDivFour * 4.0f;
-        return px::PxPiDivFour * 3.0f;
+            break;
+        default:
+            throw std::runtime_error("Invalid direction");
+            break;
     }
-    if (direction.test(components::transform::east))
-        return px::PxPiDivFour * 1.0f;
-    if (direction.test(components::transform::west))
-        return px::PxPiDivFour * 5.0f;
-    return 0.0f;
 }
 
 void character::start() { }
@@ -53,7 +62,7 @@ void character::update(float dt)
                                    px::PxControllerFilters());
 
         const auto& position = physics.actor->getGlobalPose().p;
-        const auto  angle    = direction_angle(transform.direction);
+        const auto  angle    = direction_angle(transform);
         physics.actor->setGlobalPose(
             px::transform(position, px::quat(angle, px::vector_3(0, 0, 1))));
     }

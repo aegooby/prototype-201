@@ -16,7 +16,7 @@ public:
     using __base = system;
 
 private:
-    float direction_angle(const std::bitset<4>& direction);
+    float direction_angle(const components::transform&);
 
 public:
     character(class world& world) : __base(world)

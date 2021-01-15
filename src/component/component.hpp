@@ -66,22 +66,22 @@ struct transform : public component
 
     static constexpr std::size_t flag = 2;
 
-    /** @brief Used in direction bitset. */
-    enum
-    {
-        north = 0,
-        south = 1,
-        east  = 2,
-        west  = 3,
-    };
-
     /** @brief Previous coordinate used to interpolate in updates. */
     vector_3 lerp = vector_3(0.0f, 0.0f, 0.0f);
     /** @brief Game coordinate position (not isometric position). */
     vector_3 position = vector_3(0.0f, 0.0f, 0.0f);
     /** @brief Direction the entity is facing (not always used). */
-    /** @todo This is ASS */
-    std::bitset<4> direction;
+    enum
+    {
+        north      = 1,
+        south      = 2,
+        east       = 3,
+        west       = 4,
+        north_east = 5,
+        north_west = 6,
+        south_east = 7,
+        south_west = 8,
+    } direction = north;
 
     transform(std::size_t entity) : __base(entity) { }
     virtual ~transform() override = default;
