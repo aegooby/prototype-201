@@ -1,7 +1,7 @@
 
 #pragma once
 #include "../__common.hpp"
-#include "../linalg.hpp"
+#include "../util.hpp"
 
 #include <list>
 #include <string>

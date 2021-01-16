@@ -1,8 +1,6 @@
 
 #pragma once
 #include "../__common.hpp"
-#include "../exception.hpp"
-#include "../thread.hpp"
 #include "../util.hpp"
 
 #include <filesystem>
@@ -80,8 +78,7 @@ protected:
 
 public:
     manager(const std::string& flipbooks_path) : flipbooks_path(flipbooks_path)
-    {
-    }
+    { }
     ~manager() = default;
     void link(SDL_Renderer* renderer)
     {
