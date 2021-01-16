@@ -65,19 +65,6 @@
 #include <cstdint>
 #include <iostream>
 
-#if defined(main)
-#    undef main
-#endif
-
-#if defined(P201_CPP_VER)
-#    if P201_CPP_VER >= 11
-#        if defined(NULL)
-#            undef NULL
-#        endif
-#        define NULL nullptr
-#    endif
-#endif
-
 namespace p201
 {
 #if defined(P201_DEBUG)

@@ -5,6 +5,10 @@
 
 #include <filesystem>
 
+#if defined(main)
+#    undef main
+#endif
+
 int main(int argc, char** argv)
 {
     (void)argc;
