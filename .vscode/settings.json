@@ -82,6 +82,7 @@
         "variant": "cpp",
         "vector": "cpp",
         "filesystem": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "__functional_base_03": "cpp"
     }
 }
