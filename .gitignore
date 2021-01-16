@@ -43,7 +43,6 @@ CMakeFiles/
 build/
 xcode/
 .vs/
-.vscode/
 .cache/
 prototype201.dir/
 compile_commands.json

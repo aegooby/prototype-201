@@ -43,9 +43,12 @@ void animation::update(float dt)
 void animation::on_animation_event(events::animation& event)
 {
     auto& animation = event.entity.component<components::animation>();
-    animation.name  = event.name;
-    animation.frame = 0;
-    animation.index = 0;
+    if (animation.name != event.name)
+    {
+        animation.name  = event.name;
+        animation.frame = 0;
+        animation.index = 0;
+    }
 }
 } // namespace systems
 } // namespace p201

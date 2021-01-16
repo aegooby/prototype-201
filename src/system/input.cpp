@@ -87,6 +87,10 @@ void input::update(float dt)
                     animation_event("stand-west");
                 break;
             case components::transform::north_east:
+                if (character.velocity.norm() > 1.0f)
+                    animation_event("walk-north-east");
+                else
+                    animation_event("stand-north-east");
                 break;
             case components::transform::north_west:
                 break;
