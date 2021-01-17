@@ -27,7 +27,7 @@ void animation::update(float dt)
 
         if (animation.fps)
         {
-            std::size_t delay = 1.0f / animation.fps * engine::dt_factor;
+            std::size_t delay = 1.0f / animation.fps / dt;
             ++animation.frame %= delay;
             if (!animation.frame) ++animation.index %= flipbook.frames();
             render.texture = flipbook.at(animation.index);

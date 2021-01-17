@@ -17,9 +17,8 @@ namespace p201
 class engine
 {
 public:
-    static constexpr float  dt_factor = 60.0f;
-    static constexpr double dt        = 1.0 / dt_factor;
-    static constexpr bool   vsync     = true;
+    static constexpr double dt    = 1.0 / 60.0;
+    static constexpr bool   vsync = true;
 
     static inline class px::sdk& sdk = px::sdk;
 
