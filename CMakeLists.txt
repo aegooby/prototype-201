@@ -2,6 +2,7 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
 project(prototype-201)
+set(P201_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/libraries)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -73,3 +74,16 @@ target_link_libraries(
     ${SDL2_GFX_LIBRARIES}
     ${PHYSX_LIBRARIES}
 )
+
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/__common __common)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/asset asset)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/core core)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/ecs ecs)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/event event)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/game game)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/input input)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/physx physx)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/ui ui)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libraries/util util)
+
+target_link_libraries(${PROJECT_NAME} __common core)
