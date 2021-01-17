@@ -14,17 +14,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DP201_DEBUG -Og")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra -Wno-deprecated")
 
-if (CMAKE_BUILD_TYPE STREQUAL "")
-    set(
-        CMAKE_BUILD_TYPE
-            "Debug"
-        CACHE STRING
-            "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or
-                CMAKE_C_FLAGS used) \"Debug\", \"Release\"."
-        FORCE
-    )
-endif (CMAKE_BUILD_TYPE STREQUAL "")
-
 ### Source files ###
 file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
