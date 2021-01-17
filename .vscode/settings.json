@@ -83,6 +83,7 @@
         "vector": "cpp",
         "filesystem": "cpp",
         "valarray": "cpp",
-        "__functional_base_03": "cpp"
+        "__functional_base_03": "cpp",
+        "*.ipp": "cpp"
     }
 }

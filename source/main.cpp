@@ -1,8 +1,6 @@
 
-#include "__common.hpp"
-#include "core.hpp"
-#include "termcolor.hpp"
-
+#include <__common.hpp>
+#include <core.hpp>
 #include <filesystem>
 
 #if defined(main)
