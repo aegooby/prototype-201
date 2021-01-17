@@ -5,4 +5,4 @@
 
 ## Mechanics
 ### Isometric rendering
-![](https://raw.githubusercontent.com/aegooby/prototype_201/master/docs/isometric-axis.png)
+![](https://raw.githubusercontent.com/aegooby/prototype-201/master/docs/isometric-axis.png)
