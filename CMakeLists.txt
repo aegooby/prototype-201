@@ -48,7 +48,6 @@ include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
 ### PhysX ###
 set(PHYSX_SUBMODULE_DIR "${CMAKE_SOURCE_DIR}/PhysX")
 include(${PHYSX_SUBMODULE_DIR}/ConfigPhysX.cmake)
-
 add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
 
 ### Include ###
