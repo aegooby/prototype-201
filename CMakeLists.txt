@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
 project(prototype-201)
-set(P201_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/libraries)
+set(P201_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/source)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -16,8 +16,8 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra -Wno-deprecated")
 
 ### Source files ###
-file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/source/*.hpp)
-file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/source/*.cpp)
+file(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/main/*.hpp)
+file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/main/*.cpp)
 
 ### Executable ###
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
