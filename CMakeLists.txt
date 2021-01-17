@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
-project(prototype_201)
+project(prototype-201)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 

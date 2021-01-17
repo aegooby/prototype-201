@@ -8,7 +8,7 @@
             "name": "clang++ — Debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/prototype_201",
+            "program": "${workspaceFolder}/build/prototype-201",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
