@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
-project(core)
+project(p201-core)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -25,4 +25,4 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 ### Link ###
-target_link_libraries(${PROJECT_NAME} PUBLIC __common ecs event input physx util asset ui game)
+target_link_libraries(${PROJECT_NAME} PUBLIC p201-common p201-ecs p201-event p201-input p201-physx p201-util p201-asset p201-ui p201-game)

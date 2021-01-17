@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
-project(input)
+project(p201-input)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -25,4 +25,4 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 ### Link ###
-target_link_libraries(${PROJECT_NAME} PUBLIC __common util core)
+target_link_libraries(${PROJECT_NAME} PUBLIC p201-common p201-util p201-core)

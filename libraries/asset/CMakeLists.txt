@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
-project(asset)
+project(p201-asset)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -28,4 +28,4 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 ### Link ###
-target_link_libraries(${PROJECT_NAME} PUBLIC Boost::headers __common core ecs game util)
+target_link_libraries(${PROJECT_NAME} PUBLIC Boost::headers p201-common p201-core p201-ecs p201-game p201-util)
