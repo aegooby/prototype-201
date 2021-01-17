@@ -85,5 +85,6 @@
         "valarray": "cpp",
         "__functional_base_03": "cpp",
         "*.ipp": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
