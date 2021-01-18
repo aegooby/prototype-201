@@ -19,9 +19,6 @@ void system::deregister_entity(std::size_t id)
 }
 
 void system::start() { }
-void system::update(float dt)
-{
-    (void)dt;
-}
+void system::update([[maybe_unused]] float dt) { }
 
 } // namespace p201

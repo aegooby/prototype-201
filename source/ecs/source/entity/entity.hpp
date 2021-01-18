@@ -22,7 +22,7 @@ protected:
     /*** CONTEXT OBJECTS ***/
     class world& world;
     /*** HELPER FUNCTIONS ***/
-    std::unique_ptr<component>& __component(std::type_index);
+    [[nodiscard]] std::unique_ptr<component>& __component(std::type_index);
     void __add_component(std::unique_ptr<struct component>&&, std::type_index,
                          std::size_t);
     void __remove_component(std::type_index, std::size_t);
@@ -36,7 +36,7 @@ public:
     entity(const std::size_t, class world&);
     ~entity() = default;
     template<typename component_type>
-    component_type& component()
+    [[nodiscard]] component_type& component()
     {
         return *static_cast<component_type*>(
             __component(typeid(component_type)).get());

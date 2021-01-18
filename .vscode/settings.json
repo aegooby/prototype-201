@@ -84,7 +84,8 @@
         "filesystem": "cpp",
         "valarray": "cpp",
         "__functional_base_03": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "compare": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

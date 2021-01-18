@@ -21,9 +21,8 @@ struct attack : public component
     attack(std::size_t entity) : __base(entity) { }
     virtual ~attack() override = default;
 
-    void init(px::scene& scene, character& character)
+    void init([[maybe_unused]] px::scene& scene, character& character)
     {
-        (void)scene;
         auto actor = character.controller->getActor();
 
         px::PxCapsuleGeometry capsule;

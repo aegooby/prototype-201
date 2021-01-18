@@ -22,13 +22,13 @@ file(GLOB SOURCES ${CMAKE_SOURCE_DIR}/source/*.cpp)
 ### Executable ###
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES})
 
-set(source "${CMAKE_SOURCE_DIR}/assets")
-set(destination "${CMAKE_CURRENT_BINARY_DIR}/assets")
+set(LINK_SRC "${CMAKE_SOURCE_DIR}/assets")
+set(LINK_DEST "${CMAKE_CURRENT_BINARY_DIR}/assets")
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E create_symlink ${source} ${destination} 
-    DEPENDS ${destination}
-    COMMENT "symbolic link resources folder from ${source} => ${destination}"
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${LINK_SRC} ${LINK_DEST} 
+    DEPENDS ${LINK_DEST}
+    COMMENT "Symbolic link resources folder from ${LINK_SRC} => ${LINK_DEST}"
 )
 
 ### CMake modules ###
@@ -38,6 +38,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 ### Dependencies ###
 find_package(Boost REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(Vulkan REQUIRED)
 
 ### SDL2 ###
 include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2.cmake)
@@ -67,6 +68,7 @@ target_link_libraries(
     ${PROJECT_NAME}
     Eigen3::Eigen
     Boost::headers
+    Vulkan::Vulkan
     ${SDL2_LIBRARIES}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
@@ -83,6 +85,7 @@ add_subdirectory(${P201_LIBRARIES_DIR}/event p201-event)
 add_subdirectory(${P201_LIBRARIES_DIR}/game p201-game)
 add_subdirectory(${P201_LIBRARIES_DIR}/input p201-input)
 add_subdirectory(${P201_LIBRARIES_DIR}/physx p201-physx)
+add_subdirectory(${P201_LIBRARIES_DIR}/vulkan p201-vulkan)
 add_subdirectory(${P201_LIBRARIES_DIR}/ui p201-ui)
 add_subdirectory(${P201_LIBRARIES_DIR}/util p201-util)
 

@@ -11,13 +11,6 @@
 namespace p201
 {
 
-/**
- * @brief Systems are one third of the ECS architecture. Whereas entities are
- *        groupings of components, and components are simply data, systems
- *        contain the logic for operating on this data and manipulating it.
- *        Systems contain no data other than their flags, in the same way that
- *        components contain no logic.
- */
 class system
 {
 public:
@@ -35,7 +28,8 @@ public:
     /** @brief All the needed system initialization. */
     virtual void start();
     /** @brief Called periodically to update registered entities. */
-    virtual void update(float dt);
+    virtual void update([[maybe_unused]] float dt);
+
     virtual void register_entity(std::size_t);
     virtual void deregister_entity(std::size_t);
 

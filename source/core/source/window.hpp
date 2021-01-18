@@ -11,10 +11,9 @@ namespace p201
 class window
 {
 protected:
-    std::string   __title      = std::string();
-    SDL_Window*   __sdl_window = nullptr;
-    bool          __closed     = false;
-    SDL_SysWMinfo __syswm_info = SDL_SysWMinfo();
+    std::string __title      = std::string();
+    SDL_Window* __sdl_window = nullptr;
+    bool        __closed     = false;
 
 public:
     static constexpr int width  = 1366;
@@ -28,10 +27,9 @@ public:
     void start();
     void stop();
 
-    const std::string&   title();
-    SDL_Window*          sdl_window();
-    bool                 closed() const;
-    const SDL_SysWMinfo& syswm_info() const;
+    const std::string& title();
+    SDL_Window*        sdl_window();
+    bool               closed() const;
 
     void update();
 

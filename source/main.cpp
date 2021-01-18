@@ -7,10 +7,8 @@
 #    undef main
 #endif
 
-int main(int argc, char** argv)
+int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
-    (void)argc;
-    (void)argv;
     p201::engine engine;
     if constexpr (p201::debug)
     {

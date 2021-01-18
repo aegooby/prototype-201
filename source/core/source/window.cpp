@@ -14,13 +14,13 @@ void window::start()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING))
         throw sdl_error("Failed to initialize SDL");
-    if (!(__sdl_window =
-              SDL_CreateWindow(__title.c_str(), SDL_WINDOWPOS_CENTERED,
-                               SDL_WINDOWPOS_CENTERED, width, height, 0x0)))
-        throw sdl_error("Failed to create window");
 
-    SDL_GetVersion(&__syswm_info.version);
-    SDL_GetWindowWMInfo(__sdl_window, &__syswm_info);
+    std::uint32_t flags  = SDL_WINDOW_VULKAN;
+    auto          center = SDL_WINDOWPOS_CENTERED;
+
+    __sdl_window =
+        SDL_CreateWindow(__title.c_str(), center, center, width, height, flags);
+    if (!__sdl_window) throw sdl_error("Failed to create window");
 }
 void window::stop()
 {
@@ -42,10 +42,6 @@ SDL_Window* window::sdl_window()
 bool window::closed() const
 {
     return __closed;
-}
-const SDL_SysWMinfo& window::syswm_info() const
-{
-    return __syswm_info;
 }
 void window::update()
 {

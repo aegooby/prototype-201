@@ -25,12 +25,11 @@ class allocator : public PxAllocatorCallback
 {
 public:
     virtual ~allocator() override = default;
-    virtual void* allocate(size_t size, const char* typeName,
-                           const char* filename, int line) override
+    virtual void* allocate(std::size_t size, 
+                           [[maybe_unused]] const char* typeName,
+                           [[maybe_unused]] const char* filename, 
+                           [[maybe_unused]] int line) override
     {
-        (void)typeName;
-        (void)filename;
-        (void)line;
         return operator new(size, std::align_val_t(PHYSX_MEM_ALIGN));
     }
     virtual void deallocate(void* ptr) override
@@ -43,10 +42,9 @@ class error : public PxErrorCallback
 public:
     virtual ~error() override = default;
     virtual void reportError(PxErrorCode::Enum code, const char* message,
-                             const char* file, int line) override
+                             [[maybe_unused]] const char* file, 
+                             [[maybe_unused]] int line) override
     {
-        (void)file;
-        (void)line;
         std::clog << termcolor::bold << termcolor::red << "error "
                   << termcolor::reset << "(code " << std::size_t(code)
                   << "): " << message << std::endl;
