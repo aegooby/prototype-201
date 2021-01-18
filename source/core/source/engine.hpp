@@ -10,6 +10,7 @@
 #include <physx.hpp>
 #include <thread>
 #include <util.hpp>
+#include <vulkan.hpp>
 
 namespace p201
 {
@@ -23,6 +24,7 @@ public:
     static inline class px::sdk& sdk = px::sdk;
 
 protected:
+    vulkan    vulkan;
     window    window;
     keyboard& keyboard;
     mouse&    mouse;
