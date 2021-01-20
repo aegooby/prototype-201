@@ -35,10 +35,10 @@ void multi_set(std::array<bool, size>& array, bool value, types... args)
 class input
 {
 protected:
-    window& window_context;
+    class window& window;
 
 public:
-    input(window& window_context) : window_context(window_context) { }
+    input(class window& window) : window(window) { }
     ~input() = default;
 
     input(const input&) = delete;
@@ -56,7 +56,7 @@ protected:
     std::array<bool, std::size_t(modifier::size)> __modifier;
 
 public:
-    keyboard(window& window_context) : input(window_context)
+    keyboard(class window& window) : input(window)
     {
         __scan.fill(false);
         __down.fill(false);
@@ -148,7 +148,7 @@ protected:
     vector_2 __movement;
 
 public:
-    mouse(window& window_context) : input(window_context)
+    mouse(class window& window) : input(window)
     {
         __scan.fill(false);
         __down.fill(false);
@@ -226,10 +226,10 @@ public:
         int dx, dy;
         SDL_GetMouseState(&x, &y);
         SDL_GetRelativeMouseState(&dx, &dy);
-        __position.x() = float(x);
-        __position.y() = float(y);
-        __movement.x() = float(dx);
-        __movement.y() = float(dy);
+        __position.x = float(x);
+        __position.y = float(y);
+        __movement.x = float(dx);
+        __movement.y = float(dy);
     }
 
     mouse(const mouse&) = delete;

@@ -18,26 +18,22 @@ void window::start()
     std::uint32_t flags  = SDL_WINDOW_VULKAN;
     auto          center = SDL_WINDOWPOS_CENTERED;
 
-    __sdl_window =
+    handle =
         SDL_CreateWindow(__title.c_str(), center, center, width, height, flags);
-    if (!__sdl_window) throw sdl_error("Failed to create window");
+    if (!handle) throw sdl_error("Failed to create window");
 }
 void window::stop()
 {
-    if (__sdl_window)
+    if (handle)
     {
-        SDL_DestroyWindow(__sdl_window);
-        __sdl_window = nullptr;
+        SDL_DestroyWindow(handle);
+        handle = nullptr;
     }
     SDL_Quit();
 }
 const std::string& window::title()
 {
     return __title;
-}
-SDL_Window* window::sdl_window()
-{
-    return __sdl_window;
 }
 bool window::closed() const
 {

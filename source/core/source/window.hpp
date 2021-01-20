@@ -11,9 +11,8 @@ namespace p201
 class window
 {
 protected:
-    std::string __title      = std::string();
-    SDL_Window* __sdl_window = nullptr;
-    bool        __closed     = false;
+    std::string __title  = std::string();
+    bool        __closed = false;
 
 public:
     static constexpr int width  = 1366;
@@ -21,6 +20,9 @@ public:
 
     keyboard keyboard;
     mouse    mouse;
+
+    handle_types::window* handle = nullptr;
+
     window(const std::string&);
     ~window();
 
@@ -28,7 +30,6 @@ public:
     void stop();
 
     const std::string& title();
-    SDL_Window*        sdl_window();
     bool               closed() const;
 
     void update();

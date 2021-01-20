@@ -57,6 +57,8 @@
 #    include <unistd.h>
 #endif
 
+#define P201_EVAL_DISCARD(statement) ((void)statement)
+
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
 #include <SDL_image.h>
@@ -67,9 +69,9 @@
 namespace p201
 {
 #if defined(P201_DEBUG)
-static constexpr bool debug = true;
+static constexpr bool __debug__ = true;
 #else
-static constexpr bool debug = false;
+static constexpr bool __debug__ = false;
 #endif
 } // namespace p201
 

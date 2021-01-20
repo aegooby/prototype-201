@@ -24,26 +24,26 @@ void xml::load_entity(class entity& entity, const std::string& name)
         {
             case components::render::flag:
             {
-                auto& render      = entity.add_component<components::render>();
-                render.family     = component.get<std::string>("family");
-                render.visible    = component.get<bool>("visible");
-                render.iso        = component.get<bool>("iso");
-                render.camera     = component.get<bool>("camera");
-                render.rect.w     = component.get<float>("rect.w");
-                render.rect.h     = component.get<float>("rect.h");
-                render.srcrect.w  = render.rect.w;
-                render.srcrect.h  = render.rect.h;
-                render.offset.x() = component.get<float>("offset.x");
-                render.offset.y() = component.get<float>("offset.y");
+                auto& render     = entity.add_component<components::render>();
+                render.family    = component.get<std::string>("family");
+                render.visible   = component.get<bool>("visible");
+                render.iso       = component.get<bool>("iso");
+                render.camera    = component.get<bool>("camera");
+                render.rect.w    = component.get<float>("rect.w");
+                render.rect.h    = component.get<float>("rect.h");
+                render.srcrect.w = render.rect.w;
+                render.srcrect.h = render.rect.h;
+                render.offset.x  = component.get<float>("offset.x");
+                render.offset.y  = component.get<float>("offset.y");
                 break;
             }
             case components::transform::flag:
             {
                 auto& transform = entity.add_component<components::transform>();
-                transform.position.x() = component.get<float>("position.x");
-                transform.position.y() = component.get<float>("position.y");
-                transform.position.z() = component.get<float>("position.z");
-                transform.lerp         = transform.position;
+                transform.position.x = component.get<float>("position.x");
+                transform.position.y = component.get<float>("position.y");
+                transform.position.z = component.get<float>("position.z");
+                transform.lerp       = transform.position;
                 break;
             }
             case components::physics::flag:
@@ -147,9 +147,8 @@ void xml::load_entity(class entity& entity, const std::string& name)
             if (entity.flag.test(components::character::flag))
             {
                 auto& character = entity.component<components::character>();
-                character.controller->setFootPosition(px::vector_3ext(
-                    transform.position.x(), transform.position.y(),
-                    transform.position.z()));
+                character.controller->setFootPosition(
+                    convert_ext(transform.position));
             }
             else
             {

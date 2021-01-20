@@ -19,9 +19,9 @@ namespace p201
 class entity
 {
 protected:
-    /*** CONTEXT OBJECTS ***/
+    /* CONTEXT OBJECTS */
     class world& world;
-    /*** HELPER FUNCTIONS ***/
+    /* HELPER FUNCTIONS */
     [[nodiscard]] std::unique_ptr<component>& __component(std::type_index);
     void __add_component(std::unique_ptr<struct component>&&, std::type_index,
                          std::size_t);

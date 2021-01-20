@@ -51,7 +51,7 @@ public:
     }
 };
 
-/** @todo Finish */
+/** @todo Finish. */
 class callback : public PxSimulationEventCallback
 {
 private:
@@ -137,7 +137,7 @@ public:
         main = sdk.main->createScene(desc);
         if (!main) throw std::runtime_error("Failed to initialize PhysX scene");
 
-        if constexpr (debug)
+        if constexpr (__debug__)
         {
             using vparam = PxVisualizationParameter;
             main->setVisualizationParameter(vparam::eSCALE, 1.0f);

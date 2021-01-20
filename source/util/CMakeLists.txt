@@ -19,7 +19,7 @@ file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.hpp)
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
 
 ### Dependencies ###
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(GLM REQUIRED)
 
 ### Library ###
 add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
@@ -28,4 +28,4 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 ### Link ###
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen p201-common p201-physx)
+target_link_libraries(${PROJECT_NAME} PUBLIC glm::glm p201-common p201-physx)

@@ -12,8 +12,11 @@ engine::engine()
       world(window, keyboard, mouse)
 {
     window.start();
-    vulkan.create_instance(window.sdl_window());
-    vulkan.create_surface(window.sdl_window());
+    vulkan.create_instance(window.handle);
+    vulkan.create_surface(window.handle);
+    vulkan.create_device();
+    vulkan.create_swapchain(window.handle);
+    vulkan.create_pipeline();
     for (auto& system : world.systems) system.second->start();
 
     world.serializer.directory = "assets/entities";

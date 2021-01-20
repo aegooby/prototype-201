@@ -19,7 +19,7 @@ void combat::update(float dt)
     {
         auto& entity = world.entity(id);
         auto& health = entity.component<components::health>();
-        /** @todo Add HUD system */
+        /** @todo Add HUD system. */
         if (entity.flag.test(components::hud::flag))
         {
             const auto hpfactor = health.hp / health.max_hp;
@@ -32,7 +32,7 @@ void combat::update(float dt)
 
 void combat::on_attack_event(events::attack& event)
 {
-    /** @todo Implement */
+    /** @todo Implement. */
     (void)event;
 }
 } // namespace systems

@@ -32,50 +32,31 @@ add_custom_command(
 )
 
 ### CMake modules ###
-set(${PROJECT_NAME}_CMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake")
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-
-### Dependencies ###
-find_package(Boost REQUIRED)
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-find_package(Vulkan REQUIRED)
-
-### SDL2 ###
-include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2.cmake)
-include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_image.cmake)
-include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_ttf.cmake)
-include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_mixer.cmake)
-include(${${PROJECT_NAME}_CMAKE_DIR}/FindSDL2_gfx.cmake)
+set(P201_CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 ### PhysX ###
-set(PHYSX_SUBMODULE_DIR "${CMAKE_SOURCE_DIR}/PhysX")
+set(PHYSX_SUBMODULE_DIR ${CMAKE_SOURCE_DIR}/PhysX)
 include(${PHYSX_SUBMODULE_DIR}/ConfigPhysX.cmake)
 add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
+include_directories(${PHYSX_ROOT_DIR}/include ${PXSHARED_PATH}/include)
+target_link_libraries(${PROJECT_NAME} ${PHYSX_LIBRARIES})
 
-### Include ###
-include_directories(
-    ${SDL2_INCLUDE_DIRS}
-    ${SDL2_IMAGE_INCLUDE_DIRS}
-    ${SDL2_TTF_INCLIDE_DIRS}
-    ${SDL2_MIXER_INCLUDE_DIRS}
-    ${SDL2_GFX_INCLIDE_DIRS}
-    ${PHYSX_ROOT_DIR}/include
-    ${PHYSX_ROOT_DIR}/../pxshared/include/
-)
-
-### Link ###
-target_link_libraries(
-    ${PROJECT_NAME}
-    Eigen3::Eigen
-    Boost::headers
-    Vulkan::Vulkan
-    ${SDL2_LIBRARIES}
-    ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES}
-    ${SDL2_MIXER_LIBRARIES}
-    ${SDL2_GFX_LIBRARIES}
-    ${PHYSX_LIBRARIES}
-)
+### SDL2 ###
+include(${P201_CMAKE_MODULE_PATH}/FindSDL2.cmake)
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
+include(${P201_CMAKE_MODULE_PATH}/FindSDL2_image.cmake)
+include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${SDL2_IMAGE_LIBRARIES})
+include(${P201_CMAKE_MODULE_PATH}/FindSDL2_ttf.cmake)
+include_directories(${SDL2_TTF_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${SDL2_TTF_LIBRARIES})
+include(${P201_CMAKE_MODULE_PATH}/FindSDL2_mixer.cmake)
+include_directories(${SDL2_MIXER_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${SDL2_MIXER_LIBRARIES})
+include(${P201_CMAKE_MODULE_PATH}/FindSDL2_gfx.cmake)
+include_directories(${SDL2_GFX_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${SDL2_GFX_LIBRARIES})
 
 add_subdirectory(${P201_LIBRARIES_DIR}/common p201-common)
 add_subdirectory(${P201_LIBRARIES_DIR}/asset p201-asset)

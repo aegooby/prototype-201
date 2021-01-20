@@ -11,6 +11,7 @@ namespace p201
 {
 namespace serialize
 {
+/** @todo Phase out Boost for PugiXML. */
 class xml
 {
 private:

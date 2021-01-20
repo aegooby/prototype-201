@@ -35,7 +35,7 @@ struct character : public component
             px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
         desc.radius = physics.shape_params.capsule.r;
         desc.height = physics.shape_params.capsule.hh * 2.0f;
-        /** @todo Temporary values */
+        /** @todo Temporary values. */
         desc.stepOffset  = 0.01f;
         desc.density     = physics.density;
         desc.material    = material;

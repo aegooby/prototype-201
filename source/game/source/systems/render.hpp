@@ -10,7 +10,23 @@
 #include <unordered_map>
 #include <util.hpp>
 
-#define P201_ISO_23 1.0f, 1.0f, 0.0f, -0.5f, 0.5f, -1.0f
+/* clang-format off */
+/** @note This is stored in column-major order */
+static constexpr float __iso_mat_array[6] = 
+{ 
+    /* Column 1 */
+    1.0f, 
+    -0.5f, 
+    
+    /* Column 2 */
+    1.0f, 
+    0.5f, 
+    
+    /* Column 3 */
+    0.0f, 
+    -1.0f 
+};
+/* clang-format on */
 
 namespace p201
 {
@@ -22,10 +38,9 @@ public:
     using __base = system;
 
 protected:
-    SDL_Renderer*   __sdl_renderer = nullptr;
-    const matrix_23 iso_23 = (matrix_23() << P201_ISO_23).finished() / sqrt_2;
-    /** @brief How many times do I have to tell you
-       to read the name retard? */
+    handle_types::renderer* handle  = nullptr;
+    const matrix_32   iso_mat = glm::make_mat3x2(__iso_mat_array) / sqrt_2;
+    /** @brief How many times do I have to tell you to read the name retard? */
     camera camera;
 
 private:

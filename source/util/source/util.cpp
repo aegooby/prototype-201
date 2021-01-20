@@ -3,6 +3,8 @@
 
 #include "linalg.hpp"
 
+#include <sstream>
+
 namespace p201
 {
 namespace util
@@ -15,8 +17,8 @@ SDL_FRect rect(const vector_2& center, float width, float height)
 {
     SDL_FRect rect = { .w = width, .h = height };
 
-    rect.x = center.x() - width / 2.0f;
-    rect.y = center.y() - height / 2.0f;
+    rect.x = center.x - width / 2.0f;
+    rect.y = center.y - height / 2.0f;
     return rect;
 }
 void sleep(std::size_t ms)
@@ -43,6 +45,19 @@ std::string to_string(std::thread::id id)
     str << termcolor::colorize << termcolor::bold << termcolor::cyan
         << "<thread " << id << ">" << termcolor::reset;
     return str.str();
+}
+std::string to_string(const vector_2& vector)
+{
+    std::string str = "(" + std::to_string(vector.x);
+    str += ", " + std::to_string(vector.y) + ")";
+    return str;
+}
+std::string to_string(const vector_3& vector)
+{
+    std::string str = "(" + std::to_string(vector.x);
+    str += ", " + std::to_string(vector.y);
+    str += ", " + std::to_string(vector.z) + ")";
+    return str;
 }
 } // namespace util
 } // namespace p201

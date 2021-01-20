@@ -85,7 +85,17 @@
         "valarray": "cpp",
         "__functional_base_03": "cpp",
         "*.ipp": "cpp",
-        "compare": "cpp"
+        "compare": "cpp",
+        "clocale": "cpp",
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "concepts": "cpp",
+        "memory_resource": "cpp",
+        "ranges": "cpp",
+        "stop_token": "cpp",
+        "cinttypes": "cpp",
+        "cfenv": "cpp",
+        "shared_mutex": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

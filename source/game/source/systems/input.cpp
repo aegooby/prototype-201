@@ -63,6 +63,7 @@ void input::update(float dt)
         if (keyboard.scan(keycode::S, keycode::D))
             transform.direction = components::transform::south_east;
 
+        auto speed = glm::length(character.velocity);
         switch (transform.direction)
         {
             case components::transform::north:
@@ -70,19 +71,19 @@ void input::update(float dt)
             case components::transform::south:
                 break;
             case components::transform::east:
-                if (character.velocity.norm() > 1.0f)
+                if (speed > 1.0f)
                     animation_event("walk-east");
                 else
                     animation_event("stand-east");
                 break;
             case components::transform::west:
-                if (character.velocity.norm() > 1.0f)
+                if (speed > 1.0f)
                     animation_event("walk-west");
                 else
                     animation_event("stand-west");
                 break;
             case components::transform::north_east:
-                if (character.velocity.norm() > 1.0f)
+                if (speed > 1.0f)
                     animation_event("walk-north-east");
                 else
                     animation_event("stand-north-east");

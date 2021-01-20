@@ -21,7 +21,7 @@ protected:
 public:
     combat(class world& world) : __base(world)
     {
-        /** @todo Revise this shit */
+        /** @todo Revise this shit. */
         flag.set(components::character::flag);
         flag.set(components::physics::flag);
         flag.set(components::health::flag);

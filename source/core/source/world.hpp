@@ -15,7 +15,7 @@ namespace p201
 class world
 {
 public:
-    /*** CONTEXT OBJECTS ***/
+    /* CONTEXT OBJECTS */
     /** @brief Contains SDL window and window data. */
     class window& window;
     /** @brief State storage for keyboard inputs. */
@@ -23,11 +23,11 @@ public:
     /** @brief State storage for mouse inputs. */
     class mouse& mouse;
 
-    /*** PHYSX ***/
+    /* PHYSX */
     /** @brief Scene used to manage PhysX actors. */
     px::scene scene;
 
-    /*** GLOBAL OBJECTS ***/
+    /* GLOBAL OBJECTS */
     /** @brief Table of systems (type of system is the key). */
     std::unordered_map<std::type_index, std::unique_ptr<system>> systems;
     /** @brief Handles events and forwards them to the relevant systems. */
@@ -41,7 +41,7 @@ public:
 
 protected:
     using cmptr_t = std::unique_ptr<components::manager>;
-    /*** INTERNAL OBJECTS ***/
+    /* INTERNAL OBJECTS */
     /** @brief It's in the name retard. */
     entities::manager entity_manager;
     /** @brief Table of component managers (type of component is the key). */

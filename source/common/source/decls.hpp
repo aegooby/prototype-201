@@ -17,4 +17,10 @@ class world;
 class system;
 class entity_manager;
 
+namespace handle_types
+{
+using renderer = SDL_Renderer;
+using window   = SDL_Window;
+} // namespace handle_types
+
 } // namespace p201
