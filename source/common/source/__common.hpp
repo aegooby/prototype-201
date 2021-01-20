@@ -21,7 +21,7 @@
 #    elif __cplusplus <= 202002L
 #        define P201_CPP_VER 20
 #    else
-#        define P201_CPP_VER 0
+#        error Unknown C++ version
 #    endif
 #else
 #    error Not C++
@@ -64,7 +64,6 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <cstdint>
-#include <iostream>
 
 namespace p201
 {
@@ -73,6 +72,9 @@ static constexpr bool __debug__ = true;
 #else
 static constexpr bool __debug__ = false;
 #endif
+
+void __print_header__();
+
 } // namespace p201
 
 #include "decls.hpp"

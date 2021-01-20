@@ -1,7 +1,6 @@
 
 #include <__common.hpp>
 #include <core.hpp>
-#include <filesystem>
 
 #if defined(main)
 #    undef main
@@ -10,17 +9,7 @@
 int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
     p201::engine engine;
-    if constexpr (p201::__debug__)
-    {
-        std::cout << termcolor::bold << "IT'S PROTOTYPE 201 BITCH"
-                  << termcolor::reset << std::endl;
-        std::cout << " * C++ version: "
-                  << (P201_CPP_VER ? "C++" + std::to_string(P201_CPP_VER)
-                                   : "UNKNOWN")
-                  << std::endl;
-        std::cout << " * Working directory: " << std::filesystem::current_path()
-                  << std::endl;
-    }
+    if constexpr (p201::__debug__) { p201::__print_header__(); }
     engine.start();
 
     return 0;
