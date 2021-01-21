@@ -19,13 +19,17 @@ private:
     vk::Extent2D                 extent;
 
     /* SHADER */
-    static constexpr auto shader_infer   = shaderc_glsl_infer_from_source;
-    static constexpr auto shader_success = shaderc_compilation_status_success;
+    using shader_kind                     = shaderc_shader_kind;
+    static constexpr auto shader_infer    = shaderc_glsl_infer_from_source;
+    static constexpr auto shader_vertex   = shaderc_glsl_vertex_shader;
+    static constexpr auto shader_fragment = shaderc_glsl_fragment_shader;
+    static constexpr auto shader_success  = shaderc_compilation_status_success;
 
 protected:
     /* SHADER */
-    shaderc::Compiler                    spirv;
-    [[nodiscard]] vk::UniqueShaderModule create_shader(const std::string&);
+    shaderc::Compiler spirv;
+
+    [[nodiscard]] vk::UniqueShaderModule create_shader(const std::string&, shader_kind);
 
 public:
     /**

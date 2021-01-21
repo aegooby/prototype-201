@@ -5,12 +5,15 @@
 #include <__common.hpp>
 #include <algorithm>
 #include <exception>
+#include <fstream>
 
 namespace p201
 {
-vk::UniqueShaderModule vulkan::create_shader(const std::string& shader)
+vk::UniqueShaderModule vulkan::create_shader(const std::string& shader,
+                                             shader_kind        kind)
 {
-    auto result = spirv.CompileGlslToSpv(shader, shader_infer, "");
+    std::cout << shader << std::endl;
+    auto result = spirv.CompileGlslToSpv(shader, kind, "");
     if (result.GetCompilationStatus() != shader_success)
         throw std::runtime_error(result.GetErrorMessage());
     auto bytecode = std::vector<std::uint32_t>(result.cbegin(), result.cend());
@@ -176,13 +179,19 @@ void vulkan::create_swapchain(handle_types::window* window)
 }
 void vulkan::create_pipeline()
 {
-    auto v_shader = create_shader("");
+    auto              v_file = std::fstream("assets/shaders/vertex.vert");
+    std::stringstream v_stream;
+    v_stream << v_file.rdbuf();
+    auto v_shader = create_shader(v_stream.str(), shader_vertex);
     auto v_info   = vk::PipelineShaderStageCreateInfo();
     v_info.setStage(vk::ShaderStageFlagBits::eVertex);
     v_info.setModule(*v_shader);
     v_info.setPName("main");
 
-    auto f_shader = create_shader("");
+    auto              f_file = std::fstream("assets/shaders/fragment.frag");
+    std::stringstream f_stream;
+    f_stream << f_file.rdbuf();
+    auto f_shader = create_shader(f_stream.str(), shader_fragment);
     auto f_info   = vk::PipelineShaderStageCreateInfo();
     f_info.setStage(vk::ShaderStageFlagBits::eFragment);
     f_info.setModule(*f_shader);
