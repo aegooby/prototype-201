@@ -57,7 +57,8 @@ public:
     vk::UniqueSwapchainKHR swapchain;
     /** @brief Views into the buffers in the swapchain. */
     std::vector<vk::UniqueImageView> image_views;
-    vk::UniquePipelineLayout         pipeline_layout;
+    /** @brief Allows passing dynamic values into shaders. */
+    vk::UniquePipelineLayout pipeline_layout;
 
     vulkan()  = default;
     ~vulkan() = default;
