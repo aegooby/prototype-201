@@ -17,6 +17,7 @@ engine::engine()
     vulkan.create_device();
     vulkan.create_swapchain(window.handle);
     vulkan.create_pipeline();
+
     for (auto& system : world.systems) system.second->start();
 
     world.serializer.directory = "assets/entities";

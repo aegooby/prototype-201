@@ -53,3 +53,8 @@ compile_commands.json
 # Server
 *.pem
 .ftpconfig
+
+# Docs
+docs/markdown
+docs/xml
+docs/html

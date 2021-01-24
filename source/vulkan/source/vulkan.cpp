@@ -304,13 +304,13 @@ void vulkan::create_pipeline()
     pipeline_info.setPStages(stage_infos.data());
     pipeline_info.setPVertexInputState(&v_input_info);
     pipeline_info.setPInputAssemblyState(&input_asm_info);
-    // pipeline_info.setPTessellationState(nullptr);
+    pipeline_info.setPTessellationState(nullptr);
     pipeline_info.setPViewportState(&viewport_info);
     pipeline_info.setPRasterizationState(&raster_info);
     pipeline_info.setPMultisampleState(&multisampling_info);
-    // pipeline_info.setPDepthStencilState(nullptr);
+    pipeline_info.setPDepthStencilState(nullptr);
     pipeline_info.setPColorBlendState(&color_blend);
-    // pipeline_info.setPDynamicState(nullptr);
+    pipeline_info.setPDynamicState(nullptr);
     pipeline_info.setLayout(*pipeline_layout);
     pipeline_info.setRenderPass(*render_pass);
 

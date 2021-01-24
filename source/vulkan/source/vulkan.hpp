@@ -61,16 +61,32 @@ public:
      * @see vulkan::create_swapchain()
      */
     vk::UniqueSwapchainKHR swapchain;
-    /** @brief Views into the buffers in the swapchain. */
+    /**
+     * @brief Views into the buffers in the swapchain.
+     */
     std::vector<vk::UniqueImageView> image_views;
-    
-    std::vector<std::uint32_t>       f_bytecode;
-    /** @brief Allows passing dynamic values into shaders. */
+    /**
+     * @brief Allows passing dynamic values into shaders.
+     */
     vk::UniquePipelineLayout pipeline_layout;
-    vk::UniqueSemaphore      image_available;
-    vk::UniqueSemaphore      render_finished;
-    vk::UniqueRenderPass     render_pass;
-    vk::UniquePipeline       pipeline;
+    /**
+     * @brief Indicates that the image view buffer is ready to be drawn on.
+     */
+    vk::UniqueSemaphore image_available;
+    /**
+     * @brief Indicates that rendering is done.
+     */
+    vk::UniqueSemaphore render_finished;
+    /**
+     * @brief Render pass used in graphics pipeline.
+     * @see vulkan::create_pipeline()
+     */
+    vk::UniqueRenderPass render_pass;
+    /**
+     * @brief Graphics pipeline.
+     * @see vulkan::create_pipeline()
+     */
+    vk::UniquePipeline pipeline;
 
     vulkan()  = default;
     ~vulkan() = default;
