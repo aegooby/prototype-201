@@ -1,7 +1,7 @@
 
 #include "vulkan.hpp"
 
-#include <SDL_vulkan.h>
+#include <SDL2/SDL_vulkan.h>
 #include <__common.hpp>
 #include <algorithm>
 #include <exception>
@@ -251,5 +251,65 @@ void vulkan::create_pipeline()
     color_blend.setPAttachments(&color_blend_attach);
 
     pipeline_layout = device->createPipelineLayoutUnique({}, nullptr);
+
+    auto color_attachment = vk::AttachmentDescription();
+    color_attachment.setFormat(format);
+    color_attachment.setSamples(vk::SampleCountFlagBits::e1);
+    color_attachment.setLoadOp(vk::AttachmentLoadOp::eClear);
+    color_attachment.setStoreOp(vk::AttachmentStoreOp::eStore);
+    color_attachment.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
+
+    auto color_attachment_ref = vk::AttachmentReference();
+    color_attachment_ref.setAttachment(0);
+    color_attachment_ref.setLayout(vk::ImageLayout::eColorAttachmentOptimal);
+
+    auto subpass = vk::SubpassDescription();
+    subpass.setPipelineBindPoint(vk::PipelineBindPoint::eGraphics);
+    subpass.setInputAttachmentCount(0);
+    subpass.setPInputAttachments(nullptr);
+    subpass.setColorAttachmentCount(1);
+    subpass.setPColorAttachments(&color_attachment_ref);
+
+    auto semaphore_info = vk::SemaphoreCreateInfo();
+    image_available     = device->createSemaphoreUnique(semaphore_info);
+    render_finished     = device->createSemaphoreUnique(semaphore_info);
+
+    auto subpass_dependency = vk::SubpassDependency();
+    subpass_dependency.setSrcSubpass(VK_SUBPASS_EXTERNAL);
+    subpass_dependency.setDstSubpass(0);
+    auto stage_mask = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+    subpass_dependency.setSrcStageMask(stage_mask);
+    subpass_dependency.setDstStageMask(stage_mask);
+    auto access_mask = vk::AccessFlagBits::eColorAttachmentRead |
+                       vk::AccessFlagBits::eColorAttachmentWrite;
+    subpass_dependency.setDstAccessMask(access_mask);
+
+    auto render_pass_info = vk::RenderPassCreateInfo();
+    render_pass_info.setAttachmentCount(1);
+    render_pass_info.setPAttachments(&color_attachment);
+    render_pass_info.setSubpassCount(1);
+    render_pass_info.setPSubpasses(&subpass);
+    render_pass_info.setDependencyCount(1);
+    render_pass_info.setPDependencies(&subpass_dependency);
+
+    render_pass = device->createRenderPassUnique(render_pass_info);
+
+    auto pipeline_info = vk::GraphicsPipelineCreateInfo();
+    pipeline_info.setStageCount(2);
+    pipeline_info.setPStages(stage_infos.data());
+    pipeline_info.setPVertexInputState(&v_input_info);
+    pipeline_info.setPInputAssemblyState(&input_asm_info);
+    pipeline_info.setPTessellationState(nullptr);
+    pipeline_info.setPViewportState(&viewport_info);
+    pipeline_info.setPRasterizationState(&raster_info);
+    pipeline_info.setPMultisampleState(&multisampling_info);
+    pipeline_info.setPDepthStencilState(nullptr);
+    pipeline_info.setPColorBlendState(&color_blend);
+    pipeline_info.setPDynamicState(nullptr);
+    pipeline_info.setLayout(*pipeline_layout);
+    pipeline_info.setRenderPass(*render_pass);
+
+    /** @todo Broken. */
+    // pipeline = device->createGraphicsPipelineUnique({}, pipeline_info);
 }
 } // namespace p201

@@ -59,10 +59,9 @@
 
 #define P201_EVAL_DISCARD(statement) ((void)statement)
 
-#include <SDL.h>
-#include <SDL2_gfxPrimitives.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
+#include <SDL2/SDL_image.h>
 #include <cstdint>
 
 namespace p201

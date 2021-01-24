@@ -29,7 +29,8 @@ protected:
     /* SHADER */
     shaderc::Compiler spirv;
 
-    [[nodiscard]] vk::UniqueShaderModule create_shader(const std::string&, shader_kind);
+    [[nodiscard]] vk::UniqueShaderModule create_shader(const std::string&,
+                                                       shader_kind);
 
 public:
     /**
@@ -63,6 +64,10 @@ public:
     std::vector<vk::UniqueImageView> image_views;
     /** @brief Allows passing dynamic values into shaders. */
     vk::UniquePipelineLayout pipeline_layout;
+    vk::UniqueSemaphore      image_available;
+    vk::UniqueSemaphore      render_finished;
+    vk::UniqueRenderPass     render_pass;
+    vk::UniquePipeline       pipeline;
 
     vulkan()  = default;
     ~vulkan() = default;

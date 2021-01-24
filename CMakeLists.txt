@@ -1,6 +1,9 @@
 
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
+### VCpkg ###
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "")
+
 project(prototype-201)
 set(P201_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/source)
 
@@ -40,23 +43,6 @@ include(${PHYSX_SUBMODULE_DIR}/ConfigPhysX.cmake)
 add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
 include_directories(${PHYSX_ROOT_DIR}/include ${PXSHARED_PATH}/include)
 target_link_libraries(${PROJECT_NAME} ${PHYSX_LIBRARIES})
-
-### SDL2 ###
-include(${P201_CMAKE_MODULE_PATH}/FindSDL2.cmake)
-include_directories(${SDL2_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
-include(${P201_CMAKE_MODULE_PATH}/FindSDL2_image.cmake)
-include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_IMAGE_LIBRARIES})
-include(${P201_CMAKE_MODULE_PATH}/FindSDL2_ttf.cmake)
-include_directories(${SDL2_TTF_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_TTF_LIBRARIES})
-include(${P201_CMAKE_MODULE_PATH}/FindSDL2_mixer.cmake)
-include_directories(${SDL2_MIXER_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_MIXER_LIBRARIES})
-include(${P201_CMAKE_MODULE_PATH}/FindSDL2_gfx.cmake)
-include_directories(${SDL2_GFX_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${SDL2_GFX_LIBRARIES})
 
 add_subdirectory(${P201_LIBRARIES_DIR}/common p201-common)
 add_subdirectory(${P201_LIBRARIES_DIR}/asset p201-asset)
