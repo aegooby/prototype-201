@@ -100,6 +100,8 @@ public:
     void create_device();
     /** @see vulkan::swapchain */
     void create_swapchain(handle_types::window*);
+    /** @see vulkan::framebuffers */
+    void create_framebuffers();
 
     /* PIPELINE */
     void create_pipeline();

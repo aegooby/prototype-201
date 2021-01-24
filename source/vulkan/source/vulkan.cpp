@@ -317,4 +317,5 @@ void vulkan::create_pipeline()
     /** @todo Broken. */
     pipeline = device->createGraphicsPipelineUnique({}, pipeline_info);
 }
+void vulkan::create_framebuffers() { }
 } // namespace p201
