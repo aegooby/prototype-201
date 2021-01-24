@@ -9,19 +9,19 @@
 
 namespace p201
 {
-vk::UniqueShaderModule vulkan::create_shader(const std::string& shader,
-                                             shader_kind        kind)
+vk::ShaderModuleCreateInfo
+vulkan::create_shader(const std::string& shader, shader_kind kind,
+                      std::vector<std::uint32_t>& bytecode)
 {
-    std::cout << shader << std::endl;
     auto result = spirv.CompileGlslToSpv(shader, kind, "");
     if (result.GetCompilationStatus() != shader_success)
         throw std::runtime_error(result.GetErrorMessage());
-    auto bytecode = std::vector<std::uint32_t>(result.cbegin(), result.cend());
+    bytecode = std::vector<std::uint32_t>(result.cbegin(), result.cend());
 
     auto info = vk::ShaderModuleCreateInfo();
     info.setCodeSize(bytecode.size() * sizeof(std::uint32_t));
     info.setPCode(bytecode.data());
-    return device->createShaderModuleUnique(info);
+    return info;
 }
 void vulkan::create_instance(handle_types::window* window)
 {
@@ -182,24 +182,28 @@ void vulkan::create_pipeline()
     auto              v_file = std::fstream("assets/shaders/vertex.vert");
     std::stringstream v_stream;
     v_stream << v_file.rdbuf();
-    auto v_shader = create_shader(v_stream.str(), shader_vertex);
-    auto v_info   = vk::PipelineShaderStageCreateInfo();
-    v_info.setStage(vk::ShaderStageFlagBits::eVertex);
-    v_info.setModule(*v_shader);
-    v_info.setPName("main");
+    std::vector<std::uint32_t> v_bytecode;
+    auto v_info   = create_shader(v_stream.str(), shader_vertex, v_bytecode);
+    auto v_shader = device->createShaderModuleUnique(v_info);
+    auto v_stage_info = vk::PipelineShaderStageCreateInfo();
+    v_stage_info.setStage(vk::ShaderStageFlagBits::eVertex);
+    v_stage_info.setModule(*v_shader);
+    v_stage_info.setPName("main");
 
     auto              f_file = std::fstream("assets/shaders/fragment.frag");
     std::stringstream f_stream;
     f_stream << f_file.rdbuf();
-    auto f_shader = create_shader(f_stream.str(), shader_fragment);
-    auto f_info   = vk::PipelineShaderStageCreateInfo();
-    f_info.setStage(vk::ShaderStageFlagBits::eFragment);
-    f_info.setModule(*f_shader);
-    f_info.setPName("main");
+    std::vector<std::uint32_t> f_bytecode;
+    auto f_info   = create_shader(f_stream.str(), shader_fragment, f_bytecode);
+    auto f_shader = device->createShaderModuleUnique(f_info);
+    auto f_stage_info = vk::PipelineShaderStageCreateInfo();
+    f_stage_info.setStage(vk::ShaderStageFlagBits::eFragment);
+    f_stage_info.setModule(*f_shader);
+    f_stage_info.setPName("main");
 
     auto stage_infos = std::vector<vk::PipelineShaderStageCreateInfo>();
-    stage_infos.emplace_back(v_info);
-    stage_infos.emplace_back(f_info);
+    stage_infos.emplace_back(v_stage_info);
+    stage_infos.emplace_back(f_stage_info);
 
     auto v_input_info = vk::PipelineVertexInputStateCreateInfo();
     v_input_info.setVertexBindingDescriptionCount(0);
@@ -226,6 +230,7 @@ void vulkan::create_pipeline()
     raster_info.setDepthClampEnable(false);
     raster_info.setRasterizerDiscardEnable(false);
     raster_info.setPolygonMode(vk::PolygonMode::eFill);
+    raster_info.setCullMode(vk::CullModeFlagBits::eBack);
     raster_info.setFrontFace(vk::FrontFace::eCounterClockwise);
     raster_info.setLineWidth(1.0f);
 
@@ -299,17 +304,17 @@ void vulkan::create_pipeline()
     pipeline_info.setPStages(stage_infos.data());
     pipeline_info.setPVertexInputState(&v_input_info);
     pipeline_info.setPInputAssemblyState(&input_asm_info);
-    pipeline_info.setPTessellationState(nullptr);
+    // pipeline_info.setPTessellationState(nullptr);
     pipeline_info.setPViewportState(&viewport_info);
     pipeline_info.setPRasterizationState(&raster_info);
     pipeline_info.setPMultisampleState(&multisampling_info);
-    pipeline_info.setPDepthStencilState(nullptr);
+    // pipeline_info.setPDepthStencilState(nullptr);
     pipeline_info.setPColorBlendState(&color_blend);
-    pipeline_info.setPDynamicState(nullptr);
+    // pipeline_info.setPDynamicState(nullptr);
     pipeline_info.setLayout(*pipeline_layout);
     pipeline_info.setRenderPass(*render_pass);
 
     /** @todo Broken. */
-    // pipeline = device->createGraphicsPipelineUnique({}, pipeline_info);
+    pipeline = device->createGraphicsPipelineUnique({}, pipeline_info);
 }
 } // namespace p201

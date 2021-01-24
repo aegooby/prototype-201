@@ -29,8 +29,9 @@ protected:
     /* SHADER */
     shaderc::Compiler spirv;
 
-    [[nodiscard]] vk::UniqueShaderModule create_shader(const std::string&,
-                                                       shader_kind);
+    [[nodiscard]] vk::ShaderModuleCreateInfo
+    create_shader(const std::string&, shader_kind,
+                  std::vector<std::uint32_t>& bytecode);
 
 public:
     /**
@@ -62,6 +63,8 @@ public:
     vk::UniqueSwapchainKHR swapchain;
     /** @brief Views into the buffers in the swapchain. */
     std::vector<vk::UniqueImageView> image_views;
+    
+    std::vector<std::uint32_t>       f_bytecode;
     /** @brief Allows passing dynamic values into shaders. */
     vk::UniquePipelineLayout pipeline_layout;
     vk::UniqueSemaphore      image_available;
