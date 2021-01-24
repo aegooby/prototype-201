@@ -14,7 +14,7 @@ struct input : public component
 
     static constexpr std::size_t flag = 5;
 
-    input(std::size_t entity) : __base(entity) { }
+    input(entity::id_t entity) : __base(entity) { }
     virtual ~input() override = default;
 };
 } // namespace components

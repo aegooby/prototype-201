@@ -1,5 +1,8 @@
 
 #pragma once
+
+#include "../entity.hpp"
+
 #include <__common.hpp>
 #include <bitset>
 #include <memory>
@@ -12,11 +15,10 @@ namespace p201
 struct component
 {
     static constexpr std::size_t flag      = 0;
-    static constexpr std::size_t flag_bits = 32;
 
-    std::size_t entity;
+    entity::id_t entity;
 
-    component(std::size_t entity);
+    component(entity::id_t entity);
     virtual ~component() = 0;
 
     component(const component&) = delete;

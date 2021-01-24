@@ -1,6 +1,7 @@
 
 #pragma once
 #include "../component.hpp"
+#include "../entity.hpp"
 
 #include <__common.hpp>
 #include <bitset>
@@ -15,7 +16,7 @@ class system
 {
 public:
     /** @brief The flag bitset associated with this system instance. */
-    std::bitset<component::flag_bits> flag;
+    std::bitset<entity::flag_bits> flag;
 
 protected:
     class world& world;
@@ -30,8 +31,8 @@ public:
     /** @brief Called periodically to update registered entities. */
     virtual void update([[maybe_unused]] float dt);
 
-    virtual void register_entity(std::size_t);
-    virtual void deregister_entity(std::size_t);
+    virtual void register_entity(entity::id_t);
+    virtual void deregister_entity(entity::id_t);
 
     system(const system&) = delete;
     system(system&&)      = delete;

@@ -1,6 +1,5 @@
 
 #pragma once
-#include "../component.hpp"
 
 #include <__common.hpp>
 #include <typeindex>
@@ -28,31 +27,22 @@ protected:
     void __remove_component(std::type_index, std::size_t);
 
 public:
-    /** @brief Stores flag for all entities in the component. */
-    std::bitset<component::flag_bits> flag;
+    using id_t = std::size_t;
+
+    static constexpr std::size_t flag_bits = 32;
+    /** @brief Stores flag for all components in the entity. */
+    std::bitset<flag_bits> flag;
     /** @brief Used to access entity in the manager. */
-    const std::size_t id;
+    const id_t id;
 
     entity(const std::size_t, class world&);
     ~entity() = default;
     template<typename component_type>
-    [[nodiscard]] component_type& component()
-    {
-        return *static_cast<component_type*>(
-            __component(typeid(component_type)).get());
-    }
+    [[nodiscard]] component_type& component();
     template<typename component_type>
-    component_type& add_component()
-    {
-        __add_component(std::make_unique<component_type>(id),
-                        typeid(component_type), component_type::flag);
-        return component<component_type>();
-    }
+    component_type& add_component();
     template<typename component_type>
-    void remove_component()
-    {
-        __remove_component(typeid(component_type), component_type::flag);
-    }
+    void remove_component();
     bool operator==(const entity&);
 
     entity(const entity&) = delete;

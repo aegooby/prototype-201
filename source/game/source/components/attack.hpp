@@ -18,7 +18,7 @@ struct attack : public component
 
     px::shape* shape = nullptr;
 
-    attack(std::size_t entity) : __base(entity) { }
+    attack(entity::id_t entity) : __base(entity) { }
     virtual ~attack() override = default;
 
     void init([[maybe_unused]] px::scene& scene, character& character)

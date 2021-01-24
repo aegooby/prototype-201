@@ -31,7 +31,7 @@ struct render : public component
     /** @brief The displacement factor of the sprite from its center point. */
     vector_2 offset = vector_2(0.0f, 0.0f);
 
-    render(std::size_t entity) : __base(entity) { }
+    render(entity::id_t entity) : __base(entity) { }
     virtual ~render() override = default;
 };
 } // namespace components

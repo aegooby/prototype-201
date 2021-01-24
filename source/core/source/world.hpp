@@ -53,17 +53,17 @@ public:
     world(class window&, class keyboard&, class mouse&);
     ~world() = default;
     entity& new_entity();
-    void    delete_entity(std::size_t);
+    void    delete_entity(entity::id_t);
     template<typename system_type>
     system_type& system()
     {
         return *static_cast<system_type*>(__system(typeid(system_type)).get());
     }
-    std::unique_ptr<struct component>& component(std::size_t, std::type_index);
-    void    add_component(std::size_t, std::unique_ptr<struct component>&&,
+    std::unique_ptr<struct component>& component(entity::id_t, std::type_index);
+    void    add_component(entity::id_t, std::unique_ptr<struct component>&&,
                           std::type_index, std::size_t);
-    void    remove_component(std::size_t, std::type_index, std::size_t);
-    entity& entity(std::size_t id);
+    void    remove_component(entity::id_t, std::type_index, std::size_t);
+    entity& entity(entity::id_t id);
 
     template<typename type>
     void create_component()

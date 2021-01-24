@@ -14,7 +14,7 @@ struct hud : public component
 
     static constexpr std::size_t flag = 10;
 
-    hud(std::size_t entity) : __base(entity) { }
+    hud(entity::id_t entity) : __base(entity) { }
     virtual ~hud() override = default;
 };
 } // namespace components

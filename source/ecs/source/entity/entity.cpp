@@ -1,14 +1,15 @@
 
 #include "entity.hpp"
 
+#include "../component.hpp"
+
 #include <__common.hpp>
 #include <core.hpp>
 
 namespace p201
 {
 
-entity::entity(const std::size_t id, class world& world) : world(world), id(id)
-{ }
+entity::entity(const id_t id, class world& world) : world(world), id(id) { }
 bool entity::operator==(const entity& other)
 {
     return id == other.id;

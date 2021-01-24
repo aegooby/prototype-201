@@ -31,7 +31,7 @@ struct transform : public component
         south_west = 8,
     } direction = north;
 
-    transform(std::size_t entity) : __base(entity) { }
+    transform(entity::id_t entity) : __base(entity) { }
     virtual ~transform() override = default;
 };
 } // namespace components

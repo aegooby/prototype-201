@@ -13,7 +13,7 @@ namespace entities
 class manager
 {
 public:
-    std::unordered_map<std::size_t, std::unique_ptr<entity>> entities;
+    std::unordered_map<entity::id_t, std::unique_ptr<entity>> entities;
 
 protected:
     std::size_t __entityc = 0;

@@ -16,7 +16,7 @@ struct character : public component
 
     static constexpr std::size_t flag = 4;
 
-    character(std::size_t entity) : __base(entity) { }
+    character(entity::id_t entity) : __base(entity) { }
     virtual ~character() override = default;
 
     px::controller* controller = nullptr;

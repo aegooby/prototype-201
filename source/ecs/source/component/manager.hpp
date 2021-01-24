@@ -1,5 +1,6 @@
 
 #pragma once
+#include "../entity.hpp"
 #include "component.hpp"
 
 #include <__common.hpp>
@@ -24,15 +25,15 @@ public:
     std::vector<std::unique_ptr<component>> components;
 
 protected:
-    std::unordered_map<std::size_t, index_t> __entity_map;
+    std::unordered_map<entity::id_t, index_t> __entity_map;
 
 public:
     virtual ~manager();
-    [[nodiscard]] std::unique_ptr<struct component>& component(std::size_t);
+    [[nodiscard]] std::unique_ptr<struct component>& component(entity::id_t);
     /** @brief Registers a component under the specified entity. */
-    void add_component(std::size_t, std::unique_ptr<struct component>&&);
+    void add_component(entity::id_t, std::unique_ptr<struct component>&&);
     /** @brief Removes the component associated with the manager's type. */
-    void remove_component(std::size_t);
+    void remove_component(entity::id_t);
 };
 
 inline manager::~manager() = default;

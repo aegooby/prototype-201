@@ -47,7 +47,7 @@ struct physics : public component
     px::rigid_actor* actor = nullptr;
     px::shape*       shape = nullptr;
 
-    physics(std::size_t entity) : __base(entity) { }
+    physics(entity::id_t entity) : __base(entity) { }
     virtual ~physics() override = default;
 
     void init(px::scene& scene)

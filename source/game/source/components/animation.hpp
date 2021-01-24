@@ -21,7 +21,7 @@ struct animation : public component
     bool        interrupt = false;
     bool        loop      = true;
 
-    animation(std::size_t entity) : __base(entity) { }
+    animation(entity::id_t entity) : __base(entity) { }
     virtual ~animation() override = default;
 };
 } // namespace components

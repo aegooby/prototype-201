@@ -47,7 +47,7 @@ entity& world::new_entity()
 {
     return entity_manager.new_entity(*this);
 }
-void world::delete_entity(std::size_t id)
+void world::delete_entity(entity::id_t id)
 {
     for (auto& manager : component_managers)
         manager.second->remove_component(id);
@@ -55,17 +55,17 @@ void world::delete_entity(std::size_t id)
     entity_manager.delete_entity(id);
 }
 
-entity& world::entity(std::size_t id)
+entity& world::entity(entity::id_t id)
 {
     return *entity_manager.entities.at(id);
 }
 
 std::unique_ptr<struct component>&
-world::component(std::size_t id, std::type_index component_type)
+world::component(entity::id_t id, std::type_index component_type)
 {
     return component_managers.at(component_type)->component(id);
 }
-void world::add_component(std::size_t                         id,
+void world::add_component(entity::id_t                        id,
                           std::unique_ptr<struct component>&& component,
                           std::type_index component_type, std::size_t flag)
 {
@@ -80,7 +80,7 @@ void world::add_component(std::size_t                         id,
             system.second->register_entity(id);
     }
 }
-void world::remove_component(std::size_t id, std::type_index component_type,
+void world::remove_component(entity::id_t id, std::type_index component_type,
                              std::size_t flag)
 {
     component_managers.at(component_type)->remove_component(id);

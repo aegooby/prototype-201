@@ -14,7 +14,7 @@ struct camera_focus : public component
 
     static constexpr std::size_t flag = 7;
 
-    camera_focus(std::size_t entity) : __base(entity) { }
+    camera_focus(entity::id_t entity) : __base(entity) { }
     virtual ~camera_focus() override = default;
 };
 } // namespace components

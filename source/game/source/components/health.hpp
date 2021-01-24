@@ -19,7 +19,7 @@ struct health : public component
     float shield     = 0.0f;
     float max_shield = 0.0f;
 
-    health(std::size_t entity) : __base(entity) { }
+    health(entity::id_t entity) : __base(entity) { }
     virtual ~health() override = default;
 };
 } // namespace components
