@@ -1,5 +1,7 @@
 
 #pragma once
-#include "source/camera.hpp"
-#include "source/components.hpp"
-#include "source/systems.hpp"
+#include "game/camera.hpp"
+#include "game/components.hpp"
+#include "game/events.hpp"
+#include "game/game.hpp"
+#include "game/systems.hpp"

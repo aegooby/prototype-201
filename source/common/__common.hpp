@@ -1,4 +1,4 @@
 
 #pragma once
-#include "source/__common.hpp"
-#include "source/termcolor.hpp"
+#include "common/__common.hpp"
+#include "common/termcolor.hpp"
