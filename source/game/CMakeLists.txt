@@ -10,8 +10,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ### Source files ###
-file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.hpp)
-file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
+file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
 ### Library ###
 add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
@@ -20,4 +20,4 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 ### Link ###
-target_link_libraries(${PROJECT_NAME} PUBLIC p201-common p201-asset p201-core p201-ecs p201-event p201-input p201-util p201-physx)
+target_link_libraries(${PROJECT_NAME} PUBLIC p201-common p201-engine)
