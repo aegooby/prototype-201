@@ -314,8 +314,20 @@ void vulkan::create_pipeline()
     pipeline_info.setLayout(*pipeline_layout);
     pipeline_info.setRenderPass(*render_pass);
 
-    /** @todo Broken. */
-    pipeline = device->createGraphicsPipelineUnique({}, pipeline_info);
+    pipeline = device->createGraphicsPipelineUnique({}, pipeline_info).value;
 }
-void vulkan::create_framebuffers() { }
+void vulkan::create_framebuffers()
+{
+    for (std::size_t i = 0; i < image_views.size(); ++i)
+    {
+        auto info = vk::FramebufferCreateInfo();
+        info.setRenderPass(*render_pass);
+        info.setAttachmentCount(1);
+        info.setPAttachments(&image_views.at(i).get());
+        info.setWidth(extent.width);
+        info.setHeight(extent.height);
+        info.setLayers(1);
+        framebuffers.emplace_back(device->createFramebufferUnique(info));
+    }
+}
 } // namespace p201

@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
-project(p201-util)
+project(p201-engine)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -17,11 +17,16 @@ file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
 add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
 ### Dependencies ###
-find_package(glm CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE glm)
+## SDL2 ##
+find_package(SDL2 CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2main SDL2::SDL2-static)
+find_package(sdl2-image CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2_image)
+find_package(sdl2-gfx CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2_gfx)
+## PugiXML ##
+find_package(pugixml CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE pugixml pugixml::static pugixml::pugixml)
 
 ### Export ###
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
-### Link ###
-target_link_libraries(${PROJECT_NAME} PUBLIC p201-common p201-physx)

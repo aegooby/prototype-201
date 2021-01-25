@@ -31,6 +31,8 @@ public:
     virtual void start() override;
     virtual void update(float dt) override;
 
+    void init(components::character&, components::physics&);
+
     character(const character&) = delete;
     character(character&&)      = delete;
     character& operator=(const character&) = delete;

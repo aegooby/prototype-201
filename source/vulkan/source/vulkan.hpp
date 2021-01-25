@@ -87,6 +87,16 @@ public:
      * @see vulkan::create_pipeline()
      */
     vk::UniquePipeline pipeline;
+    /**
+     * @brief Frame buffers used in rendering.
+     * @see vulkan::create_framebuffers()
+     */
+    std::vector<vk::UniqueFramebuffer> framebuffers;
+    /**
+     * @brief Command pool. No idea what this does yet.
+     * @see vulkan::create_commandbuffers()
+     */
+    vk::UniqueCommandPool command_pool;
 
     vulkan()  = default;
     ~vulkan() = default;
@@ -100,10 +110,11 @@ public:
     void create_device();
     /** @see vulkan::swapchain */
     void create_swapchain(handle_types::window*);
-    /** @see vulkan::framebuffers */
-    void create_framebuffers();
 
     /* PIPELINE */
+    /** @see vulkan::pipeline */
     void create_pipeline();
+    /** @see vulkan::framebuffers */
+    void create_framebuffers();
 };
 } // namespace p201

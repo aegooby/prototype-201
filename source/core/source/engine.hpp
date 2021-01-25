@@ -6,6 +6,7 @@
 #include <__common.hpp>
 #include <ecs.hpp>
 #include <event.hpp>
+#include <functional>
 #include <input.hpp>
 #include <physx.hpp>
 #include <thread>
@@ -21,7 +22,8 @@ public:
     static constexpr double dt    = 1.0 / 60.0;
     static constexpr bool   vsync = true;
 
-    static inline class px::sdk& sdk = px::sdk;
+private:
+    std::function<void(float)> render_function;
 
 protected:
     vulkan    vulkan;
@@ -29,7 +31,6 @@ protected:
     keyboard& keyboard;
     mouse&    mouse;
     clock     clock;
-    world     world;
 
     bool  __running = false;
     float fps       = 60.0f;
@@ -47,12 +48,17 @@ protected:
     }
 
 public:
+    world world;
+
+public:
     engine();
     ~engine() = default;
     void start();
     void stop();
     void update(float dt);
     void render(float alpha);
+
+    void bind_render_function(const std::function<void(float)>&);
 
     engine(const engine&) = delete;
     engine(engine&&)      = delete;

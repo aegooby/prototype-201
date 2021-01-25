@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ### Flags ###
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DP201_DEBUG -Og -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra -Werror -Wno-deprecated")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -Wall -Wextra")
 
 ### Source files ###
 file(GLOB HEADERS ${CMAKE_SOURCE_DIR}/source/*.hpp)
@@ -56,4 +56,4 @@ add_subdirectory(${P201_LIBRARIES_DIR}/vulkan p201-vulkan)
 add_subdirectory(${P201_LIBRARIES_DIR}/ui p201-ui)
 add_subdirectory(${P201_LIBRARIES_DIR}/util p201-util)
 
-target_link_libraries(${PROJECT_NAME} p201-common p201-core)
+target_link_libraries(${PROJECT_NAME} p201-common p201-core p201-game)

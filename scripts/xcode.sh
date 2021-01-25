@@ -1,4 +1,4 @@
 
 #!/bin/sh
-rm -rf xcode &&
+rm -rf xcode
 cmake -G Xcode -B xcode

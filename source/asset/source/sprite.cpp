@@ -12,7 +12,7 @@ namespace p201
 
 namespace assets
 {
-namespace sprite
+namespace textures
 {
 flipbook::~flipbook()
 {
@@ -37,7 +37,7 @@ void manager::new_flipbook(const std::filesystem::path& path)
     const auto& name   = path.filename();
     const auto& family = path.parent_path().filename();
     flipbooks.try_emplace(family, flipbook_family());
-    flipbooks.at(family).emplace(name, sprite::flipbook());
+    flipbooks.at(family).emplace(name, textures::flipbook());
     auto& flipbook = flipbooks.at(family).at(name);
 
     std::vector<std::string> sprite_paths;
@@ -74,8 +74,8 @@ void manager::load()
             new_flipbook(name.path());
     }
 }
-const sprite::flipbook& manager::flipbook(const std::string& family,
-                                          const std::string& name) const
+const struct flipbook& manager::flipbook(const std::string& family,
+                                         const std::string& name) const
 {
     return flipbooks.at(family).at(name);
 }
@@ -83,7 +83,7 @@ SDL_Texture* manager::default_sprite(const std::string& family)
 {
     return flipbook(family, "default").at(0);
 }
-} // namespace sprite
+} // namespace textures
 } // namespace assets
 
 } // namespace p201

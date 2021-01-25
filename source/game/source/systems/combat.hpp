@@ -30,6 +30,8 @@ public:
     virtual void start() override;
     virtual void update(float dt) override;
 
+    void init(components::attack&, components::character&);
+
     void on_attack_event(events::attack&);
 
     combat(const combat&) = delete;

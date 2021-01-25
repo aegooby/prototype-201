@@ -62,5 +62,33 @@ void character::update(float dt)
             px::transform(position, px::quat(angle, px::vector_3(0, 0, 1))));
     }
 }
+void character::init(components::character& character,
+                     components::physics&   physics)
+{
+    px::PxCapsuleControllerDesc desc;
+
+    auto mat = px::sdk.main->createMaterial(physics.sf, physics.df, physics.e);
+    desc.radius = physics.shape_param.capsule.r;
+    desc.height = physics.shape_param.capsule.hh * 2.0f;
+    /** @todo Temporary values. */
+    desc.stepOffset  = 0.01f;
+    desc.density     = physics.density;
+    desc.material    = mat;
+    desc.upDirection = px::vector_3(0, 0, 1);
+    desc.position    = px::vector_3ext(0, 0, 0);
+
+    auto& controller = character.controller;
+    auto& shape      = character.shape;
+
+    controller    = world.scene.controller_manager->createController(desc);
+    physics.actor = controller->getActor();
+    physics.actor->userData = &physics.entity;
+    controller->setUserData(&physics);
+
+    physics.actor->getShapes(&physics.shape, 1);
+    shape = physics.shape;
+
+    physics.shape->setLocalPose(px::transform(px::z_ctrl));
+}
 } // namespace systems
 } // namespace p201

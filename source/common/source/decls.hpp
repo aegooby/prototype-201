@@ -21,6 +21,7 @@ namespace handle_types
 {
 using renderer = SDL_Renderer;
 using window   = SDL_Window;
+using texture  = SDL_Texture;
 } // namespace handle_types
 
 } // namespace p201

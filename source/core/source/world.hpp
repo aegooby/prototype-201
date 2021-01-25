@@ -36,8 +36,8 @@ public:
     serialize::xml serializer;
     /** @brief Read the name idiot. */
     ui::hud hud;
-    /** @brief Contains sprites (and one day, sound files). */
-    assets::sprite::manager sprite_manager;
+    /** @brief Contains sprites. */
+    assets::textures::manager sprite_manager;
 
 protected:
     using cmptr_t = std::unique_ptr<components::manager>;

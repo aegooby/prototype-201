@@ -1,8 +1,6 @@
 
 #include "engine.hpp"
 
-#include <game.hpp>
-
 namespace p201
 {
 engine::engine()
@@ -17,17 +15,13 @@ engine::engine()
     vulkan.create_device();
     vulkan.create_swapchain(window.handle);
     vulkan.create_pipeline();
-
-    for (auto& system : world.systems) system.second->start();
-
-    world.serializer.directory = "assets/entities";
-    world.serializer.load_entity(world.new_entity(), "player");
-    world.serializer.load_entity(world.new_entity(), "platform");
 }
 void engine::start()
 {
     if (__running) return;
     __running = true;
+
+    for (auto& system : world.systems) system.second->start();
 
     double time_prev   = clock.time_s();
     double accumulator = 0.0;
@@ -72,7 +66,10 @@ void engine::update(float dt)
 }
 void engine::render(float alpha)
 {
-    world.system<systems::render>().draw(alpha);
-    world.system<systems::render>().display();
+    render_function(alpha);
+}
+void engine::bind_render_function(const std::function<void(float)>& function)
+{
+    render_function = function;
 }
 } // namespace p201

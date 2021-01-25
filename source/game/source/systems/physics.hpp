@@ -28,6 +28,8 @@ public:
     virtual ~physics() = default;
     virtual void start() override;
     virtual void update(float dt) override;
+
+    void init(components::physics&);
 };
 } // namespace systems
 } // namespace p201

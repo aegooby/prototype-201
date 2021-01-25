@@ -5,7 +5,6 @@
 
 #include <__common.hpp>
 #include <ecs.hpp>
-#include <game.hpp>
 #include <util.hpp>
 
 namespace p201
@@ -19,29 +18,11 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
     : window(window),
       keyboard(keyboard),
       mouse(mouse),
-      scene(*this, engine::sdk),
+      scene(*this, px::sdk),
       event_manager(*this),
       serializer(*this),
       sprite_manager("assets/sprites")
-{
-    create_component<components::render>();
-    create_component<components::transform>();
-    create_component<components::character>();
-    create_component<components::physics>();
-    create_component<components::input>();
-    create_component<components::animation>();
-    create_component<components::camera_focus>();
-    create_component<components::health>();
-    create_component<components::attack>();
-    create_component<components::hud>();
-
-    create_system<systems::render>();
-    create_system<systems::physics>();
-    create_system<systems::input>();
-    create_system<systems::animation>();
-    create_system<systems::combat>();
-    create_system<systems::character>();
-}
+{ }
 
 entity& world::new_entity()
 {
