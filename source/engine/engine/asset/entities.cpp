@@ -19,7 +19,7 @@ void pipeline::load_entity(class entity& entity, const std::string& name)
     P201_EVAL_DISCARD(name);
     std::filesystem::path filepath = (directory / name).concat(".xml");
     pugi::xml_document    document;
-    document.load_file(filepath.string());
+    document.load_file(filepath.string().c_str());
 }
 } // namespace entities
 } // namespace asset

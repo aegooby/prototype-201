@@ -20,19 +20,19 @@ game::game()
     engine.world.create_component<p201::components::attack>();
     engine.world.create_component<p201::components::hud>();
 
-    engine.world.create_system<p201::systems::render>();
+    // engine.world.create_system<p201::systems::render>();
     engine.world.create_system<p201::systems::physics>();
     engine.world.create_system<p201::systems::input>();
     engine.world.create_system<p201::systems::animation>();
     engine.world.create_system<p201::systems::combat>();
     engine.world.create_system<p201::systems::character>();
 
-    auto render_function = [this](float alpha)
-    {
-        engine.world.system<p201::systems::render>().draw(alpha);
-        engine.world.system<p201::systems::render>().display();
-    };
-    engine.bind_render_function(render_function);
+    // auto render_function = [this](float alpha)
+    // {
+    //     engine.world.system<p201::systems::render>().draw(alpha);
+    //     engine.world.system<p201::systems::render>().display();
+    // };
+    engine.bind_render_function([](float) {});
 
     engine.start();
 }

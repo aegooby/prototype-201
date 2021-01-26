@@ -15,6 +15,9 @@ engine::engine()
     vulkan.create_device();
     vulkan.create_swapchain(window.handle);
     vulkan.create_pipeline();
+    vulkan.create_framebuffers();
+    vulkan.create_command_pool();
+    vulkan.create_command_buffers();
 }
 void engine::start()
 {
@@ -67,6 +70,7 @@ void engine::update(float dt)
 void engine::render(float alpha)
 {
     render_function(alpha);
+    vulkan.draw();
 }
 void engine::bind_render_function(const std::function<void(float)>& function)
 {

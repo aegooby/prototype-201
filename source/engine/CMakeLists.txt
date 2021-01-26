@@ -24,6 +24,9 @@ find_package(sdl2-image CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2_image)
 find_package(sdl2-gfx CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2_gfx)
+## GLFW3 ##
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 ## PugiXML ##
 find_package(pugixml CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE pugixml pugixml::static pugixml::pugixml)

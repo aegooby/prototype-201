@@ -12,12 +12,13 @@ namespace p201
 class window
 {
 protected:
-    std::string __title  = std::string();
-    bool        __closed = false;
+    bool __closed = false;
 
 public:
     static constexpr int width  = 1366;
     static constexpr int height = 768;
+
+    std::string title = std::string();
 
     keyboard keyboard;
     mouse    mouse;
@@ -30,8 +31,7 @@ public:
     void start();
     void stop();
 
-    const std::string& title();
-    bool               closed() const;
+    bool closed() const;
 
     void update();
 

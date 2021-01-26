@@ -4,7 +4,7 @@
 namespace p201
 {
 window::window(const std::string& title)
-    : __title(title), keyboard(*this), mouse(*this)
+    : title(title), keyboard(*this), mouse(*this)
 { }
 window::~window()
 {
@@ -15,11 +15,10 @@ void window::start()
     if (SDL_Init(SDL_INIT_EVERYTHING))
         throw sdl_error("Failed to initialize SDL");
 
-    std::uint32_t flags  = SDL_WINDOW_VULKAN;
-    auto          center = SDL_WINDOWPOS_CENTERED;
+    std::uint32_t flags = SDL_WINDOW_VULKAN;
+    auto          pos   = SDL_WINDOWPOS_CENTERED;
 
-    handle =
-        SDL_CreateWindow(__title.c_str(), center, center, width, height, flags);
+    handle = SDL_CreateWindow(title.c_str(), pos, pos, width, height, flags);
     if (!handle) throw sdl_error("Failed to create window");
 }
 void window::stop()
@@ -30,10 +29,6 @@ void window::stop()
         handle = nullptr;
     }
     SDL_Quit();
-}
-const std::string& window::title()
-{
-    return __title;
 }
 bool window::closed() const
 {

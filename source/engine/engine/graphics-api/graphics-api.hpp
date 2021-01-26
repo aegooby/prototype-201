@@ -95,9 +95,16 @@ public:
     std::vector<vk::UniqueFramebuffer> framebuffers;
     /**
      * @brief Command pool. No idea what this does yet.
-     * @see vulkan::create_commandbuffers()
+     * @see vulkan::create_command_pool()
      */
     vk::UniqueCommandPool command_pool;
+    /**
+     * @brief Command buffers. No idea what this does yet.
+     * @see vulkan::create_command_pool()
+     */
+    std::vector<vk::UniqueCommandBuffer> command_buffers;
+    vk::Queue                            device_queue;
+    vk::Queue                            present_queue;
 
     vulkan()  = default;
     ~vulkan() = default;
@@ -117,5 +124,11 @@ public:
     void create_pipeline();
     /** @see vulkan::framebuffers */
     void create_framebuffers();
+    void create_command_pool();
+    void create_command_buffers();
+
+    /* DRAWING */
+    /** @todo Temp. */
+    void draw();
 };
 } // namespace p201

@@ -46,7 +46,11 @@ void vulkan::create_instance(handle_types::window* window)
         throw std::runtime_error("Failed to get Vulkan layer names");
 
     std::vector<const char*> layers;
-    for (auto& layer : __layers) layers.emplace_back(layer.layerName.data());
+    for (auto& layer : __layers)
+    {
+        if (!std::strcmp("VK_LAYER_KHRONOS_validation", layer.layerName.data()))
+            layers.emplace_back(layer.layerName.data());
+    }
 
     if (!SDL_Vulkan_GetInstanceExtensions(window, &count, nullptr))
         throw std::runtime_error("Failed to get Vulkan extension count");
@@ -69,9 +73,9 @@ void vulkan::create_instance(handle_types::window* window)
 }
 void vulkan::create_surface(handle_types::window* window)
 {
-    VkSurfaceKHR handle;
-    if (!SDL_Vulkan_CreateSurface(window, *instance, &handle))
-        throw std::runtime_error("Failed to get create Vulkan surface");
+    VkSurfaceKHR handle = nullptr;
+    if (!SDL_Vulkan_CreateSurface(window, VkInstance(*instance), &handle))
+        throw std::runtime_error("Failed to create Vulkan surface");
     surface = vk::UniqueSurfaceKHR(handle, *instance);
 }
 void vulkan::create_device()
@@ -98,7 +102,7 @@ void vulkan::create_device()
         queue_family_indices = { graphics_index };
 
     std::vector<vk::DeviceQueueCreateInfo> queue_infos;
-    float                                  priority = 0.0f;
+    static float                           priority = 0.0f;
     for (auto& index : queue_family_indices)
     {
         auto flags = vk::DeviceQueueCreateFlags();
@@ -107,7 +111,7 @@ void vulkan::create_device()
     }
     std::vector<const char*> ext;
     ext.emplace_back("VK_KHR_swapchain");
-    ext.emplace_back("VK_KHR_portability_subset");
+    // ext.emplace_back("VK_KHR_portability_subset");
 
     auto device_info = vk::DeviceCreateInfo();
     device_info.setFlags(vk::DeviceCreateFlags());
@@ -117,6 +121,7 @@ void vulkan::create_device()
     device_info.setPpEnabledLayerNames(nullptr);
     device_info.setEnabledExtensionCount(ext.size());
     device_info.setPpEnabledExtensionNames(ext.data());
+
     device = gpu.createDeviceUnique(device_info);
 }
 void vulkan::create_swapchain(handle_types::window* window)
@@ -129,6 +134,8 @@ void vulkan::create_swapchain(handle_types::window* window)
 
     int width = 0, height = 0;
     SDL_Vulkan_GetDrawableSize(window, &width, &height);
+    if (!width || !height)
+        throw std::runtime_error("Could not get Vulkan drawable extent");
     extent = vk::Extent2D(width, height);
 
     auto info = vk::SwapchainCreateInfoKHR();
@@ -139,17 +146,17 @@ void vulkan::create_swapchain(handle_types::window* window)
     info.setImageExtent(extent);
     info.setImageArrayLayers(1);
     info.setImageUsage(vk::ImageUsageFlagBits::eColorAttachment);
-    if (queue_family_indices.size() < 2)
-    {
-        info.setImageSharingMode(vk::SharingMode::eExclusive);
-        info.setQueueFamilyIndexCount(0);
-        info.setPQueueFamilyIndices(nullptr);
-    }
-    else
+    if (graphics_index != present_index)
     {
         info.setImageSharingMode(vk::SharingMode::eConcurrent);
         info.setQueueFamilyIndexCount(queue_family_indices.size());
         info.setPQueueFamilyIndices(queue_family_indices.data());
+    }
+    else
+    {
+        info.setImageSharingMode(vk::SharingMode::eExclusive);
+        info.setQueueFamilyIndexCount(0);
+        info.setPQueueFamilyIndices(nullptr);
     }
     info.setPreTransform(vk::SurfaceTransformFlagBitsKHR::eIdentity);
     info.setCompositeAlpha(vk::CompositeAlphaFlagBitsKHR::eOpaque);
@@ -179,7 +186,7 @@ void vulkan::create_swapchain(handle_types::window* window)
 }
 void vulkan::create_pipeline()
 {
-    auto              v_file = std::fstream("assets/shaders/vertex.vert");
+    auto              v_file = std::fstream("assets/shaders/shader.vert");
     std::stringstream v_stream;
     v_stream << v_file.rdbuf();
     std::vector<std::uint32_t> v_bytecode;
@@ -190,7 +197,7 @@ void vulkan::create_pipeline()
     v_stage_info.setModule(*v_shader);
     v_stage_info.setPName("main");
 
-    auto              f_file = std::fstream("assets/shaders/fragment.frag");
+    auto              f_file = std::fstream("assets/shaders/shader.frag");
     std::stringstream f_stream;
     f_stream << f_file.rdbuf();
     std::vector<std::uint32_t> f_bytecode;
@@ -329,5 +336,76 @@ void vulkan::create_framebuffers()
         info.setLayers(1);
         framebuffers.emplace_back(device->createFramebufferUnique(info));
     }
+}
+void vulkan::create_command_pool()
+{
+    auto info = vk::CommandPoolCreateInfo();
+    info.setQueueFamilyIndex(graphics_index);
+    command_pool = device->createCommandPoolUnique(info);
+}
+void vulkan::create_command_buffers()
+{
+    auto info = vk::CommandBufferAllocateInfo();
+    info.setCommandPool(command_pool.get());
+    info.setLevel(vk::CommandBufferLevel::ePrimary);
+    info.setCommandBufferCount(framebuffers.size());
+    command_buffers = device->allocateCommandBuffersUnique(info);
+
+    device_queue  = device->getQueue(graphics_index, 0);
+    present_queue = device->getQueue(present_index, 0);
+
+    for (size_t i = 0; i < command_buffers.size(); i++)
+    {
+        auto begin_info = vk::CommandBufferBeginInfo();
+        command_buffers.at(i)->begin(begin_info);
+        auto clear_values     = vk::ClearValue();
+        auto render_pass_info = vk::RenderPassBeginInfo();
+        render_pass_info.setRenderPass(render_pass.get());
+        render_pass_info.setFramebuffer(framebuffers.at(i).get());
+        render_pass_info.setRenderArea(vk::Rect2D({ 0, 0 }, extent));
+        render_pass_info.setClearValueCount(1);
+        render_pass_info.setPClearValues(&clear_values);
+
+        command_buffers.at(i)->beginRenderPass(render_pass_info,
+                                               vk::SubpassContents::eInline);
+        command_buffers.at(i)->bindPipeline(vk::PipelineBindPoint::eGraphics,
+                                            *pipeline);
+        command_buffers.at(i)->draw(3, 1, 0, 0);
+        command_buffers.at(i)->endRenderPass();
+        command_buffers.at(i)->end();
+    }
+}
+void vulkan::draw()
+{
+    auto timeout = std::numeric_limits<uint64_t>::max();
+
+    auto index = device->acquireNextImageKHR(swapchain.get(), timeout,
+                                             image_available.get(), {});
+
+    vk::PipelineStageFlags mask =
+        vk::PipelineStageFlagBits::eColorAttachmentOutput;
+
+    auto submit_info = vk::SubmitInfo();
+    submit_info.setWaitSemaphoreCount(1);
+    submit_info.setPWaitSemaphores(&image_available.get());
+    submit_info.setPWaitDstStageMask(&mask);
+    submit_info.setCommandBufferCount(1);
+    submit_info.setPCommandBuffers(&command_buffers.at(index.value).get());
+    submit_info.setSignalSemaphoreCount(1);
+    submit_info.setPSignalSemaphores(&render_finished.get());
+
+    device_queue.submit(submit_info, {});
+
+    auto present_info = vk::PresentInfoKHR();
+    present_info.setWaitSemaphoreCount(1);
+    present_info.setPWaitSemaphores(&render_finished.get());
+    present_info.setSwapchainCount(1);
+    present_info.setPSwapchains(&swapchain.get());
+    present_info.setPImageIndices(&index.value);
+    auto result = present_queue.presentKHR(present_info);
+    if (result != vk::Result::eSuccess)
+        throw std::runtime_error("Failed to present Vulkan");
+
+    device->waitIdle();
 }
 } // namespace p201
