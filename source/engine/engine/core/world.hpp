@@ -33,12 +33,12 @@ public:
     std::unordered_map<std::type_index, std::unique_ptr<system>> systems;
     /** @brief Handles events and forwards them to the relevant systems. */
     events::manager event_manager;
-    /** @brief Used for loading and saving entities to XML. */
-    serialize::xml serializer;
     /** @brief Read the name idiot. */
     ui::hud hud;
+    /** @brief Used for loading and saving entities to XML. */
+    asset::entities::pipeline entity_pipeline;
     /** @brief Contains sprites. */
-    assets::textures::manager sprite_manager;
+    asset::textures::pipeline texture_pipeline;
 
 protected:
     using cmptr_t = std::unique_ptr<components::manager>;

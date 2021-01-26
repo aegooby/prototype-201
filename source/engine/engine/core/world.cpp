@@ -20,8 +20,8 @@ world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
       mouse(mouse),
       scene(*this, px::sdk),
       event_manager(*this),
-      serializer(*this),
-      sprite_manager("assets/sprites")
+      entity_pipeline(*this),
+      texture_pipeline("assets/sprites")
 { }
 
 entity& world::new_entity()

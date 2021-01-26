@@ -1,5 +1,5 @@
 
-#include "sprite.hpp"
+#include "textures.hpp"
 
 #include "../util.hpp"
 
@@ -11,7 +11,7 @@
 namespace p201
 {
 
-namespace assets
+namespace asset
 {
 namespace textures
 {
@@ -32,7 +32,7 @@ SDL_Texture*& flipbook::at(std::size_t i)
     return textures.at(i);
 }
 
-void manager::new_flipbook(const std::filesystem::path& path)
+void pipeline::new_flipbook(const std::filesystem::path& path)
 {
     if (!std::filesystem::is_directory(path)) return;
     const auto& name   = path.filename();
@@ -52,20 +52,20 @@ void manager::new_flipbook(const std::filesystem::path& path)
         if (texture) flipbook.textures.emplace_back(texture);
     }
 }
-void manager::delete_flipbook(const std::string& family,
-                              const std::string& name)
+void pipeline::delete_flipbook(const std::string& family,
+                               const std::string& name)
 {
     flipbooks.at(family).erase(name);
 }
 
-manager::manager(const std::string& flipbooks_path)
+pipeline::pipeline(const std::string& flipbooks_path)
     : flipbooks_path(flipbooks_path)
 { }
-void manager::link(SDL_Renderer* renderer)
+void pipeline::link(SDL_Renderer* renderer)
 {
     this->renderer = renderer;
 }
-void manager::load()
+void pipeline::load()
 {
     for (auto& family : std::filesystem::directory_iterator(flipbooks_path))
     {
@@ -75,16 +75,16 @@ void manager::load()
             new_flipbook(name.path());
     }
 }
-const struct flipbook& manager::flipbook(const std::string& family,
-                                         const std::string& name) const
+const struct flipbook& pipeline::flipbook(const std::string& family,
+                                          const std::string& name) const
 {
     return flipbooks.at(family).at(name);
 }
-SDL_Texture* manager::default_sprite(const std::string& family)
+SDL_Texture* pipeline::default_sprite(const std::string& family)
 {
     return flipbook(family, "default").at(0);
 }
 } // namespace textures
-} // namespace assets
+} // namespace asset
 
 } // namespace p201

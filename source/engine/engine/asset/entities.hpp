@@ -9,10 +9,11 @@
 
 namespace p201
 {
-namespace serialize
+namespace asset
 {
-/** @todo Phase out Boost for PugiXML. */
-class xml
+namespace entities
+{
+class pipeline
 {
 private:
     class world& world;
@@ -20,10 +21,11 @@ private:
 public:
     std::filesystem::path directory;
 
-    xml(class world&);
-    ~xml() = default;
+    pipeline(class world&);
+    ~pipeline() = default;
     void load_entity(class entity&, const std::string&);
     void save_entity(class entity&, const std::string&);
 };
-} // namespace serialize
+} // namespace entities
+} // namespace asset
 } // namespace p201

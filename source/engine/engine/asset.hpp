@@ -1,4 +1,4 @@
 
 #pragma once
-#include "asset/serialize.hpp"
-#include "asset/sprite.hpp"
+#include "asset/entities.hpp"
+#include "asset/textures.hpp"

@@ -1,7 +1,7 @@
 
 #pragma once
-#include "../util.hpp"
 #include "../media-layer.hpp"
+#include "../util.hpp"
 
 #include <__common.hpp>
 #include <filesystem>
@@ -11,7 +11,7 @@
 namespace p201
 {
 
-namespace assets
+namespace asset
 {
 namespace textures
 {
@@ -28,7 +28,7 @@ struct flipbook
     handle_types::texture* const& at(std::size_t i) const;
     handle_types::texture*&       at(std::size_t i);
 };
-class manager
+class pipeline
 {
 protected:
     using flipbook_family = std::unordered_map<std::string, struct flipbook>;
@@ -41,8 +41,8 @@ protected:
     void delete_flipbook(const std::string& family, const std::string& name);
 
 public:
-    manager(const std::string& flipbooks_path);
-    ~manager() = default;
+    pipeline(const std::string& flipbooks_path);
+    ~pipeline() = default;
 
     void                   link(handle_types::renderer* renderer);
     void                   load();
@@ -50,12 +50,12 @@ public:
                                     const std::string& name) const;
     SDL_Texture*           default_sprite(const std::string& family);
 
-    manager(const manager&) = delete;
-    manager(manager&&)      = delete;
-    manager& operator=(const manager&) = delete;
-    manager& operator=(manager&&) = delete;
+    pipeline(const pipeline&) = delete;
+    pipeline(pipeline&&)      = delete;
+    pipeline& operator=(const pipeline&) = delete;
+    pipeline& operator=(pipeline&&) = delete;
 };
 } // namespace textures
-} // namespace assets
+} // namespace asset
 
 } // namespace p201

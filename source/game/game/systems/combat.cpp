@@ -22,7 +22,7 @@ void combat::update(float dt)
         /** @todo Add HUD system. */
         if (entity.flag.test(components::hud::flag))
         {
-            const auto hpfactor = health.hp / health.max_hp;
+            const auto hpfactor = health.current_hp / health.max_hp;
             auto&      hb_main  = world.hud.healthbar.main;
             hb_main.rect.w      = hb_main.width * hpfactor;
             hb_main.srcrect.w   = hb_main.width * hpfactor;

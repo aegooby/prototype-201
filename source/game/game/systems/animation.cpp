@@ -15,7 +15,7 @@ void animation::start()
 void animation::update(float dt)
 {
     __base::update(dt);
-    const auto& sprite_manager = world.sprite_manager;
+    const auto& texture_pipeline = world.texture_pipeline;
     for (auto& id : __registered_entities)
     {
         auto& entity    = world.entity(id);
@@ -23,7 +23,7 @@ void animation::update(float dt)
         auto& render    = entity.component<components::render>();
 
         const auto& flipbook =
-            sprite_manager.flipbook(render.family, animation.name);
+            texture_pipeline.flipbook(render.family, animation.name);
 
         if (animation.fps)
         {
