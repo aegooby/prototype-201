@@ -1,9 +1,7 @@
 ---
 
 #
-# You can add options here to match your desired format.
-# For reference, see the following URL:
-#     https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 #
 
 Language:      Cpp
