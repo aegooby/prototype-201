@@ -186,8 +186,8 @@ void vulkan::create_swapchain(handle_types::window* window)
 }
 void vulkan::create_pipeline()
 {
-    auto              v_file = std::fstream("assets/shaders/shader.vert");
-    std::stringstream v_stream;
+    auto v_file   = std::fstream("assets/shaders/shader.vert");
+    auto v_stream = std::stringstream();
     v_stream << v_file.rdbuf();
     std::vector<std::uint32_t> v_bytecode;
     auto v_info   = create_shader(v_stream.str(), shader_vertex, v_bytecode);
@@ -197,8 +197,8 @@ void vulkan::create_pipeline()
     v_stage_info.setModule(*v_shader);
     v_stage_info.setPName("main");
 
-    auto              f_file = std::fstream("assets/shaders/shader.frag");
-    std::stringstream f_stream;
+    auto f_file   = std::fstream("assets/shaders/shader.frag");
+    auto f_stream = std::stringstream();
     f_stream << f_file.rdbuf();
     std::vector<std::uint32_t> f_bytecode;
     auto f_info   = create_shader(f_stream.str(), shader_fragment, f_bytecode);
@@ -237,7 +237,6 @@ void vulkan::create_pipeline()
     raster_info.setDepthClampEnable(false);
     raster_info.setRasterizerDiscardEnable(false);
     raster_info.setPolygonMode(vk::PolygonMode::eFill);
-    raster_info.setCullMode(vk::CullModeFlagBits::eBack);
     raster_info.setFrontFace(vk::FrontFace::eCounterClockwise);
     raster_info.setLineWidth(1.0f);
 
