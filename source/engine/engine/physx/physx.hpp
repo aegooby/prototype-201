@@ -60,7 +60,10 @@ private:
     std::function<void(PxTriggerPair*, PxU32)> on_trigger;
 
 public:
-    callback(class world& world) : world(world) { }
+    callback(class world& world) : world(world) 
+    {
+        P201_EVAL_DISCARD(this->world);
+    }
     virtual void onConstraintBreak(PxConstraintInfo* constraints,
                                    PxU32             count) override;
     virtual void onWake(PxActor** actors, PxU32 count) override;

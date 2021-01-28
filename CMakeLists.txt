@@ -2,12 +2,12 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
 ### VCpkg ###
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "")
+set(CMAKE_TOOLCHAIN_FILE ~/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "")
 
 project(prototype-201)
 set(P201_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/source)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS BOOL TRUE)
 
 ### C++20 ###
 set(CMAKE_CXX_STANDARD 20)

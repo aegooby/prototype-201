@@ -1,8 +1,10 @@
 
 #pragma once
 #include "../media-layer.hpp"
+#include "../util.hpp"
 
 #include <__common.hpp>
+#include <array>
 #include <shaderc/shaderc.hpp>
 #include <vulkan/vulkan.hpp>
 
@@ -10,9 +12,51 @@ namespace p201
 {
 class vulkan
 {
+public:
+    struct vertex
+    {
+        vector_2 position;
+        vector_3 color;
+
+        vertex() = default;
+        vertex(const vector_2& position, const vector_3& color)
+            : position(position), color(color)
+        { }
+
+        static vk::VertexInputBindingDescription binding_desc()
+        {
+            auto result = vk::VertexInputBindingDescription();
+
+            result.setBinding(0);
+            result.setStride(sizeof(vertex));
+
+            return result;
+        }
+        static std::array<vk::VertexInputAttributeDescription, 2> attr_desc()
+        {
+            auto result = std::array<vk::VertexInputAttributeDescription, 2>();
+
+            result.at(0).binding  = 0;
+            result.at(0).location = 0;
+            result.at(0).format   = vk::Format::eR32G32Sfloat;
+            result.at(0).offset   = offsetof(vertex, position);
+
+            result.at(1).binding  = 0;
+            result.at(1).location = 1;
+            result.at(1).format   = vk::Format::eR32G32B32Sfloat;
+            result.at(1).offset   = offsetof(vertex, color);
+
+            return result;
+        }
+    };
+
 private:
-    std::uint32_t graphics_index = 0;
-    std::uint32_t present_index  = 0;
+    /* CONTEXT OBJECTS */
+    class window& window;
+
+    /* PIPELINE */
+    std::uint32_t graphics_index = ~0u;
+    std::uint32_t present_index  = ~0u;
 
     /** @todo Triple buffering. */
     static constexpr std::size_t swapchain_image_count = 2;
@@ -34,7 +78,7 @@ protected:
     [[nodiscard]] vk::ShaderModuleCreateInfo
     create_shader(const std::string&, shader_kind, std::vector<std::uint32_t>&);
 
-public:
+protected:
     /**
      * @brief Connects application to Vulkan library.
      * @see vulkan::create_instance()
@@ -99,6 +143,12 @@ public:
      */
     vk::UniqueCommandPool command_pool;
     /**
+     * @brief Stores vertex inputs to pass to shaders.
+     * @see vulkan::create_vertex_buffers()
+     */
+    vk::UniqueBuffer       vertex_buffer;
+    vk::UniqueDeviceMemory device_memory;
+    /**
      * @brief Command buffers. No idea what this does yet.
      * @see vulkan::create_command_pool()
      */
@@ -106,18 +156,16 @@ public:
     vk::Queue                            device_queue;
     vk::Queue                            present_queue;
 
-    vulkan()  = default;
-    ~vulkan() = default;
-
+    /* FUNCTIONS */
     /* INIT */
     /** @see vulkan::instance */
-    void create_instance(handle_types::window*);
+    void create_instance();
     /** @see vulkan::surface */
-    void create_surface(handle_types::window*);
+    void create_surface();
     /** @see vulkan::device */
     void create_device();
     /** @see vulkan::swapchain */
-    void create_swapchain(handle_types::window*);
+    void create_swapchain();
 
     /* PIPELINE */
     /** @see vulkan::pipeline */
@@ -125,10 +173,21 @@ public:
     /** @see vulkan::framebuffers */
     void create_framebuffers();
     void create_command_pool();
+    void create_vertex_buffer();
     void create_command_buffers();
+
+public:
+    vulkan(class window&);
+    ~vulkan() = default;
+
+    /* INIT */
+    void start();
 
     /* DRAWING */
     /** @todo Temp. */
     void draw();
+
+    /* UTIL */
+    void query_extent();
 };
 } // namespace p201

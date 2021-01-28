@@ -1,6 +1,8 @@
 
 #include "graphics-api.hpp"
 
+#include "../core.hpp"
+
 #include <SDL2/SDL_vulkan.h>
 #include <__common.hpp>
 #include <algorithm>
@@ -9,6 +11,8 @@
 
 namespace p201
 {
+vulkan::vulkan(class window& window) : window(window) { }
+
 vk::ShaderModuleCreateInfo
 vulkan::create_shader(const std::string& shader, shader_kind kind,
                       std::vector<std::uint32_t>& bytecode)
@@ -23,7 +27,7 @@ vulkan::create_shader(const std::string& shader, shader_kind kind,
     info.setPCode(bytecode.data());
     return info;
 }
-void vulkan::create_instance(handle_types::window* window)
+void vulkan::create_instance()
 {
     vk::ApplicationInfo app = vk::ApplicationInfo();
     app.setPNext(nullptr);
@@ -48,14 +52,16 @@ void vulkan::create_instance(handle_types::window* window)
     std::vector<const char*> layers;
     for (auto& layer : __layers)
     {
-        if (!std::strcmp("VK_LAYER_KHRONOS_validation", layer.layerName.data()))
-            layers.emplace_back(layer.layerName.data());
+        auto& name = layer.layerName;
+        auto  size = layer.layerName.size();
+        if (!std::strncmp(name.data(), "VK_LAYER_KHRONOS_validation", size))
+            layers.emplace_back("VK_LAYER_KHRONOS_validation");
     }
 
-    if (!SDL_Vulkan_GetInstanceExtensions(window, &count, nullptr))
+    if (!SDL_Vulkan_GetInstanceExtensions(window.handle, &count, nullptr))
         throw std::runtime_error("Failed to get Vulkan extension count");
     auto exts = std::vector<const char*>(count);
-    if (!SDL_Vulkan_GetInstanceExtensions(window, &count, exts.data()))
+    if (!SDL_Vulkan_GetInstanceExtensions(window.handle, &count, exts.data()))
         throw std::runtime_error("Failed to get Vulkan extensions");
 
     auto info = vk::InstanceCreateInfo();
@@ -71,10 +77,10 @@ void vulkan::create_instance(handle_types::window* window)
     instance = vk::createInstanceUnique(info);
     if (!instance) throw std::runtime_error("Failed to create Vulkan instance");
 }
-void vulkan::create_surface(handle_types::window* window)
+void vulkan::create_surface()
 {
     VkSurfaceKHR handle = nullptr;
-    if (!SDL_Vulkan_CreateSurface(window, VkInstance(*instance), &handle))
+    if (!SDL_Vulkan_CreateSurface(window.handle, *instance, &handle))
         throw std::runtime_error("Failed to create Vulkan surface");
     surface = vk::UniqueSurfaceKHR(handle, *instance);
 }
@@ -110,8 +116,16 @@ void vulkan::create_device()
         queue_infos.emplace_back(info);
     }
     std::vector<const char*> ext;
-    ext.emplace_back("VK_KHR_swapchain");
-    // ext.emplace_back("VK_KHR_portability_subset");
+    for (auto& prop : gpu.enumerateDeviceExtensionProperties())
+    {
+        auto& name = prop.extensionName;
+        auto  size = name.size();
+        if (!std::strncmp(name.data(), "VK_KHR_swapchain", size))
+            ext.emplace_back("VK_KHR_swapchain");
+        /** @todo Doesn't work. */
+        // if (!std::strncmp(name.data(), "VK_KHR_portability_subset", size))
+        //     ext.emplace_back("VK_KHR_portability_subset");
+    }
 
     auto device_info = vk::DeviceCreateInfo();
     device_info.setFlags(vk::DeviceCreateFlags());
@@ -124,19 +138,13 @@ void vulkan::create_device()
 
     device = gpu.createDeviceUnique(device_info);
 }
-void vulkan::create_swapchain(handle_types::window* window)
+void vulkan::create_swapchain()
 {
     if constexpr (__debug__)
     {
         P201_EVAL_DISCARD(gpu.getSurfaceCapabilitiesKHR(*surface));
         P201_EVAL_DISCARD(gpu.getSurfaceFormatsKHR(*surface));
     }
-
-    int width = 0, height = 0;
-    SDL_Vulkan_GetDrawableSize(window, &width, &height);
-    if (!width || !height)
-        throw std::runtime_error("Could not get Vulkan drawable extent");
-    extent = vk::Extent2D(width, height);
 
     auto info = vk::SwapchainCreateInfoKHR();
     info.setSurface(surface.get());
@@ -167,11 +175,13 @@ void vulkan::create_swapchain(handle_types::window* window)
     swapchain = device->createSwapchainKHRUnique(info);
 
     auto images = device->getSwapchainImagesKHR(swapchain.get());
+    image_views.clear();
     for (auto& image : images)
     {
         using sw        = vk::ComponentSwizzle;
         using iafb      = vk::ImageAspectFlagBits;
-        auto components = vk::ComponentMapping(sw::eR, sw::eG, sw::eB, sw::eA);
+        auto components = vk::ComponentMapping(sw::eIdentity, sw::eIdentity,
+                                               sw::eIdentity, sw::eIdentity);
         auto isr        = vk::ImageSubresourceRange(iafb::eColor, 0, 1, 0, 1);
 
         auto info = vk::ImageViewCreateInfo();
@@ -181,6 +191,7 @@ void vulkan::create_swapchain(handle_types::window* window)
         info.setFormat(format);
         info.setComponents(components);
         info.setSubresourceRange(isr);
+
         image_views.emplace_back(device->createImageViewUnique(info));
     }
 }
@@ -212,11 +223,13 @@ void vulkan::create_pipeline()
     stage_infos.emplace_back(v_stage_info);
     stage_infos.emplace_back(f_stage_info);
 
+    auto binding_desc = vertex::binding_desc();
+    auto attr_desc    = vertex::attr_desc();
     auto v_input_info = vk::PipelineVertexInputStateCreateInfo();
-    v_input_info.setVertexBindingDescriptionCount(0);
-    v_input_info.setPVertexBindingDescriptions(nullptr);
-    v_input_info.setVertexAttributeDescriptionCount(0);
-    v_input_info.setPVertexAttributeDescriptions(nullptr);
+    v_input_info.setVertexBindingDescriptionCount(1);
+    v_input_info.setPVertexBindingDescriptions(&binding_desc);
+    v_input_info.setVertexAttributeDescriptionCount(attr_desc.size());
+    v_input_info.setPVertexAttributeDescriptions(attr_desc.data());
 
     auto input_asm_info = vk::PipelineInputAssemblyStateCreateInfo();
     input_asm_info.setTopology(vk::PrimitiveTopology::eTriangleList);
@@ -324,6 +337,7 @@ void vulkan::create_pipeline()
 }
 void vulkan::create_framebuffers()
 {
+    framebuffers.clear();
     for (std::size_t i = 0; i < image_views.size(); ++i)
     {
         auto info = vk::FramebufferCreateInfo();
@@ -341,6 +355,53 @@ void vulkan::create_command_pool()
     auto info = vk::CommandPoolCreateInfo();
     info.setQueueFamilyIndex(graphics_index);
     command_pool = device->createCommandPoolUnique(info);
+}
+void vulkan::create_vertex_buffer()
+{
+    /** @todo Temp values. */
+    std::vector<vertex> vertices;
+    vertices.emplace_back(vector_2(0.0f, -0.5f), vector_3(1.0f, 1.0f, 1.0f));
+    vertices.emplace_back(vector_2(0.5f, 0.5f), vector_3(0.0f, 1.0f, 0.0f));
+    vertices.emplace_back(vector_2(-0.5f, 0.5f), vector_3(0.0f, 0.0f, 1.0f));
+
+    auto buffer_info = vk::BufferCreateInfo();
+    buffer_info.setSize(sizeof(vertex) * vertices.size());
+    buffer_info.setUsage(vk::BufferUsageFlagBits::eVertexBuffer);
+    buffer_info.setSharingMode(vk::SharingMode::eExclusive);
+
+    vertex_buffer = device->createBufferUnique(buffer_info);
+
+    auto memory_reqs = device->getBufferMemoryRequirements(vertex_buffer.get());
+    const auto& memory_properties = gpu.getMemoryProperties();
+    auto        bits              = memory_reqs.memoryTypeBits;
+
+    auto mask = vk::MemoryPropertyFlagBits::eHostVisible |
+                vk::MemoryPropertyFlagBits::eHostCoherent;
+    std::uint32_t index = ~0u;
+    for (std::uint32_t i = 0; i < memory_properties.memoryTypeCount; ++i)
+    {
+        if ((bits & 1) && ((memory_properties.memoryTypes.at(i).propertyFlags &
+                            mask) == mask))
+        {
+            index = i;
+            break;
+        }
+        bits >>= 1;
+    }
+    assert(index != ~0u);
+
+    auto memory_info = vk::MemoryAllocateInfo();
+    memory_info.setAllocationSize(memory_reqs.size);
+    memory_info.setMemoryTypeIndex(index);
+    device_memory = device->allocateMemoryUnique(memory_info);
+
+    auto __data = device->mapMemory(device_memory.get(), 0, memory_reqs.size);
+    std::uint8_t* data = static_cast<std::uint8_t*>(__data);
+
+    std::memcpy(data, vertices.data(), sizeof(vertex) * vertices.size());
+    device->unmapMemory(device_memory.get());
+
+    device->bindBufferMemory(vertex_buffer.get(), device_memory.get(), 0);
 }
 void vulkan::create_command_buffers()
 {
@@ -367,6 +428,7 @@ void vulkan::create_command_buffers()
 
         command_buffers.at(i)->beginRenderPass(render_pass_info,
                                                vk::SubpassContents::eInline);
+        command_buffers.at(i)->bindVertexBuffers(0, *vertex_buffer, { 0 });
         command_buffers.at(i)->bindPipeline(vk::PipelineBindPoint::eGraphics,
                                             *pipeline);
         command_buffers.at(i)->draw(3, 1, 0, 0);
@@ -374,12 +436,44 @@ void vulkan::create_command_buffers()
         command_buffers.at(i)->end();
     }
 }
+void vulkan::start()
+{
+    create_instance();
+    create_surface();
+    query_extent();
+    create_device();
+    create_swapchain();
+    create_pipeline();
+    create_framebuffers();
+    create_command_pool();
+    create_vertex_buffer();
+    create_command_buffers();
+}
 void vulkan::draw()
 {
     auto timeout = std::numeric_limits<uint64_t>::max();
 
     auto index = device->acquireNextImageKHR(swapchain.get(), timeout,
                                              image_available.get(), {});
+
+    switch (index.result)
+    {
+        case vk::Result::eErrorOutOfDateKHR:
+        {
+            create_swapchain();
+            create_pipeline();
+            create_framebuffers();
+            create_command_buffers();
+            break;
+        }
+        case vk::Result::eSuccess:
+            break;
+        case vk::Result::eSuboptimalKHR:
+            break;
+        default:
+            throw std::runtime_error("Failed to acquire Vulkan image");
+            break;
+    }
 
     vk::PipelineStageFlags mask =
         vk::PipelineStageFlagBits::eColorAttachmentOutput;
@@ -406,5 +500,11 @@ void vulkan::draw()
         throw std::runtime_error("Failed to present Vulkan");
 
     device->waitIdle();
+}
+void vulkan::query_extent()
+{
+    int width = 0, height = 0;
+    SDL_Vulkan_GetDrawableSize(window.handle, &width, &height);
+    extent = vk::Extent2D(width, height);
 }
 } // namespace p201

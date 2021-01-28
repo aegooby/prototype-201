@@ -1,5 +1,7 @@
 
 #!/bin/sh
-vcpkg/bootstrap-vcpkg.sh
-vcpkg/vcpkg integrate $SHELL
-vcpkg/vcpkg install $(cat dependencies.vcpkg)
+export PATH=~/vcpkg:$PATH
+[ ! -d ~/vcpkg ] && git clone https://github.com/microsoft/vcpkg ~/vcpkg &&
+~/vcpkg/bootstrap-vcpkg.sh &&
+vcpkg integrate $SHELL
+vcpkg install $(cat dependencies.vcpkg)

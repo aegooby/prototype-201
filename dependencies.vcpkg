@@ -4,4 +4,4 @@ vulkan
 sdl2[vulkan] 
 sdl2-gfx 
 sdl2-image
-glfw3
+vulkan-memory-allocator

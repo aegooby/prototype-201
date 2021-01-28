@@ -5,19 +5,14 @@ namespace p201
 {
 engine::engine()
     : window("Prototype 201"),
+      vulkan(window),
       keyboard(window.keyboard),
       mouse(window.mouse),
       world(window, keyboard, mouse)
 {
     window.start();
-    vulkan.create_instance(window.handle);
-    vulkan.create_surface(window.handle);
-    vulkan.create_device();
-    vulkan.create_swapchain(window.handle);
-    vulkan.create_pipeline();
-    vulkan.create_framebuffers();
-    vulkan.create_command_pool();
-    vulkan.create_command_buffers();
+
+    vulkan.start();
 }
 void engine::start()
 {

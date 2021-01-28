@@ -24,9 +24,6 @@ find_package(sdl2-image CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2_image)
 find_package(sdl2-gfx CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2_gfx)
-## GLFW3 ##
-find_package(glfw3 CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 ## PugiXML ##
 find_package(pugixml CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE pugixml pugixml::static pugixml::pugixml)
@@ -37,6 +34,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glm)
 find_package(Vulkan REQUIRED)
 find_library(SHADERC_LIBRARIES shaderc_combined $ENV{VULKAN_SDK}/lib)
 target_link_libraries(${PROJECT_NAME} PUBLIC Vulkan::Vulkan ${SHADERC_LIBRARIES})
+# VMA #
+find_package(unofficial-vulkan-memory-allocator CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE unofficial::vulkan-memory-allocator::vulkan-memory-allocator)
 
 ### Export ###
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

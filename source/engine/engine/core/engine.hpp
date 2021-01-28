@@ -26,8 +26,8 @@ private:
     std::function<void(float)> render_function;
 
 protected:
-    vulkan    vulkan;
     window    window;
+    vulkan    vulkan;
     keyboard& keyboard;
     mouse&    mouse;
     clock     clock;
