@@ -14,9 +14,8 @@ std::unique_ptr<system>& world::__system(std::type_index system_type)
 {
     return systems.at(system_type);
 }
-world::world(class window& window, class keyboard& keyboard, class mouse& mouse)
-    : window(window),
-      keyboard(keyboard),
+world::world(forge::keyboard& keyboard, forge::mouse& mouse)
+    : keyboard(keyboard),
       mouse(mouse),
       scene(*this, px::sdk),
       event_manager(*this),

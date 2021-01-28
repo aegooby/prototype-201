@@ -38,8 +38,7 @@ public:
     using __base = system;
 
 protected:
-    handle_types::renderer* handle = nullptr;
-    const matrix_32 iso_mat        = glm::make_mat3x2(__iso_mat_array) / sqrt_2;
+    const matrix_32 iso_mat = glm::make_mat3x2(__iso_mat_array) / forge::sqrt_2;
     /** @brief How many times do I have to tell you to read the name retard? */
     camera camera;
 

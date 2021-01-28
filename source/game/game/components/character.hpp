@@ -4,6 +4,7 @@
 #include <engine/ecs.hpp>
 #include <engine/physx.hpp>
 #include <engine/util.hpp>
+#include <forge/math.hpp>
 
 namespace p201
 {

@@ -6,6 +6,7 @@
 
 namespace p201
 {
+/** @todo Implement in 3D. */
 class camera
 {
 public:
@@ -21,13 +22,13 @@ public:
     }
     vector_2 transform(const vector_2& vector)
     {
-        const vector_2 shift = this->shift(window::width, window::height);
+        vector_2 shift; // = this->shift(window::width, window::height);
         return vector_2(vector.x + shift.x, vector.y + shift.y);
     }
     SDL_FRect transform(const SDL_FRect& rect)
     {
-        const vector_2 shift      = this->shift(window::width, window::height);
-        SDL_FRect      rect_shift = rect;
+        vector_2  shift; //      = this->shift(window::width, window::height);
+        SDL_FRect rect_shift = rect;
         rect_shift.x += shift.x;
         rect_shift.y += shift.y;
 
@@ -35,7 +36,7 @@ public:
     }
     void transform(std::int16_t* vx, std::int16_t* vy)
     {
-        const vector_2 shift = this->shift(window::width, window::height);
+        vector_2 shift; // = this->shift(window::width, window::height);
         for (std::size_t i = 0; i < 4; ++i)
         {
             vx[i] += shift.x;

@@ -4,17 +4,12 @@
 
 namespace p201
 {
-class window;
-class mouse;
-class clock;
-class keyboard;
+
 class engine;
-class entity;
-
-struct component;
-
 class world;
+
+class entity;
+struct component;
 class system;
-class entity_manager;
 
 } // namespace p201

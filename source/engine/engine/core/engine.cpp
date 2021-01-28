@@ -3,16 +3,15 @@
 
 namespace p201
 {
-engine::engine()
-    : window("Prototype 201"),
-      vulkan(window),
-      keyboard(window.keyboard),
-      mouse(window.mouse),
-      world(window, keyboard, mouse)
+engine::engine() : world(keyboard, mouse)
 {
+    forge::sdl::start();
     window.start();
-
     vulkan.start();
+}
+engine::~engine()
+{
+    forge::sdl::stop();
 }
 void engine::start()
 {
@@ -36,7 +35,7 @@ void engine::start()
 
         while (accumulator >= dt)
         {
-            if (window.closed()) __running = false;
+            if (!window.open()) __running = false;
             update(dt);
             accumulator -= dt;
             idle = false;
@@ -45,7 +44,7 @@ void engine::start()
         {
             const double alpha = accumulator / dt;
             render(alpha);
-            if (window_close_key()) stop();
+            if (keyboard.window_close()) stop();
         }
         else
             util::sleep(1);

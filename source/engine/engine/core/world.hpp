@@ -7,6 +7,7 @@
 #include "../ui.hpp"
 
 #include <__common.hpp>
+#include <forge.hpp>
 #include <typeindex>
 #include <unordered_map>
 
@@ -17,12 +18,10 @@ class world
 {
 public:
     /* CONTEXT OBJECTS */
-    /** @brief Contains SDL window and window data. */
-    class window& window;
     /** @brief State storage for keyboard inputs. */
-    class keyboard& keyboard;
+    forge::keyboard& keyboard;
     /** @brief State storage for mouse inputs. */
-    class mouse& mouse;
+    forge::mouse& mouse;
 
     /* PHYSX */
     /** @brief Scene used to manage PhysX actors. */
@@ -51,7 +50,7 @@ protected:
     std::unique_ptr<system>& __system(std::type_index);
 
 public:
-    world(class window&, class keyboard&, class mouse&);
+    world(forge::keyboard&, forge::mouse&);
     ~world() = default;
     entity& new_entity();
     void    delete_entity(entity::id_t);

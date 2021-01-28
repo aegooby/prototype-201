@@ -19,14 +19,7 @@ void combat::update(float dt)
     {
         auto& entity = world.entity(id);
         auto& health = entity.component<components::health>();
-        /** @todo Add HUD system. */
-        if (entity.flag.test(components::hud::flag))
-        {
-            const auto hpfactor = health.current_hp / health.max_hp;
-            auto&      hb_main  = world.hud.healthbar.main;
-            hb_main.rect.w      = hb_main.width * hpfactor;
-            hb_main.srcrect.w   = hb_main.width * hpfactor;
-        }
+        P201_EVAL_DISCARD(health);
     }
 }
 

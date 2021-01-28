@@ -2,14 +2,12 @@
 #pragma once
 #include "../ecs.hpp"
 #include "../event.hpp"
-#include "../graphics-api.hpp"
-#include "../input.hpp"
 #include "../physx.hpp"
 #include "../util.hpp"
-#include "window.hpp"
 #include "world.hpp"
 
 #include <__common.hpp>
+#include <forge.hpp>
 #include <functional>
 #include <thread>
 
@@ -26,33 +24,22 @@ private:
     std::function<void(float)> render_function;
 
 protected:
-    window    window;
-    vulkan    vulkan;
-    keyboard& keyboard;
-    mouse&    mouse;
-    clock     clock;
+    forge::keyboard keyboard = forge::keyboard();
+    forge::mouse    mouse    = forge::mouse();
+    forge::window   window   = forge::window(keyboard, mouse, "Prototype 201");
+    forge::vulkan::renderer vulkan = forge::vulkan::renderer(engine::window);
+
+    clock clock;
 
     bool  __running = false;
     float fps       = 60.0f;
-
-    /** @brief Checks for CMD-W or CTRL-W to close the window. */
-    bool window_close_key() const
-    {
-#if defined(P201_OS_MACOS)
-        return (keyboard.down(keycode::W) && keyboard.modifier(modifier::GUI));
-#elif defined(P201_OS_WINDOWS)
-        return (keyboard.down(keycode::W) && keyboard.modifier(modifier::CTRL));
-#else
-        return false;
-#endif
-    }
 
 public:
     world world;
 
 public:
     engine();
-    ~engine() = default;
+    ~engine();
     void start();
     void stop();
     void update(float dt);

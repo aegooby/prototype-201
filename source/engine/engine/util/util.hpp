@@ -1,8 +1,7 @@
 
 #pragma once
+#include "../math.hpp"
 #include "../physx.hpp"
-#include "linalg.hpp"
-#include "../media-layer.hpp"
 
 #include <__common.hpp>
 #include <chrono>
@@ -12,9 +11,6 @@ namespace p201
 {
 namespace util
 {
-
-vector_2  center(const SDL_FRect& rect);
-SDL_FRect rect(const vector_2& center, float width, float height);
 
 void sleep(std::size_t ms);
 

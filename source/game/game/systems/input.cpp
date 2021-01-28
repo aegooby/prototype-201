@@ -4,7 +4,7 @@
 #include "../events.hpp"
 
 #include <__common.hpp>
-#include <engine/input.hpp>
+#include <engine/core.hpp>
 
 namespace p201
 {
@@ -25,44 +25,44 @@ void input::update(float dt)
         { world.event_manager.publish<events::animation>(entity, name); };
 
         /* Up */
-        if (keyboard.down(keycode::W))
+        if (keyboard.down(forge::keycode::W))
             character.velocity += vector_3(400.0f, -400.0f, 0.0f);
-        if (keyboard.up(keycode::W))
+        if (keyboard.up(forge::keycode::W))
             character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
 
         /* Down */
-        if (keyboard.down(keycode::S))
+        if (keyboard.down(forge::keycode::S))
             character.velocity += vector_3(-400.0f, 400.0f, 0.0f);
-        if (keyboard.up(keycode::S))
+        if (keyboard.up(forge::keycode::S))
             character.velocity += vector_3(400.0f, -400.0f, 0.0f);
 
         /* Right */
-        if (keyboard.down(keycode::D))
+        if (keyboard.down(forge::keycode::D))
             character.velocity += vector_3(400.0f, 400.0f, 0.0f);
-        if (keyboard.up(keycode::D))
+        if (keyboard.up(forge::keycode::D))
             character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
 
         /* Left */
-        if (keyboard.down(keycode::A))
+        if (keyboard.down(forge::keycode::A))
             character.velocity += vector_3(-400.0f, -400.0f, 0.0f);
-        if (keyboard.up(keycode::A))
+        if (keyboard.up(forge::keycode::A))
             character.velocity += vector_3(400.0f, 400.0f, 0.0f);
 
-        if (keyboard.scan(keycode::W))
+        if (keyboard.scan(forge::keycode::W))
             transform.direction = components::transform::north;
-        if (keyboard.scan(keycode::S))
+        if (keyboard.scan(forge::keycode::S))
             transform.direction = components::transform::south;
-        if (keyboard.scan(keycode::A))
+        if (keyboard.scan(forge::keycode::A))
             transform.direction = components::transform::west;
-        if (keyboard.scan(keycode::D))
+        if (keyboard.scan(forge::keycode::D))
             transform.direction = components::transform::east;
-        if (keyboard.scan(keycode::W, keycode::A))
+        if (keyboard.scan(forge::keycode::W, forge::keycode::A))
             transform.direction = components::transform::north_west;
-        if (keyboard.scan(keycode::W, keycode::D))
+        if (keyboard.scan(forge::keycode::W, forge::keycode::D))
             transform.direction = components::transform::north_east;
-        if (keyboard.scan(keycode::S, keycode::A))
+        if (keyboard.scan(forge::keycode::S, forge::keycode::A))
             transform.direction = components::transform::south_west;
-        if (keyboard.scan(keycode::S, keycode::D))
+        if (keyboard.scan(forge::keycode::S, forge::keycode::D))
             transform.direction = components::transform::south_east;
 
         auto speed = glm::length(character.velocity);
