@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 
 project(p201-game)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS BOOL TRUE)
 
 ### C++20 ###
 set(CMAKE_CXX_STANDARD 20)

@@ -180,7 +180,7 @@ public:
     vulkan(class window&);
     ~vulkan() = default;
 
-    /* INIT */
+    /* START */
     void start();
 
     /* DRAWING */

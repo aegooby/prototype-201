@@ -37,6 +37,9 @@ add_custom_command(
 ### CMake modules ###
 set(P201_CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+### Forge ###
+set(FORGE_SUBMODULE_DIR ${CMAKE_SOURCE_DIR}/forge)
+
 ### PhysX ###
 set(PHYSX_SUBMODULE_DIR ${CMAKE_SOURCE_DIR}/PhysX)
 include(${PHYSX_SUBMODULE_DIR}/ConfigPhysX.cmake)

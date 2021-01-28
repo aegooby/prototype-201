@@ -7,41 +7,6 @@ namespace p201
 {
 namespace systems
 {
-void render::transform_tile(float x, float y, float w, float h,
-                            std::int16_t* vx, std::int16_t* vy)
-{
-    const vector_2 iso_vec    = iso_mat * vector_3(x, y, 0.0f);
-    const vector_2 iso_vec_p1 = iso_mat * vector_3(w, 0.0f, 0.0f);
-    const vector_2 iso_vec_p2 = iso_mat * vector_3(w, h, 0.0f);
-    const vector_2 iso_vec_p3 = iso_mat * vector_3(0.0f, h, 0.0f);
-
-    vx[0] = iso_vec.x;
-    vy[0] = iso_vec.y;
-
-    vx[1] = iso_vec.x + iso_vec_p1.x;
-    vy[1] = iso_vec.y + iso_vec_p1.y;
-
-    vx[2] = iso_vec.x + iso_vec_p2.x;
-    vy[2] = iso_vec.y + iso_vec_p2.y;
-
-    vx[3] = iso_vec.x + iso_vec_p3.x;
-    vy[3] = iso_vec.y + iso_vec_p3.y;
-}
-void render::render_grid(std::size_t size)
-{
-    std::int16_t vx[4];
-    std::int16_t vy[4];
-    for (ssize_t x = -1100; x < 1000; x += size)
-    {
-        for (ssize_t y = 0; y < 2000; y += size)
-        {
-            transform_tile(x, y, size, size, vx, vy);
-            camera.transform(vx, vy);
-            polygonRGBA(handle, vx, vy, 4, 200, 200, 200, 255);
-        }
-    }
-}
-
 void render::start()
 {
     std::uint32_t flags = engine::vsync ? SDL_RENDERER_PRESENTVSYNC : 0u;
@@ -53,8 +18,9 @@ void render::start()
     world.texture_pipeline.load();
 
     /** @todo This is messy. */
-    auto& hb_main    = world.hud.healthbar.main;
-    hb_main.texture  = world.texture_pipeline.flipbook("healthbar", "main").at(0);
+    auto& hb_main = world.hud.healthbar.main;
+    hb_main.texture =
+        world.texture_pipeline.flipbook("healthbar", "main").at(0);
     hb_main.position = vector_2(30.0f, 25.0f);
     hb_main.width    = 300.0f;
     hb_main.height   = 30.0f;
@@ -70,8 +36,9 @@ void render::stop()
 
 void render::render_sprite(SDL_Texture* texture, SDL_Rect* src, SDL_FRect* rect)
 {
-    if (SDL_RenderCopyF(handle, texture, src, rect))
-        throw sdl_error("Failed to render texture");
+    P201_EVAL_DISCARD(texture);
+    P201_EVAL_DISCARD(src);
+    P201_EVAL_DISCARD(rect);
 }
 
 void render::update(float dt)
@@ -80,10 +47,6 @@ void render::update(float dt)
 }
 void render::draw(float alpha)
 {
-    if (SDL_SetRenderDrawColor(handle, 0, 0, 0, 255))
-        throw sdl_error("Failed to set draw color");
-    if (SDL_RenderClear(handle)) throw sdl_error("Failed to clear renderer");
-
     /* Render all the registered entities one by one. */
     for (auto& id : __registered_entities)
     {
@@ -100,7 +63,8 @@ void render::draw(float alpha)
         render.rect.x = screen_position.x - render.rect.w * render.offset.x;
         render.rect.y = screen_position.y - render.rect.h * render.offset.y;
         if (!render.texture)
-            render.texture = world.texture_pipeline.default_sprite(render.family);
+            render.texture =
+                world.texture_pipeline.default_sprite(render.family);
         if (entity.flag.test(components::camera_focus::flag))
             camera.center = util::center(render.rect);
         if (render.camera) render.rect = camera.transform(render.rect);
@@ -120,8 +84,8 @@ void render::draw(float alpha)
 
                 auto start = camera.transform(iso_mat * convert(line.pos0));
                 auto end   = camera.transform(iso_mat * convert(line.pos1));
-                lineRGBA(handle, start.x, start.y, end.x, end.y, 200, 0, 0,
-                         255);
+                P201_EVAL_DISCARD(start);
+                P201_EVAL_DISCARD(end);
             }
         }
     }
@@ -132,10 +96,7 @@ void render::draw(float alpha)
     hb_main.rect.y = hb_main.position.y;
     render_sprite(hb_main.texture, &hb_main.srcrect, &hb_main.rect);
 }
-void render::display()
-{
-    SDL_RenderPresent(handle);
-}
+void render::display() { }
 
 } // namespace systems
 } // namespace p201

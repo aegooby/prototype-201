@@ -44,9 +44,6 @@ protected:
     camera camera;
 
 private:
-    void transform_tile(float, float, float, float, std::int16_t*,
-                        std::int16_t*);
-    void render_grid(std::size_t);
     void render_sprite(SDL_Texture*, SDL_Rect*, SDL_FRect*);
 
 public:
