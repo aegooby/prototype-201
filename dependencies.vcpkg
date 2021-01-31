@@ -5,3 +5,4 @@ sdl2[vulkan]
 sdl2-gfx 
 sdl2-image
 vulkan-memory-allocator
+physx

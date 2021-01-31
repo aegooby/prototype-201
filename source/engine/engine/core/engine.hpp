@@ -27,7 +27,7 @@ protected:
     forge::keyboard keyboard = forge::keyboard();
     forge::mouse    mouse    = forge::mouse();
     forge::window   window   = forge::window(keyboard, mouse, "Prototype 201");
-    forge::vulkan::renderer vulkan = forge::vulkan::renderer(engine::window);
+    forge::rhi      vulkan   = forge::rhi(engine::window);
 
     clock clock;
 

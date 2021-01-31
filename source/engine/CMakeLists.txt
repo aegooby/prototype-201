@@ -17,10 +17,6 @@ file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
 ### Dependencies ###
-## SDL2 ##
-# DEPRECATED
-find_package(sdl2-image CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2_image)
 ## PugiXML ##
 find_package(pugixml CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE pugixml pugixml::static pugixml::pugixml)
