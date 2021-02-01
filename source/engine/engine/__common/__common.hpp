@@ -59,18 +59,16 @@
 
 #define P201_EVAL_DISCARD(statement) ((void)statement)
 
+#include <cstddef>
 #include <cstdint>
 
 namespace p201
 {
+static constexpr const char* name    = "prototype-201";
+static constexpr const char* version = "1.0.0";
 #if defined(P201_DEBUG)
 static constexpr bool __debug__ = true;
 #else
 static constexpr bool __debug__ = false;
 #endif
-
-void __print_header__();
-
 } // namespace p201
-
-#include "decls.hpp"

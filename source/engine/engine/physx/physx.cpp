@@ -5,8 +5,6 @@
 #include "../ecs.hpp"
 #include "../event.hpp"
 
-#include <__common.hpp>
-
 namespace p201
 {
 namespace px

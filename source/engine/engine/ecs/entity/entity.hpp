@@ -1,7 +1,8 @@
 
 #pragma once
 
-#include <__common.hpp>
+#include "../../__common.hpp"
+
 #include <typeindex>
 #include <typeinfo>
 #include <unordered_map>
@@ -9,6 +10,8 @@
 
 namespace p201
 {
+
+struct component;
 
 /**
  * @brief Entities are an id, flag, and type they shouldn't have shit else.

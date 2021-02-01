@@ -1,9 +1,9 @@
 
 #pragma once
 
+#include "../../__common.hpp"
 #include "../entity.hpp"
 
-#include <__common.hpp>
 #include <pugixml.hpp>
 
 namespace p201

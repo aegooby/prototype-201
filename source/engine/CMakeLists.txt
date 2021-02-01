@@ -28,4 +28,4 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(${FORGE_SUBMODULE_DIR} forge)
 
 ### Link ###
-target_link_libraries(${PROJECT_NAME} PUBLIC p201-common forge)
+target_link_libraries(${PROJECT_NAME} PUBLIC forge)

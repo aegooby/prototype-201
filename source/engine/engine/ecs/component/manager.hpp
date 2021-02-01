@@ -1,9 +1,9 @@
 
 #pragma once
+#include "../../__common.hpp"
 #include "../entity.hpp"
 #include "component.hpp"
 
-#include <__common.hpp>
 #include <memory>
 #include <unordered_map>
 #include <vector>

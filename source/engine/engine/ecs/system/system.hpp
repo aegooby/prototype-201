@@ -1,9 +1,9 @@
 
 #pragma once
+#include "../../__common.hpp"
 #include "../component.hpp"
 #include "../entity.hpp"
 
-#include <__common.hpp>
 #include <bitset>
 #include <typeindex>
 #include <unordered_set>

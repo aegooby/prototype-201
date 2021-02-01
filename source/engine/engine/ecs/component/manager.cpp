@@ -1,8 +1,6 @@
 
 #include "manager.hpp"
 
-#include <__common.hpp>
-
 namespace p201
 {
 namespace components

@@ -4,8 +4,6 @@
 #include "../../core.hpp"
 #include "entity.hpp"
 
-#include <__common.hpp>
-
 namespace p201
 {
 namespace entities

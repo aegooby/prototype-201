@@ -47,7 +47,6 @@ add_subdirectory(${PHYSX_ROOT_DIR}/compiler/public PhysX)
 include_directories(${PHYSX_ROOT_DIR}/include ${PXSHARED_PATH}/include)
 target_link_libraries(${PROJECT_NAME} ${PHYSX_LIBRARIES})
 
-add_subdirectory(${P201_LIBRARIES_DIR}/common p201-common)
 add_subdirectory(${P201_LIBRARIES_DIR}/engine p201-engine)
 add_subdirectory(${P201_LIBRARIES_DIR}/game p201-game)
-target_link_libraries(${PROJECT_NAME} p201-common p201-engine p201-game)
+target_link_libraries(${PROJECT_NAME} p201-engine p201-game)

@@ -1,9 +1,8 @@
 
 #pragma once
+#include "../__common.hpp"
 #include "../math.hpp"
 #include "../util.hpp"
-
-#include <__common.hpp>
 
 namespace p201
 {

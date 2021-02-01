@@ -1,10 +1,8 @@
 
 #include "entity.hpp"
 
-#include "../component.hpp"
 #include "../../core.hpp"
-
-#include <__common.hpp>
+#include "../component.hpp"
 
 namespace p201
 {

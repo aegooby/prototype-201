@@ -1,8 +1,8 @@
 
 #pragma once
+#include "../__common.hpp"
 #include "event.hpp"
 
-#include <__common.hpp>
 #include <list>
 #include <typeindex>
 #include <unordered_map>
