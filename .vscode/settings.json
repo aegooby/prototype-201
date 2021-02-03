@@ -99,7 +99,8 @@
         "cinttypes": "cpp",
         "cfenv": "cpp",
         "shared_mutex": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "__functional_03": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
